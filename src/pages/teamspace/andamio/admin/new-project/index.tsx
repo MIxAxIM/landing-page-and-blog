@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import MenuBar from "../../../../../ui/landing/MenuBar";
+import Footer from "../../../../../ui/landing/Footer";
 import {
   Form,
   FormControl,
@@ -44,7 +45,11 @@ export default function NewProject() {
     },
   });
 
-  const { control, handleSubmit, formState: { errors } } = form;
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -88,7 +93,10 @@ export default function NewProject() {
                   <FormItem>
                     <FormLabel>description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Type your message here." {...field} />
+                      <Textarea
+                        placeholder="Type your message here."
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       This is your public display name.
@@ -102,7 +110,9 @@ export default function NewProject() {
                 name="expiration"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Expiration</FormLabel>
+                    <div>
+                      <FormLabel>Expiration</FormLabel>
+                    </div>
                     <FormControl>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -178,12 +188,16 @@ export default function NewProject() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="mr-4">Save Draft</Button>
+              <Button type="submit" className="mr-4">
+                Save Draft
+              </Button>
               <Button type="submit">Publish</Button>
             </form>
           </Form>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

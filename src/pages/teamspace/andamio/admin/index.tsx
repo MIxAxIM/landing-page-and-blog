@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import MenuBar from "../../../../ui/landing/MenuBar";
+import Footer from "../../../../ui/landing/Footer";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -380,6 +381,8 @@ export default function AdminDashboard() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

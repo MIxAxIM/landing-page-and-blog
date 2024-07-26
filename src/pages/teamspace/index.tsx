@@ -1,5 +1,6 @@
 import { CardanoWallet } from "@meshsdk/react";
 import MenuBar from "../../ui/landing/MenuBar";
+import Footer from "../../ui/landing/Footer";
 import {
   Card,
   CardContent,
@@ -40,6 +41,8 @@ export default function Teamspace() {
           </Link>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
