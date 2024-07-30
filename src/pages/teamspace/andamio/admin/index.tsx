@@ -31,14 +31,18 @@ import {
 import Image from "next/image";
 import { Badge } from "~/components/ui/badge";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function AdminDashboard() {
+  const { data: sessionData } = useSession();
+
   return (
     <div>
       <MenuBar />
 
       <main className="px-10 py-24">
         <div className="flex flex-col justify-center">
+          <pre>{JSON.stringify(sessionData, null, 2)}</pre>
           <h2 className="flex scroll-m-20 justify-center border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
             Admin Dashboard
           </h2>

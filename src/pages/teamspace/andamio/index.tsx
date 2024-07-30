@@ -23,8 +23,48 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import Link from "next/link";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function TeamPage() {
+  const ctx = api.useUtils();
+  const router = useRouter();
+
+  const { data: sessionData } = useSession();
+
+  const { mutate: updateSessionRole } =
+    api.role.updateSessionRole.useMutation({
+      onSuccess: () => {
+        toast.success("Unconfirmed Tx updated");
+      },
+      onError: (e) => {
+        const errorMessage = e.data?.zodError?.fieldErrors;
+        console.error(errorMessage);
+        toast.error("Something went wrong. Please try again.");
+      },
+    });
+
+    const handleClick = async (event: { preventDefault: () => void; }) => {
+      event.preventDefault(); // Prevent the default link behavior
+  
+      // Perform your task here
+      await selectSessionRole();
+  
+      // Navigate to the new link
+      router.push('/teamspace/andamio/admin');
+    };
+  
+    const selectSessionRole = async () => {
+      updateSessionRole({
+        accessToken: "example",
+        team: "example",
+        role: "example",
+        sessionId: sessionData!.sessionId
+      })
+    };
+
   return (
     <div>
       <MenuBar />
@@ -79,7 +119,7 @@ export default function TeamPage() {
                     </Select>
                   </CardContent>
                   <CardFooter>
-                  <Link href={"/teamspace/andamio/admin"}><Button>Admin Dashboard</Button></Link>
+                  <Button onClick={handleClick}>Admin Dashboard</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>

@@ -13,13 +13,14 @@ import { assignmentRouter } from "./routers/database/course/assignment";
 import { creatorRouter } from "./routers/database/course/creator";
 import { learnerRouter } from "./routers/database/course/learner";
 import { introductionRouter } from "./routers/database/course/introduction";
-import { assignmentStatusRouter } from "./routers/database/course/assignment-status"
-;
+import { assignmentStatusRouter } from "./routers/database/course/assignment-status";
 import { learnerOnChainRouter } from "./routers/contracts/course/learner-onChain";
 import { assignmentValidatorRouter } from "./routers/contracts/course/assignment-validator";
 import { localStateValidatorRouter } from "./routers/contracts/course/local-state-validator";
 import { globalStateValidatorRouter } from "./routers/contracts/course/global-state-validator";
 import { courseGovernanceValidatorRouter } from "./routers/contracts/course/course-governance-validator";
+
+import { roleRouter } from "./routers/database/user/role";
 
 import { clientDomainsRouter } from "./routers/premium/clients-domain";
 
@@ -52,6 +53,9 @@ export const appRouter = createTRPCRouter({
   localStateValidator: localStateValidatorRouter,
   globalStateValidator: globalStateValidatorRouter,
   courseGovernanceValidator: courseGovernanceValidatorRouter,
+
+  // role offchain
+  role: roleRouter,
 
   // premium features
   clientDomains: clientDomainsRouter,

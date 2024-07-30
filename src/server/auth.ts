@@ -53,8 +53,12 @@ export const authOptions: NextAuthOptions = {
         include: {
           creator: true,
           learner: { select: { id: true, lessons: true, assignments: true } },
+          sessions: { select: { id: true, role: true } },
         },
       });
+
+      const sessionId = _user?.sessions?.[0]?.id;
+      const role = _user?.sessions?.[0]?.role;
 
       return {
         ...session,
@@ -82,6 +86,8 @@ export const authOptions: NextAuthOptions = {
               : [],
           tncVersion: _user?.tncVersion 
         },
+        sessionId: sessionId,
+        role: role
       };
     },
   },

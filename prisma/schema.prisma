@@ -46,7 +46,11 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  role   Role?   @relation(fields: [roleid], references: [id])
+  roleid String?
+
   @@index([userId])
+  @@index([roleid])
 }
 
 model User {
@@ -421,6 +425,33 @@ model ClientsDomain {
   id       String @id @default(cuid())
   host     String
   courseId String @unique
+}
+
+model Project {
+  id String @id @default(cuid())
+
+  title              String
+  description        String
+  expiration         DateTime?
+  lovelaceAmount     Int
+  projectTokenAmount Int
+
+  owner   Role   @relation(fields: [ownerid], references: [id])
+  ownerid String
+
+  @@index([ownerid])
+}
+
+model Role {
+  id String @id @default(cuid())
+
+  accessToken String
+  team        String
+  role        String
+
+  Project Project[]
+
+  Session Session[]
 }
 
 // ---------------- END OF CURRENT SCHEMA -------------------------
