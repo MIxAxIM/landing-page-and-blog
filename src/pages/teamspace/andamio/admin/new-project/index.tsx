@@ -24,6 +24,8 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
 import { Textarea } from "~/components/ui/textarea";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   title: z.string(),
@@ -34,6 +36,17 @@ const formSchema = z.object({
 });
 
 export default function NewProject() {
+  const { mutate: createProject } = api.project.create.useMutation({
+    onSuccess: () => {
+      toast.success("Project Dafted");
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      console.error(errorMessage);
+      toast.error("Something went wrong. Please try again.");
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,10 +64,16 @@ export default function NewProject() {
     formState: { errors },
   } = form;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    createProject({
+      title: values.title,
+      description: values.description,
+      lovelaceAmount: values.ada_amount * 1000000,
+      projectTokenAmount: values.project_token_amount,
+    });
   }
   return (
     <div>

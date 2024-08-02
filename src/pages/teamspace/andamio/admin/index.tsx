@@ -32,9 +32,13 @@ import Image from "next/image";
 import { Badge } from "~/components/ui/badge";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import useProjects from "~/hooks/project/useProjects";
+import { useRouter } from "next/router";
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const { data: sessionData } = useSession();
+  const { projects, isLoadingProjects } = useProjects();
 
   return (
     <div>
@@ -105,7 +109,7 @@ export default function AdminDashboard() {
                     </Link>
                   </div>
                 </div>
-                <TabsContent value="treasury-info">
+                <TabsContent value="published-projects">
                   <Card x-chunk="dashboard-06-chunk-0">
                     <CardHeader>
                       <CardTitle>Products</CardTitle>
@@ -369,6 +373,95 @@ export default function AdminDashboard() {
                               </DropdownMenu>
                             </TableCell>
                           </TableRow>
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="text-xs text-muted-foreground">
+                        Showing <strong>1-10</strong> of <strong>32</strong>{" "}
+                        products
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </TabsContent>
+                <TabsContent value="project-drafts">
+                  <Card x-chunk="dashboard-06-chunk-0">
+                    <CardHeader>
+                      <CardTitle>Project Drafts</CardTitle>
+                      <CardDescription>
+                        Manage your products and view their sales performance.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="hidden w-[100px] sm:table-cell">
+                              <span className="sr-only">Image</span>
+                            </TableHead>
+                            <TableHead>Title</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>ADA Amount</TableHead>
+                            <TableHead className="hidden md:table-cell">
+                              Project Token Amount
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                              Created at
+                            </TableHead>
+                            <TableHead>
+                              <span className="sr-only">Actions</span>
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {projects &&
+                            projects.map((project) => (
+                              <TableRow>
+                                <TableCell className="hidden sm:table-cell">
+                                  <Image
+                                    alt="Product image"
+                                    className="aspect-square rounded-md object-cover"
+                                    height="64"
+                                    src="/placeholder.svg"
+                                    width="64"
+                                  />
+                                </TableCell>
+                                <TableCell className="font-medium">
+                                  {project.title}
+                                </TableCell>
+                                <TableCell>
+                                  <Badge variant="outline">Active</Badge>
+                                </TableCell>
+                                <TableCell>{project.lovelaceAmount / 1000000}</TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                  {project.projectTokenAmount}
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">
+                                  2024-02-14 02:14 PM
+                                </TableCell>
+                                <TableCell>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button aria-haspopup="true" size="icon">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                        <span className="sr-only">
+                                          Toggle menu
+                                        </span>
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                      <DropdownMenuLabel>
+                                        Actions
+                                      </DropdownMenuLabel>
+                                      <DropdownMenuItem onClick={() => router.push(`admin/draft/${project.id}`)}>Edit</DropdownMenuItem>
+                                      <DropdownMenuItem>
+                                        Delete
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </TableCell>
+                              </TableRow>
+                            ))}
                         </TableBody>
                       </Table>
                     </CardContent>

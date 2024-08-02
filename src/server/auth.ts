@@ -32,6 +32,13 @@ declare module "next-auth" {
       // ...other properties
       // role: UserRole;
     };
+    sessionId: string;
+    role: {
+      id: string;
+      accessToken: string;
+      team: string;
+      role: string;
+    };
   }
 
   // interface User {
@@ -81,13 +88,13 @@ export const authOptions: NextAuthOptions = {
                   assignmentCommitmentId: a.id,
                   learnerNotes: a.learnerNotes,
                   status: a.status,
-                  archived: a.archived
+                  archived: a.archived,
                 }))
               : [],
-          tncVersion: _user?.tncVersion 
+          tncVersion: _user?.tncVersion,
         },
         sessionId: sessionId,
-        role: role
+        role: role,
       };
     },
   },
