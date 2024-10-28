@@ -39,10 +39,10 @@ export default function AndamioRoleStatusMenu({
             current={dashboardChildRoute === "contributor"}
           />
           <RoleStatus
-            roleName="Planner Dashboard"
+            roleName="Contribution Manager Dashboard"
             userHasRole={true}
-            roleInfoUrl="/dashboard/planner"
-            current={dashboardChildRoute === "planner"}
+            roleInfoUrl="/dashboard/contribution-manager"
+            current={dashboardChildRoute === "contribution-manager"}
           />
           <RoleStatus
             roleName="Access Token Overview"

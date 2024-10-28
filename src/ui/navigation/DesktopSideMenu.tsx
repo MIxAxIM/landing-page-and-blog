@@ -54,14 +54,17 @@ export default function DesktopSideMenu({
   useEffect(() => {
     const isDashboardLearnerRoute = router.asPath.includes("dashboard/learner");
     const isDashboardTeacherRoute = router.asPath.includes("dashboard/teacher");
-    const isDashboardPlannerRoute = router.asPath.includes("dashboard/planner");
+    const isDashboardContributionManagerRoute = router.asPath.includes(
+      "dashboard/contribution-manager",
+    );
     const isDashboardContributorRoute = router.asPath.includes(
       "dashboard/contributor",
     );
     if (isDashboardLearnerRoute) setDashboardChildRoute("learner");
     if (isDashboardContributorRoute) setDashboardChildRoute("contributor");
     if (isDashboardTeacherRoute) setDashboardChildRoute("teacher");
-    if (isDashboardPlannerRoute) setDashboardChildRoute("planner");
+    if (isDashboardContributionManagerRoute)
+      setDashboardChildRoute("contribution-manager");
   }, [router]);
 
   return (

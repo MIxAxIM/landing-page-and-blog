@@ -24,7 +24,7 @@ export default function AndamioNetworkCourses({
     <DashboardSelectMenu
       title="Enrolled Courses"
       dashboardRoute="dashboard/learner"
-      currentCourseCode={currentCourseCode}
+      currentItemCode={currentCourseCode}
       courseInfos={courseInfos}
       placeholder="Select a course"
     />

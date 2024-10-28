@@ -20,7 +20,7 @@ export default function AndamioNetworkTeacherCourses({
     <DashboardSelectMenu
       title="Manage Your Courses"
       dashboardRoute="dashboard/teacher"
-      currentCourseCode={currentCourseCode}
+      currentItemCode={currentCourseCode}
       courseInfos={courseInfos}
       placeholder="Select a course"
     />

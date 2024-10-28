@@ -13,7 +13,7 @@ export default function SavedCourses() {
     <DashboardSelectMenu
       title="Saved Courses"
       dashboardRoute="dashboard/learner"
-      currentCourseCode={currentCourseCode}
+      currentItemCode={currentCourseCode}
       courseInfos={courseInfos}
       placeholder="Select a course"
     />
