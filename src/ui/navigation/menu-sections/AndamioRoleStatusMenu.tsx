@@ -34,13 +34,13 @@ export default function AndamioRoleStatusMenu({
           )}
           <RoleStatus
             roleName="Contributor Dashboard"
-            userHasRole={false}
+            userHasRole={true}
             roleInfoUrl="/dashboard/contributor"
             current={dashboardChildRoute === "contributor"}
           />
           <RoleStatus
             roleName="Planner Dashboard"
-            userHasRole={false}
+            userHasRole={true}
             roleInfoUrl="/dashboard/planner"
             current={dashboardChildRoute === "planner"}
           />
