@@ -26,6 +26,8 @@ import { creatorCourseTxRouter } from "./routers/transactions/creator-course-tx-
 import { accessTokenTxRouter } from "./routers/transactions/access-token-router";
 import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-router";
 import { treasuryRouter } from "./routers/database/contributor/treasury";
+import { escrowRouter } from "./routers/database/contributor/escrow";
+import { taskRouter } from "./routers/database/contributor/task";
 /**
  * This is the primary router for your server.
  *
@@ -57,6 +59,8 @@ export const appRouter = createTRPCRouter({
 
   // contribution features
   treasury: treasuryRouter,
+  escrow: escrowRouter,
+  task: taskRouter,
 
   // admin
   andamioAdminTransactions: andamioAdminTxRouter,

@@ -14,7 +14,7 @@ export default function SelectTreasuryToManage({
 
   return (
     <DashboardSelectMenu
-      title="Current Treasuries"
+      title="View Treasury"
       dashboardRoute="dashboard/contribution-manager"
       currentItemCode={currentTreasuryCode}
       treasuryInfos={treasuryInfos}

@@ -60,7 +60,7 @@ export default function DashboardSelectMenu({
           {treasuryInfos?.map((listItem) => (
             <SelectItem
               key={listItem?.treasuryNftPolicyId}
-              value={listItem.treasuryNftPolicyId}
+              value={listItem?.treasuryNftPolicyId ?? ""}
             >
               <div className="flex flex-row gap-2">
                 <span

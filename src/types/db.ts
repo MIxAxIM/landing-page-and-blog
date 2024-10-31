@@ -30,4 +30,6 @@ export type AssignmentCommitment = {
 };
 
 // Contribution Features
-export type Treasury = RouterOutputs["treasury"]["getTreasuries"][number]
+export type Treasury = RouterOutputs["treasury"]["getTreasuryById"];
+export type Escrow = RouterOutputs["escrow"]["getEscrowById"];
+export type Task = RouterOutputs["task"]["getTaskById"];

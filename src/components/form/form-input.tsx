@@ -34,6 +34,7 @@ export default function FormInput(props: InputProps) {
               {...field}
               placeholder={props.placeholder}
               className="borderforeground my-3 border-b"
+              disabled={props.disabled}
             />
           </FormControl>
           <FormMessage />

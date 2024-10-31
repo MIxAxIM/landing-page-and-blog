@@ -1,5 +1,6 @@
 import {
   GearIcon,
+  Pencil2Icon,
   PlusCircledIcon,
   SymbolIcon,
   TrashIcon,
@@ -85,6 +86,17 @@ export default function DialogForm({
                 onClick={() => setIsOpen(true)}
               >
                 <PlusCircledIcon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />
+                <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
+              </Button>
+            )}
+            {icon === "pencil" && (
+              <Button
+                intent={openButtonIntent}
+                size="dialog"
+                className="mx-auto"
+                onClick={() => setIsOpen(true)}
+              >
+                <Pencil2Icon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />
                 <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
               </Button>
             )}

@@ -2,6 +2,9 @@ import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 import SelectTreasuryToManage from "./SelectTreasuryToManage";
 import TreasuryListComponent from "./TreasuryListComponent";
 import { type Treasury } from "~/types/db";
+import DialogTreasury from "~/ui/profile/components/dialogs/DialogTreasury";
+import DialogEscrow from "../../components/dialogs/DialogEscrow";
+import DialogTask from "../../components/dialogs/DialogTask";
 
 export default function ContributionManagerComponent({
   treasuryInfos,
@@ -27,19 +30,16 @@ export default function ContributionManagerComponent({
         <div className="col-span-1 row-span-2">
           <PlaceholderComponent
             name="Quick Actions"
-            subItems={[
-              "create a new treasury",
-              "draft a new task",
-              "view all tasks",
-            ]}
             userStory="CONTRIBUTION-002"
           >
             <>
-              <p>
-                Select a Treasury from the Dropdown Menu to view Treasury
-                details
-              </p>
-              <SelectTreasuryToManage treasuryInfos={treasuryInfos} />
+              <p>View tasks by selecting a Treasury</p>
+              <div className="grid grid-cols-1 gap-2">
+                <SelectTreasuryToManage treasuryInfos={treasuryInfos} />
+                <DialogTreasury />
+                <DialogEscrow />
+                <DialogTask />
+              </div>
             </>
           </PlaceholderComponent>
         </div>

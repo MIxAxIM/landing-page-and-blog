@@ -427,25 +427,59 @@ model ClientsDomain {
 // ---------------- NEW CONTRIBUTION FEATURES - PREPROD ONLY ---------------------------------
 
 model Treasury {
-  treasuryNftPolicyId  String   @unique @id
-  title                String
-  contributorPolicyIds String[]
+  treasuryNftPolicyId String @id @unique
+  title               String
 
-  tasks Task[] @relation("TreasuryTasks")
+  // TODO:
+  // 1. How to handle "ownership" of a treasury?
+  // 2. Should there be some kind of visibility toggle?
+  // 3. Do contributorPolicyIds serve a purpose at this level? (e.g. access control, visibility, decision making?)
+  // 4. Should we consider an "organization" type?
+  // 5. Consider org- or treasury-level acceptance criteria. 
+  // * I think there is some interesting governance stuff we can develop here.
+
+  escrows Escrow[] @relation("TreasuryEscrows")
 
   @@index([treasuryNftPolicyId])
 }
 
+model Escrow {
+  id                   String   @id @default(cuid())
+  title                String
+  escrowNftPolicyId    String   @unique
+  contributorPolicyIds String[]
+
+  treasuryId String
+  treasury   Treasury @relation("TreasuryEscrows", fields: [treasuryId], references: [treasuryNftPolicyId])
+
+  tasks Task[] @relation("EscrowTasks")
+
+  @@index([treasuryId])
+  @@index([id])
+  @@index([escrowNftPolicyId])
+}
+
+enum TaskStatus {
+  DRAFT
+  APPROVED
+  ON_CHAIN
+  COMMITMENT_MADE
+  COMPLETE
+}
+
 model Task {
-  id                 String   @id @default(cuid())
+  id                 String     @id @default(cuid())
+  index              Int
   title              String
   description        String
   acceptanceCriteria String[]
+  status             TaskStatus @default(DRAFT)
 
-  treasuryId String
-  treasury   Treasury @relation("TreasuryTasks", fields: [treasuryId], references: [treasuryNftPolicyId])
+  escrowId String
+  escrow   Escrow @relation("EscrowTasks", fields: [escrowId], references: [id])
 
-  @@index([treasuryId])
+  @@unique([escrowId, index])
+  @@index([escrowId])
   @@index([id])
 }
 

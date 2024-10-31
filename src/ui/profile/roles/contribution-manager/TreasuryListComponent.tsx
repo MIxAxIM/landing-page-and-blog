@@ -10,7 +10,6 @@ export default function TreasuryListComponent() {
   // Simple component -> Table
   return (
     <div>
-      <h1>Treasury List</h1>
       {isLoadingTreasuries && "loading"}
       {treasuries && (
         <Table>
@@ -20,24 +19,32 @@ export default function TreasuryListComponent() {
             <TableHead>Tasks</TableHead>
             <TableHead>Balance (ADA)</TableHead>
             <TableHead>Contributors</TableHead>
-            <TableHead></TableHead>
+            <TableHead>Escrows</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
 
           {treasuries.map((t: Treasury, i) => (
-            <TableRow key={i}>
-              <TableCell>{t.title}</TableCell>
-              <TableCell>{t.treasuryNftPolicyId.substring(0, 6)}...</TableCell>
-              <TableCell>7</TableCell>
-              <TableCell>875</TableCell>
-              <TableCell>12</TableCell>
-              <TableCell>
-                <Link
-                  href={`/dashboard/contribution-manager/${t.treasuryNftPolicyId}`}
-                >
-                  <Button size="sm">View</Button>
-                </Link>
-              </TableCell>
-            </TableRow>
+            <>
+              {!!t && (
+                <TableRow key={i}>
+                  <TableCell>{t.title}</TableCell>
+                  <TableCell>
+                    {t.treasuryNftPolicyId.substring(0, 6)}...
+                  </TableCell>
+                  <TableCell>7</TableCell>
+                  <TableCell>875</TableCell>
+                  <TableCell>12</TableCell>
+                  <TableCell>{t.escrows.length}</TableCell>
+                  <TableCell>
+                    <Link
+                      href={`/dashboard/contribution-manager/${t.treasuryNftPolicyId}`}
+                    >
+                      <Button size="sm">View</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              )}
+            </>
           ))}
         </Table>
       )}

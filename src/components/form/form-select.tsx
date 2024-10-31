@@ -22,6 +22,7 @@ interface SelectProps extends InputHTMLAttributes<HTMLInputElement> {
   form: any;
   name: string;
   options: { value: any; label: any }[];
+  disabled?: boolean;
   info?: string;
 }
 
@@ -33,7 +34,11 @@ export default function FormSelect(props: SelectProps) {
       render={({ field }) => (
         <FormItem>
           {props.label && <FormLabel>{props.label}</FormLabel>}
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            disabled={props.disabled}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={props.placeholder} />
