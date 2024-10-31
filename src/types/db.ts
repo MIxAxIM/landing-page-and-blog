@@ -28,3 +28,6 @@ export type AssignmentCommitment = {
   status: "SAVE_FOR_LATER" | "IN_PROGRESS" | "COMPLETE" | "COMMITMENT";
   archived: boolean;
 };
+
+// Contribution Features
+export type Treasury = RouterOutputs["treasury"]["getTreasuries"][number]

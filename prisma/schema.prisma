@@ -424,6 +424,33 @@ model ClientsDomain {
   courseId String @unique
 }
 
+// ---------------- NEW CONTRIBUTION FEATURES - PREPROD ONLY ---------------------------------
+
+model Treasury {
+  treasuryNftPolicyId  String   @unique @id
+  title                String
+  contributorPolicyIds String[]
+
+  tasks Task[] @relation("TreasuryTasks")
+
+  @@index([treasuryNftPolicyId])
+}
+
+model Task {
+  id                 String   @id @default(cuid())
+  title              String
+  description        String
+  acceptanceCriteria String[]
+
+  treasuryId String
+  treasury   Treasury @relation("TreasuryTasks", fields: [treasuryId], references: [treasuryNftPolicyId])
+
+  @@index([treasuryId])
+  @@index([id])
+}
+
+// ---------------- END OF NEW CONTRIBUTION FEATURES -----------------------------------------
+
 // ---------------- END OF CURRENT SCHEMA -------------------------
 
 // Keeping for reference when we implement variants:

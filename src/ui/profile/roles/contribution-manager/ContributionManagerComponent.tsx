@@ -1,11 +1,12 @@
-import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 import SelectTreasuryToManage from "./SelectTreasuryToManage";
+import TreasuryListComponent from "./TreasuryListComponent";
+import { type Treasury } from "~/types/db";
 
 export default function ContributionManagerComponent({
   treasuryInfos,
 }: {
-  treasuryInfos: { treasuryCode: string; title: string }[];
+  treasuryInfos: Treasury[];
 }) {
   return (
     <div>
@@ -19,23 +20,7 @@ export default function ContributionManagerComponent({
             userStory="CONTRIBUTION-001"
           >
             <>
-              <Table>
-                <TableRow>
-                  <TableHead>Treasury</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Balance (ADA)</TableHead>
-                  <TableHead>Contributors</TableHead>
-                </TableRow>
-
-                {treasuryInfos.map((t, i) => (
-                  <TableRow key={i}>
-                    <TableCell>{t.treasuryCode}</TableCell>
-                    <TableCell>{t.title}</TableCell>
-                    <TableCell>875</TableCell>
-                    <TableCell>12</TableCell>
-                  </TableRow>
-                ))}
-              </Table>
+              <TreasuryListComponent />
             </>
           </PlaceholderComponent>
         </div>

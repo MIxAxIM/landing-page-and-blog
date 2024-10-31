@@ -1,9 +1,10 @@
+import { type Treasury } from "~/types/db";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
 }: {
-  treasuryInfo: { treasuryCode: string; title: string };
+  treasuryInfo: Treasury;
 }) {
   return (
     <div>
