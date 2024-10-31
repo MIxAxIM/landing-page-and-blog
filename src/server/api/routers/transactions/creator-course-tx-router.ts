@@ -4,14 +4,14 @@ import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type ModuleMintingParams = {
-  userAccessToken: string;
+  user_access_token: string;
   policy: string;
-  moduleInfos: string;
+  module_infos: string;
 };
 
 type AssignmentAcceptanceParams = {
-  userAccessToken: string;
-  studentAlias: string;
+  user_access_token: string;
+  student_alias: string;
   policy: string;
 };
 
@@ -26,14 +26,14 @@ export const creatorCourseTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const moduleMintingParams: ModuleMintingParams = {
-        userAccessToken: input.userAccessTokenUnit,
+        user_access_token: input.userAccessTokenUnit,
         policy: input.courseNftPolicyId,
-        moduleInfos: input.moduleInfos,
+        module_infos: input.moduleInfos,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         ModuleMintingParams
-      >(`txs/course-creator-actions/mintModuleTokens`, moduleMintingParams);
+      >(`/tx/course-creator/mint-module-tokens`, moduleMintingParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not build minting transaction");
@@ -49,14 +49,14 @@ export const creatorCourseTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const acceptAssignmentParams: AssignmentAcceptanceParams = {
-        userAccessToken: input.userAccessTokenUnit,
-        studentAlias: input.studentAlias,
+        user_access_token: input.userAccessTokenUnit,
+        student_alias: input.studentAlias,
         policy: input.courseNftPolicyId,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AssignmentAcceptanceParams
-      >(`txs/course-creator-actions/acceptAssignment`, acceptAssignmentParams);
+      >(`/tx/course-creator/accept-assignment`, acceptAssignmentParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not build accept assignment transaction");
@@ -72,14 +72,14 @@ export const creatorCourseTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const denyAssignmentParams: AssignmentAcceptanceParams = {
-        userAccessToken: input.userAccessTokenUnit,
-        studentAlias: input.studentAlias,
+        user_access_token: input.userAccessTokenUnit,
+        student_alias: input.studentAlias,
         policy: input.courseNftPolicyId,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AssignmentAcceptanceParams
-      >(`txs/course-creator-actions/denyAssignment`, denyAssignmentParams);
+      >(`/tx/course-creator/deny-assignment`, denyAssignmentParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not build deny assignment transaction");

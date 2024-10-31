@@ -33,6 +33,7 @@ export const env = createEnv({
     GITHUB_TOKEN: z.string(),
     GCP_STORAGE: z.string(),
     GCP_BACKEND: z.string(),
+    API_URL: z.string(),
   },
 
   /**
@@ -59,6 +60,7 @@ export const env = createEnv({
     GCP_STORAGE: process.env.GCP_STORAGE,
     GCP_BACKEND: process.env.GCP_BACKEND,
     NEXT_PUBLIC_CHAT_PREFIX: process.env.CHAT_PREFIX,
+    API_URL: process.env.API_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

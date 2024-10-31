@@ -1,1 +1,0 @@
-export const INDEXER_URL = "https://dev.andamio.io"

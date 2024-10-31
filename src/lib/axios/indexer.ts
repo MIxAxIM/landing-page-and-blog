@@ -1,8 +1,8 @@
 import axios from "axios";
-import { INDEXER_URL } from "~/config/indexer";
+import { env } from "~/env";
 
 export const indexer = axios.create({
-  baseURL: `${INDEXER_URL}/api/`,
+  baseURL: env.API_URL,
   headers: { cache: "no-store" },
 });
 

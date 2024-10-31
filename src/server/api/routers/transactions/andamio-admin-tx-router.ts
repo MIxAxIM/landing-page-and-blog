@@ -4,7 +4,7 @@ import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type InitCourseStepOneParams = {
-  aliases: string;
+  aliases: string[];
 };
 
 type InitCourseStepTwoAndThreeParams = {
@@ -12,7 +12,7 @@ type InitCourseStepTwoAndThreeParams = {
 };
 
 type AddRemoveCourseCreatorParams = {
-  aliases: string;
+  aliases: string[];
   policy: string;
 };
 
@@ -25,12 +25,12 @@ export const andamioAdminTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const stepOneParams: InitCourseStepOneParams = {
-        aliases: JSON.stringify(input.aliases),
+        aliases: input.aliases,
       };
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
         InitCourseStepOneParams
-      >(`txs/instance-admin-actions/init-course-step-1`, stepOneParams);
+      >(`/tx/admin/init-course-step-1`, stepOneParams);
 
       if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not complete step 1");
@@ -49,7 +49,7 @@ export const andamioAdminTxRouter = createTRPCRouter({
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
         InitCourseStepTwoAndThreeParams
-      >(`txs/instance-admin-actions/init-course-step-2`, stepTwoParams);
+      >(`/tx/admin/init-course-step-2`, stepTwoParams);
 
       if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not complete step 2");
@@ -68,7 +68,7 @@ export const andamioAdminTxRouter = createTRPCRouter({
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
         InitCourseStepTwoAndThreeParams
-      >(`txs/instance-admin-actions/init-course-step-3`, stepThreeParams);
+      >(`/tx/admin/init-course-step-3`, stepThreeParams);
 
       if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not complete step 3");
@@ -83,13 +83,13 @@ export const andamioAdminTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const creatorParams: AddRemoveCourseCreatorParams = {
-        aliases: JSON.stringify(input.aliases),
+        aliases: input.aliases,
         policy: input.policy,
       };
       const builtTxResponse = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AddRemoveCourseCreatorParams
-      >(`txs/instance-admin-actions/add-course-creators`, creatorParams);
+      >(`/tx/admin/add-course-creators`, creatorParams);
 
       https: if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not add course creators");
@@ -104,13 +104,13 @@ export const andamioAdminTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const creatorParams: AddRemoveCourseCreatorParams = {
-        aliases: JSON.stringify(input.aliases),
+        aliases: input.aliases,
         policy: input.policy,
       };
       const builtTxResponse = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AddRemoveCourseCreatorParams
-      >(`txs/instance-admin-actions/remove-course-creators`, creatorParams);
+      >(`/tx/admin/rm-course-creators`, creatorParams);
 
       https: if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not remove course creators");
