@@ -16,7 +16,7 @@ export default function TreasuryListComponent() {
           <TableRow>
             <TableHead>Treasury</TableHead>
             <TableHead>Policy Id</TableHead>
-            <TableHead>Tasks</TableHead>
+            <TableHead>Total Tasks</TableHead>
             <TableHead>Balance (ADA)</TableHead>
             <TableHead>Contributors</TableHead>
             <TableHead>Escrows</TableHead>
@@ -31,10 +31,10 @@ export default function TreasuryListComponent() {
                   <TableCell>
                     {t.treasuryNftPolicyId.substring(0, 6)}...
                   </TableCell>
-                  <TableCell>7</TableCell>
-                  <TableCell>875</TableCell>
+                  <TableCell>{t.totalTasks}</TableCell>
+                  <TableCell>{t.totalAda}</TableCell>
                   <TableCell>12</TableCell>
-                  <TableCell>{t.escrows.length}</TableCell>
+                  <TableCell>{t._count.escrows}</TableCell>
                   <TableCell>
                     <Link
                       href={`/dashboard/contribution-manager/${t.treasuryNftPolicyId}`}

@@ -11,45 +11,66 @@ import FormTextArea from "~/components/form/form-textarea";
 import FormSelect from "~/components/form/form-select";
 import { TaskStatus } from "@prisma/client";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
+import { posixTimeByHoursFromNow } from "~/utils/time";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { Calendar } from "~/components/ui/calendar";
+import { format } from "date-fns";
+import { Button } from "~/components/ui/button";
 
+// Validation constants
+const MIN_ADA = 2;
+const MIN_HOURS_FUTURE = 48;
+
+// Enhanced schema with better error messages and validation
 const FormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
+  title: z.string().min(1, "Please enter a task title"),
+  description: z
+    .string()
+    .min(10, "Description should be at least 10 characters long"),
   acceptanceCriteria: z
-    .array(z.string())
+    .array(z.string().min(1, "Criterion cannot be empty"))
     .min(1, "At least one acceptance criterion is required"),
-  treasuryId: z.string().min(1, "Treasury is required"),
-  escrowId: z.string().min(1, "Escrow is required"),
+  treasuryId: z.string().min(1, "Please select a treasury"),
+  escrowId: z.string().min(1, "Please select an escrow"),
+  ada: z
+    .number()
+    .min(MIN_ADA, `Minimum ${MIN_ADA} Ada required`)
+    .max(1000000, "Maximum 1,000,000 Ada allowed"),
+  expirationTime: z
+    .number()
+    .min(
+      posixTimeByHoursFromNow(MIN_HOURS_FUTURE),
+      `Expiration time must be at least ${MIN_HOURS_FUTURE} hours in the future`,
+    ),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
+
+interface TaskDialogProps {
+  id?: string;
+  escrowId?: string;
+  treasuryId?: string;
+}
 
 export default function DialogTask({
   id,
   escrowId: defaultEscrowId,
   treasuryId: defaultTreasuryId,
-}: {
-  id?: string;
-  escrowId?: string;
-  treasuryId?: string;
-}) {
+}: TaskDialogProps) {
+  // State management
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTreasuryId, setSelectedTreasuryId] = useState(
     defaultTreasuryId ?? "",
   );
+  const [taskExpirationTime, setTaskExpirationTime] = useState<Date>();
   const isEditMode = !!id;
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      acceptanceCriteria: [""],
-      treasuryId: defaultTreasuryId ?? "",
-      escrowId: defaultEscrowId ?? "",
-    },
-  });
-
+  // Custom hooks
   const {
     task,
     createTask,
@@ -59,18 +80,29 @@ export default function DialogTask({
     isLoading: isTaskLoading,
   } = useTask({ id, treasuryNftPolicyId: defaultTreasuryId });
 
-  // Get available treasuries
   const { treasuries, isLoadingTreasuries } = useTreasuries();
-
-  // Get list of available escrows
   const { escrows, isLoading: isLoadingEscrows } = useEscrow({});
 
-  // Filter escrows based on selected treasury
-  const filteredEscrows = escrows.filter(
-    (escrow) => escrow.treasuryId === selectedTreasuryId,
-  );
+  // Form initialization
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      acceptanceCriteria: [""],
+      treasuryId: defaultTreasuryId ?? "",
+      escrowId: defaultEscrowId ?? "",
+      ada: MIN_ADA,
+      expirationTime: posixTimeByHoursFromNow(MIN_HOURS_FUTURE),
+    },
+  });
 
-  // Handle treasury selection change
+  // Filtered escrows based on selected treasury
+  const filteredEscrows = escrows
+    .filter((escrow) => escrow?.treasuryId === selectedTreasuryId)
+    .filter(Boolean);
+
+  // Effect: Handle treasury selection change
   useEffect(() => {
     const treasurySubscription = form.watch((value, { name }) => {
       if (name === "treasuryId") {
@@ -84,55 +116,77 @@ export default function DialogTask({
     return () => treasurySubscription.unsubscribe();
   }, [form, defaultEscrowId]);
 
-  // Update form when task data is loaded
+  // Effect: Load task data in edit mode
   useEffect(() => {
     if (task && isEditMode) {
       const treasuryId = task.escrow?.treasuryId ?? "";
       setSelectedTreasuryId(treasuryId);
+
       form.reset({
         title: task.title,
         description: task.description,
         acceptanceCriteria: task.acceptanceCriteria,
+        ada: parseInt(task.lovelace) / 1000000,
+        expirationTime: parseInt(task.expirationTime),
         treasuryId,
         escrowId: task.escrowId,
       });
+
+      setTaskExpirationTime(new Date(parseInt(task.expirationTime)));
     }
   }, [task, form, isEditMode]);
 
-  const onSubmit = async (data: FormValues) => {
-    if (isEditMode && id) {
-      updateTask({
-        id,
-        title: data.title,
-        description: data.description,
-        acceptanceCriteria: data.acceptanceCriteria,
-      });
-    } else {
-      createTask({
-        escrowId: data.escrowId,
-        task: {
-          title: data.title,
-          description: data.description,
-          acceptanceCriteria: data.acceptanceCriteria,
-          status: TaskStatus.DRAFT,
-        },
-      });
-    }
-    setIsOpen(false);
-    form.reset();
-    setSelectedTreasuryId("");
-  };
-
-  // Dynamic acceptance criteria field handling
+  // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
 
-  const addCriterion = () => {
+  const handleAddCriterion = () => {
     form.setValue("acceptanceCriteria", [...acceptanceCriteria, ""]);
   };
 
-  const removeCriterion = (index: number) => {
+  const handleRemoveCriterion = (index: number) => {
     const newCriteria = acceptanceCriteria.filter((_, i) => i !== index);
     form.setValue("acceptanceCriteria", newCriteria);
+  };
+
+  // Form submission handler
+  const handleSubmit = async (data: FormValues) => {
+    if (!taskExpirationTime) {
+      form.setError("expirationTime", {
+        type: "manual",
+        message: "Please select an expiration date",
+      });
+      return;
+    }
+
+    const taskData = {
+      title: data.title,
+      description: data.description,
+      acceptanceCriteria: data.acceptanceCriteria,
+      lovelace: (data.ada * 1000000).toString(),
+      expirationTime: taskExpirationTime.getTime().toString(),
+    };
+
+    try {
+      if (isEditMode && id) {
+        updateTask({
+          id,
+          ...taskData,
+        });
+      } else {
+        createTask({
+          escrowId: data.escrowId,
+          task: {
+            ...taskData,
+            status: TaskStatus.DRAFT,
+          },
+        });
+      }
+      setIsOpen(false);
+      form.reset();
+      setSelectedTreasuryId("");
+    } catch (error) {
+      console.error("Failed to submit task:", error);
+    }
   };
 
   const isLoading =
@@ -153,12 +207,12 @@ export default function DialogTask({
         buttonLabel={isEditMode ? "Save Changes" : "Create Task"}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
-        handleSubmit={form.handleSubmit(onSubmit)}
+        handleSubmit={form.handleSubmit(handleSubmit)}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       >
         <div className="grid gap-4 py-4">
-          {!id && (
+          {!isEditMode && (
             <>
               <FormSelect
                 name="treasuryId"
@@ -178,13 +232,12 @@ export default function DialogTask({
                 name="escrowId"
                 label="Escrow"
                 form={form}
-                options={
-                  filteredEscrows.map((e) => ({
-                    value: e.id,
-                    label: e.title,
-                  })) ?? []
-                }
+                options={filteredEscrows.map((e) => ({
+                  value: e?.id ?? "",
+                  label: e?.title ?? "",
+                }))}
                 placeholder="Select an escrow"
+                disabled={!selectedTreasuryId}
               />
             </>
           )}
@@ -194,6 +247,15 @@ export default function DialogTask({
             label="Task Title"
             form={form}
             placeholder="Enter a title for this task"
+          />
+
+          <FormInput
+            name="ada"
+            label="Ada Reward"
+            type="number"
+            min={MIN_ADA}
+            max={1000000}
+            form={form}
           />
 
           <FormTextArea
@@ -216,24 +278,53 @@ export default function DialogTask({
                   placeholder={`Criterion ${index + 1}`}
                 />
                 {acceptanceCriteria.length > 1 && (
-                  <button
+                  <Button
                     type="button"
-                    onClick={() => removeCriterion(index)}
-                    className="text-red-500 hover:text-red-700"
+                    intent="destructive"
+                    size="sm"
+                    onClick={() => handleRemoveCriterion(index)}
                   >
                     Remove
-                  </button>
+                  </Button>
                 )}
               </div>
             ))}
-            <button
+            <Button
               type="button"
-              onClick={addCriterion}
-              className="text-blue-500 hover:text-blue-700"
+              intent="secondary"
+              size="sm"
+              onClick={handleAddCriterion}
             >
               Add Criterion
-            </button>
+            </Button>
           </div>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button intent="outline">
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {taskExpirationTime ? (
+                  format(taskExpirationTime, "PPP")
+                ) : (
+                  <span>Select Expiration Date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="mx-auto flex w-full justify-center">
+                <Calendar
+                  mode="single"
+                  selected={taskExpirationTime}
+                  onSelect={setTaskExpirationTime}
+                  initialFocus
+                  disabled={(date) =>
+                    date <
+                    new Date(Date.now() + MIN_HOURS_FUTURE * 60 * 60 * 1000)
+                  }
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </DialogForm>
     </Form>

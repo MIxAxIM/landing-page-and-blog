@@ -16,6 +16,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   form: any;
   name: string;
   info?: string;
+  type?: "text" | "number";
 }
 
 export default function FormInput(props: InputProps) {
@@ -23,7 +24,7 @@ export default function FormInput(props: InputProps) {
     <FormField
       control={props.form.control}
       name={props.name}
-      render={({ field }) => (
+      render={({ field: { value, onChange, ...field } }) => (
         <FormItem>
           {props.label && (
             <FormLabel className="text-foreground">{props.label}</FormLabel>
@@ -32,9 +33,27 @@ export default function FormInput(props: InputProps) {
           <FormControl>
             <Input
               {...field}
+              type={props.type ?? "text"}
+              value={value ?? ""}
+              onChange={(e) => {
+                if (props.type === "number") {
+                  // Convert empty string to null/undefined, otherwise convert to number
+                  const value =
+                    e.target.value === "" ? undefined : Number(e.target.value);
+                  onChange(value);
+                } else {
+                  onChange(e.target.value);
+                }
+              }}
               placeholder={props.placeholder}
               className="borderforeground my-3 border-b"
               disabled={props.disabled}
+              // Add number-specific props when type is number
+              {...(props.type === "number" && {
+                min: props.min,
+                max: props.max,
+                step: props.step ?? 1,
+              })}
             />
           </FormControl>
           <FormMessage />

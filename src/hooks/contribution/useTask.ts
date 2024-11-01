@@ -9,6 +9,8 @@ type CreateTaskInput = {
     description: string;
     acceptanceCriteria: string[];
     status?: TaskStatus;
+    lovelace: string;
+    expirationTime: string;
   };
 };
 
@@ -17,6 +19,8 @@ type UpdateTaskInput = {
   title?: string;
   description?: string;
   acceptanceCriteria?: string[];
+  lovelace: string;
+  expirationTime: string;
 };
 
 type ExtendedTask = Task & {
@@ -77,6 +81,8 @@ export function useTask({
       // Always invalidate the general task queries
       ctx.task.getTasks.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
+      ctx.escrow.getTreasuryEscrows.invalidate(),
+      ctx.task.getTreasuryTasks.refetch(),
 
       // Invalidate specific task if we have an ID
       id ? ctx.task.getTaskById.invalidate(id) : Promise.resolve(),
@@ -91,14 +97,6 @@ export function useTask({
         ? ctx.task.getEscrowTasks.invalidate(taskQuery.data.escrowId)
         : Promise.resolve(),
     ]);
-
-    // Explicit refetch calls
-    if (id) {
-      void taskQuery.refetch();
-    }
-    if (treasuryNftPolicyId) {
-      void treasuryTasksQuery.refetch();
-    }
   };
 
   // Mutations

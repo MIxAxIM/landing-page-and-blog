@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { type Escrow, type Task } from "@prisma/client";
+import { type Escrow } from "~/types/db";
 
 type CreateEscrowInput = {
   title: string;
@@ -16,18 +16,10 @@ type UpdateEscrowInput = {
   contributorPolicyIds?: string[];
 };
 
-type ExtendedEscrow = Escrow & {
-  name: string;
-  tasks: Task[];
-  treasury?: {
-    title: string;
-    treasuryNftPolicyId: string;
-  };
-};
-
 interface UseEscrowReturn {
-  escrow: ExtendedEscrow | null | undefined;
-  escrows: ExtendedEscrow[];
+  escrow: Escrow | null | undefined;
+  escrows: Escrow[];
+  treasuryEscrows: Escrow[];
   isLoading: boolean;
   createEscrow: (data: CreateEscrowInput) => void;
   updateEscrow: (data: UpdateEscrowInput) => void;
@@ -37,7 +29,13 @@ interface UseEscrowReturn {
   isDeleting: boolean;
 }
 
-export function useEscrow({ id }: { id?: string }): UseEscrowReturn {
+export function useEscrow({
+  id,
+  treasuryNftPolicyId,
+}: {
+  id?: string;
+  treasuryNftPolicyId?: string;
+}): UseEscrowReturn {
   const ctx = api.useUtils();
 
   // Single escrow query
@@ -49,6 +47,12 @@ export function useEscrow({ id }: { id?: string }): UseEscrowReturn {
   const allEscrowsQuery = api.escrow.getEscrows.useQuery(undefined, {
     enabled: !id,
   });
+
+  // Treasury escrows query
+  const treasuryEscrowsQuery = api.escrow.getTreasuryEscrows.useQuery(
+    treasuryNftPolicyId ?? "",
+    { enabled: !!treasuryNftPolicyId },
+  );
 
   // Helper function to invalidate and refetch queries
   const refreshQueries = async () => {
@@ -113,14 +117,9 @@ export function useEscrow({ id }: { id?: string }): UseEscrowReturn {
   });
 
   return {
-    escrow: escrowQuery.data
-      ? ({
-          ...escrowQuery.data,
-        } as ExtendedEscrow)
-      : null,
-    escrows: (allEscrowsQuery.data ?? []).map((e) => ({
-      ...e,
-    })) as ExtendedEscrow[],
+    escrow: escrowQuery.data,
+    escrows: allEscrowsQuery.data ?? [],
+    treasuryEscrows: treasuryEscrowsQuery.data ?? [],
     isLoading: id ? escrowQuery.isLoading : allEscrowsQuery.isLoading,
     createEscrow: createEscrowMutation.mutate,
     updateEscrow: updateEscrowMutation.mutate,

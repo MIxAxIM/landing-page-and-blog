@@ -1,10 +1,26 @@
+import { type Treasury } from "@prisma/client";
+import { type inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
 
 import {
+  type createTRPCContext,
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+
+type TreasuryWithCount = Treasury & {
+  _count: {
+    escrows: number;
+  };
+};
+
+// Define the final type including totalAda
+type TreasuryWithTotals = TreasuryWithCount & {
+  totalAda: number;
+  totalTasks: number;
+};
+type TRPCContext = inferAsyncReturnType<typeof createTRPCContext>;
 
 const createTreasurySchema = z.object({
   treasuryNftPolicyId: z.string().min(1),
@@ -16,32 +32,75 @@ const updateTreasurySchema = z.object({
   title: z.string().min(1).optional(),
 });
 
+// Helper function to calculate total ADA from tasks
+const calculateTotalAda = (tasks: { lovelace: string }[]) => {
+  return tasks.reduce((sum, task) => {
+    const lovelaceAmount = parseInt(task.lovelace);
+    return sum + lovelaceAmount / 1_000_000;
+  }, 0);
+};
+
+// Helper function to transform treasury data with totals
+const transformTreasuryWithTotals = async (
+  treasury: TreasuryWithCount,
+  ctx: TRPCContext,
+): Promise<TreasuryWithTotals> => {
+  // Get all escrows with their tasks for this treasury
+  const escrows = await ctx.db.escrow.findMany({
+    where: { treasuryId: treasury.treasuryNftPolicyId },
+    include: { tasks: true, _count: { select: { tasks: true } } },
+  });
+
+  // Calculate total ADA across all escrows
+  const totalAda = escrows.reduce((sum, escrow) => {
+    return sum + calculateTotalAda(escrow.tasks);
+  }, 0);
+
+  const totalTasks = escrows.reduce((sum, escrow) => {
+    return sum + escrow.tasks.length;
+  }, 0);
+
+  return {
+    ...treasury,
+    totalAda,
+    totalTasks,
+  };
+};
+
 export const treasuryRouter = createTRPCRouter({
   // Public procedures
-  getTreasuries: publicProcedure.query(({ ctx }) => {
-    return ctx.db.treasury.findMany({
+  getTreasuries: publicProcedure.query(async ({ ctx }) => {
+    const treasuries = await ctx.db.treasury.findMany({
       include: {
-        escrows: {
-          include: {
-            tasks: true,
-          },
+        _count: {
+          select: { escrows: true },
         },
       },
     });
+
+    const treasuriesWithAda = await Promise.all(
+      treasuries.map((treasury) => transformTreasuryWithTotals(treasury, ctx)),
+    );
+
+    return treasuriesWithAda;
   }),
 
-  getTreasuryById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.treasury.findUnique({
-      where: { treasuryNftPolicyId: input },
-      include: {
-        escrows: {
-          include: {
-            tasks: true,
+  getTreasuryById: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const treasury = await ctx.db.treasury.findUnique({
+        where: { treasuryNftPolicyId: input },
+        include: {
+          _count: {
+            select: { escrows: true },
           },
         },
-      },
-    });
-  }),
+      });
+
+      if (!treasury) return null;
+
+      return transformTreasuryWithTotals(treasury, ctx);
+    }),
 
   // Protected procedures
   createTreasury: protectedProcedure

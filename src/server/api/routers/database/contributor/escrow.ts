@@ -21,47 +21,82 @@ const updateEscrowSchema = z.object({
   contributorPolicyIds: z.array(z.string()).optional(),
 });
 
+// Helper function to calculate total ADA from tasks
+const calculateTotalAda = (tasks: { lovelace: string }[]) => {
+  return tasks.reduce((sum, task) => {
+    const lovelaceAmount = parseInt(task.lovelace);
+    return sum + lovelaceAmount / 1_000_000; // Convert lovelace to ADA
+  }, 0);
+};
+
 export const escrowRouter = createTRPCRouter({
   // Public procedures
-  getEscrows: publicProcedure.query(({ ctx }) => {
-    return ctx.db.escrow.findMany({
+
+  getEscrows: publicProcedure.query(async ({ ctx }) => {
+    const escrows = await ctx.db.escrow.findMany({
       include: {
         treasury: true,
         tasks: true,
       },
     });
+
+    return escrows.map((escrow) => ({
+      ...escrow,
+      totalAda: calculateTotalAda(escrow.tasks),
+    }));
   }),
 
-  getEscrowById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.escrow.findUnique({
-      where: { id: input },
-      include: {
-        tasks: true,
-      },
-    });
-  }),
+  getEscrowById: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const escrow = await ctx.db.escrow.findUnique({
+        where: { id: input },
+        include: {
+          tasks: true,
+        },
+      });
+
+      if (!escrow) return null;
+
+      return {
+        ...escrow,
+        totalAda: calculateTotalAda(escrow.tasks),
+      };
+    }),
 
   getEscrowByPolicyId: publicProcedure
     .input(z.string())
-    .query(({ ctx, input }) => {
-      return ctx.db.escrow.findUnique({
+    .query(async ({ ctx, input }) => {
+      const escrow = await ctx.db.escrow.findUnique({
         where: { escrowNftPolicyId: input },
         include: {
           treasury: true,
           tasks: true,
         },
       });
+
+      if (!escrow) return null;
+
+      return {
+        ...escrow,
+        totalAda: calculateTotalAda(escrow.tasks),
+      };
     }),
 
   getTreasuryEscrows: publicProcedure
     .input(z.string())
-    .query(({ ctx, input }) => {
-      return ctx.db.escrow.findMany({
+    .query(async ({ ctx, input }) => {
+      const escrows = await ctx.db.escrow.findMany({
         where: { treasuryId: input },
         include: {
           tasks: true,
         },
       });
+
+      return escrows.map((escrow) => ({
+        ...escrow,
+        totalAda: calculateTotalAda(escrow.tasks),
+      }));
     }),
 
   // Protected procedures

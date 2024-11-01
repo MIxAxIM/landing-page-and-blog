@@ -475,6 +475,9 @@ model Task {
   acceptanceCriteria String[]
   status             TaskStatus @default(DRAFT)
 
+  lovelace       String
+  expirationTime String
+
   escrowId String
   escrow   Escrow @relation("EscrowTasks", fields: [escrowId], references: [id])
 

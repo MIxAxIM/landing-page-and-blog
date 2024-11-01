@@ -1,17 +1,21 @@
 import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
-import { type Escrow } from "~/types/db";
 import Link from "next/link";
+import { useEscrow } from "~/hooks/contribution/useEscrow";
 
 export default function EscrowListComponent({
-  escrows,
+  treasuryNftPolicyId,
 }: {
-  escrows: Escrow[];
+  treasuryNftPolicyId: string;
 }) {
   // Simple component -> Table
+  //
+
+  const { treasuryEscrows } = useEscrow({ treasuryNftPolicyId });
+
   return (
     <div>
-      {escrows && (
+      {treasuryEscrows && (
         <Table>
           <TableRow>
             <TableHead>Escrow</TableHead>
@@ -19,12 +23,12 @@ export default function EscrowListComponent({
             <TableHead>Decision Makers</TableHead>
             <TableHead>Approved Contributor Policy IDs</TableHead>
             <TableHead>Tasks</TableHead>
-            <TableHead>Funds Locked</TableHead>
+            <TableHead>Ada Allocated to Tasks</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
 
           <>
-            {escrows.map((escrow, i) => (
+            {treasuryEscrows.map((escrow, i) => (
               <TableRow key={i}>
                 <TableCell>{escrow?.title}</TableCell>
                 <TableCell>
@@ -32,8 +36,8 @@ export default function EscrowListComponent({
                 </TableCell>
                 <TableCell>coming soon</TableCell>
                 <TableCell>{escrow?.contributorPolicyIds.length}</TableCell>
-                <TableCell>{escrow?.tasks.length}</TableCell>
-                <TableCell>1000</TableCell>
+                <TableCell>{escrow?.tasks?.length ?? 0}</TableCell>
+                <TableCell>{escrow?.totalAda}</TableCell>
                 <TableCell>
                   <Link href={`#`}>
                     <Button size="sm">View All</Button>

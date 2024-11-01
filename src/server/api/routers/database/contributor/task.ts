@@ -13,6 +13,8 @@ const taskSchema = z.object({
   description: z.string().min(1),
   acceptanceCriteria: z.array(z.string()),
   status: z.nativeEnum(TaskStatus).optional(),
+  lovelace: z.string().min(7),
+  expirationTime: z.string().min(10),
 });
 
 const updateTaskSchema = z.object({
@@ -21,6 +23,8 @@ const updateTaskSchema = z.object({
   description: z.string().min(1).optional(),
   acceptanceCriteria: z.array(z.string()).optional(),
   status: z.nativeEnum(TaskStatus).optional(),
+  lovelace: z.string().min(7),
+  expirationTime: z.string().min(10),
 });
 
 export const taskRouter = createTRPCRouter({
@@ -85,6 +89,8 @@ export const taskRouter = createTRPCRouter({
             status: input.task.status ?? TaskStatus.DRAFT,
             escrowId: input.escrowId,
             index: nextIndex,
+            lovelace: input.task.lovelace,
+            expirationTime: input.task.expirationTime,
           },
         });
       });
@@ -204,6 +210,8 @@ export const taskRouter = createTRPCRouter({
             description: originalTask.description,
             acceptanceCriteria: originalTask.acceptanceCriteria,
             status: TaskStatus.DRAFT, // Always create duplicates as DRAFT
+            lovelace: originalTask.lovelace,
+            expirationTime: originalTask.expirationTime,
             escrowId: input.targetEscrowId,
             index: nextIndex,
           },

@@ -2,6 +2,8 @@ import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useTask } from "~/hooks/contribution/useTask";
+import { formatPosixTime } from "~/utils/time";
+import DialogTask from "../../components/dialogs/DialogTask";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
   const { tasks } = useTask({ treasuryNftPolicyId: treasury });
@@ -32,15 +34,15 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                 <TableCell>
                   {JSON.stringify(task?.acceptanceCriteria)}
                 </TableCell>
-                <TableCell>2024-12-01</TableCell>
-                <TableCell>50</TableCell>
+                <TableCell>{formatPosixTime(task.expirationTime)}</TableCell>
+                <TableCell>{parseInt(task.lovelace) / 1000000}</TableCell>
                 <TableCell>
                   <Link href={`#`}>
                     <Button size="sm">View Details</Button>
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Button size="sm">Edit Task</Button>
+                  <DialogTask id={task.id} />
                 </TableCell>
               </TableRow>
             ))}
