@@ -7,6 +7,7 @@ import {
 } from "~/components/ui/select";
 import { useRouter } from "next/router";
 import classNames from "~/utils/classnames";
+import { type Treasury } from "~/types/db";
 
 export default function DashboardSelectMenu({
   title,
@@ -20,7 +21,7 @@ export default function DashboardSelectMenu({
   dashboardRoute: string;
   currentItemCode: string;
   courseInfos?: { courseCode: string; title: string }[];
-  treasuryInfos?: { treasuryCode: string; title: string }[];
+  treasuryInfos?: Treasury[];
   placeholder: string;
 }) {
   const router = useRouter();
@@ -58,13 +59,13 @@ export default function DashboardSelectMenu({
           ))}
           {treasuryInfos?.map((listItem) => (
             <SelectItem
-              key={listItem?.treasuryCode}
-              value={listItem.treasuryCode}
+              key={listItem?.treasuryNftPolicyId}
+              value={listItem?.treasuryNftPolicyId ?? ""}
             >
               <div className="flex flex-row gap-2">
                 <span
                   className={classNames(
-                    router.query.treasurycode == listItem?.treasuryCode
+                    router.query.treasurynftcs == listItem?.treasuryNftPolicyId
                       ? "border-primary bg-accent text-accent-foreground"
                       : "border-accent-foreground text-accent-foreground group-hover:border-primary group-hover:text-accent-foreground",
                     "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-secondary text-[0.625rem] font-medium",

@@ -28,3 +28,9 @@ export type AssignmentCommitment = {
   status: "SAVE_FOR_LATER" | "IN_PROGRESS" | "COMPLETE" | "COMMITMENT";
   archived: boolean;
 };
+
+// Contribution Features
+export type Treasury = RouterOutputs["treasury"]["getTreasuryById"];
+export type Task = RouterOutputs["task"]["getTaskById"];
+
+export type Escrow = RouterOutputs["escrow"]["getEscrowById"];

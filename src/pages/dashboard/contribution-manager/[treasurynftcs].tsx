@@ -8,15 +8,15 @@ export default function DashboardContributionManagerTreasuryPage() {
     undefined,
   );
   const router = useRouter();
-  const { treasurycode } = router.query;
+  const { treasurynftcs } = router.query;
 
   useEffect(() => {
-    if (!!treasurycode && typeof treasurycode === "string") {
-      setTreasuryCode(treasurycode);
+    if (!!treasurynftcs && typeof treasurynftcs === "string") {
+      setTreasuryCode(treasurynftcs);
     }
-  }, [router, treasurycode]);
+  }, [router, treasurynftcs]);
 
-  if (!treasurycode) return <div>Invalid URL</div>;
+  if (!treasurynftcs) return <div>Invalid URL</div>;
 
   return (
     <DesktopOnlyLayout>
