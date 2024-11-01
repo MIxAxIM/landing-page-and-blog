@@ -22,7 +22,7 @@ export const globalStateValidatorRouter = createTRPCRouter({
       const globalState = indexerGetWithParams<
         DecodedGlobalStateDatum,
         GlobalStateQueryParams
-      >(`global-state/decodedGlobalStateDatumByAlias`, globalStateQueryParams);
+      >(`/global-state/decoded-datum`, globalStateQueryParams);
       return globalState;
     }),
 });

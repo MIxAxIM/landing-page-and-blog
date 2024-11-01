@@ -12,7 +12,7 @@ export const courseGovernanceValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const result = await indexerGet<string[]>(
-        `course-governance-validator/creatorsCoursePoliciesByAlias?alias=${input.alias}`,
+        `/course-governance-validator/course-creator/courses?alias=${input.alias}`,
       );
       // const res = await axios.get(
       //   `${INDEXER_URL}/api/course-governance-validator/creatorsCoursePoliciesByAlias?alias=${input.alias}`,

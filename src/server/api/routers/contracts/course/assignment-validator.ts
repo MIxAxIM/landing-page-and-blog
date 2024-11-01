@@ -26,7 +26,7 @@ export const assignmentValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const onchainCourseModules = await indexerGet<OnchainCourseModule[]>(
-        `module-ref/decodedModuleRefDatumsByCourseNftPolicy?policy=${input.courseCreatorNFTPolicyID}`,
+        `/module-ref-validator/decoded-datums?policy=${input.courseCreatorNFTPolicyID}`,
       );
       if (
         onchainCourseModules.some((m) => m.module_token === input.moduleCode)
@@ -49,7 +49,7 @@ export const assignmentValidatorRouter = createTRPCRouter({
       try {
         console.log("hhh", input);
         const assignment = await indexerGet<DecodedAssignmentDecisionDatum>(
-          `assignment-validator/decodedAssignmentValidatorUtxoByCourseNftPolicyAndAlias?policy=${input.courseCreatorNFTPolicyID}&alias=${input.alias}`,
+          `/assignment-validator/decoded-datum?policy=${input.courseCreatorNFTPolicyID}&alias=${input.alias}`,
         );
         console.log("hhhsac", assignment);
         if (assignment.CommittedAssignmentId === input.assignmentCode) {
@@ -70,7 +70,7 @@ export const assignmentValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const assignments = await indexerGet<DecodedAssignmentDecisionDatum[]>(
-        `assignment-validator/decodedAssignmentDatumsByCourseNftPolicy?policy=${input.courseNftPolicy}`,
+        `/assignment-validator/decoded-datum?policy=${input.courseNftPolicy}`,
       );
       return assignments;
     }),
@@ -84,7 +84,7 @@ export const assignmentValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const assignments = await indexerGet<DecodedAssignmentDecisionDatum>(
-        `assignment-validator/decodedAssignmentValidatorUtxoByCourseNftPolicyAndAlias?policy=${input.courseCreatorNFTPolicyID}&alias=${input.alias}`,
+        `/assignment-validator/decoded-datum?policy=${input.courseCreatorNFTPolicyID}&alias=${input.alias}`,
       );
       return assignments;
     }),
@@ -121,7 +121,7 @@ export const assignmentValidatorRouter = createTRPCRouter({
       );
 
       const onchainCourseModules = await indexerGet<OnchainCourseModule[]>(
-        `module-ref/decodedModuleRefDatumsByCourseNftPolicy?policy=${input.courseCreatorNFTPolicyID}`,
+        `/module-ref-validator/decoded-datums?policy=${input.courseCreatorNFTPolicyID}`,
       );
 
       return {
