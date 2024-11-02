@@ -7,15 +7,33 @@ import TaskStatusSelect from "../../components/selection/TaskStatusSelect";
 import { TaskStatus } from "@prisma/client";
 import { useState } from "react";
 import TaskStatusFilter from "./TaskStatusFilter";
+import { useEscrow } from "~/hooks/contribution/useEscrow";
+import TaskEscrowFilter from "./TaskEscrowFilter";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
   const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
-    Object.values(TaskStatus), // Initialize with all statuses
+    Object.values(TaskStatus),
   );
-  const { tasks: filteredTasks } = useTask({
+
+  // Get all escrows for this treasury
+  const { escrows } = useEscrow({});
+  const treasuryEscrows = escrows.filter((e) => e?.treasuryId === treasury);
+
+  // Escrow filter state - initialize with all escrow IDs
+  const [selectedEscrows, setSelectedEscrows] = useState<string[]>(
+    treasuryEscrows.map((e) => e?.id ?? ""),
+  );
+
+  // Get filtered tasks
+  const { tasks } = useTask({
     treasuryNftPolicyId: treasury,
     status: selectedStatuses,
   });
+
+  // Filter tasks by selected escrows
+  const filteredTasks = tasks.filter((task) =>
+    selectedEscrows.includes(task.escrowId),
+  );
 
   return (
     <div>
@@ -24,6 +42,16 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
           selectedStatuses={selectedStatuses}
           onChange={setSelectedStatuses}
         />
+        {treasuryEscrows && (
+          <TaskEscrowFilter
+            escrows={treasuryEscrows.filter(
+              (escrow): escrow is NonNullable<typeof escrow> =>
+                escrow !== null && escrow.treasuryId === treasury,
+            )}
+            selectedEscrows={selectedEscrows}
+            onChange={setSelectedEscrows}
+          />
+        )}
       </div>
       {filteredTasks && (
         <Table>
