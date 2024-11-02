@@ -1,16 +1,31 @@
-import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useTask } from "~/hooks/contribution/useTask";
 import { formatPosixTime } from "~/utils/time";
 import DialogTask from "../../components/dialogs/DialogTask";
+import TaskStatusSelect from "../../components/selection/TaskStatusSelect";
+import { TaskStatus } from "@prisma/client";
+import { useState } from "react";
+import TaskStatusFilter from "./TaskStatusFilter";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
-  const { tasks } = useTask({ treasuryNftPolicyId: treasury });
-  // Simple component -> Table
+  const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
+    Object.values(TaskStatus), // Initialize with all statuses
+  );
+  const { tasks: filteredTasks } = useTask({
+    treasuryNftPolicyId: treasury,
+    status: selectedStatuses,
+  });
+
   return (
     <div>
-      {tasks && (
+      <div className="mb-4">
+        <TaskStatusFilter
+          selectedStatuses={selectedStatuses}
+          onChange={setSelectedStatuses}
+        />
+      </div>
+      {filteredTasks && (
         <Table>
           <TableRow>
             <TableHead>#</TableHead>
@@ -23,10 +38,16 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
           </TableRow>
 
           <>
-            {tasks.map((task, i) => (
+            {filteredTasks.map((task, i) => (
               <TableRow key={i}>
                 <TableCell>{task?.index}</TableCell>
-                <TableCell>{task?.title}</TableCell>
+                <TableCell>
+                  <Link
+                    href={`/contribution/${treasury}/${task.escrow?.escrowNftPolicyId}/${task.index}`}
+                  >
+                    {task?.title}
+                  </Link>
+                </TableCell>
                 <TableCell>{task?.description}</TableCell>
                 <TableCell>
                   {task.escrow?.escrowNftPolicyId.substring(0, 6)}...
@@ -37,9 +58,10 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                 <TableCell>{formatPosixTime(task.expirationTime)}</TableCell>
                 <TableCell>{parseInt(task.lovelace) / 1000000}</TableCell>
                 <TableCell>
-                  <Link href={`#`}>
-                    <Button size="sm">View Details</Button>
-                  </Link>
+                  <TaskStatusSelect
+                    taskId={task.id}
+                    currentStatus={task.status}
+                  />
                 </TableCell>
                 <TableCell>
                   <DialogTask id={task.id} />
