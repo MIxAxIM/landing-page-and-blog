@@ -60,10 +60,7 @@ export default function TaskStatusSelect({
       disabled={isUpdating}
     >
       <SelectTrigger
-        className={cn(
-          "h-8 w-[130px] text-sm font-medium",
-          statusStyles[currentStatus],
-        )}
+        className={cn("py-1 text-xs font-medium", statusStyles[currentStatus])}
       >
         <SelectValue placeholder="Select status">
           {statusLabels[currentStatus]}
@@ -72,7 +69,10 @@ export default function TaskStatusSelect({
       <SelectContent>
         <SelectItem
           value={currentStatus}
-          className={cn("text-sm font-medium", statusStyles[currentStatus])}
+          className={cn(
+            "rounded-none text-xs font-medium",
+            statusStyles[currentStatus],
+          )}
         >
           {statusLabels[currentStatus]}
         </SelectItem>
@@ -80,7 +80,10 @@ export default function TaskStatusSelect({
           <SelectItem
             key={status}
             value={status}
-            className={cn("text-sm font-medium", statusStyles[status])}
+            className={cn(
+              "rounded-none text-xs font-medium",
+              statusStyles[status],
+            )}
           >
             {statusLabels[status]}
           </SelectItem>

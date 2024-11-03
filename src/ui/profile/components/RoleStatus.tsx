@@ -42,7 +42,7 @@ export default function RoleStatus({
         </div>
         {roleInfoUrl && (
           <Link href={roleInfoUrl} className="">
-            <Button size="sm" intent="learnMore">
+            <Button size="sm" intent="secondary">
               view
             </Button>
           </Link>

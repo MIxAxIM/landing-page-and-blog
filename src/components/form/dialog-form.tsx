@@ -19,6 +19,7 @@ export default function DialogForm({
   children,
   openButton,
   openButtonIntent,
+  openButtonSize,
   title,
   description,
   icon,
@@ -32,6 +33,7 @@ export default function DialogForm({
   children: React.ReactNode;
   openButton: string;
   openButtonIntent: "module" | "default" | "dialog" | "delete";
+  openButtonSize?: "sm" | "md" | "lg" | "xl";
   title: string;
   description?: string;
   icon?: string;
@@ -43,7 +45,7 @@ export default function DialogForm({
   setIsOpen: (open: boolean) => void;
 }) {
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)} modal={false}>
       <DialogTrigger asChild>
         {/* PICK UP HERE */}
         {icon ? (
@@ -92,17 +94,23 @@ export default function DialogForm({
             {icon === "pencil" && (
               <Button
                 intent={openButtonIntent}
-                size="dialog"
+                size={openButtonSize ?? "dialog"}
                 className="mx-auto"
                 onClick={() => setIsOpen(true)}
               >
                 <Pencil2Icon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />
-                <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
+                {openButtonSize != "sm" && (
+                  <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
+                )}
               </Button>
             )}
           </>
         ) : (
-          <Button intent={openButtonIntent} size="dialog" className="mx-auto">
+          <Button
+            intent={openButtonIntent}
+            size={openButtonSize ?? "dialog"}
+            className="mx-auto"
+          >
             {openButton}
           </Button>
         )}

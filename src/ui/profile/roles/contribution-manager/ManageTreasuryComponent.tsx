@@ -13,7 +13,7 @@ export default function ManageTreasuryComponent({
 }) {
   return (
     <div>
-      <div className="mx-auto mt-12 grid w-11/12 grid-cols-3 gap-5">
+      <div className="mx-auto mt-12 grid w-11/12 grid-cols-3 gap-3">
         <div className="col-span-3">
           <h2 className="text-4xl">{treasuryInfo?.title}</h2>
           <p>CONTRIBUTION-007: View Treasury Dashboard</p>
@@ -21,7 +21,7 @@ export default function ManageTreasuryComponent({
             treasuryNftPolicyId={treasuryInfo?.treasuryNftPolicyId}
           />
         </div>
-        <div className="col-span-2 row-span-3">
+        <div className="col-span-3">
           <PlaceholderComponent
             name="List of Active Tasks"
             userStory="CONTRIBUTION-001"
@@ -32,6 +32,24 @@ export default function ManageTreasuryComponent({
                   treasury={treasuryInfo.treasuryNftPolicyId}
                 />
               )}
+              <DialogTask
+                treasuryId={treasuryInfo?.treasuryNftPolicyId}
+                key={treasuryInfo?.treasuryNftPolicyId}
+              />
+            </>
+          </PlaceholderComponent>
+        </div>
+        <div className="">
+          <PlaceholderComponent
+            name="Manage Treasury Tasks"
+            subItems={[
+              "Save Task as Draft - CONTRIBUTION-004",
+              "Edit and Update Tasks - CONTRIBUTION-006",
+              "Publish on Andamio Network",
+            ]}
+          >
+            <>
+              <p>CONTRIBUTION-003:</p>
               <DialogTask
                 treasuryId={treasuryInfo?.treasuryNftPolicyId}
                 key={treasuryInfo?.treasuryNftPolicyId}
@@ -77,17 +95,6 @@ export default function ManageTreasuryComponent({
           <PlaceholderComponent
             name="List of Active Contributors"
             userStory="CONTRIBUTION-001"
-          />
-        </div>
-        <div className="">
-          <PlaceholderComponent
-            name="Manage Treasury Tasks"
-            subItems={[
-              "Button Create a New Task (Form Dialog) - See CONTRIBUTION-003",
-              "Save Task as Draft - CONTRIBUTION-004",
-              "Edit and Update Tasks - CONTRIBUTION-006",
-              "Publish on Andamio Network",
-            ]}
           />
         </div>
       </div>

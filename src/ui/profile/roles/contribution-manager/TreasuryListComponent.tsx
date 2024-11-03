@@ -39,10 +39,12 @@ export default function TreasuryListComponent() {
                 Actions
               </th>
             </tr>
-            <TableRow className="border-b border-primary text-center">
-              <TableHead>Treasury</TableHead>
-              <TableHead># Escrows</TableHead>
-              <TableHead># Contributors</TableHead>
+            <TableRow className="border-b border-primary">
+              <TableHead className="border border-primary">Treasury</TableHead>
+              <TableHead className="border border-primary"># Escrows</TableHead>
+              <TableHead className="border border-primary">
+                # Contributors
+              </TableHead>
               <TableHead className="border-x border-primary">Open</TableHead>
               <TableHead className="border-x border-primary">
                 In Progress
@@ -55,35 +57,54 @@ export default function TreasuryListComponent() {
               </TableHead>
               <TableHead className="border-x border-primary">Locked</TableHead>
               <TableHead className="border-x border-primary">Spent</TableHead>
-              <TableHead className="border-x border-primary">View</TableHead>
-              <TableHead className="border-x border-primary">Edit</TableHead>
+              <TableHead className="border-x border-primary text-center">
+                View
+              </TableHead>
+              <TableHead className="border-x border-primary text-center">
+                Edit
+              </TableHead>
             </TableRow>
           </thead>
 
           {treasuries.map((t: Treasury, i) => (
             <>
               {!!t && (
-                <TableRow key={i} className="text-center">
-                  <TableCell>{t.title}</TableCell>
-                  <TableCell>{t._count.escrows}</TableCell>
-                  <TableCell>9</TableCell>
-
-                  <TableCell>{t.totalTasks}</TableCell>
-                  <TableCell>5</TableCell>
-                  <TableCell>2</TableCell>
-                  <TableCell>2500</TableCell>
-                  <TableCell>{t.totalAda}</TableCell>
-                  <TableCell>400</TableCell>
-                  <TableCell>
+                <TableRow
+                  key={i}
+                  className="border-y border-gray-500 text-center"
+                >
+                  <TableCell className="border-x border-gray-500">
+                    {t.title}
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">
+                    {t._count.escrows}
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">9</TableCell>
+                  <TableCell className="border-x border-gray-500">
+                    {t.totalTasks}
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">5</TableCell>
+                  <TableCell className="border-x border-gray-500">2</TableCell>
+                  <TableCell className="border-x border-gray-500">
+                    2500
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">
+                    {t.totalAda}
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">
+                    400
+                  </TableCell>
+                  <TableCell className="border-x border-gray-500">
                     <Link
                       href={`/dashboard/contribution-manager/${t.treasuryNftPolicyId}`}
                     >
                       <Button size="sm">Details</Button>
                     </Link>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="border-x border-gray-500">
                     <DialogTreasury
                       treasuryNftPolicyId={t.treasuryNftPolicyId}
+                      openButtonSize="sm"
                     />
                   </TableCell>
                 </TableRow>

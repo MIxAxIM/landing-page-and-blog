@@ -5,39 +5,55 @@ import { formatPosixTime } from "~/utils/time";
 import DialogTask from "../../components/dialogs/DialogTask";
 import TaskStatusSelect from "../../components/selection/TaskStatusSelect";
 import { TaskStatus } from "@prisma/client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import TaskStatusFilter from "./TaskStatusFilter";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import TaskEscrowFilter from "./TaskEscrowFilter";
+import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
+import { type TaskSortKey, type SortConfig } from "~/types/sorting";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
+  // Status filter state
   const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
     Object.values(TaskStatus),
   );
 
   // Get all escrows for this treasury
   const { escrows } = useEscrow({});
-  const treasuryEscrows = escrows.filter((e) => e?.treasuryId === treasury);
+  const treasuryEscrows = escrows.filter(
+    (escrow) => escrow?.treasuryId === treasury,
+  );
 
   // Escrow filter state - initialize with all escrow IDs
   const [selectedEscrows, setSelectedEscrows] = useState<string[]>(
-    treasuryEscrows.map((e) => e?.id ?? ""),
+    treasuryEscrows.map((escrow) => escrow?.id ?? ""),
   );
 
-  // Get filtered tasks
-  const { tasks } = useTask({
-    treasuryNftPolicyId: treasury,
-    status: selectedStatuses,
+  // Sort state
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: "index",
+    direction: "asc",
   });
 
-  // Filter tasks by selected escrows
-  const filteredTasks = tasks.filter((task) =>
-    selectedEscrows.includes(task.escrowId),
-  );
+  // Get filtered and sorted tasks
+  const { filteredTasks, isLoading } = useTask({
+    treasuryNftPolicyId: treasury,
+    selectedStatuses,
+    selectedEscrows,
+    sortConfig,
+  });
+
+  // Sort handler
+  const requestSort = useCallback((key: TaskSortKey) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  }, []);
 
   return (
-    <div>
-      <div className="mb-4">
+    <div className="w-full">
+      <div className="mb-4 space-x-2">
         <TaskStatusFilter
           selectedStatuses={selectedStatuses}
           onChange={setSelectedStatuses}
@@ -53,52 +69,111 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
           />
         )}
       </div>
-      {filteredTasks && (
-        <Table>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Escrow</TableHead>
-            <TableHead>Acceptance Criteria</TableHead>
-            <TableHead>Expiration Time</TableHead>
-            <TableHead>Ada</TableHead>
-          </TableRow>
-
-          <>
-            {filteredTasks.map((task, i) => (
-              <TableRow key={i}>
-                <TableCell>{task?.index}</TableCell>
-                <TableCell>
-                  <Link
-                    href={`/contribution/${treasury}/${task.escrow?.escrowNftPolicyId}/${task.index}`}
-                  >
-                    {task?.title}
-                  </Link>
-                </TableCell>
-                <TableCell>{task?.description}</TableCell>
-                <TableCell>
-                  {task.escrow?.escrowNftPolicyId.substring(0, 6)}...
-                </TableCell>
-                <TableCell>
-                  {JSON.stringify(task?.acceptanceCriteria)}
-                </TableCell>
-                <TableCell>{formatPosixTime(task.expirationTime)}</TableCell>
-                <TableCell>{parseInt(task.lovelace) / 1000000}</TableCell>
-                <TableCell>
-                  <TaskStatusSelect
-                    taskId={task.id}
-                    currentStatus={task.status}
-                  />
-                </TableCell>
-                <TableCell>
-                  <DialogTask id={task.id} />
+      <div className="w-full overflow-x-auto">
+        <Table className="w-full table-fixed">
+          <thead>
+            <TableRow>
+              <SortableTableHeader
+                label="#"
+                sortKey="index"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-12"
+              />
+              <SortableTableHeader
+                label="Title"
+                sortKey="title"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-40"
+              />
+              <SortableTableHeader
+                label="Description"
+                sortKey="description"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-48"
+              />
+              <SortableTableHeader
+                label="Escrow"
+                sortKey="escrow.escrowNftPolicyId"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-20"
+              />
+              <TableHead className="w-1/6">Acceptance Criteria</TableHead>
+              <SortableTableHeader
+                label="Expiration Time"
+                sortKey="expirationTime"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-32"
+              />
+              <SortableTableHeader
+                label="Ada"
+                sortKey="lovelace"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-20"
+              />
+              <SortableTableHeader
+                label="Status"
+                sortKey="status"
+                sortConfig={sortConfig}
+                onSort={requestSort}
+                className="w-28"
+              />
+              <TableHead className="w-24">Actions</TableHead>
+            </TableRow>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={9} className="h-24 text-center">
+                  Loading...
                 </TableCell>
               </TableRow>
-            ))}
-          </>
+            ) : filteredTasks.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={9} className="h-24 text-center">
+                  No tasks found
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredTasks.map((task) => (
+                <TableRow key={task.id}>
+                  <TableCell>{task.index}</TableCell>
+                  <TableCell>
+                    <Link
+                      href={`/contribution/${treasury}/${task.escrow?.escrowNftPolicyId}/${task.index}`}
+                    >
+                      {task.title}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="truncate">{task.description}</TableCell>
+                  <TableCell>
+                    {task.escrow?.escrowNftPolicyId.substring(0, 6)}...
+                  </TableCell>
+                  <TableCell>
+                    {JSON.stringify(task.acceptanceCriteria)}
+                  </TableCell>
+                  <TableCell>{formatPosixTime(task.expirationTime)}</TableCell>
+                  <TableCell>{parseInt(task.lovelace) / 1000000}</TableCell>
+                  <TableCell>
+                    <TaskStatusSelect
+                      taskId={task.id}
+                      currentStatus={task.status}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <DialogTask openButtonSize="sm" id={task.id} />
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </tbody>
         </Table>
-      )}
+      </div>
     </div>
   );
 }

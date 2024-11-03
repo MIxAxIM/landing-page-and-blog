@@ -1,7 +1,6 @@
 import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { DayPicker } from "react-day-picker";
-
 import { cn } from "~/utils/shadcn";
 import { buttonVariants } from "~/components/ui/button";
 
@@ -43,6 +42,7 @@ function Calendar({
         day: cn(
           buttonVariants({ intent: "ghost" }),
           "h-8 w-8 p-0 font-normal aria-selected:opacity-100",
+          "focus:ring-0 focus:ring-offset-0",
         ),
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
@@ -50,7 +50,7 @@ function Calendar({
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
         day_today: "bg-accent text-accent-foreground",
         day_outside:
-          "day-outside text-muted-foreground opacity-50  aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
@@ -62,6 +62,11 @@ function Calendar({
         IconRight: () => <ChevronRightIcon className="h-4 w-4 text-primary" />,
       }}
       {...props}
+      onDayClick={(day, modifiers, e) => {
+        props.onDayClick?.(day, modifiers, e);
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     />
   );
 }
