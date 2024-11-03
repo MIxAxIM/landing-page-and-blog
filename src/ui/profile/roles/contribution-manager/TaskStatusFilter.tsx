@@ -56,30 +56,30 @@ export default function TaskStatusFilter({
           )}
         >
           <span>Filter by Status</span>
-          {selectedStatuses.length < Object.keys(TaskStatus).length && (
-            <Badge variant="secondary" className="ml-2 rounded-sm">
-              {selectedStatuses.length}
-            </Badge>
-          )}
+          <Badge variant="secondary" className="ml-2 rounded-sm">
+            {selectedStatuses.length}
+          </Badge>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-56">
-        <div className="space-y-4">
+      <PopoverContent className="w-fit bg-primary p-1 pb-2">
+        <div className="w-40 space-y-1">
           {Object.values(TaskStatus).map((status) => (
-            <div key={status} className="flex items-center space-x-2">
-              <Checkbox
-                id={status}
-                checked={selectedStatuses.includes(status)}
-                onCheckedChange={() => toggleStatus(status)}
-              />
+            <div key={status} className="flex items-center space-x-1">
               <label htmlFor={status} className="flex-grow cursor-pointer">
                 <Badge
                   className={cn(
-                    "w-full justify-center font-normal",
+                    "w-full items-center justify-between font-normal",
                     statusStyles[status],
                   )}
                 >
-                  {statusLabels[status]}
+                  <>
+                    {statusLabels[status]}
+                    <Checkbox
+                      id={status}
+                      checked={selectedStatuses.includes(status)}
+                      onCheckedChange={() => toggleStatus(status)}
+                    />
+                  </>
                 </Badge>
               </label>
             </div>

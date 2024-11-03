@@ -11,6 +11,7 @@ import { useEscrow } from "~/hooks/contribution/useEscrow";
 import TaskEscrowFilter from "./TaskEscrowFilter";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
+import TaskSearch from "./TaskSearch";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
   // Status filter state
@@ -35,11 +36,14 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
     direction: "asc",
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Get filtered and sorted tasks
   const { filteredTasks, isLoading } = useTask({
     treasuryNftPolicyId: treasury,
     selectedStatuses,
     selectedEscrows,
+    searchQuery,
     sortConfig,
   });
 
@@ -53,21 +57,24 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
 
   return (
     <div className="w-full">
-      <div className="mb-4 space-x-2">
-        <TaskStatusFilter
-          selectedStatuses={selectedStatuses}
-          onChange={setSelectedStatuses}
-        />
-        {treasuryEscrows && (
-          <TaskEscrowFilter
-            escrows={treasuryEscrows.filter(
-              (escrow): escrow is NonNullable<typeof escrow> =>
-                escrow !== null && escrow.treasuryId === treasury,
-            )}
-            selectedEscrows={selectedEscrows}
-            onChange={setSelectedEscrows}
+      <div className="mb-4 flex w-full flex-row items-center justify-between">
+        <div className="space-x-2">
+          <TaskStatusFilter
+            selectedStatuses={selectedStatuses}
+            onChange={setSelectedStatuses}
           />
-        )}
+          {treasuryEscrows && (
+            <TaskEscrowFilter
+              escrows={treasuryEscrows.filter(
+                (escrow): escrow is NonNullable<typeof escrow> =>
+                  escrow !== null && escrow.treasuryId === treasury,
+              )}
+              selectedEscrows={selectedEscrows}
+              onChange={setSelectedEscrows}
+            />
+          )}
+        </div>
+        <TaskSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       </div>
       <div className="w-full overflow-x-auto">
         <Table className="w-full table-fixed">

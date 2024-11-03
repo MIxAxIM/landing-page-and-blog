@@ -60,12 +60,14 @@ export function useTask({
   treasuryNftPolicyId,
   selectedStatuses = Object.values(TaskStatus),
   selectedEscrows = [],
+  searchQuery = "",
   sortConfig = { key: "index" as const, direction: "asc" as const },
 }: {
   id?: string;
   treasuryNftPolicyId?: string;
   selectedStatuses?: TaskStatus[];
   selectedEscrows?: string[];
+  searchQuery?: string;
   sortConfig?: SortConfig;
 }): UseTaskReturn {
   const ctx = api.useUtils();
@@ -93,10 +95,24 @@ export function useTask({
           selectedEscrows.includes(task.escrow?.id ?? "")),
     );
 
-    // Then sort
-    if (!sortConfig.key) return filtered;
+    // Then filter by search query
+    const searchFiltered = searchQuery.trim()
+      ? filtered.filter((task) => {
+          const searchLower = searchQuery.toLowerCase();
+          return (
+            task.title.toLowerCase().includes(searchLower) ||
+            task.description.toLowerCase().includes(searchLower) ||
+            task.acceptanceCriteria.some((criteria) =>
+              criteria.toLowerCase().includes(searchLower),
+            )
+          );
+        })
+      : filtered;
 
-    return [...filtered].sort((a, b) => {
+    // Then sort
+    if (!sortConfig.key) return searchFiltered;
+
+    return [...searchFiltered].sort((a, b) => {
       const aValue = getNestedValue(a, sortConfig.key);
       const bValue = getNestedValue(b, sortConfig.key);
 
@@ -114,7 +130,7 @@ export function useTask({
       const compareResult = String(aValue).localeCompare(String(bValue));
       return sortConfig.direction === "asc" ? compareResult : -compareResult;
     });
-  }, [allTasks, selectedStatuses, selectedEscrows, sortConfig]);
+  }, [allTasks, selectedStatuses, selectedEscrows, searchQuery, sortConfig]);
 
   // Helper function to invalidate and refetch queries
   const refreshQueries = async () => {
