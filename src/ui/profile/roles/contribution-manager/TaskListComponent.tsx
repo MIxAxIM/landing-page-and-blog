@@ -172,7 +172,7 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                       currentStatus={task.status}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="items-center justify-center">
                     <DialogTask openButtonSize="sm" id={task.id} />
                   </TableCell>
                 </TableRow>

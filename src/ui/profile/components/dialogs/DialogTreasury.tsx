@@ -69,7 +69,7 @@ export default function DialogTreasury({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Treasury" : "Create Treasury"}
+        openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
         openButtonIntent="default"
         openButtonSize={openButtonSize ?? undefined}
         icon={isEditMode ? "pencil" : "plus"}

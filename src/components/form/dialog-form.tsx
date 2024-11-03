@@ -84,7 +84,7 @@ export default function DialogForm({
               <Button
                 intent={openButtonIntent}
                 size="dialog"
-                className="mx-auto"
+                className=""
                 onClick={() => setIsOpen(true)}
               >
                 <PlusCircledIcon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />
@@ -95,7 +95,7 @@ export default function DialogForm({
               <Button
                 intent={openButtonIntent}
                 size={openButtonSize ?? "dialog"}
-                className="mx-auto"
+                className=""
                 onClick={() => setIsOpen(true)}
               >
                 <Pencil2Icon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />

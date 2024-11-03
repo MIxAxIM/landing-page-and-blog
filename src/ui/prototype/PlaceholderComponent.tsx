@@ -13,7 +13,7 @@ export default function PlaceholderComponent({
   children?: React.ReactElement;
 }) {
   return (
-    <Card className="mx-auto my-5 flex h-full min-h-32 w-full flex-col items-center justify-center border border-primary">
+    <Card className="mx-auto flex h-full min-h-32 w-full flex-col items-center justify-center border border-primary">
       <p className="text-xl">{name}</p>
       {userStory && <p className="uppercase">{userStory}</p>}
       <div className="mx-auto mt-5 flex flex-col">{children}</div>
