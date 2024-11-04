@@ -3,7 +3,6 @@ import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import DialogEscrow from "../../components/dialogs/DialogEscrow";
-import SyncEscrowButton from "../../components/buttons/SyncEscrowButton";
 import DialogPublishEscrow from "../../components/dialogs/DialogPublishEscrowTx";
 
 export default function EscrowListComponent({

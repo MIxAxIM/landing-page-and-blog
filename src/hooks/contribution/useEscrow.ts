@@ -153,6 +153,7 @@ export function useEscrow({
     isCreating: createEscrowMutation.isLoading,
     isUpdating: updateEscrowMutation.isLoading,
     isDeleting: deleteEscrowMutation.isLoading,
-    numUnusedTreasuryEscrows: 3,
+    numUnusedTreasuryEscrows:
+      treasuryEscrowsQuery.data?.filter((escrow) => !escrow.title).length ?? 0,
   };
 }

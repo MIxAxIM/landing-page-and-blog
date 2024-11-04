@@ -475,6 +475,7 @@ model Task {
   description        String
   acceptanceCriteria String[]
   status             TaskStatus @default(DRAFT)
+  hash               String?
 
   lovelace       String
   expirationTime String

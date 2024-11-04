@@ -39,15 +39,18 @@ export default function ManageTreasuryComponent({
             )}
           </div>
         </div>
-        <DashboardDataComponent title="total funds in treasury" data="12500" />
-        <DashboardDataComponent title="total funds locked" data="3240" />
+        <DashboardDataComponent title="total funds in treasury" data="0" />
+        <DashboardDataComponent
+          title="allocated ada"
+          data={(treasuryInfo?.totalAda ?? 0).toString()}
+        />
         <DashboardDataComponent
           title="open tasks"
           data={treasuryInfo?.totalTasks.toString() ?? "0"}
         />
-        <DashboardDataComponent title="tasks in progress" data="4" />
-        <DashboardDataComponent title="tasks pending review" data="6" />
-        <DashboardDataComponent title="approved contributors" data="15" />
+        <DashboardDataComponent title="tasks in progress" data="0" />
+        <DashboardDataComponent title="tasks pending review" data="0" />
+        <DashboardDataComponent title="approved contributors" data="0" />
         <div className="col-span-6">
           <PlaceholderComponent
             name="List of Active Tasks"
@@ -66,7 +69,7 @@ export default function ManageTreasuryComponent({
             </>
           </PlaceholderComponent>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-4">
           <PlaceholderComponent
             name="Funds in Escrow"
             userStory="CONTRIBUTION-007"
@@ -88,7 +91,7 @@ export default function ManageTreasuryComponent({
             </>
           </PlaceholderComponent>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-2">
           <PlaceholderComponent
             name="List of Active Contributors"
             userStory="CONTRIBUTION-001"

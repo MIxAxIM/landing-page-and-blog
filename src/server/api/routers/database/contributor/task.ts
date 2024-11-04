@@ -7,6 +7,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { generateTaskHash } from "~/utils/hashing";
 
 const taskSchema = z.object({
   title: z.string().min(1),
@@ -22,10 +23,25 @@ const updateTaskSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().min(1).optional(),
   acceptanceCriteria: z.array(z.string()).optional(),
-  status: z.nativeEnum(TaskStatus).optional(),
   lovelace: z.string().min(7),
   expirationTime: z.string().min(10),
 });
+
+// Helper function to validate status transitions
+const isValidStatusTransition = (
+  currentStatus: TaskStatus,
+  newStatus: TaskStatus,
+) => {
+  const allowedTransitions: Record<TaskStatus, TaskStatus[]> = {
+    DRAFT: [TaskStatus.APPROVED],
+    APPROVED: [TaskStatus.DRAFT, TaskStatus.ON_CHAIN],
+    ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
+    COMMITMENT_MADE: [TaskStatus.COMPLETE],
+    COMPLETE: [],
+  };
+
+  return allowedTransitions[currentStatus].includes(newStatus);
+};
 
 export const taskRouter = createTRPCRouter({
   // Public procedures
@@ -86,7 +102,7 @@ export const taskRouter = createTRPCRouter({
         return tx.task.create({
           data: {
             ...input.task,
-            status: input.task.status ?? TaskStatus.DRAFT,
+            status: TaskStatus.DRAFT,
             escrowId: input.escrowId,
             index: nextIndex,
             lovelace: input.task.lovelace,
@@ -98,7 +114,25 @@ export const taskRouter = createTRPCRouter({
 
   updateTask: protectedProcedure
     .input(updateTaskSchema)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!task) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
+      }
+
+      if (task.status !== TaskStatus.DRAFT) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Only tasks in DRAFT status can be updated",
+        });
+      }
+
       const { id, ...updateData } = input;
       return ctx.db.task.update({
         where: { id },
@@ -125,26 +159,81 @@ export const taskRouter = createTRPCRouter({
         });
       }
 
-      // Add any status transition validations here
-      // For example, preventing going from DRAFT directly to COMPLETE
-      const validTransitions: Record<TaskStatus, TaskStatus[]> = {
-        DRAFT: [TaskStatus.APPROVED],
-        APPROVED: [TaskStatus.ON_CHAIN, TaskStatus.DRAFT],
-        ON_CHAIN: [TaskStatus.COMMITMENT_MADE, TaskStatus.APPROVED],
-        COMMITMENT_MADE: [TaskStatus.COMPLETE, TaskStatus.ON_CHAIN],
-        COMPLETE: [TaskStatus.COMMITMENT_MADE],
-      };
-
-      if (!validTransitions[task.status].includes(input.status)) {
+      if (!isValidStatusTransition(task.status, input.status)) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: `Invalid status transition from ${task.status} to ${input.status}`,
         });
       }
 
+      // Generate hash when moving from DRAFT to APPROVED
+      if (
+        task.status === TaskStatus.DRAFT &&
+        input.status === TaskStatus.APPROVED
+      ) {
+        const hash = generateTaskHash({
+          title: task.title,
+          description: task.description,
+          acceptanceCriteria: task.acceptanceCriteria,
+        });
+
+        return ctx.db.task.update({
+          where: { id: input.id },
+          data: {
+            status: input.status,
+            hash,
+          },
+        });
+      }
+
+      // Clear hash when moving back to DRAFT from APPROVED
+      if (
+        task.status === TaskStatus.APPROVED &&
+        input.status === TaskStatus.DRAFT
+      ) {
+        return ctx.db.task.update({
+          where: { id: input.id },
+          data: {
+            status: input.status,
+            hash: null,
+          },
+        });
+      }
+
+      // Regular status update
       return ctx.db.task.update({
         where: { id: input.id },
         data: { status: input.status },
+      });
+    }),
+
+  revertToDraftFromApproved: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input },
+      });
+
+      if (!task) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
+      }
+
+      if (task.status !== TaskStatus.APPROVED) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Only tasks in APPROVED status can be reverted to draft",
+        });
+      }
+
+      return ctx.db.task.update({
+        where: { id: input },
+        data: {
+          status: TaskStatus.DRAFT,
+          hash: null,
+        },
       });
     }),
 
