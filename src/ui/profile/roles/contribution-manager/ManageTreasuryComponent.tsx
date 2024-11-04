@@ -31,6 +31,9 @@ export default function ManageTreasuryComponent({
               treasuryNftPolicyId={treasuryInfo?.treasuryNftPolicyId}
             />
             <Button>Add Funds</Button>
+            <Button className="bg-success text-success-foreground">
+              Publish Approved Tasks (Tx)
+            </Button>
           </div>
         </div>
         <DashboardDataComponent title="total funds in treasury" data="12500" />

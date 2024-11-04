@@ -59,6 +59,7 @@ export function useEscrow({
     await Promise.all([
       ctx.escrow.getEscrows.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
+      ctx.escrow.getTreasuryEscrows.invalidate(),
       id ? ctx.escrow.getEscrowById.invalidate(id) : Promise.resolve(),
     ]);
 
