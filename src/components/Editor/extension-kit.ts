@@ -13,7 +13,7 @@ import { BubbleMenu } from "@tiptap/extension-bubble-menu";
 import { Color } from "@tiptap/extension-color";
 import TextStyle from "@tiptap/extension-text-style";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import { TipTapLink } from "./components/link";
+// import { TipTapLink } from "./components/link";
 
 const CustomBold = Bold.extend({
   renderHTML({ HTMLAttributes }) {
@@ -21,12 +21,12 @@ const CustomBold = Bold.extend({
   },
 });
 
-const CustomLink = Link.extend({
-  openOnClick: false,
-  addNodeView() {
-    return ReactNodeViewRenderer(TipTapLink);
-  },
-});
+// const CustomLink = Link.extend({
+//   openOnClick: false,
+//   addNodeView() {
+//     return ReactNodeViewRenderer(TipTapLink);
+//   },
+// });
 
 export function ExtensionKit() {
   return [
@@ -37,7 +37,7 @@ export function ExtensionKit() {
     }),
     Underline,
     CustomBold,
-    CustomLink,
+    // CustomLink,
     Heading.configure({
       levels: [1, 2, 3, 4, 5, 6],
     }),
