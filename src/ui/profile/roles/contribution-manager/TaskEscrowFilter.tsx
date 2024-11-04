@@ -11,7 +11,7 @@ import { cn } from "~/utils/shadcn";
 
 type ExtendedEscrow = {
   id: string;
-  title: string;
+  title?: string | null;
   escrowNftPolicyId: string;
   contributorPolicyIds: string[];
   treasuryId: string;

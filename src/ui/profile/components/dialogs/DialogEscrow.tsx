@@ -11,7 +11,7 @@ import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
 
 const FormSchema = z.object({
-  title: z.string().min(1, "Escrow name is required"),
+  title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1, "Policy ID is required"),
   treasuryId: z.string().min(1, "Treasury is required"),
   contributorPolicyIds: z.array(z.string()).default([]),
@@ -56,7 +56,7 @@ export default function DialogEscrow({
   useEffect(() => {
     if (escrow && isEditMode) {
       form.reset({
-        title: escrow.title,
+        title: escrow.title ?? "",
         escrowNftPolicyId: escrow.escrowNftPolicyId,
         treasuryId: escrow.treasuryId,
         contributorPolicyIds: escrow.contributorPolicyIds,
@@ -83,10 +83,11 @@ export default function DialogEscrow({
   const onSubmit = async (data: FormValues) => {
     if (isEditMode) {
       updateEscrow({
-        title: data.title,
+        title: data.title ?? "",
         id: id,
         escrowNftPolicyId: data.escrowNftPolicyId,
         contributorPolicyIds: data.contributorPolicyIds,
+        isSyncedWithNetwork: false,
       });
     } else {
       createEscrow({

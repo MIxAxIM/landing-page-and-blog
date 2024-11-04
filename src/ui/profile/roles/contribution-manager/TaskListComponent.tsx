@@ -22,7 +22,7 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
   // Get all escrows for this treasury
   const { escrows } = useEscrow({});
   const treasuryEscrows = escrows.filter(
-    (escrow) => escrow?.treasuryId === treasury,
+    (escrow) => escrow?.treasuryId === treasury && !!escrow.title,
   );
 
   // Escrow filter state - initialize with all escrow IDs
@@ -67,7 +67,10 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
             <TaskEscrowFilter
               escrows={treasuryEscrows.filter(
                 (escrow): escrow is NonNullable<typeof escrow> =>
-                  escrow !== null && escrow.treasuryId === treasury,
+                  escrow !== null &&
+                  escrow.treasuryId === treasury &&
+                  !!escrow.title?.length &&
+                  escrow.title.length > 0,
               )}
               selectedEscrows={selectedEscrows}
               onChange={setSelectedEscrows}

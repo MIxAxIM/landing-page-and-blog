@@ -26,7 +26,7 @@ type UpdateTaskInput = {
   expirationTime: string;
 };
 
-type ExtendedTask = Task & {
+export type ExtendedTask = Task & {
   escrow?: {
     id: string;
     escrowNftPolicyId: string;

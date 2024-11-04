@@ -7,6 +7,7 @@ import TaskListComponent from "./TaskListComponent";
 import DialogTask from "../../components/dialogs/DialogTask";
 import DashboardDataComponent from "../../components/DashboardDataComponent";
 import { Button } from "~/components/ui/button";
+import DialogPublishTreasuryTx from "../../components/dialogs/DialogPublishTreasuryTx";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
@@ -31,9 +32,11 @@ export default function ManageTreasuryComponent({
               treasuryNftPolicyId={treasuryInfo?.treasuryNftPolicyId}
             />
             <Button>Add Funds</Button>
-            <Button className="bg-success text-success-foreground">
-              Publish Approved Tasks (Tx)
-            </Button>
+            {!!treasuryInfo?.treasuryNftPolicyId && (
+              <DialogPublishTreasuryTx
+                treasuryId={treasuryInfo?.treasuryNftPolicyId}
+              />
+            )}
           </div>
         </div>
         <DashboardDataComponent title="total funds in treasury" data="12500" />
