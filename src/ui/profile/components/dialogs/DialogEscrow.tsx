@@ -129,7 +129,6 @@ export default function DialogEscrow({
             label="Escrow Name"
             form={form}
             placeholder="Enter a name for this Escrow"
-            disabled={!!isEditMode}
           />
           <FormInput
             name="escrowNftPolicyId"
