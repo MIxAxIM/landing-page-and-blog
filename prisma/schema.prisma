@@ -445,9 +445,10 @@ model Treasury {
 
 model Escrow {
   id                   String   @id @default(cuid())
-  title                String
+  title                String?
   escrowNftPolicyId    String   @unique
   contributorPolicyIds String[]
+  isSyncedWithNetwork  Boolean  @default(false)
 
   treasuryId String
   treasury   Treasury @relation("TreasuryEscrows", fields: [treasuryId], references: [treasuryNftPolicyId])
@@ -474,6 +475,7 @@ model Task {
   description        String
   acceptanceCriteria String[]
   status             TaskStatus @default(DRAFT)
+  hash               String?
 
   lovelace       String
   expirationTime String

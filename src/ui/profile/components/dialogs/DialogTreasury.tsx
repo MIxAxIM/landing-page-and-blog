@@ -16,8 +16,10 @@ type FormValues = z.infer<typeof FormSchema>;
 
 export default function DialogTreasury({
   treasuryNftPolicyId,
+  openButtonSize,
 }: {
   treasuryNftPolicyId?: string;
+  openButtonSize?: "sm";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!treasuryNftPolicyId;
@@ -67,8 +69,9 @@ export default function DialogTreasury({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Treasury" : "Create Treasury"}
+        openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
         openButtonIntent="default"
+        openButtonSize={openButtonSize ?? undefined}
         icon={isEditMode ? "pencil" : "plus"}
         title={isEditMode ? "Edit Treasury" : "Create New Treasury"}
         description={

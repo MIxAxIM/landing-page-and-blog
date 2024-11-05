@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { type Escrow } from "~/types/db";
 
 type CreateEscrowInput = {
-  title: string;
+  title?: string;
   escrowNftPolicyId: string;
   contributorPolicyIds: string[];
   treasuryId: string;
@@ -14,6 +14,7 @@ type UpdateEscrowInput = {
   id: string;
   escrowNftPolicyId?: string;
   contributorPolicyIds?: string[];
+  isSyncedWithNetwork: false;
 };
 
 interface UseEscrowReturn {
@@ -23,10 +24,15 @@ interface UseEscrowReturn {
   isLoading: boolean;
   createEscrow: (data: CreateEscrowInput) => void;
   updateEscrow: (data: UpdateEscrowInput) => void;
+  updateEscrowSyncStatus: (data: {
+    id: string;
+    isSyncedWithNetwork: boolean;
+  }) => void;
   deleteEscrow: (id: string) => void;
   isCreating: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
+  numUnusedTreasuryEscrows: number;
 }
 
 export function useEscrow({
@@ -59,6 +65,7 @@ export function useEscrow({
     await Promise.all([
       ctx.escrow.getEscrows.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
+      ctx.escrow.getTreasuryEscrows.invalidate(),
       id ? ctx.escrow.getEscrowById.invalidate(id) : Promise.resolve(),
     ]);
 
@@ -106,6 +113,24 @@ export function useEscrow({
     },
   });
 
+  const updateEscrowSyncStatus = api.escrow.updateEscrowSyncStatus.useMutation({
+    onSuccess: async () => {
+      toast.success("Escrow is synced with Andamio Network");
+      await refreshQueries();
+    },
+    onError: (error) => {
+      const zodErrors = error.data?.zodError?.fieldErrors;
+      if (zodErrors) {
+        const errorMessages = Object.entries(zodErrors)
+          .map(([field, errors]) => `${field}: ${errors?.join(", ")}`)
+          .join("\n");
+        toast.error(`Validation failed:\n${errorMessages}`);
+      } else {
+        toast.error(error.message || "Failed to update escrow");
+      }
+    },
+  });
+
   const deleteEscrowMutation = api.escrow.deleteEscrow.useMutation({
     onSuccess: async () => {
       toast.success("Escrow deleted successfully");
@@ -123,9 +148,12 @@ export function useEscrow({
     isLoading: id ? escrowQuery.isLoading : allEscrowsQuery.isLoading,
     createEscrow: createEscrowMutation.mutate,
     updateEscrow: updateEscrowMutation.mutate,
+    updateEscrowSyncStatus: updateEscrowSyncStatus.mutate,
     deleteEscrow: deleteEscrowMutation.mutate,
     isCreating: createEscrowMutation.isLoading,
     isUpdating: updateEscrowMutation.isLoading,
     isDeleting: deleteEscrowMutation.isLoading,
+    numUnusedTreasuryEscrows:
+      treasuryEscrowsQuery.data?.filter((escrow) => !escrow.title).length ?? 0,
   };
 }

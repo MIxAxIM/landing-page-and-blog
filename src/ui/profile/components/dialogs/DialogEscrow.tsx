@@ -8,9 +8,10 @@ import DialogForm from "~/components/form/dialog-form";
 import FormInput from "~/components/form/form-input";
 import FormSelect from "~/components/form/form-select";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
+import { Button } from "~/components/ui/button";
 
 const FormSchema = z.object({
-  title: z.string().min(1, "Escrow name is required"),
+  title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1, "Policy ID is required"),
   treasuryId: z.string().min(1, "Treasury is required"),
   contributorPolicyIds: z.array(z.string()).default([]),
@@ -21,9 +22,11 @@ type FormValues = z.infer<typeof FormSchema>;
 export default function DialogEscrow({
   id,
   treasuryId: defaultTreasuryId,
+  openButtonSize,
 }: {
   id?: string;
   treasuryId?: string;
+  openButtonSize?: "sm" | "lg";
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!id;
@@ -53,7 +56,7 @@ export default function DialogEscrow({
   useEffect(() => {
     if (escrow && isEditMode) {
       form.reset({
-        title: escrow.title,
+        title: escrow.title ?? "",
         escrowNftPolicyId: escrow.escrowNftPolicyId,
         treasuryId: escrow.treasuryId,
         contributorPolicyIds: escrow.contributorPolicyIds,
@@ -61,13 +64,30 @@ export default function DialogEscrow({
     }
   }, [escrow, form, isEditMode]);
 
+  const contributorPolicyIds = form.watch("contributorPolicyIds");
+
+  const handleAddContributor = () => {
+    const newContributor = [...contributorPolicyIds, ""];
+    form.setValue("contributorPolicyIds", newContributor, {
+      shouldValidate: true,
+    });
+  };
+
+  const handleRemoveContributor = (index: number) => {
+    const newContributor = contributorPolicyIds.filter((_, i) => i !== index);
+    form.setValue("contributorPolicyIds", newContributor, {
+      shouldValidate: true,
+    });
+  };
+
   const onSubmit = async (data: FormValues) => {
     if (isEditMode) {
       updateEscrow({
-        title: data.title,
+        title: data.title ?? "",
         id: id,
         escrowNftPolicyId: data.escrowNftPolicyId,
         contributorPolicyIds: data.contributorPolicyIds,
+        isSyncedWithNetwork: false,
       });
     } else {
       createEscrow({
@@ -88,6 +108,7 @@ export default function DialogEscrow({
       <DialogForm
         openButton={isEditMode ? "Edit Escrow" : "Create Escrow"}
         openButtonIntent="default"
+        openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
         title={isEditMode ? "Edit Escrow" : "Create New Escrow"}
         description={
@@ -134,6 +155,41 @@ export default function DialogEscrow({
               disabled={!!defaultTreasuryId}
             />
           )}
+        </div>
+        <div className="space-y-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Contributors
+          </label>
+          {contributorPolicyIds.map((contributor, index) => (
+            <div key={index} className="flex gap-2">
+              <FormInput
+                name={`contributorPolicyIds.${index}`}
+                form={form}
+                placeholder={`Contributor Policy id ${index + 1}`}
+                disabled={isLoading}
+              />
+              {contributorPolicyIds.length > 1 && (
+                <Button
+                  type="button"
+                  intent="destructive"
+                  size="sm"
+                  onClick={() => handleRemoveContributor(index)}
+                  disabled={isLoading}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
+          ))}
+          <Button
+            type="button"
+            intent="secondary"
+            size="sm"
+            onClick={handleAddContributor}
+            disabled={isLoading}
+          >
+            Add Contributor
+          </Button>
         </div>
       </DialogForm>
     </Form>

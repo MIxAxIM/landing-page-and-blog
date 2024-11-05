@@ -1,3 +1,5 @@
+import { Card } from "~/components/ui/card";
+
 export default function DashboardDataComponent({
   title,
   data,
@@ -6,11 +8,11 @@ export default function DashboardDataComponent({
   data: string;
 }) {
   return (
-    <div className="flex w-full flex-col p-5 text-center">
-      <p className="text-4xl">
+    <Card className=" flex w-full flex-col border border-primary p-3 text-center">
+      <p className="text-2xl">
         <b>{data}</b>
       </p>
-      <h2 className="mt-5 text-xl">{title}</h2>
-    </div>
+      <h2 className="mt-auto ">{title}</h2>
+    </Card>
   );
 }

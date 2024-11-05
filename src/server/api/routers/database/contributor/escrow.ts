@@ -8,7 +8,7 @@ import {
 } from "~/server/api/trpc";
 
 const createEscrowSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1),
   contributorPolicyIds: z.array(z.string()),
   treasuryId: z.string().min(1),
@@ -19,6 +19,12 @@ const updateEscrowSchema = z.object({
   id: z.string().min(1),
   escrowNftPolicyId: z.string().min(1).optional(),
   contributorPolicyIds: z.array(z.string()).optional(),
+  isSyncedWithNetwork: z.boolean().default(false),
+});
+
+const updateEscrowSyncStatusSchema = z.object({
+  id: z.string().min(1),
+  isSyncedWithNetwork: z.boolean(),
 });
 
 // Helper function to calculate total ADA from tasks
@@ -127,6 +133,16 @@ export const escrowRouter = createTRPCRouter({
       return ctx.db.escrow.update({
         where: { id },
         data: updateData,
+      });
+    }),
+
+  updateEscrowSyncStatus: protectedProcedure
+    .input(updateEscrowSyncStatusSchema)
+    .mutation(({ ctx, input }) => {
+      const { id, isSyncedWithNetwork } = input;
+      return ctx.db.escrow.update({
+        where: { id },
+        data: { isSyncedWithNetwork: isSyncedWithNetwork },
       });
     }),
 
