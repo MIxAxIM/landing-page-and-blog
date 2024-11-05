@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormInput from "~/components/form/form-input";
 import { Form } from "~/components/ui/form";
-// import { INDEXER_URL } from "~/config/indexer";
+import { env } from "~/env";
 import MintAccessToken from "../accessToken/MintAccessToken";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
@@ -149,8 +149,7 @@ export const CheckTokenAliasAvailability = async (
   tokenAlias: string,
 ): Promise<boolean> => {
   const response: { data: { isAvailable: boolean } } = await axios.get(
-    // `${INDEXER_URL}/api/aliasAvailability?alias=${tokenAlias}`,
-    ''
+    `${env.API_URL}/index-validator/alias-availability?alias=${tokenAlias}`,
   );
   return response.data.isAvailable;
 };
