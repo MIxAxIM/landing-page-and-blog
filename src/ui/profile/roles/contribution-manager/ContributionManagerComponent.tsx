@@ -17,7 +17,7 @@ export default function ContributionManagerComponent({
         <div className="col-span-3">
           <h2 className="text-4xl">Contribution Manager Dashboard Home</h2>
         </div>
-        <div className="col-span-2 row-span-3">
+        <div className="col-span-3">
           <PlaceholderComponent
             name="Table: Overview of Current Treasuries"
             userStory="CONTRIBUTION-001"
@@ -27,7 +27,7 @@ export default function ContributionManagerComponent({
             </>
           </PlaceholderComponent>
         </div>
-        <div className="col-span-1 row-span-2">
+        <div className="col-span-1">
           <PlaceholderComponent
             name="Quick Actions"
             userStory="CONTRIBUTION-002"
@@ -43,7 +43,7 @@ export default function ContributionManagerComponent({
             </>
           </PlaceholderComponent>
         </div>
-        <div className="col-span-1 row-span-1">
+        <div className="col-span-2">
           <PlaceholderComponent
             name="Find Tasks I need to manage"
             userStory="CONTRIBUTION-005"
