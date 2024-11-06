@@ -88,13 +88,15 @@ export default function DialogForm({
                 onClick={() => setIsOpen(true)}
               >
                 <PlusCircledIcon className="h-[14px] w-[14px] xl:h-[16px] xl:w-[16px]" />
-                <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
+                {openButtonSize != "sm" && (
+                  <p className="mx-2 text-xs lg:text-sm">{openButton}</p>
+                )}
               </Button>
             )}
             {icon === "pencil" && (
               <Button
                 intent={openButtonIntent}
-                size={openButtonSize ?? "dialog"}
+                size={"dialog"}
                 className=""
                 onClick={() => setIsOpen(true)}
               >

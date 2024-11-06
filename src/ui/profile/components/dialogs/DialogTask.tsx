@@ -197,6 +197,19 @@ export default function DialogTask({
     }
   }, [isOpen, form, defaultTreasuryId]);
 
+  // Add this effect after the other useEffect hooks
+  useEffect(() => {
+    if (defaultTreasuryId && treasuries) {
+      const treasury = treasuries.find(
+        (t) => t.treasuryNftPolicyId === defaultTreasuryId,
+      );
+      if (treasury) {
+        form.setValue("treasuryId", treasury.treasuryNftPolicyId);
+        setSelectedTreasuryId(treasury.treasuryNftPolicyId);
+      }
+    }
+  }, [defaultTreasuryId, treasuries, form]);
+
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
 
@@ -287,7 +300,7 @@ export default function DialogTask({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Task" : "Create Task"}
+        openButton={isEditMode ? "Edit Task" : "Draft a new task"}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
@@ -316,123 +329,128 @@ export default function DialogTask({
                 placeholder="Select a treasury"
                 disabled={!!defaultTreasuryId || isLoading}
               />
+              {selectedTreasuryId && filteredEscrows.length > 0 ? (
+                <>
+                  <FormSelect
+                    name="escrowId"
+                    label="Escrow"
+                    form={form}
+                    options={filteredEscrows.map((e) => ({
+                      value: e.id,
+                      label: e.title,
+                    }))}
+                    placeholder="Select an escrow"
+                    disabled={!selectedTreasuryId || isLoading}
+                  />
+                  <FormInput
+                    name="title"
+                    label="Task Title"
+                    form={form}
+                    placeholder="Enter a title for this task"
+                    disabled={isLoading}
+                  />
 
-              <FormSelect
-                name="escrowId"
-                label="Escrow"
-                form={form}
-                options={filteredEscrows.map((e) => ({
-                  value: e.id,
-                  label: e.title,
-                }))}
-                placeholder="Select an escrow"
-                disabled={!selectedTreasuryId || isLoading}
-              />
-              <FormInput
-                name="title"
-                label="Task Title"
-                form={form}
-                placeholder="Enter a title for this task"
-                disabled={isLoading}
-              />
+                  <FormInput
+                    name="ada"
+                    label="Ada Reward"
+                    type="number"
+                    min={MIN_ADA}
+                    max={1000000}
+                    form={form}
+                    disabled={isLoading}
+                  />
 
-              <FormInput
-                name="ada"
-                label="Ada Reward"
-                type="number"
-                min={MIN_ADA}
-                max={1000000}
-                form={form}
-                disabled={isLoading}
-              />
+                  <FormTextArea
+                    name="description"
+                    label="Description"
+                    form={form}
+                    placeholder="Enter task description"
+                    height={150}
+                    disabled={isLoading}
+                  />
 
-              <FormTextArea
-                name="description"
-                label="Description"
-                form={form}
-                placeholder="Enter task description"
-                height={150}
-                disabled={isLoading}
-              />
-
-              <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Acceptance Criteria
-                </label>
-                {acceptanceCriteria.map((_criterion, index) => (
-                  <div key={index} className="flex gap-2">
-                    <FormInput
-                      name={`acceptanceCriteria.${index}`}
-                      form={form}
-                      placeholder={`Criterion ${index + 1}`}
+                  <div className="space-y-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Acceptance Criteria
+                    </label>
+                    {acceptanceCriteria.map((_criterion, index) => (
+                      <div key={index} className="flex gap-2">
+                        <FormInput
+                          name={`acceptanceCriteria.${index}`}
+                          form={form}
+                          placeholder={`Criterion ${index + 1}`}
+                          disabled={isLoading}
+                        />
+                        {acceptanceCriteria.length > 1 && (
+                          <Button
+                            type="button"
+                            intent="destructive"
+                            size="sm"
+                            onClick={() => handleRemoveCriterion(index)}
+                            disabled={isLoading}
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      intent="secondary"
+                      size="sm"
+                      onClick={handleAddCriterion}
                       disabled={isLoading}
-                    />
-                    {acceptanceCriteria.length > 1 && (
-                      <Button
-                        type="button"
-                        intent="destructive"
-                        size="sm"
-                        onClick={() => handleRemoveCriterion(index)}
-                        disabled={isLoading}
+                    >
+                      Add Criterion
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Expiration Date
+                    </label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button intent="outline" disabled={isLoading}>
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {form.watch("expirationTime") ? (
+                            format(form.watch("expirationTime"), "PPP")
+                          ) : (
+                            <span>Select Expiration Date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto p-0"
+                        align="start"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
                       >
-                        Remove
-                      </Button>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <Calendar
+                            mode="single"
+                            selected={form.watch("expirationTime")}
+                            onSelect={(date) => {
+                              if (date) {
+                                form.setValue("expirationTime", date, {
+                                  shouldValidate: true,
+                                });
+                              }
+                            }}
+                            disabled={(date) => date < getMinDate()}
+                            initialFocus
+                          />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    {form.formState.errors.expirationTime && (
+                      <p className="text-sm text-red-500">
+                        {form.formState.errors.expirationTime.message}
+                      </p>
                     )}
                   </div>
-                ))}
-                <Button
-                  type="button"
-                  intent="secondary"
-                  size="sm"
-                  onClick={handleAddCriterion}
-                  disabled={isLoading}
-                >
-                  Add Criterion
-                </Button>
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Expiration Date
-                </label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button intent="outline" disabled={isLoading}>
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {form.watch("expirationTime") ? (
-                        format(form.watch("expirationTime"), "PPP")
-                      ) : (
-                        <span>Select Expiration Date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto p-0"
-                    align="start"
-                    onOpenAutoFocus={(e) => e.preventDefault()}
-                  >
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <Calendar
-                        mode="single"
-                        selected={form.watch("expirationTime")}
-                        onSelect={(date) => {
-                          if (date) {
-                            form.setValue("expirationTime", date, {
-                              shouldValidate: true,
-                            });
-                          }
-                        }}
-                        disabled={(date) => date < getMinDate()}
-                        initialFocus
-                      />
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                {form.formState.errors.expirationTime && (
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.expirationTime.message}
-                  </p>
-                )}
-              </div>
+                </>
+              ) : (
+                <p>No escrows. Please make one first.</p>
+              )}
             </>
           ) : (
             <div className="space-y-4">

@@ -4,16 +4,17 @@ import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
 import DialogTreasury from "../../components/dialogs/DialogTreasury";
+import DialogTask from "../../components/dialogs/DialogTask";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
 
   // Simple component -> Table
   return (
-    <div>
+    <div className="w-full">
       {isLoadingTreasuries && "loading"}
       {treasuries && (
-        <Table className="text-center text-xs">
+        <Table className="w-full table-fixed text-xs">
           <thead>
             <tr>
               {/* Empty cells for non-grouped columns */}
@@ -36,80 +37,134 @@ export default function TreasuryListComponent() {
                 className="border border-primary bg-secondary px-4 text-center font-medium text-secondary-foreground"
                 colSpan={2}
               >
-                Actions
+                Quick Actions
               </th>
             </tr>
             <TableRow className="border-b border-primary">
               <TableHead className="border border-primary">Treasury</TableHead>
-              <TableHead className="border border-primary"># Escrows</TableHead>
-              <TableHead className="border border-primary">
+              <TableHead className="border border-primary text-center">
+                # Escrows
+              </TableHead>
+              <TableHead className="border border-primary text-center">
                 # Contributors
               </TableHead>
-              <TableHead className="border-x border-primary">Open</TableHead>
-              <TableHead className="border-x border-primary">
+              <TableHead className="border-x border-primary text-center">
+                Open
+              </TableHead>
+              <TableHead className="border-x border-primary text-center">
                 In Progress
               </TableHead>
-              <TableHead className="border-x border-primary">
+              <TableHead className="border-x border-primary text-center">
                 Pending Review
               </TableHead>
-              <TableHead className="border-x border-primary">
+              <TableHead className="border-x border-primary text-center">
                 Available
               </TableHead>
-              <TableHead className="border-x border-primary">Locked</TableHead>
-              <TableHead className="border-x border-primary">Spent</TableHead>
               <TableHead className="border-x border-primary text-center">
-                View
+                Locked
               </TableHead>
               <TableHead className="border-x border-primary text-center">
-                Edit
+                Spent
+              </TableHead>
+              <TableHead className="border-x border-primary text-center">
+                Edit Treasury
+              </TableHead>
+              <TableHead className="border-x border-primary text-center">
+                Draft a Task
               </TableHead>
             </TableRow>
           </thead>
 
           {treasuries.map((t: Treasury, i) => (
-            <>
-              {!!t && (
-                <TableRow
-                  key={i}
-                  className="border-y border-gray-500 text-center"
-                >
-                  <TableCell className="border-x border-gray-500">
-                    {t.title}
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    {t._count.escrows}
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">9</TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    {t.totalTasks}
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">5</TableCell>
-                  <TableCell className="border-x border-gray-500">2</TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    2500
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    {t.totalAda}
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    400
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    <Link
-                      href={`/dashboard/contribution-manager/${t.treasuryNftPolicyId}`}
-                    >
-                      <Button size="sm">Details</Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell className="border-x border-gray-500">
-                    <DialogTreasury
-                      treasuryNftPolicyId={t.treasuryNftPolicyId}
-                      openButtonSize="sm"
-                    />
-                  </TableCell>
-                </TableRow>
-              )}
-            </>
+            <TableRow
+              key={i}
+              className="group relative border-y border-gray-500 hover:bg-accent"
+            >
+              <TableCell className="relative border-x border-gray-500">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                {t?.title}
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                {t?._count.escrows}
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                9
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                {t?.totalTasks}
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                5
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                2
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                2500
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                {t?.totalAda}
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <Link
+                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  className="absolute inset-0 cursor-pointer"
+                  aria-label={`View details for ${t?.title}`}
+                />
+                400
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <DialogTreasury
+                  treasuryNftPolicyId={t?.treasuryNftPolicyId}
+                  openButtonSize="sm"
+                />
+              </TableCell>
+              <TableCell className="relative border-x border-gray-500 text-center">
+                <DialogTask
+                  treasuryId={t?.treasuryNftPolicyId}
+                  openButtonSize="sm"
+                />
+              </TableCell>
+            </TableRow>
           ))}
         </Table>
       )}
