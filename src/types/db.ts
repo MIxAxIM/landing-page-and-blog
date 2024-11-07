@@ -1,3 +1,4 @@
+import { type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 export type Course = RouterOutputs["course"]["getCourse"];
@@ -30,7 +31,78 @@ export type AssignmentCommitment = {
 };
 
 // Contribution Features
-export type Treasury = RouterOutputs["treasury"]["getTreasuryById"];
-export type Task = RouterOutputs["task"]["getTaskById"];
+export type Treasury = RouterOutputs["treasury"]["getTreasuryById"] & {
+  _count?: {
+    escrows: number;
+  };
+  totalAda?: number;
+  totalTasks?: number;
+};
 
-export type Escrow = RouterOutputs["escrow"]["getEscrowById"];
+export type Escrow = RouterOutputs["escrow"]["getEscrowById"] & {
+  treasury?: Treasury;
+  tasks?: Task[];
+  contributorPrerequisites?: ContributorPrerequisite[];
+  totalAda?: number;
+};
+
+export type Task = RouterOutputs["task"]["getTaskById"] & {
+  escrow?: {
+    id: string;
+    title: string | null;
+    escrowNftPolicyId: string;
+    treasuryId: string;
+    isSyncedWithNetwork: boolean;
+    savedAcceptanceCriteria: string[];
+    contributorPrerequisites?: {
+      id: string;
+      title?: string | null;
+      prerequisites: string[];
+    }[];
+  };
+  isEditable?: boolean;
+  status: TaskStatus;
+};
+
+export type ContributorPrerequisite = {
+  contributorPolicyId: string;
+  title: string | null;
+  prerequisites: string[];
+  escrows?: {
+    escrow: {
+      id: string;
+      title: string | null;
+      escrowNftPolicyId: string;
+      isSyncedWithNetwork: boolean;
+      savedAcceptanceCriteria: string[];
+      treasuryId: string;
+    };
+    escrowId: string;
+    contributorPrerequisiteId: string;
+  }[];
+};
+
+export type EscrowContributorPrerequisites = {
+  escrowId: string;
+  contributorPrerequisiteId: string;
+} & (
+  | {
+      contributorPrerequisite: {
+        contributorPolicyId: string;
+        title: string | null;
+        prerequisites: string[];
+      };
+      escrow?: undefined;
+    }
+  | {
+      escrow: {
+        id: string;
+        title: string | null;
+        escrowNftPolicyId: string;
+        isSyncedWithNetwork: boolean;
+        savedAcceptanceCriteria: string[];
+        treasuryId: string;
+      };
+      contributorPrerequisite?: undefined;
+    }
+);

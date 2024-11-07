@@ -16,23 +16,35 @@ const statusStyles = {
   [TaskStatus.APPROVED]: "bg-blue-100 text-blue-800",
   [TaskStatus.ON_CHAIN]: "bg-purple-100 text-purple-800",
   [TaskStatus.COMMITMENT_MADE]: "bg-orange-100 text-orange-800",
-  [TaskStatus.COMPLETE]: "bg-green-100 text-green-800",
+  [TaskStatus.COMMITMENT_DENIED]: "bg-orange-100 text-orange-800",
+  [TaskStatus.COMMITMENT_ACCEPTED]: "bg-green-100 text-green-800",
+  [TaskStatus.BACKLOG]: "bg-gray-800 text-gray-100",
+  [TaskStatus.ARCHIVED]: "bg-gray-800 text-gray-100",
 };
 
 const validTransitions: Record<TaskStatus, TaskStatus[]> = {
   DRAFT: [TaskStatus.APPROVED],
   APPROVED: [TaskStatus.ON_CHAIN, TaskStatus.DRAFT],
   ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
-  COMMITMENT_MADE: [TaskStatus.COMPLETE],
-  COMPLETE: [],
+  COMMITMENT_MADE: [
+    TaskStatus.COMMITMENT_DENIED,
+    TaskStatus.COMMITMENT_ACCEPTED,
+  ],
+  COMMITMENT_DENIED: [TaskStatus.COMMITMENT_MADE],
+  COMMITMENT_ACCEPTED: [],
+  BACKLOG: [TaskStatus.DRAFT, TaskStatus.ARCHIVED, TaskStatus.APPROVED],
+  ARCHIVED: [TaskStatus.DRAFT, TaskStatus.BACKLOG],
 };
 
 const statusLabels = {
   [TaskStatus.DRAFT]: "Draft",
   [TaskStatus.APPROVED]: "Approved",
   [TaskStatus.ON_CHAIN]: "On Chain",
-  [TaskStatus.COMMITMENT_MADE]: "Committed",
-  [TaskStatus.COMPLETE]: "Complete",
+  [TaskStatus.COMMITMENT_MADE]: "Contributor Committed",
+  [TaskStatus.COMMITMENT_DENIED]: "Contribution Denied",
+  [TaskStatus.COMMITMENT_ACCEPTED]: "Contribution Acccepted",
+  [TaskStatus.BACKLOG]: "Backlog",
+  [TaskStatus.ARCHIVED]: "Archived",
 };
 
 export default function TaskStatusSelect({

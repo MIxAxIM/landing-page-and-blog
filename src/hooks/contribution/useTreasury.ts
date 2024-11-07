@@ -1,7 +1,25 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
+import { type Treasury } from "~/types/db";
 
-export function useTreasury(id?: string) {
+interface UseTreasuryReturn {
+  treasury: Treasury | null | undefined;
+  isLoading: boolean;
+  createTreasury: (data: {
+    treasuryNftPolicyId: string;
+    title: string;
+  }) => void;
+  updateTreasury: (data: {
+    treasuryNftPolicyId: string;
+    title?: string;
+  }) => void;
+  deleteTreasury: (id: string) => void;
+  isCreating: boolean;
+  isUpdating: boolean;
+  isDeleting: boolean;
+}
+
+export function useTreasury(id?: string): UseTreasuryReturn {
   const ctx = api.useUtils();
 
   // Query for getting treasury data

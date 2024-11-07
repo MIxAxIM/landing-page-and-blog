@@ -31,7 +31,7 @@ export default function EscrowListComponent({
             <TableHead>CS</TableHead>
             {/* TODO: Do we need Decision Makers? Not if they are solely defined at Treasury Level */}
             {/* <TableHead>Decision Makers</TableHead> */}
-            <TableHead>Approved Contributor Policy IDs</TableHead>
+            <TableHead>Approved Contributors</TableHead>
             <TableHead>Tasks</TableHead>
             <TableHead>Ada Allocated to Tasks</TableHead>
             <TableHead>Synced?</TableHead>
@@ -46,7 +46,9 @@ export default function EscrowListComponent({
                   {escrow?.escrowNftPolicyId.substring(0, 6)}...
                 </TableCell>
                 {/* <TableCell>coming soon</TableCell> */}
-                <TableCell>{escrow?.contributorPolicyIds.length}</TableCell>
+                <TableCell>
+                  {escrow?.contributorPrerequisites?.length ?? 0}
+                </TableCell>
                 <TableCell>{escrow?.tasks?.length ?? 0}</TableCell>
                 <TableCell>{escrow?.totalAda}</TableCell>
                 <TableCell>

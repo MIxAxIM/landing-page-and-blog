@@ -10,16 +10,16 @@ import {
 const createEscrowSchema = z.object({
   title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1),
-  contributorPolicyIds: z.array(z.string()),
   treasuryId: z.string().min(1),
+  savedAcceptanceCriteria: z.array(z.string()).default([]),
 });
 
 const updateEscrowSchema = z.object({
-  title: z.string().min(1),
   id: z.string().min(1),
-  escrowNftPolicyId: z.string().min(1).optional(),
-  contributorPolicyIds: z.array(z.string()).optional(),
-  isSyncedWithNetwork: z.boolean().default(false),
+  title: z.string().min(1),
+  escrowNftPolicyId: z.string().min(1).optional(), // TODO: should user be able to update this for any reason?
+  savedAcceptanceCriteria: z.array(z.string()).optional(),
+  isSyncedWithNetwork: z.boolean().optional(),
 });
 
 const updateEscrowSyncStatusSchema = z.object({
@@ -37,12 +37,16 @@ const calculateTotalAda = (tasks: { lovelace: string }[]) => {
 
 export const escrowRouter = createTRPCRouter({
   // Public procedures
-
   getEscrows: publicProcedure.query(async ({ ctx }) => {
     const escrows = await ctx.db.escrow.findMany({
       include: {
         treasury: true,
         tasks: true,
+        contributorPrerequisites: {
+          include: {
+            contributorPrerequisite: true,
+          },
+        },
       },
     });
 
@@ -59,6 +63,11 @@ export const escrowRouter = createTRPCRouter({
         where: { id: input },
         include: {
           tasks: true,
+          contributorPrerequisites: {
+            include: {
+              contributorPrerequisite: true,
+            },
+          },
         },
       });
 
@@ -151,6 +160,11 @@ export const escrowRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       // Delete associated tasks and escrow in a transaction
       return ctx.db.$transaction(async (tx) => {
+        // Delete all contributor prerequisites relations
+        await tx.escrowContributorPrerequisites.deleteMany({
+          where: { escrowId: input },
+        });
+
         // Delete all tasks
         await tx.task.deleteMany({
           where: { escrowId: input },

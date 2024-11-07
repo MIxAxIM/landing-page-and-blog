@@ -7,34 +7,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import { type Escrow } from "~/types/db";
 import { cn } from "~/utils/shadcn";
-
-type ExtendedEscrow = {
-  id: string;
-  title?: string | null;
-  escrowNftPolicyId: string;
-  contributorPolicyIds: string[];
-  treasuryId: string;
-  totalAda?: number;
-  tasks?: {
-    id: string;
-    index: number;
-    title: string;
-    description: string;
-    acceptanceCriteria: string[];
-    status: string;
-    lovelace: string;
-    expirationTime: string;
-    escrowId: string;
-  }[];
-};
 
 export default function TaskEscrowFilter({
   escrows,
   selectedEscrows,
   onChange,
 }: {
-  escrows: ExtendedEscrow[];
+  escrows: Escrow[];
   selectedEscrows: string[];
   onChange: (escrowIds: string[]) => void;
 }) {

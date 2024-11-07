@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { type ExtendedTask, useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/contribution/useTask";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import { Form } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
@@ -21,6 +21,7 @@ import { Calendar } from "~/components/ui/calendar";
 import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { type Task } from "~/types/db";
 
 // Validation constants
 const MIN_ADA = 2;
@@ -57,7 +58,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-const TaskDisplay = ({ task }: { task: ExtendedTask }) => {
+const TaskDisplay = ({ task }: { task: Task }) => {
   return (
     <div className="space-y-4">
       <div>
@@ -241,7 +242,11 @@ export default function DialogTask({
       [TaskStatus.APPROVED]: "View Approved Task",
       [TaskStatus.ON_CHAIN]: "View On-Chain Task",
       [TaskStatus.COMMITMENT_MADE]: "View Task Commitment",
-      [TaskStatus.COMPLETE]: "View Completed Task",
+      [TaskStatus.COMMITMENT_DENIED]: "Task has been denied",
+      [TaskStatus.COMMITMENT_ACCEPTED]:
+        "Task commitment has been accepted and task is complete",
+      [TaskStatus.BACKLOG]: "Task is in backlog",
+      [TaskStatus.ARCHIVED]: "Task is archived",
     };
     return statusTitles[task.status] || "View Task";
   };

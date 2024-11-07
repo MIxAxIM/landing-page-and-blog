@@ -9,37 +9,42 @@ import FormInput from "~/components/form/form-input";
 import FormSelect from "~/components/form/form-select";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
+import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { type Escrow } from "~/types/db";
+import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
 
 const FormSchema = z.object({
   title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1, "Policy ID is required"),
   treasuryId: z.string().min(1, "Treasury is required"),
-  contributorPolicyIds: z.array(z.string()).default([]),
+  savedAcceptanceCriteria: z.array(z.string()).default([]),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
+
+interface DialogEscrowProps {
+  id?: string;
+  treasuryId?: string;
+  openButtonSize?: "sm" | "lg";
+}
 
 export default function DialogEscrow({
   id,
   treasuryId: defaultTreasuryId,
   openButtonSize,
-}: {
-  id?: string;
-  treasuryId?: string;
-  openButtonSize?: "sm" | "lg";
-}) {
+}: DialogEscrowProps) {
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!id;
 
-  const {
-    escrow,
-    createEscrow,
-    updateEscrow,
-    isCreating,
-    isUpdating,
-    isLoading: isEscrowLoading,
-  } = useEscrow({ id: id });
+  const { escrow, createEscrow, updateEscrow, isCreating, isUpdating } =
+    useEscrow({ id });
 
+  const { prerequisites } = useContributorPrerequisite();
+  const {
+    escrowPrerequisites,
+    addPrerequisiteToEscrow,
+    removePrerequisiteFromEscrow,
+  } = useEscrowPrerequisites({ escrowId: id });
   const { treasuries } = useTreasuries();
 
   const form = useForm<FormValues>({
@@ -48,34 +53,41 @@ export default function DialogEscrow({
       title: "",
       escrowNftPolicyId: "",
       treasuryId: defaultTreasuryId ?? "",
-      contributorPolicyIds: [],
+      savedAcceptanceCriteria: [],
     },
   });
 
   // Update form when escrow data is loaded
   useEffect(() => {
-    if (escrow && isEditMode) {
+    if (escrow && isEditMode && isOpen) {
       form.reset({
         title: escrow.title ?? "",
         escrowNftPolicyId: escrow.escrowNftPolicyId,
         treasuryId: escrow.treasuryId,
-        contributorPolicyIds: escrow.contributorPolicyIds,
+        savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,
       });
     }
-  }, [escrow, form, isEditMode]);
+  }, [escrow, form, isEditMode, isOpen]);
 
-  const contributorPolicyIds = form.watch("contributorPolicyIds");
+  // Reset form when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
+      form.reset();
+    }
+  }, [isOpen, form]);
 
-  const handleAddContributor = () => {
-    const newContributor = [...contributorPolicyIds, ""];
-    form.setValue("contributorPolicyIds", newContributor, {
+  const savedCriteria = form.watch("savedAcceptanceCriteria");
+
+  const handleAddCriterion = () => {
+    const newCriteria = [...savedCriteria, ""];
+    form.setValue("savedAcceptanceCriteria", newCriteria, {
       shouldValidate: true,
     });
   };
 
-  const handleRemoveContributor = (index: number) => {
-    const newContributor = contributorPolicyIds.filter((_, i) => i !== index);
-    form.setValue("contributorPolicyIds", newContributor, {
+  const handleRemoveCriterion = (index: number) => {
+    const newCriteria = savedCriteria.filter((_, i) => i !== index);
+    form.setValue("savedAcceptanceCriteria", newCriteria, {
       shouldValidate: true,
     });
   };
@@ -83,10 +95,10 @@ export default function DialogEscrow({
   const onSubmit = async (data: FormValues) => {
     if (isEditMode) {
       updateEscrow({
-        title: data.title ?? "",
         id: id,
+        title: data.title ?? "",
         escrowNftPolicyId: data.escrowNftPolicyId,
-        contributorPolicyIds: data.contributorPolicyIds,
+        savedAcceptanceCriteria: data.savedAcceptanceCriteria,
         isSyncedWithNetwork: false,
       });
     } else {
@@ -94,7 +106,7 @@ export default function DialogEscrow({
         title: data.title,
         escrowNftPolicyId: data.escrowNftPolicyId,
         treasuryId: data.treasuryId,
-        contributorPolicyIds: data.contributorPolicyIds,
+        savedAcceptanceCriteria: data.savedAcceptanceCriteria,
       });
     }
     setIsOpen(false);
@@ -102,6 +114,11 @@ export default function DialogEscrow({
   };
 
   const isLoading = isCreating || isUpdating;
+
+  // Get current prerequisites for this escrow
+  const currentPrerequisiteIds = escrowPrerequisites.map(
+    (p) => p.contributorPrerequisiteId,
+  );
 
   return (
     <Form {...form}>
@@ -135,7 +152,7 @@ export default function DialogEscrow({
             label="NFT Policy ID"
             form={form}
             placeholder="Enter NFT policy ID"
-            disabled={!!isEditMode}
+            disabled={isEditMode}
           />
           {!isEditMode && (
             <FormSelect
@@ -143,52 +160,115 @@ export default function DialogEscrow({
               label="Treasury"
               form={form}
               options={
-                treasuries?.map((t) => {
-                  return {
-                    value: t.treasuryNftPolicyId,
-                    label: t.title,
-                  };
-                }) ?? []
+                treasuries?.map((t) => ({
+                  value: t.treasuryNftPolicyId,
+                  label: t.title,
+                })) ?? []
               }
               placeholder="Select a treasury"
               disabled={!!defaultTreasuryId}
             />
           )}
-        </div>
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Contributors
-          </label>
-          {contributorPolicyIds.map((contributor, index) => (
-            <div key={index} className="flex gap-2">
-              <FormInput
-                name={`contributorPolicyIds.${index}`}
-                form={form}
-                placeholder={`Contributor Policy id ${index + 1}`}
-                disabled={isLoading}
-              />
-              {contributorPolicyIds.length > 1 && (
-                <Button
-                  type="button"
-                  intent="destructive"
-                  size="sm"
-                  onClick={() => handleRemoveContributor(index)}
+
+          {/* Saved Acceptance Criteria Section */}
+          <div className="space-y-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Saved Acceptance Criteria
+            </label>
+            {savedCriteria.map((criterion, index) => (
+              <div key={index} className="flex gap-2">
+                <FormInput
+                  name={`savedAcceptanceCriteria.${index}`}
+                  form={form}
+                  placeholder={`Criterion ${index + 1}`}
                   disabled={isLoading}
-                >
-                  Remove
-                </Button>
-              )}
+                />
+                {savedCriteria.length > 0 && (
+                  <Button
+                    type="button"
+                    intent="destructive"
+                    size="sm"
+                    onClick={() => handleRemoveCriterion(index)}
+                    disabled={isLoading}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button
+              type="button"
+              intent="secondary"
+              size="sm"
+              onClick={handleAddCriterion}
+              disabled={isLoading}
+            >
+              Add Criterion
+            </Button>
+          </div>
+
+          {/* Contributor Prerequisites Section */}
+          {isEditMode && prerequisites && prerequisites.length > 0 && (
+            <div className="space-y-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Contributor Prerequisites
+              </label>
+              <div className="space-y-2">
+                {prerequisites.map((prerequisite) => (
+                  <div
+                    key={prerequisite.contributorPolicyId}
+                    className="flex items-center justify-between gap-2 rounded border p-2"
+                  >
+                    <div>
+                      <p className="font-medium">
+                        {prerequisite.title ?? "Untitled Prerequisite"}
+                      </p>
+                      <p className="break-all text-xs text-muted-foreground">
+                        {prerequisite.contributorPolicyId}
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      intent={
+                        currentPrerequisiteIds.includes(
+                          prerequisite.contributorPolicyId,
+                        )
+                          ? "destructive"
+                          : "secondary"
+                      }
+                      size="sm"
+                      onClick={() => {
+                        if (
+                          currentPrerequisiteIds.includes(
+                            prerequisite.contributorPolicyId,
+                          )
+                        ) {
+                          removePrerequisiteFromEscrow({
+                            escrowId: id,
+                            contributorPrerequisiteId:
+                              prerequisite.contributorPolicyId,
+                          });
+                        } else {
+                          addPrerequisiteToEscrow({
+                            escrowId: id,
+                            contributorPrerequisiteId:
+                              prerequisite.contributorPolicyId,
+                          });
+                        }
+                      }}
+                      disabled={isLoading}
+                    >
+                      {currentPrerequisiteIds.includes(
+                        prerequisite.contributorPolicyId,
+                      )
+                        ? "Remove"
+                        : "Add"}
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-          <Button
-            type="button"
-            intent="secondary"
-            size="sm"
-            onClick={handleAddContributor}
-            disabled={isLoading}
-          >
-            Add Contributor
-          </Button>
+          )}
         </div>
       </DialogForm>
     </Form>

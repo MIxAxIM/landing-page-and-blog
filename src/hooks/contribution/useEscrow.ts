@@ -5,7 +5,7 @@ import { type Escrow } from "~/types/db";
 type CreateEscrowInput = {
   title?: string;
   escrowNftPolicyId: string;
-  contributorPolicyIds: string[];
+  savedAcceptanceCriteria: string[];
   treasuryId: string;
 };
 
@@ -13,7 +13,7 @@ type UpdateEscrowInput = {
   title: string;
   id: string;
   escrowNftPolicyId?: string;
-  contributorPolicyIds?: string[];
+  savedAcceptanceCriteria?: string[];
   isSyncedWithNetwork: false;
 };
 
@@ -47,17 +47,19 @@ export function useEscrow({
   // Single escrow query
   const escrowQuery = api.escrow.getEscrowById.useQuery(id ?? "", {
     enabled: !!id,
+    select: (data) => data as Escrow,
   });
 
   // All escrows query
   const allEscrowsQuery = api.escrow.getEscrows.useQuery(undefined, {
     enabled: !id,
+    select: (data) => data as Escrow[],
   });
 
   // Treasury escrows query
   const treasuryEscrowsQuery = api.escrow.getTreasuryEscrows.useQuery(
     treasuryNftPolicyId ?? "",
-    { enabled: !!treasuryNftPolicyId },
+    { enabled: !!treasuryNftPolicyId, select: (data) => data as Escrow[] },
   );
 
   // Helper function to invalidate and refetch queries

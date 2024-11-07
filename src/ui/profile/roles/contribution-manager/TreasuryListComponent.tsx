@@ -1,4 +1,3 @@
-import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
