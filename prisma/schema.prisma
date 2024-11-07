@@ -200,6 +200,10 @@ model Course {
 
   accessTier AccessTier?
 
+  // NEW ---------
+  prerequisiteFor ContributorPrerequisite[] @relation("PrerequisiteCourses")
+  // END NEW -----
+
   @@unique([courseCode])
   @@index([createdById])
   @@index([id])
@@ -448,7 +452,7 @@ model Escrow {
 
   tasks Task[] @relation("EscrowTasks")
 
-  contributorPrerequisites EscrowContributorPrerequisites[]
+  contributorPrerequisites ContributorPrerequisite[] @relation("EscrowPrerequisites")
 
   @@index([treasuryId])
   @@index([id])
@@ -459,21 +463,14 @@ model ContributorPrerequisite {
   contributorPolicyId String  @id @unique
   title               String?
 
-  // TODO: define prerequisites to usefully connect on-chain to UX
-  prerequisites String[]
+  course                Course   @relation("PrerequisiteCourses", fields: [courseCode], references: [courseCode])
+  courseCode            String
+  requiredCourseModules String[]
 
-  escrows EscrowContributorPrerequisites[]
-}
+  escrows Escrow[] @relation("EscrowPrerequisites")
 
-model EscrowContributorPrerequisites {
-  escrow                    Escrow                  @relation(fields: [escrowId], references: [id])
-  escrowId                  String
-  contributorPrerequisite   ContributorPrerequisite @relation(fields: [contributorPrerequisiteId], references: [contributorPolicyId])
-  contributorPrerequisiteId String
-
-  @@id([escrowId, contributorPrerequisiteId])
-  @@index([escrowId])
-  @@index([contributorPrerequisiteId])
+  @@index([contributorPolicyId])
+  @@index([courseCode])
 }
 
 enum TaskStatus {
