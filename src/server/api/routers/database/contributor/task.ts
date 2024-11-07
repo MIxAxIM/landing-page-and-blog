@@ -343,7 +343,10 @@ export const taskRouter = createTRPCRouter({
                 orderBy: { index: "asc" },
               },
               contributorPrerequisites: {
-                include: { contributorPrerequisite: true },
+                select: {
+                  contributorPolicyId: true,
+                  title: true,
+                },
               },
             },
           },
@@ -362,16 +365,12 @@ export const taskRouter = createTRPCRouter({
           ...task,
           escrow: {
             id: escrow.id,
+            title: escrow.title,
             escrowNftPolicyId: escrow.escrowNftPolicyId,
             treasuryId: escrow.treasuryId,
+            isSyncedWithNetwork: escrow.isSyncedWithNetwork,
             savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,
-            contributorPrerequisites: escrow.contributorPrerequisites.map(
-              (prereq) => ({
-                id: prereq.contributorPrerequisite.contributorPolicyId,
-                title: prereq.contributorPrerequisite.title,
-                prerequisites: prereq.contributorPrerequisite.prerequisites,
-              }),
-            ),
+            contributorPrerequisites: escrow.contributorPrerequisites,
           },
         })),
       );

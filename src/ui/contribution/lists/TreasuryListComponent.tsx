@@ -2,8 +2,8 @@ import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
-import DialogTreasury from "../../components/dialogs/DialogTreasury";
-import DialogTask from "../../components/dialogs/DialogTask";
+import DialogTask from "../dialogs/DialogTask";
+import DialogTreasury from "../dialogs/DialogTreasury";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();

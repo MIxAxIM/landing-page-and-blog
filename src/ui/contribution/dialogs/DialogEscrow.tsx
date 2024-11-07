@@ -10,7 +10,6 @@ import FormSelect from "~/components/form/form-select";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
-import { type Escrow } from "~/types/db";
 import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
 
 const FormSchema = z.object({
@@ -39,6 +38,8 @@ export default function DialogEscrow({
   const { escrow, createEscrow, updateEscrow, isCreating, isUpdating } =
     useEscrow({ id });
 
+  // TODO: Improve this query so that the user gets a sub-set of available prerequisites -- maybe at Org level?
+  // TODO: Implement search of all prerequisites
   const { prerequisites } = useContributorPrerequisite();
   const {
     escrowPrerequisites,
@@ -115,11 +116,6 @@ export default function DialogEscrow({
 
   const isLoading = isCreating || isUpdating;
 
-  // Get current prerequisites for this escrow
-  const currentPrerequisiteIds = escrowPrerequisites.map(
-    (p) => p.contributorPrerequisiteId,
-  );
-
   return (
     <Form {...form}>
       <DialogForm
@@ -171,10 +167,13 @@ export default function DialogEscrow({
           )}
 
           {/* Saved Acceptance Criteria Section */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
-              Saved Acceptance Criteria
+              Acceptance Criteria
             </label>
+            <p className="pb-3 text-xs text-gray-500">
+              Can be used on any Task published in this Cirle
+            </p>
             {savedCriteria.map((criterion, index) => (
               <div key={index} className="flex gap-2">
                 <FormInput
@@ -214,58 +213,50 @@ export default function DialogEscrow({
                 Contributor Prerequisites
               </label>
               <div className="space-y-2">
-                {prerequisites.map((prerequisite) => (
-                  <div
-                    key={prerequisite.contributorPolicyId}
-                    className="flex items-center justify-between gap-2 rounded border p-2"
-                  >
-                    <div>
-                      <p className="font-medium">
-                        {prerequisite.title ?? "Untitled Prerequisite"}
-                      </p>
-                      <p className="break-all text-xs text-muted-foreground">
-                        {prerequisite.contributorPolicyId}
-                      </p>
-                    </div>
-                    <Button
-                      type="button"
-                      intent={
-                        currentPrerequisiteIds.includes(
-                          prerequisite.contributorPolicyId,
-                        )
-                          ? "destructive"
-                          : "secondary"
-                      }
-                      size="sm"
-                      onClick={() => {
-                        if (
-                          currentPrerequisiteIds.includes(
-                            prerequisite.contributorPolicyId,
-                          )
-                        ) {
-                          removePrerequisiteFromEscrow({
-                            escrowId: id,
-                            contributorPrerequisiteId:
-                              prerequisite.contributorPolicyId,
-                          });
-                        } else {
-                          addPrerequisiteToEscrow({
-                            escrowId: id,
-                            contributorPrerequisiteId:
-                              prerequisite.contributorPolicyId,
-                          });
-                        }
-                      }}
-                      disabled={isLoading}
+                {prerequisites.map((prerequisite) => {
+                  const isConnected = escrowPrerequisites.some(
+                    (ep) =>
+                      ep.contributorPolicyId ===
+                      prerequisite.contributorPolicyId,
+                  );
+
+                  return (
+                    <div
+                      key={prerequisite.contributorPolicyId}
+                      className="flex items-center justify-between gap-2 rounded border p-2"
                     >
-                      {currentPrerequisiteIds.includes(
-                        prerequisite.contributorPolicyId,
-                      )
-                        ? "Remove"
-                        : "Add"}
-                    </Button>
-                  </div>
-                ))}
+                      <div>
+                        <p className="font-medium">
+                          {prerequisite.title ?? "Untitled Prerequisite"}
+                        </p>
+                        <p className="break-all text-xs text-muted-foreground">
+                          {prerequisite.contributorPolicyId}
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        intent={isConnected ? "destructive" : "secondary"}
+                        size="sm"
+                        onClick={() => {
+                          if (isConnected) {
+                            removePrerequisiteFromEscrow({
+                              escrowId: id,
+                              prerequisiteId: prerequisite.contributorPolicyId,
+                            });
+                          } else {
+                            addPrerequisiteToEscrow({
+                              escrowId: id,
+                              prerequisiteId: prerequisite.contributorPolicyId,
+                            });
+                          }
+                        }}
+                        disabled={isLoading}
+                      >
+                        {isConnected ? "Remove" : "Add"}
+                      </Button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

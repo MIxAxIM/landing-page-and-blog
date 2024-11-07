@@ -1,19 +1,16 @@
 import { useState } from "react";
 import { useTask } from "~/hooks/contribution/useTask";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
-import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Badge } from "~/components/ui/badge";
 import DialogForm from "~/components/form/dialog-form";
 import { TaskStatus } from "@prisma/client";
 import { toast } from "react-hot-toast";
-import { type Task } from "~/types/db";
 
 export default function DialogPublishEscrow({ id }: { id: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const { updateEscrowSyncStatus } = useEscrow({ id });
   const { escrow } = useEscrow({ id });
-  const { escrowPrerequisites } = useEscrowPrerequisites({ escrowId: id });
 
   // Get all tasks for this escrow that are in APPROVED status
   const { filteredTasks, updateTaskStatus, isUpdating } = useTask({
@@ -34,10 +31,9 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
       setCheckedTasks(new Set(filteredTasks.map((task) => task.id)));
       setCheckedPrerequisites(
         new Set(
-          escrowPrerequisites.map(
-            (prereq) =>
-              prereq.contributorPrerequisite?.contributorPolicyId ?? "",
-          ),
+          escrow?.contributorPrerequisites?.map(
+            (prereq) => prereq.contributorPolicyId,
+          ) ?? [],
         ),
       );
     }
@@ -149,39 +145,34 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Prerequisites to Publish</h3>
           <div className="space-y-2">
-            {escrowPrerequisites.map((prereq) => (
+            {escrow?.contributorPrerequisites?.map((prereq) => (
               <div
-                key={prereq.contributorPrerequisiteId}
+                key={prereq.contributorPolicyId}
                 className="flex items-center space-x-2"
               >
                 <Checkbox
-                  id={`prereq-${prereq.contributorPrerequisiteId}`}
-                  checked={checkedPrerequisites.has(
-                    prereq.contributorPrerequisite?.contributorPolicyId ?? "",
-                  )}
+                  id={`prereq-${prereq.contributorPolicyId}`}
+                  checked={checkedPrerequisites.has(prereq.contributorPolicyId)}
                   onCheckedChange={() =>
-                    togglePrerequisite(
-                      prereq.contributorPrerequisite?.contributorPolicyId ?? "",
-                    )
+                    togglePrerequisite(prereq.contributorPolicyId)
                   }
                 />
                 <label
-                  htmlFor={`prereq-${prereq.contributorPrerequisiteId}`}
+                  htmlFor={`prereq-${prereq.contributorPolicyId}`}
                   className="cursor-pointer"
                 >
                   <div>
                     <p className="font-medium">
-                      {prereq.contributorPrerequisite?.title ??
-                        "Untitled Prerequisite"}
+                      {prereq.title ?? "Untitled Prerequisite"}
                     </p>
                     <p className="break-all text-xs text-muted-foreground">
-                      {prereq.contributorPrerequisite?.contributorPolicyId}
+                      {prereq.contributorPolicyId}
                     </p>
                   </div>
                 </label>
               </div>
             ))}
-            {escrowPrerequisites.length === 0 && (
+            {!escrow?.contributorPrerequisites?.length && (
               <p className="text-sm text-muted-foreground">
                 No prerequisites available to publish
               </p>

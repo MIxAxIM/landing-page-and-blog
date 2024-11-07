@@ -1,10 +1,10 @@
+import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import DialogTask from "~/ui/contribution/dialogs/DialogTask";
+import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
+import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
+import SelectTreasuryToManage from "~/ui/contribution/selection/SelectTreasuryToManage";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
-import SelectTreasuryToManage from "./SelectTreasuryToManage";
-import TreasuryListComponent from "./TreasuryListComponent";
 import { type Treasury } from "~/types/db";
-import DialogTreasury from "~/ui/profile/components/dialogs/DialogTreasury";
-import DialogEscrow from "../../components/dialogs/DialogEscrow";
-import DialogTask from "../../components/dialogs/DialogTask";
 
 export default function ContributionManagerComponent({
   treasuryInfos,

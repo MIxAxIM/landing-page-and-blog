@@ -40,8 +40,12 @@ const FormSchema = z.object({
     .string()
     .min(10, "Description should be at least 10 characters long"),
   acceptanceCriteria: z
-    .array(z.string().min(1, "Criterion cannot be empty"))
-    .min(1, "At least one acceptance criterion is required"),
+    .array(z.string())
+    .transform((criteria) => criteria.filter((c) => c.trim() !== ""))
+    .refine(
+      (criteria) => criteria.length >= 1,
+      "At least one acceptance criteria must be provided",
+    ),
   treasuryId: z.string().min(1, "Please select a treasury"),
   escrowId: z.string().min(1, "Please select an escrow"),
   ada: z
@@ -211,6 +215,37 @@ export default function DialogTask({
     }
   }, [defaultTreasuryId, treasuries, form]);
 
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "escrowId" && value.escrowId) {
+        const selectedEscrow = filteredEscrows.find(
+          (e) => e.id === value.escrowId,
+        );
+
+        if (selectedEscrow?.savedAcceptanceCriteria?.length) {
+          // Get current criteria (excluding any previously loaded saved criteria)
+          const currentCriteria = (
+            form.getValues("acceptanceCriteria") || []
+          ).filter((criteria) => criteria.trim() !== "");
+
+          // Add saved criteria from escrow if not empty
+          const newCriteria = [
+            ...currentCriteria,
+            ...selectedEscrow.savedAcceptanceCriteria.filter(
+              (criteria) => criteria.trim() !== "",
+            ),
+          ];
+
+          form.setValue("acceptanceCriteria", newCriteria, {
+            shouldValidate: true,
+          });
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, filteredEscrows]);
+
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
 
@@ -274,7 +309,9 @@ export default function DialogTask({
       const taskData = {
         title: data.title,
         description: data.description,
-        acceptanceCriteria: data.acceptanceCriteria,
+        acceptanceCriteria: data.acceptanceCriteria.filter(
+          (c) => c.trim() !== "",
+        ),
         lovelace: (data.ada * 1000000).toString(),
         expirationTime: data.expirationTime.getTime().toString(),
       };
@@ -320,7 +357,7 @@ export default function DialogTask({
       >
         <div className="grid gap-4 py-4">
           {!task || task.status === TaskStatus.DRAFT ? (
-            <>
+            <div className="grid grid-cols-2 gap-5">
               <FormSelect
                 name="treasuryId"
                 label="Treasury"
@@ -342,63 +379,71 @@ export default function DialogTask({
                     form={form}
                     options={filteredEscrows.map((e) => ({
                       value: e.id,
-                      label: e.title,
+                      label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
                     }))}
                     placeholder="Select an escrow"
                     disabled={!selectedTreasuryId || isLoading}
                   />
-                  <FormInput
-                    name="title"
-                    label="Task Title"
-                    form={form}
-                    placeholder="Enter a title for this task"
-                    disabled={isLoading}
-                  />
+                  <div>
+                    <FormInput
+                      name="title"
+                      label="Task Title"
+                      form={form}
+                      placeholder="Enter a title for this task"
+                      disabled={isLoading}
+                    />
 
-                  <FormInput
-                    name="ada"
-                    label="Ada Reward"
-                    type="number"
-                    min={MIN_ADA}
-                    max={1000000}
-                    form={form}
-                    disabled={isLoading}
-                  />
+                    <FormTextArea
+                      name="description"
+                      label="Description"
+                      form={form}
+                      placeholder="Enter task description"
+                      height={150}
+                      disabled={isLoading}
+                    />
+                    <FormInput
+                      name="ada"
+                      label="Ada Reward"
+                      type="number"
+                      min={MIN_ADA}
+                      max={1000000}
+                      form={form}
+                      disabled={isLoading}
+                    />
+                  </div>
 
-                  <FormTextArea
-                    name="description"
-                    label="Description"
-                    form={form}
-                    placeholder="Enter task description"
-                    height={150}
-                    disabled={isLoading}
-                  />
-
-                  <div className="space-y-4">
+                  <div className="mt-3 flex w-full flex-col space-y-2 border-t border-primary pt-3">
                     <label className="block text-sm font-medium text-gray-700">
                       Acceptance Criteria
                     </label>
-                    {acceptanceCriteria.map((_criterion, index) => (
-                      <div key={index} className="flex gap-2">
-                        <FormInput
-                          name={`acceptanceCriteria.${index}`}
-                          form={form}
-                          placeholder={`Criterion ${index + 1}`}
-                          disabled={isLoading}
-                        />
-                        {acceptanceCriteria.length > 1 && (
-                          <Button
-                            type="button"
-                            intent="destructive"
-                            size="sm"
-                            onClick={() => handleRemoveCriterion(index)}
-                            disabled={isLoading}
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                    <div className="flex w-full flex-col">
+                      {acceptanceCriteria.map((_criterion, index) => (
+                        <div
+                          key={index}
+                          className="flex w-full items-center justify-between gap-2"
+                        >
+                          <div className="flex-1">
+                            <FormInput
+                              name={`acceptanceCriteria.${index}`}
+                              form={form}
+                              placeholder={`Criterion ${index + 1}`}
+                              disabled={isLoading}
+                            />
+                          </div>
+                          {acceptanceCriteria.length > 1 && (
+                            <Button
+                              type="button"
+                              intent="destructive"
+                              size="sm"
+                              onClick={() => handleRemoveCriterion(index)}
+                              disabled={isLoading}
+                            >
+                              X
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                     <Button
                       type="button"
                       intent="secondary"
@@ -408,6 +453,20 @@ export default function DialogTask({
                     >
                       Add Criterion
                     </Button>
+                    {form.watch("escrowId") &&
+                      filteredEscrows &&
+                      (filteredEscrows.find(
+                        (e) => e?.id === form.watch("escrowId"),
+                      )?.savedAcceptanceCriteria?.length ?? 0) > 0 && (
+                        <Alert>
+                          <AlertTitle>Saved Criteria Loaded</AlertTitle>
+                          <AlertDescription>
+                            Acceptance criteria have been pre-loaded from the
+                            selected escrow. You can modify or remove them as
+                            needed.
+                          </AlertDescription>
+                        </Alert>
+                      )}
                   </div>
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -425,7 +484,7 @@ export default function DialogTask({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
-                        className="w-auto p-0"
+                        className="z-50 w-auto p-0"
                         align="start"
                         onOpenAutoFocus={(e) => e.preventDefault()}
                       >
@@ -456,7 +515,7 @@ export default function DialogTask({
               ) : (
                 <p>No escrows. Please make one first.</p>
               )}
-            </>
+            </div>
           ) : (
             <div className="space-y-4">
               <TaskDisplay task={task} />

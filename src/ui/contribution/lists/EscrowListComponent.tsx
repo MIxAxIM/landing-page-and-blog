@@ -2,8 +2,8 @@ import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
-import DialogEscrow from "../../components/dialogs/DialogEscrow";
-import DialogPublishEscrow from "../../components/dialogs/DialogPublishEscrowTx";
+import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import DialogPublishEscrow from "~/ui/contribution/dialogs/DialogPublishEscrowTx";
 
 export default function EscrowListComponent({
   treasuryNftPolicyId,
@@ -56,7 +56,9 @@ export default function EscrowListComponent({
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-row gap-1">
-                    <Link href={`#`}>
+                    <Link
+                      href={`/dashboard/contribution-manager/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
+                    >
                       <Button size="sm">View All</Button>
                     </Link>
                     <DialogEscrow id={escrow?.id} openButtonSize="sm" />

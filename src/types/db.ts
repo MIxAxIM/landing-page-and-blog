@@ -46,7 +46,17 @@ export type Escrow = RouterOutputs["escrow"]["getEscrowById"] & {
   totalAda?: number;
 };
 
-export type Task = RouterOutputs["task"]["getTaskById"] & {
+export type Task = {
+  id: string;
+  index: number;
+  title: string;
+  description: string;
+  acceptanceCriteria: string[];
+  status: TaskStatus;
+  hash: string | null;
+  lovelace: string;
+  expirationTime: string;
+  escrowId: string;
   escrow?: {
     id: string;
     title: string | null;
@@ -55,54 +65,29 @@ export type Task = RouterOutputs["task"]["getTaskById"] & {
     isSyncedWithNetwork: boolean;
     savedAcceptanceCriteria: string[];
     contributorPrerequisites?: {
-      id: string;
-      title?: string | null;
-      prerequisites: string[];
+      contributorPolicyId: string;
+      title: string | null;
     }[];
   };
   isEditable?: boolean;
-  status: TaskStatus;
 };
 
 export type ContributorPrerequisite = {
   contributorPolicyId: string;
   title: string | null;
-  prerequisites: string[];
+  courseCode: string;
+  course: {
+    id: string;
+    courseCode: string;
+    title: string;
+  };
+  requiredCourseModules: string[];
   escrows?: {
-    escrow: {
-      id: string;
-      title: string | null;
-      escrowNftPolicyId: string;
-      isSyncedWithNetwork: boolean;
-      savedAcceptanceCriteria: string[];
-      treasuryId: string;
-    };
-    escrowId: string;
-    contributorPrerequisiteId: string;
+    id: string;
+    title: string | null;
+    escrowNftPolicyId: string;
+    isSyncedWithNetwork: boolean;
+    savedAcceptanceCriteria: string[];
+    treasuryId: string;
   }[];
 };
-
-export type EscrowContributorPrerequisites = {
-  escrowId: string;
-  contributorPrerequisiteId: string;
-} & (
-  | {
-      contributorPrerequisite: {
-        contributorPolicyId: string;
-        title: string | null;
-        prerequisites: string[];
-      };
-      escrow?: undefined;
-    }
-  | {
-      escrow: {
-        id: string;
-        title: string | null;
-        escrowNftPolicyId: string;
-        isSyncedWithNetwork: boolean;
-        savedAcceptanceCriteria: string[];
-        treasuryId: string;
-      };
-      contributorPrerequisite?: undefined;
-    }
-);

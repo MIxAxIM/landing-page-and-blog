@@ -1,6 +1,6 @@
 import Link from "next/link";
-import SelectTreasuryToManage from "../../roles/contribution-manager/SelectTreasuryToManage";
 import { type Treasury } from "~/types/db";
+import SelectTreasuryToManage from "~/ui/contribution/selection/SelectTreasuryToManage";
 
 export default function ContributionManagerDashboardMenu({
   treasuryInfos,

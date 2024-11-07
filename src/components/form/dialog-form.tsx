@@ -45,7 +45,11 @@ export default function DialogForm({
   setIsOpen: (open: boolean) => void;
 }) {
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)} modal={false}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open: boolean) => setIsOpen(open)}
+      modal={false}
+    >
       <DialogTrigger asChild>
         {/* PICK UP HERE */}
         {icon ? (
@@ -117,7 +121,7 @@ export default function DialogForm({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-7xl border border-black">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
