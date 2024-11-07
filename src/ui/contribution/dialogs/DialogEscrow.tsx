@@ -206,6 +206,7 @@ export default function DialogEscrow({
             </Button>
           </div>
 
+          {/* TODO: 2024-11-08 Extract this component and place on Escrow Page  */}
           {/* Contributor Prerequisites Section */}
           {isEditMode && prerequisites && prerequisites.length > 0 && (
             <div className="space-y-4">
