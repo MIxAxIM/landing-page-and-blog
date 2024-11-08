@@ -11,6 +11,7 @@ import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
+import PrerequisiteManager from "../selection/PrerequisiteSelectionManager";
 
 const FormSchema = z.object({
   title: z.string().optional(),
@@ -205,62 +206,8 @@ export default function DialogEscrow({
               Add Criterion
             </Button>
           </div>
-
-          {/* TODO: 2024-11-08 Extract this component and place on Escrow Page  */}
-          {/* Contributor Prerequisites Section */}
-          {isEditMode && prerequisites && prerequisites.length > 0 && (
-            <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Contributor Prerequisites
-              </label>
-              <div className="space-y-2">
-                {prerequisites.map((prerequisite) => {
-                  const isConnected = escrowPrerequisites.some(
-                    (ep) =>
-                      ep.contributorPolicyId ===
-                      prerequisite.contributorPolicyId,
-                  );
-
-                  return (
-                    <div
-                      key={prerequisite.contributorPolicyId}
-                      className="flex items-center justify-between gap-2 rounded border p-2"
-                    >
-                      <div>
-                        <p className="font-medium">
-                          {prerequisite.title ?? "Untitled Prerequisite"}
-                        </p>
-                        <p className="break-all text-xs text-muted-foreground">
-                          {prerequisite.contributorPolicyId}
-                        </p>
-                      </div>
-                      <Button
-                        type="button"
-                        intent={isConnected ? "destructive" : "secondary"}
-                        size="sm"
-                        onClick={() => {
-                          if (isConnected) {
-                            removePrerequisiteFromEscrow({
-                              escrowId: id,
-                              prerequisiteId: prerequisite.contributorPolicyId,
-                            });
-                          } else {
-                            addPrerequisiteToEscrow({
-                              escrowId: id,
-                              prerequisiteId: prerequisite.contributorPolicyId,
-                            });
-                          }
-                        }}
-                        disabled={isLoading}
-                      >
-                        {isConnected ? "Remove" : "Add"}
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <div className="my-3 border-t border-primary" />
+          {id && <PrerequisiteManager escrowId={id} />}
         </div>
       </DialogForm>
     </Form>

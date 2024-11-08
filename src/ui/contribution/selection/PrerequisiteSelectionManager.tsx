@@ -74,7 +74,7 @@ export default function PrerequisiteManager({
             {escrowPrerequisites.map((prerequisite) => (
               <div
                 key={prerequisite.contributorPolicyId}
-                className="flex items-center justify-between gap-2 border-y border-primary py-2"
+                className="flex items-center justify-between gap-2 border-t border-primary py-2"
               >
                 <PrerequisiteItem prerequisite={prerequisite} />
                 <Button
@@ -122,7 +122,7 @@ export default function PrerequisiteManager({
                   <SelectItem
                     key={prerequisite.contributorPolicyId}
                     value={prerequisite.contributorPolicyId}
-                    className="mb-1 bg-indigo-200 pb-1"
+                    className="mb-1 pb-1"
                   >
                     <PrerequisiteItem prerequisite={prerequisite} />
                   </SelectItem>
@@ -143,9 +143,9 @@ function PrerequisiteItem({
 }) {
   return (
     <div className="w-full">
-      <p className="mb-1 text-lg font-bold">{prerequisite.course?.title}</p>
-      {prerequisite.title ?? "Untitled Prerequisite"}
-      <p>{prerequisite.requiredCourseModules.join(", ")}</p>
+      <p className="mb-1 text-lg font-bold">{prerequisite.title}</p>
+      {prerequisite.course.title ?? "Untitled Prerequisite"}
+      <p>Modules: {prerequisite.requiredCourseModules.join(", ")}</p>
       <p className="break-all text-xs text-muted-foreground">
         {prerequisite.contributorPolicyId}
       </p>
