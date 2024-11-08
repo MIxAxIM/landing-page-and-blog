@@ -72,22 +72,22 @@ export type Task = {
   isEditable?: boolean;
 };
 
-export type ContributorPrerequisite = {
-  contributorPolicyId: string;
-  title: string | null;
+export type CourseRequirement = {
+  id: string;
+  prerequisiteId: string;
   courseCode: string;
-  course: {
+  requiredModules: string[];
+  course?: {
     id: string;
     courseCode: string;
     title: string;
   };
-  requiredCourseModules: string[];
-  escrows?: {
-    id: string;
-    title: string | null;
-    escrowNftPolicyId: string;
-    isSyncedWithNetwork: boolean;
-    savedAcceptanceCriteria: string[];
-    treasuryId: string;
-  }[];
+};
+
+export type ContributorPrerequisite = {
+  id: string;
+  contributorPolicyId: string;
+  title?: string | null;
+  courseRequirements: CourseRequirement[];
+  escrows?: Escrow[];
 };

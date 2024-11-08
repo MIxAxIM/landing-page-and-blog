@@ -143,9 +143,17 @@ function PrerequisiteItem({
 }) {
   return (
     <div className="w-full">
-      <p className="mb-1 text-lg font-bold">{prerequisite.title}</p>
-      {prerequisite.course.title ?? "Untitled Prerequisite"}
-      <p>Modules: {prerequisite.requiredCourseModules.join(", ")}</p>
+      <p className="mb-1 text-lg font-bold">
+        {prerequisite.title ?? "Untitled Prerequisite"}
+      </p>
+      {prerequisite.courseRequirements.map((req) => (
+        <div key={req.id} className="mb-2">
+          <p className="font-medium">{req.course?.title}</p>
+          <p className="text-sm text-muted-foreground">
+            Required Modules: {req.requiredModules.join(", ")}
+          </p>
+        </div>
+      ))}
       <p className="break-all text-xs text-muted-foreground">
         {prerequisite.contributorPolicyId}
       </p>

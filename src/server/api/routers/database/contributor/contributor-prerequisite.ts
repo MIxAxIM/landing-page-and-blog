@@ -9,15 +9,34 @@ import {
 const createPrerequisiteSchema = z.object({
   contributorPolicyId: z.string().min(1),
   title: z.string().optional(),
-  courseCode: z.string().min(1),
-  requiredCourseModules: z.array(z.string()).min(1),
+  courseRequirements: z
+    .array(
+      z.object({
+        courseCode: z.string().min(1, "Course is required"),
+        requiredModules: z
+          .array(z.string())
+          .min(1, "At least one module is required"),
+      }),
+    )
+    .min(1, "At least one course requirement is needed"),
 });
 
 const updatePrerequisiteSchema = z.object({
+  id: z.string().min(1),
+
   contributorPolicyId: z.string().min(1),
   title: z.string().optional(),
-  courseCode: z.string().min(1).optional(),
-  requiredCourseModules: z.array(z.string()).optional(),
+  courseRequirements: z
+    .array(
+      z.object({
+        id: z.string().optional(), // Optional for new requirements
+        courseCode: z.string().min(1, "Course is required"),
+        requiredModules: z
+          .array(z.string())
+          .min(1, "At least one module is required"),
+      }),
+    )
+    .min(1, "At least one course requirement is needed"),
 });
 
 export const contributorPrerequisiteRouter = createTRPCRouter({
@@ -25,11 +44,15 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
   getPrerequisites: publicProcedure.query(({ ctx }) => {
     return ctx.db.contributorPrerequisite.findMany({
       include: {
-        course: {
-          select: {
-            id: true,
-            courseCode: true,
-            title: true,
+        courseRequirements: {
+          include: {
+            course: {
+              select: {
+                id: true,
+                courseCode: true,
+                title: true,
+              },
+            },
           },
         },
         escrows: {
@@ -52,11 +75,15 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
       return ctx.db.contributorPrerequisite.findUnique({
         where: { contributorPolicyId: input },
         include: {
-          course: {
-            select: {
-              id: true,
-              courseCode: true,
-              title: true,
+          courseRequirements: {
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  courseCode: true,
+                  title: true,
+                },
+              },
             },
           },
           escrows: {
@@ -77,13 +104,23 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
     .input(z.string())
     .query(({ ctx, input }) => {
       return ctx.db.contributorPrerequisite.findMany({
-        where: { courseCode: input },
+        where: {
+          courseRequirements: {
+            some: {
+              courseCode: input,
+            },
+          },
+        },
         include: {
-          course: {
-            select: {
-              id: true,
-              courseCode: true,
-              title: true,
+          courseRequirements: {
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  courseCode: true,
+                  title: true,
+                },
+              },
             },
           },
           escrows: {
@@ -101,37 +138,44 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
     }),
 
   // Protected procedures
-
   createPrerequisite: protectedProcedure
     .input(createPrerequisiteSchema)
     .mutation(async ({ ctx, input }) => {
-      // Verify course exists first
-      const course = await ctx.db.course.findFirst({
-        where: { courseCode: input.courseCode },
-      });
-
-      console.log("Check111", course);
-
-      if (!course) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Course not found",
+      // Verify all courses exist first
+      for (const req of input.courseRequirements) {
+        const course = await ctx.db.course.findFirst({
+          where: { courseCode: req.courseCode },
         });
+
+        if (!course) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: `Course ${req.courseCode} not found`,
+          });
+        }
       }
 
       return ctx.db.contributorPrerequisite.create({
         data: {
           contributorPolicyId: input.contributorPolicyId,
           title: input.title,
-          courseCode: course.courseCode,
-          requiredCourseModules: input.requiredCourseModules,
+          courseRequirements: {
+            create: input.courseRequirements.map((req) => ({
+              courseCode: req.courseCode,
+              requiredModules: req.requiredModules,
+            })),
+          },
         },
         include: {
-          course: {
-            select: {
-              id: true,
-              courseCode: true,
-              title: true,
+          courseRequirements: {
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  courseCode: true,
+                  title: true,
+                },
+              },
             },
           },
         },
@@ -141,47 +185,86 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
   updatePrerequisite: protectedProcedure
     .input(updatePrerequisiteSchema)
     .mutation(async ({ ctx, input }) => {
-      const { contributorPolicyId, ...updateData } = input;
-
-      // If courseCode is being updated, verify the new course exists
-      if (updateData.courseCode) {
-        const course = await ctx.db.course.findUnique({
-          where: { courseCode: updateData.courseCode },
+      // Verify all courses exist
+      for (const req of input.courseRequirements) {
+        const course = await ctx.db.course.findFirst({
+          where: { courseCode: req.courseCode },
         });
 
         if (!course) {
           throw new TRPCError({
             code: "NOT_FOUND",
-            message: "Course not found",
+            message: `Course ${req.courseCode} not found`,
           });
         }
       }
 
-      return ctx.db.contributorPrerequisite.update({
-        where: { contributorPolicyId },
-        data: updateData,
-        include: {
-          course: {
-            select: {
-              id: true,
-              courseCode: true,
-              title: true,
+      // Start a transaction to handle the update
+      return ctx.db.$transaction(async (tx) => {
+        // Delete any requirements that aren't in the new list
+        await tx.courseRequirement.deleteMany({
+          where: {
+            prerequisiteId: input.id,
+            id: {
+              notIn: input.courseRequirements
+                .map((req) => req.id)
+                .filter((id): id is string => id !== undefined),
             },
           },
-        },
+        });
+
+        // Update existing requirements and create new ones
+        const prerequisite = await tx.contributorPrerequisite.update({
+          where: { id: input.id },
+          data: {
+            title: input.title,
+            courseRequirements: {
+              upsert: input.courseRequirements.map((req) => ({
+                where: {
+                  id: req.id ?? "",
+                },
+                create: {
+                  courseCode: req.courseCode,
+                  requiredModules: req.requiredModules,
+                },
+                update: {
+                  courseCode: req.courseCode,
+                  requiredModules: req.requiredModules,
+                },
+              })),
+            },
+          },
+          include: {
+            courseRequirements: {
+              include: {
+                course: {
+                  select: {
+                    id: true,
+                    courseCode: true,
+                    title: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        return prerequisite;
       });
     }),
 
   deletePrerequisite: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      // Delete the prerequisite and all its relations in a transaction
       return ctx.db.$transaction(async (tx) => {
-        // Delete all escrow relations first
+        // Delete all course requirements
+        await tx.courseRequirement.deleteMany({
+          where: { prerequisiteId: input },
+        });
 
         // Delete the prerequisite
         return tx.contributorPrerequisite.delete({
-          where: { contributorPolicyId: input },
+          where: { id: input },
         });
       });
     }),

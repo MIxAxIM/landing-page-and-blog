@@ -1,10 +1,24 @@
 import { api } from "~/utils/api";
 
-export default function useCourseModuleList(courseCode: string) {
-  const { data: courseModuleList, isLoading: isLoadingCourseModuleList } =
-    api.module.getCourseModuleList.useQuery({
-      courseCode: courseCode,
-    });
+export type CourseModuleInfo = { title: string; moduleCode: string };
 
-  return { courseModuleList, isLoadingCourseModuleList };
+interface UseCourseModuleListReturn {
+  courseModuleLists: Record<string, CourseModuleInfo[]>;
+  isLoadingCourseModuleLists: boolean;
+}
+
+export default function useCourseModuleList(
+  courseCodes: string[],
+): UseCourseModuleListReturn {
+  const enabledCourseCodes = courseCodes.filter(Boolean);
+
+  const { data, isLoading } = api.module.getCourseModuleList.useQuery(
+    { courseCodes: enabledCourseCodes },
+    { enabled: enabledCourseCodes.length > 0 },
+  );
+
+  return {
+    courseModuleLists: data ?? {},
+    isLoadingCourseModuleLists: isLoading,
+  };
 }
