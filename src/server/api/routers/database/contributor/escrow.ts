@@ -58,6 +58,7 @@ export const escrowRouter = createTRPCRouter({
         where: { id: input },
         include: {
           tasks: true,
+          contributorPrerequisites: true,
         },
       });
 
@@ -96,6 +97,7 @@ export const escrowRouter = createTRPCRouter({
         where: { treasuryId: input },
         include: {
           tasks: true,
+          contributorPrerequisites: true,
         },
       });
 
