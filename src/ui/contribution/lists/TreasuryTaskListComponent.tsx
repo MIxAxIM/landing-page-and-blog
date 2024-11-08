@@ -12,9 +12,12 @@ import TaskEscrowFilter from "../filters/TaskEscrowFilter";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
-import { access } from "fs";
 
-export default function TaskListComponent({ treasury }: { treasury: string }) {
+export default function TreasuryTaskListComponent({
+  treasury,
+}: {
+  treasury: string;
+}) {
   // Status filter state
   const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
     Object.values(TaskStatus),
@@ -96,7 +99,7 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                 sortKey="title"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-40 text-primary-foreground"
+                className="w-32 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Description"
@@ -106,11 +109,11 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                 className="w-48 text-primary-foreground"
               />
               <SortableTableHeader
-                label="Escrow"
+                label="Circle"
                 sortKey="escrow.escrowNftPolicyId"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-20 text-primary-foreground"
+                className="w-32 text-primary-foreground"
               />
               <TableHead className="w-1/6 text-primary-foreground">
                 Acceptance Criteria
@@ -169,7 +172,7 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
                     {task.description}
                   </TableCell>
                   <TableCell className="align-top">
-                    {task.escrow?.escrowNftPolicyId.substring(0, 6)}...
+                    {task.escrow?.title ?? "not defined"}
                   </TableCell>
                   <TableCell className="align-top">
                     <ul className="ml-5 list-disc">

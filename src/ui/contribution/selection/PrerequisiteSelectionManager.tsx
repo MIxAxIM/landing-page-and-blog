@@ -98,7 +98,7 @@ export default function PrerequisiteManager({
       ) : (
         <Alert>
           <AlertDescription>
-            No prerequisites are currently assigned to this escrow.
+            No prerequisites are currently assigned to this circle.
           </AlertDescription>
         </Alert>
       )}

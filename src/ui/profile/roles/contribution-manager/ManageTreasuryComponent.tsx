@@ -7,7 +7,7 @@ import DialogPublishTreasuryTx from "~/ui/contribution/dialogs/DialogPublishTrea
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
-import TaskListComponent from "~/ui/contribution/lists/TaskListComponent";
+import TreasuryTaskListComponent from "~/ui/contribution/lists/TreasuryTaskListComponent";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
@@ -58,7 +58,7 @@ export default function ManageTreasuryComponent({
           >
             <>
               {!!treasuryInfo?.treasuryNftPolicyId && (
-                <TaskListComponent
+                <TreasuryTaskListComponent
                   treasury={treasuryInfo.treasuryNftPolicyId}
                 />
               )}
@@ -71,7 +71,7 @@ export default function ManageTreasuryComponent({
         </div>
         <div className="col-span-4">
           <PlaceholderComponent
-            name="Funds in Escrow"
+            name="Treasury Circles"
             userStory="CONTRIBUTION-007"
           >
             <>

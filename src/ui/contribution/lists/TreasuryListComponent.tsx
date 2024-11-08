@@ -42,7 +42,7 @@ export default function TreasuryListComponent() {
             <TableRow className="border-b border-primary">
               <TableHead className="border border-primary">Treasury</TableHead>
               <TableHead className="border border-primary text-center">
-                # Escrows
+                # Circles
               </TableHead>
               <TableHead className="border border-primary text-center">
                 # Contributors

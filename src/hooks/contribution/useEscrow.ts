@@ -39,16 +39,18 @@ export function useEscrow({
   id,
   escrowNftPolicyId,
   treasuryNftPolicyId,
+  disabled,
 }: {
   id?: string;
   escrowNftPolicyId?: string;
   treasuryNftPolicyId?: string;
+  disabled?: boolean;
 }): UseEscrowReturn {
   const ctx = api.useUtils();
 
   // Single escrow query
   const escrowQuery = api.escrow.getEscrowById.useQuery(id ?? "", {
-    enabled: !!id,
+    enabled: !!id && !disabled,
     select: (data) => data as Escrow,
   });
 
