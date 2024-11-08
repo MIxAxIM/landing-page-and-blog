@@ -93,9 +93,8 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
 
   return (
     <DialogForm
-      openButton="Sync with Network"
+      openButton="Sync"
       openButtonIntent="default"
-      openButtonSize="sm"
       title="Publish Escrow to Network"
       description="Confirm the tasks and prerequisites to be published to the network."
       buttonLabel="Publish to Network"

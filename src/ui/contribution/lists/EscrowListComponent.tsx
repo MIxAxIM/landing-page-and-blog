@@ -25,7 +25,7 @@ export default function EscrowListComponent({
         </div>
       )}
       {treasuryEscrows && (
-        <Table>
+        <Table className="mb-8 w-full table-fixed">
           <TableRow>
             <TableHead>Escrow</TableHead>
             <TableHead>CS</TableHead>
@@ -59,7 +59,7 @@ export default function EscrowListComponent({
                     <Link
                       href={`/dashboard/contribution-manager/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
                     >
-                      <Button size="sm">View All</Button>
+                      <Button size="dialog">View</Button>
                     </Link>
                     <DialogEscrow id={escrow?.id} openButtonSize="sm" />
                     {!!escrow?.id && <DialogPublishEscrow id={escrow.id} />}

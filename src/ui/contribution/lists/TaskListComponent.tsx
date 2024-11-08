@@ -12,6 +12,7 @@ import TaskEscrowFilter from "../filters/TaskEscrowFilter";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
+import { access } from "fs";
 
 export default function TaskListComponent({ treasury }: { treasury: string }) {
   // Status filter state
@@ -56,7 +57,7 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="mb-8 w-full">
       <div className="mb-4 flex w-full flex-row items-center justify-between">
         <div className="space-x-2">
           <TaskStatusFilter
@@ -82,58 +83,62 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
       <div className="w-full overflow-x-auto">
         <Table className="w-full table-fixed">
           <thead>
-            <TableRow>
+            <TableRow className="bg-primary hover:bg-primary">
               <SortableTableHeader
                 label="#"
                 sortKey="index"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-12"
+                className="w-12 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Title"
                 sortKey="title"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-40"
+                className="w-40 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Description"
                 sortKey="description"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-48"
+                className="w-48 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Escrow"
                 sortKey="escrow.escrowNftPolicyId"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-20"
+                className="w-20 text-primary-foreground"
               />
-              <TableHead className="w-1/6">Acceptance Criteria</TableHead>
+              <TableHead className="w-1/6 text-primary-foreground">
+                Acceptance Criteria
+              </TableHead>
               <SortableTableHeader
                 label="Expiration Time"
                 sortKey="expirationTime"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-32"
+                className="w-32 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Ada"
                 sortKey="lovelace"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-20"
+                className="w-20 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Status"
                 sortKey="status"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-28"
+                className="w-28 text-primary-foreground"
               />
-              <TableHead className="w-24">Actions</TableHead>
+              <TableHead className="w-24 text-primary-foreground">
+                Actions
+              </TableHead>
             </TableRow>
           </thead>
           <tbody>
@@ -151,25 +156,35 @@ export default function TaskListComponent({ treasury }: { treasury: string }) {
               </TableRow>
             ) : (
               filteredTasks.map((task) => (
-                <TableRow key={task.id}>
-                  <TableCell>{task.index}</TableCell>
-                  <TableCell>
+                <TableRow key={task.id} className="border-t border-black">
+                  <TableCell className="align-top">{task.index}</TableCell>
+                  <TableCell className="align-top">
                     <Link
                       href={`/contribution/${treasury}/${task.escrow?.escrowNftPolicyId}/${task.index}`}
                     >
                       {task.title}
                     </Link>
                   </TableCell>
-                  <TableCell className="truncate">{task.description}</TableCell>
-                  <TableCell>
+                  <TableCell className="truncate align-top">
+                    {task.description}
+                  </TableCell>
+                  <TableCell className="align-top">
                     {task.escrow?.escrowNftPolicyId.substring(0, 6)}...
                   </TableCell>
-                  <TableCell>
-                    {JSON.stringify(task.acceptanceCriteria)}
+                  <TableCell className="align-top">
+                    <ul className="ml-5 list-disc">
+                      {task.acceptanceCriteria.map((ac, i) => (
+                        <li key={i}>{ac}</li>
+                      ))}
+                    </ul>
                   </TableCell>
-                  <TableCell>{formatPosixTime(task.expirationTime)}</TableCell>
-                  <TableCell>{parseInt(task.lovelace) / 1000000}</TableCell>
-                  <TableCell>
+                  <TableCell className="align-top">
+                    {formatPosixTime(task.expirationTime)}
+                  </TableCell>
+                  <TableCell className="align-top">
+                    {parseInt(task.lovelace) / 1000000}
+                  </TableCell>
+                  <TableCell className="">
                     <TaskStatusSelect
                       taskId={task.id}
                       currentStatus={task.status}

@@ -13,7 +13,7 @@ export default function TreasuryListComponent() {
     <div className="w-full">
       {isLoadingTreasuries && "loading"}
       {treasuries && (
-        <Table className="w-full table-fixed text-xs">
+        <Table className="mb-8 w-full table-fixed">
           <thead>
             <tr>
               {/* Empty cells for non-grouped columns */}
