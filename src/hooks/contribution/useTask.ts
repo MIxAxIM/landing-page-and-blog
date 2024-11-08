@@ -36,6 +36,7 @@ interface UseTaskReturn {
   filteredTasks: Task[];
   // Loading states
   isLoading: boolean;
+  isLoadingTask: boolean;
   // Mutations
   createTask: (data: CreateTaskInput) => void;
   updateTask: (data: UpdateTaskInput) => void;
@@ -80,17 +81,18 @@ export function useTask({
   });
 
   // Treasury tasks query - get all tasks first
-  const { data: allTasks = [], isLoading } = api.task.getTreasuryTasks.useQuery(
-    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    {
-      enabled: !!treasuryNftPolicyId,
-      select: (data) =>
-        data.map((task) => ({
-          ...task,
-          isEditable: isTaskEditable(task.status),
-        })) as Task[],
-    },
-  );
+  const { data: allTasks = [], isLoading: isLoadingTreasuryTasks } =
+    api.task.getTreasuryTasks.useQuery(
+      { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
+      {
+        enabled: !!treasuryNftPolicyId,
+        select: (data) =>
+          data.map((task) => ({
+            ...task,
+            isEditable: isTaskEditable(task.status),
+          })) as Task[],
+      },
+    );
 
   // Filter and sort tasks using useMemo
   const processedTasks = useMemo(() => {
@@ -261,7 +263,8 @@ export function useTask({
     task: taskQuery.data ?? null,
     tasks: allTasks,
     filteredTasks: processedTasks,
-    isLoading,
+    isLoading: isLoadingTreasuryTasks,
+    isLoadingTask: taskQuery.isLoading,
     createTask: createTaskMutation.mutate,
     updateTask: updateTaskMutation.mutate,
     updateTaskStatus: updateTaskStatusMutation.mutate,

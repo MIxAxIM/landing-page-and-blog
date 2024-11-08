@@ -11,6 +11,7 @@ import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { type Task } from "~/types/db";
 import { getNestedValue } from "~/hooks/useSort";
+import { Button } from "~/components/ui/button";
 
 export default function EscrowTaskListComponent({
   tasks,
@@ -200,8 +201,11 @@ export default function EscrowTaskListComponent({
                       currentStatus={task.status}
                     />
                   </TableCell>
-                  <TableCell className="items-center justify-center">
+                  <TableCell className="items-center justify-center gap-x-2">
                     <DialogTask openButtonSize="sm" id={task.id} />
+                    <Link href={`/contribute/task/${task.id}`}>
+                      <Button size="sm">Public Task</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))

@@ -1,0 +1,60 @@
+import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
+import { useTreasury } from "~/hooks/contribution/useTreasury";
+import { type Task } from "~/types/db";
+import { formatPosixTime } from "~/utils/time";
+import { PrerequisiteItem } from "./selection/PrerequisiteSelectionManager";
+import PlaceholderComponent from "../prototype/PlaceholderComponent";
+import { ChatContainer } from "~/components/chat/chat-container";
+
+export default function PublicTaskPageComponent({ task }: { task: Task }) {
+  const { treasury } = useTreasury(task.escrow?.treasuryId);
+  const { escrowPrerequisites } = useEscrowPrerequisites({
+    escrowId: task.escrow?.id,
+  });
+  return (
+    <div className="mx-auto my-24 max-w-5xl space-y-10 rounded-sm border border-primary p-5">
+      <h1 className="my-10 text-4xl">Task: {task.title}</h1>
+      <p className="prose text-2xl">
+        This is task in the {task.escrow?.title} circle in the {treasury?.title}{" "}
+        treasury.
+      </p>
+      <div className="space-y-3">
+        <p className="prose">{task.description}</p>
+        <h2 className="prose">Acceptance Criteria</h2>
+        <ul className="prose ml-5 list-decimal">
+          {task.acceptanceCriteria.map((ac, i) => (
+            <li key={i}>{ac}</li>
+          ))}
+        </ul>
+
+        <p className="prose">Current Status: {task.status}</p>
+        <p className="prose">Ada Reward: {parseInt(task.lovelace) / 1000000}</p>
+        <p className="prose">
+          Expiration Time: {formatPosixTime(task.expirationTime)}
+        </p>
+      </div>
+
+      <p className="prose my-10 text-2xl">
+        The following prerequisites must be completed:
+      </p>
+
+      {escrowPrerequisites?.map((ep, i) => (
+        <div
+          key={i}
+          className="flex min-h-36 flex-row items-center gap-10 px-10"
+        >
+          <div className="h-12 w-12 rounded-full bg-green-400" />
+          <PrerequisiteItem prerequisite={ep} />
+        </div>
+      ))}
+      <p className="prose my-10 text-2xl">
+        Discuss this task with the Andamio Community
+      </p>
+      <div className="rounded-md bg-background text-foreground">
+        <ChatContainer roomId={task.id} />
+      </div>
+      <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
+      <PlaceholderComponent name="what user stories are picked up here?" />
+    </div>
+  );
+}

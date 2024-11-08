@@ -12,6 +12,7 @@ import TaskEscrowFilter from "../filters/TaskEscrowFilter";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
+import { Button } from "~/components/ui/button";
 
 export default function TreasuryTaskListComponent({
   treasury,
@@ -193,8 +194,11 @@ export default function TreasuryTaskListComponent({
                       currentStatus={task.status}
                     />
                   </TableCell>
-                  <TableCell className="items-center justify-center">
+                  <TableCell className="items-center justify-center gap-x-2">
                     <DialogTask openButtonSize="sm" id={task.id} />
+                    <Link href={`/contribute/task/${task.id}`}>
+                      <Button size="sm">Public Task</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))

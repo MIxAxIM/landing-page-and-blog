@@ -136,7 +136,7 @@ export default function PrerequisiteManager({
   );
 }
 
-function PrerequisiteItem({
+export function PrerequisiteItem({
   prerequisite,
 }: {
   prerequisite: ContributorPrerequisite;
