@@ -2,8 +2,8 @@ import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
-import DialogEscrow from "../../components/dialogs/DialogEscrow";
-import DialogPublishEscrow from "../../components/dialogs/DialogPublishEscrowTx";
+import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import DialogPublishEscrow from "~/ui/contribution/dialogs/DialogPublishEscrowTx";
 
 export default function EscrowListComponent({
   treasuryNftPolicyId,
@@ -31,7 +31,7 @@ export default function EscrowListComponent({
             <TableHead>CS</TableHead>
             {/* TODO: Do we need Decision Makers? Not if they are solely defined at Treasury Level */}
             {/* <TableHead>Decision Makers</TableHead> */}
-            <TableHead>Approved Contributor Policy IDs</TableHead>
+            <TableHead>Approved Contributors</TableHead>
             <TableHead>Tasks</TableHead>
             <TableHead>Ada Allocated to Tasks</TableHead>
             <TableHead>Synced?</TableHead>
@@ -46,7 +46,9 @@ export default function EscrowListComponent({
                   {escrow?.escrowNftPolicyId.substring(0, 6)}...
                 </TableCell>
                 {/* <TableCell>coming soon</TableCell> */}
-                <TableCell>{escrow?.contributorPolicyIds.length}</TableCell>
+                <TableCell>
+                  {escrow?.contributorPrerequisites?.length ?? 0}
+                </TableCell>
                 <TableCell>{escrow?.tasks?.length ?? 0}</TableCell>
                 <TableCell>{escrow?.totalAda}</TableCell>
                 <TableCell>
@@ -54,7 +56,9 @@ export default function EscrowListComponent({
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-row gap-1">
-                    <Link href={`#`}>
+                    <Link
+                      href={`/dashboard/contribution-manager/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
+                    >
                       <Button size="sm">View All</Button>
                     </Link>
                     <DialogEscrow id={escrow?.id} openButtonSize="sm" />

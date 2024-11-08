@@ -33,11 +33,22 @@ const isValidStatusTransition = (
   newStatus: TaskStatus,
 ) => {
   const allowedTransitions: Record<TaskStatus, TaskStatus[]> = {
-    DRAFT: [TaskStatus.APPROVED],
-    APPROVED: [TaskStatus.DRAFT, TaskStatus.ON_CHAIN],
+    DRAFT: [TaskStatus.APPROVED, TaskStatus.BACKLOG, TaskStatus.ARCHIVED],
+    APPROVED: [
+      TaskStatus.DRAFT,
+      TaskStatus.ON_CHAIN,
+      TaskStatus.BACKLOG,
+      TaskStatus.ARCHIVED,
+    ],
     ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
-    COMMITMENT_MADE: [TaskStatus.COMPLETE],
-    COMPLETE: [],
+    COMMITMENT_MADE: [
+      TaskStatus.COMMITMENT_ACCEPTED,
+      TaskStatus.COMMITMENT_DENIED,
+    ],
+    COMMITMENT_DENIED: [TaskStatus.ON_CHAIN, TaskStatus.COMMITMENT_MADE],
+    COMMITMENT_ACCEPTED: [TaskStatus.ARCHIVED],
+    BACKLOG: [TaskStatus.DRAFT, TaskStatus.ARCHIVED],
+    ARCHIVED: [TaskStatus.BACKLOG, TaskStatus.DRAFT],
   };
 
   return allowedTransitions[currentStatus].includes(newStatus);
@@ -331,6 +342,12 @@ export const taskRouter = createTRPCRouter({
                   : undefined,
                 orderBy: { index: "asc" },
               },
+              contributorPrerequisites: {
+                select: {
+                  contributorPolicyId: true,
+                  title: true,
+                },
+              },
             },
           },
         },
@@ -348,9 +365,12 @@ export const taskRouter = createTRPCRouter({
           ...task,
           escrow: {
             id: escrow.id,
+            title: escrow.title,
             escrowNftPolicyId: escrow.escrowNftPolicyId,
             treasuryId: escrow.treasuryId,
-            contributorPolicyIds: escrow.contributorPolicyIds,
+            isSyncedWithNetwork: escrow.isSyncedWithNetwork,
+            savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,
+            contributorPrerequisites: escrow.contributorPrerequisites,
           },
         })),
       );

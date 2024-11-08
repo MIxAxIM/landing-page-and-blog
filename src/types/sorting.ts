@@ -22,5 +22,8 @@ export const TASK_STATUS_ORDER: Record<TaskStatus, number> = {
   APPROVED: 1,
   ON_CHAIN: 2,
   COMMITMENT_MADE: 3,
-  COMPLETE: 4,
+  COMMITMENT_DENIED: 4,
+  COMMITMENT_ACCEPTED: 5,
+  ARCHIVED: 6,
+  BACKLOG: 7,
 };

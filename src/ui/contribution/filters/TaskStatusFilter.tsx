@@ -15,7 +15,10 @@ const statusLabels: Record<TaskStatus, string> = {
   APPROVED: "Approved",
   ON_CHAIN: "On Chain",
   COMMITMENT_MADE: "Committed",
-  COMPLETE: "Complete",
+  COMMITMENT_DENIED: "Denied",
+  COMMITMENT_ACCEPTED: "Complete",
+  BACKLOG: "Backlog",
+  ARCHIVED: "Archived",
 };
 
 const statusStyles: Record<TaskStatus, string> = {
@@ -23,7 +26,10 @@ const statusStyles: Record<TaskStatus, string> = {
   APPROVED: "bg-blue-100 text-blue-800",
   ON_CHAIN: "bg-purple-100 text-purple-800",
   COMMITMENT_MADE: "bg-orange-100 text-orange-800",
-  COMPLETE: "bg-green-100 text-green-800",
+  COMMITMENT_DENIED: "bg-orange-100 text-orange-800",
+  COMMITMENT_ACCEPTED: "bg-green-100 text-green-800",
+  BACKLOG: "bg-gray-800 text-gray-100",
+  ARCHIVED: "bg-gray-800 text-gray-100",
 };
 
 export default function TaskStatusFilter({

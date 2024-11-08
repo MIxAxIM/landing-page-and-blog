@@ -21,7 +21,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
 
   // State for checked items
   const [checkedTasks, setCheckedTasks] = useState<Set<string>>(new Set());
-  const [checkedContributors, setCheckedContributors] = useState<Set<string>>(
+  const [checkedPrerequisites, setCheckedPrerequisites] = useState<Set<string>>(
     new Set(),
   );
 
@@ -29,7 +29,13 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setCheckedTasks(new Set(filteredTasks.map((task) => task.id)));
-      setCheckedContributors(new Set(escrow?.contributorPolicyIds ?? []));
+      setCheckedPrerequisites(
+        new Set(
+          escrow?.contributorPrerequisites?.map(
+            (prereq) => prereq.contributorPolicyId,
+          ) ?? [],
+        ),
+      );
     }
     setIsOpen(open);
   };
@@ -45,14 +51,14 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
     setCheckedTasks(newCheckedTasks);
   };
 
-  const toggleContributor = (contributorId: string) => {
-    const newCheckedContributors = new Set(checkedContributors);
-    if (newCheckedContributors.has(contributorId)) {
-      newCheckedContributors.delete(contributorId);
+  const togglePrerequisite = (prerequisiteId: string) => {
+    const newCheckedPrerequisites = new Set(checkedPrerequisites);
+    if (newCheckedPrerequisites.has(prerequisiteId)) {
+      newCheckedPrerequisites.delete(prerequisiteId);
     } else {
-      newCheckedContributors.add(contributorId);
+      newCheckedPrerequisites.add(prerequisiteId);
     }
-    setCheckedContributors(newCheckedContributors);
+    setCheckedPrerequisites(newCheckedPrerequisites);
   };
 
   // Handle sync submission
@@ -83,7 +89,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
   };
 
   const isButtonDisabled =
-    checkedTasks.size === 0 && checkedContributors.size === 0;
+    checkedTasks.size === 0 && checkedPrerequisites.size === 0;
 
   return (
     <DialogForm
@@ -91,7 +97,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
       openButtonIntent="default"
       openButtonSize="sm"
       title="Publish Escrow to Network"
-      description="Confirm the tasks and contributors to be published to the network."
+      description="Confirm the tasks and prerequisites to be published to the network."
       buttonLabel="Publish to Network"
       buttonLoading={isUpdating}
       buttonDisabled={isButtonDisabled}
@@ -99,7 +105,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
       isOpen={isOpen}
       setIsOpen={handleOpenChange}
     >
-      <div className="max-h-[60vh] max-w-5xl space-y-6 overflow-y-auto py-4">
+      <div className="max-h-[60vh] space-y-6 overflow-y-auto py-4">
         {/* Tasks Section */}
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Tasks to Publish</h3>
@@ -107,11 +113,14 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
             {filteredTasks.map((task) => (
               <div key={task.id} className="flex items-center space-x-2">
                 <Checkbox
-                  id={task.id}
+                  id={`task-${task.id}`}
                   checked={checkedTasks.has(task.id)}
                   onCheckedChange={() => toggleTask(task.id)}
                 />
-                <label htmlFor={task.id} className="flex-1 cursor-pointer">
+                <label
+                  htmlFor={`task-${task.id}`}
+                  className="flex-1 cursor-pointer"
+                >
                   <div className="flex items-center justify-between">
                     <span>{task.title}</span>
                     <div className="flex items-center gap-2">
@@ -132,29 +141,40 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
           </div>
         </div>
 
-        {/* Contributors Section */}
-        <div className="space-y-4 text-xs">
-          <h3 className="text-lg font-medium">Contributors to Publish</h3>
+        {/* Prerequisites Section */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Prerequisites to Publish</h3>
           <div className="space-y-2">
-            {escrow?.contributorPolicyIds.map((contributorId) => (
-              <div key={contributorId} className="flex items-center space-x-2">
+            {escrow?.contributorPrerequisites?.map((prereq) => (
+              <div
+                key={prereq.contributorPolicyId}
+                className="flex items-center space-x-2"
+              >
                 <Checkbox
-                  id={contributorId}
-                  checked={checkedContributors.has(contributorId)}
-                  onCheckedChange={() => toggleContributor(contributorId)}
+                  id={`prereq-${prereq.contributorPolicyId}`}
+                  checked={checkedPrerequisites.has(prereq.contributorPolicyId)}
+                  onCheckedChange={() =>
+                    togglePrerequisite(prereq.contributorPolicyId)
+                  }
                 />
                 <label
-                  htmlFor={contributorId}
-                  className="cursor-pointer break-all"
+                  htmlFor={`prereq-${prereq.contributorPolicyId}`}
+                  className="cursor-pointer"
                 >
-                  {contributorId}
+                  <div>
+                    <p className="font-medium">
+                      {prereq.title ?? "Untitled Prerequisite"}
+                    </p>
+                    <p className="break-all text-xs text-muted-foreground">
+                      {prereq.contributorPolicyId}
+                    </p>
+                  </div>
                 </label>
               </div>
             ))}
-            {(!escrow?.contributorPolicyIds ||
-              escrow.contributorPolicyIds.length === 0) && (
+            {!escrow?.contributorPrerequisites?.length && (
               <p className="text-sm text-muted-foreground">
-                No contributors available to publish
+                No prerequisites available to publish
               </p>
             )}
           </div>

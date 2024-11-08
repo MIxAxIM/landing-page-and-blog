@@ -1,10 +1,7 @@
 import { BoxIcon, CheckCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { cn } from "~/utils/shadcn";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 export default function RoleStatus({
   roleName,
   userHasRole,
@@ -19,15 +16,9 @@ export default function RoleStatus({
   current?: boolean;
 }) {
   if (!userHasRole) return;
-  return (
-    <li
-      className={classNames(
-        current
-          ? "bg-primary text-primary-foreground"
-          : "text-foreground hover:bg-primary hover:text-primary-foreground",
-        "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-      )}
-    >
+
+  const content = (
+    <>
       <div className="flex items-center justify-center">
         {userHasRole ? (
           <CheckCircledIcon className="h-6 w-6" />
@@ -40,14 +31,31 @@ export default function RoleStatus({
           {roleName}
           {!!roleDetail && `: ${roleDetail}`}
         </div>
-        {roleInfoUrl && (
-          <Link href={roleInfoUrl} className="">
-            <Button size="sm" intent="secondary">
-              view
-            </Button>
-          </Link>
-        )}
       </div>
+    </>
+  );
+
+  return roleInfoUrl ? (
+    <Link href={roleInfoUrl}>
+      <li
+        className={cn(
+          current
+            ? "bg-primary text-primary-foreground"
+            : "cursor-pointer text-foreground hover:bg-primary hover:text-primary-foreground",
+          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+        )}
+      >
+        {content}
+      </li>
+    </Link>
+  ) : (
+    <li
+      className={cn(
+        current ? "bg-primary text-primary-foreground" : "text-foreground",
+        "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+      )}
+    >
+      {content}
     </li>
   );
 }

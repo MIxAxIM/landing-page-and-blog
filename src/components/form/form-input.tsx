@@ -46,7 +46,7 @@ export default function FormInput(props: InputProps) {
                 }
               }}
               placeholder={props.placeholder}
-              className="borderforeground my-3 border-b"
+              className="my-1 rounded-sm border"
               disabled={props.disabled}
               // Add number-specific props when type is number
               {...(props.type === "number" && {

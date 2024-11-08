@@ -146,6 +146,18 @@ export const moduleRouter = createTRPCRouter({
       });
     }),
 
+  getCourseModuleList: publicProcedure
+    .input(z.object({ courseCode: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.module.findMany({
+        where: { originalCourse: { courseCode: input.courseCode } },
+        select: {
+          moduleCode: true,
+          title: true,
+        },
+      });
+    }),
+
   create: protectedProcedure
     .input(
       z.object({

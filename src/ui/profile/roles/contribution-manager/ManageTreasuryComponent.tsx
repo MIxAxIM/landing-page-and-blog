@@ -1,13 +1,13 @@
 import { type Treasury } from "~/types/db";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
-import DialogTreasury from "~/ui/profile/components/dialogs/DialogTreasury";
-import DialogEscrow from "~/ui/profile/components/dialogs/DialogEscrow";
-import EscrowListComponent from "./EscrowListComponent";
-import TaskListComponent from "./TaskListComponent";
-import DialogTask from "../../components/dialogs/DialogTask";
 import DashboardDataComponent from "../../components/DashboardDataComponent";
 import { Button } from "~/components/ui/button";
-import DialogPublishTreasuryTx from "../../components/dialogs/DialogPublishTreasuryTx";
+import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import DialogPublishTreasuryTx from "~/ui/contribution/dialogs/DialogPublishTreasuryTx";
+import DialogTask from "~/ui/contribution/dialogs/DialogTask";
+import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
+import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
+import TaskListComponent from "~/ui/contribution/lists/TaskListComponent";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,

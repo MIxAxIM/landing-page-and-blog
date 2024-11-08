@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { type ExtendedTask, useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/contribution/useTask";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Badge } from "~/components/ui/badge";
 import DialogForm from "~/components/form/dialog-form";
 import { TaskStatus } from "@prisma/client";
 import { toast } from "react-hot-toast";
+import { type Task } from "~/types/db";
 
-type TasksByEscrow = Record<string, ExtendedTask[]>;
+type TasksByEscrow = Record<string, Task[]>;
 
 export default function DialogPublishTreasuryTx({
   treasuryId,
@@ -60,7 +61,7 @@ export default function DialogPublishTreasuryTx({
   };
 
   // Toggle all tasks in an escrow
-  const toggleEscrowTasks = (tasks: ExtendedTask[]) => {
+  const toggleEscrowTasks = (tasks: Task[]) => {
     const taskIds = tasks.map((t) => t?.id);
     const allChecked = taskIds.every((id) => checkedTasks.has(id ?? ""));
 

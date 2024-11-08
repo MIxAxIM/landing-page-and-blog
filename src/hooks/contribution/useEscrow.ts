@@ -5,7 +5,7 @@ import { type Escrow } from "~/types/db";
 type CreateEscrowInput = {
   title?: string;
   escrowNftPolicyId: string;
-  contributorPolicyIds: string[];
+  savedAcceptanceCriteria: string[];
   treasuryId: string;
 };
 
@@ -13,7 +13,7 @@ type UpdateEscrowInput = {
   title: string;
   id: string;
   escrowNftPolicyId?: string;
-  contributorPolicyIds?: string[];
+  savedAcceptanceCriteria?: string[];
   isSyncedWithNetwork: false;
 };
 
@@ -37,9 +37,11 @@ interface UseEscrowReturn {
 
 export function useEscrow({
   id,
+  escrowNftPolicyId,
   treasuryNftPolicyId,
 }: {
   id?: string;
+  escrowNftPolicyId?: string;
   treasuryNftPolicyId?: string;
 }): UseEscrowReturn {
   const ctx = api.useUtils();
@@ -47,17 +49,27 @@ export function useEscrow({
   // Single escrow query
   const escrowQuery = api.escrow.getEscrowById.useQuery(id ?? "", {
     enabled: !!id,
+    select: (data) => data as Escrow,
   });
+
+  const escrowQueryByPolicyId = api.escrow.getEscrowByPolicyId.useQuery(
+    escrowNftPolicyId ?? "",
+    {
+      enabled: !!escrowNftPolicyId,
+      select: (data) => data as Escrow,
+    },
+  );
 
   // All escrows query
   const allEscrowsQuery = api.escrow.getEscrows.useQuery(undefined, {
     enabled: !id,
+    select: (data) => data as Escrow[],
   });
 
   // Treasury escrows query
   const treasuryEscrowsQuery = api.escrow.getTreasuryEscrows.useQuery(
     treasuryNftPolicyId ?? "",
-    { enabled: !!treasuryNftPolicyId },
+    { enabled: !!treasuryNftPolicyId, select: (data) => data as Escrow[] },
   );
 
   // Helper function to invalidate and refetch queries
@@ -67,6 +79,7 @@ export function useEscrow({
       ctx.treasury.getTreasuries.invalidate(),
       ctx.escrow.getTreasuryEscrows.invalidate(),
       id ? ctx.escrow.getEscrowById.invalidate(id) : Promise.resolve(),
+      id ? ctx.escrow.getEscrowByPolicyId.invalidate(id) : Promise.resolve(),
     ]);
 
     // Explicit refetch calls
@@ -142,7 +155,7 @@ export function useEscrow({
   });
 
   return {
-    escrow: escrowQuery.data,
+    escrow: escrowQuery.data ?? escrowQueryByPolicyId.data,
     escrows: allEscrowsQuery.data ?? [],
     treasuryEscrows: treasuryEscrowsQuery.data ?? [],
     isLoading: id ? escrowQuery.isLoading : allEscrowsQuery.isLoading,

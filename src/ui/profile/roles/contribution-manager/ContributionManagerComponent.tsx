@@ -1,10 +1,10 @@
+import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import DialogTask from "~/ui/contribution/dialogs/DialogTask";
+import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
+import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
+import SelectTreasuryToManage from "~/ui/contribution/selection/SelectTreasuryToManage";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
-import SelectTreasuryToManage from "./SelectTreasuryToManage";
-import TreasuryListComponent from "./TreasuryListComponent";
 import { type Treasury } from "~/types/db";
-import DialogTreasury from "~/ui/profile/components/dialogs/DialogTreasury";
-import DialogEscrow from "../../components/dialogs/DialogEscrow";
-import DialogTask from "../../components/dialogs/DialogTask";
 
 export default function ContributionManagerComponent({
   treasuryInfos,
@@ -14,23 +14,22 @@ export default function ContributionManagerComponent({
   return (
     <div>
       <div className="mx-auto mt-12 grid w-11/12 grid-cols-3 gap-5">
-        <div className="col-span-3">
+        <div className="col-span-3 flex flex-row items-center justify-between">
           <h2 className="text-4xl">Contribution Manager Dashboard Home</h2>
+          <DialogTask />
         </div>
-        <div className="col-span-2 row-span-3">
-          <PlaceholderComponent
-            name="Table: Overview of Current Treasuries"
-            userStory="CONTRIBUTION-001"
-          >
-            <>
-              <TreasuryListComponent />
-            </>
-          </PlaceholderComponent>
+        <div className="col-span-3">
+          <h1 className="my-5 text-2xl font-bold">All Network Treasuries</h1>
+          <p className="mb-5">
+            Product development todo: who should be able to see this list?
+            Implement access control in DB + with on-chain credentials
+          </p>
+          <TreasuryListComponent />
         </div>
-        <div className="col-span-1 row-span-2">
+        <div className="col-span-1">
           <PlaceholderComponent
-            name="Quick Actions"
-            userStory="CONTRIBUTION-002"
+            name="Treasury Admin Features"
+            userStory="CONTRIBUTION-00x"
           >
             <>
               <p>View tasks by selecting a Treasury</p>
@@ -38,12 +37,11 @@ export default function ContributionManagerComponent({
                 <SelectTreasuryToManage treasuryInfos={treasuryInfos} />
                 <DialogTreasury />
                 <DialogEscrow />
-                <DialogTask />
               </div>
             </>
           </PlaceholderComponent>
         </div>
-        <div className="col-span-1 row-span-1">
+        <div className="col-span-2">
           <PlaceholderComponent
             name="Find Tasks I need to manage"
             userStory="CONTRIBUTION-005"

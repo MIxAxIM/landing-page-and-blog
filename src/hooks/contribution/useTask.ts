@@ -1,6 +1,7 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { type Task, TaskStatus } from "@prisma/client";
+import { type Task } from "~/types/db";
+import { TaskStatus } from "@prisma/client";
 import { useMemo } from "react";
 import { type SortConfig } from "~/types/sorting";
 import { getNestedValue } from "../useSort";
@@ -28,21 +29,11 @@ type UpdateTaskInput = {
   expirationTime: string;
 };
 
-export type ExtendedTask = Task & {
-  escrow?: {
-    id: string;
-    escrowNftPolicyId: string;
-    treasuryId: string;
-    contributorPolicyIds: string[];
-  };
-  isEditable?: boolean;
-};
-
 interface UseTaskReturn {
   // Data
-  task: ExtendedTask | null | undefined;
-  tasks: ExtendedTask[];
-  filteredTasks: ExtendedTask[];
+  task: Task | null | undefined;
+  tasks: Task[];
+  filteredTasks: Task[];
   // Loading states
   isLoading: boolean;
   // Mutations
@@ -97,7 +88,7 @@ export function useTask({
         data.map((task) => ({
           ...task,
           isEditable: isTaskEditable(task.status),
-        })),
+        })) as Task[],
     },
   );
 

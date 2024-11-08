@@ -10,16 +10,16 @@ import {
 const createEscrowSchema = z.object({
   title: z.string().optional(),
   escrowNftPolicyId: z.string().min(1),
-  contributorPolicyIds: z.array(z.string()),
   treasuryId: z.string().min(1),
+  savedAcceptanceCriteria: z.array(z.string()).default([]),
 });
 
 const updateEscrowSchema = z.object({
-  title: z.string().min(1),
   id: z.string().min(1),
-  escrowNftPolicyId: z.string().min(1).optional(),
-  contributorPolicyIds: z.array(z.string()).optional(),
-  isSyncedWithNetwork: z.boolean().default(false),
+  title: z.string().min(1),
+  escrowNftPolicyId: z.string().min(1).optional(), // TODO: should user be able to update this for any reason?
+  savedAcceptanceCriteria: z.array(z.string()).optional(),
+  isSyncedWithNetwork: z.boolean().optional(),
 });
 
 const updateEscrowSyncStatusSchema = z.object({
@@ -37,7 +37,6 @@ const calculateTotalAda = (tasks: { lovelace: string }[]) => {
 
 export const escrowRouter = createTRPCRouter({
   // Public procedures
-
   getEscrows: publicProcedure.query(async ({ ctx }) => {
     const escrows = await ctx.db.escrow.findMany({
       include: {
@@ -78,6 +77,7 @@ export const escrowRouter = createTRPCRouter({
         include: {
           treasury: true,
           tasks: true,
+          contributorPrerequisites: true,
         },
       });
 
@@ -103,6 +103,29 @@ export const escrowRouter = createTRPCRouter({
         ...escrow,
         totalAda: calculateTotalAda(escrow.tasks),
       }));
+    }),
+
+  getEscrowPrerequisites: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.db.escrow
+        .findUnique({
+          where: { id: input },
+          include: {
+            contributorPrerequisites: {
+              include: {
+                course: {
+                  select: {
+                    id: true,
+                    courseCode: true,
+                    title: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+        .then((escrow) => escrow?.contributorPrerequisites ?? []);
     }),
 
   // Protected procedures
@@ -151,6 +174,8 @@ export const escrowRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       // Delete associated tasks and escrow in a transaction
       return ctx.db.$transaction(async (tx) => {
+        // Delete all contributor prerequisites relations
+
         // Delete all tasks
         await tx.task.deleteMany({
           where: { escrowId: input },
@@ -160,6 +185,42 @@ export const escrowRouter = createTRPCRouter({
         return tx.escrow.delete({
           where: { id: input },
         });
+      });
+    }),
+
+  addPrerequisite: protectedProcedure
+    .input(
+      z.object({
+        escrowId: z.string(),
+        prerequisiteId: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.escrow.update({
+        where: { id: input.escrowId },
+        data: {
+          contributorPrerequisites: {
+            connect: { contributorPolicyId: input.prerequisiteId },
+          },
+        },
+      });
+    }),
+
+  removePrerequisite: protectedProcedure
+    .input(
+      z.object({
+        escrowId: z.string(),
+        prerequisiteId: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.escrow.update({
+        where: { id: input.escrowId },
+        data: {
+          contributorPrerequisites: {
+            disconnect: { contributorPolicyId: input.prerequisiteId },
+          },
+        },
       });
     }),
 });

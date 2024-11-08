@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { type ExtendedTask, useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/contribution/useTask";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import { Form } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
@@ -21,6 +21,7 @@ import { Calendar } from "~/components/ui/calendar";
 import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { type Task } from "~/types/db";
 
 // Validation constants
 const MIN_ADA = 2;
@@ -39,8 +40,12 @@ const FormSchema = z.object({
     .string()
     .min(10, "Description should be at least 10 characters long"),
   acceptanceCriteria: z
-    .array(z.string().min(1, "Criterion cannot be empty"))
-    .min(1, "At least one acceptance criterion is required"),
+    .array(z.string())
+    .transform((criteria) => criteria.filter((c) => c.trim() !== ""))
+    .refine(
+      (criteria) => criteria.length >= 1,
+      "At least one acceptance criteria must be provided",
+    ),
   treasuryId: z.string().min(1, "Please select a treasury"),
   escrowId: z.string().min(1, "Please select an escrow"),
   ada: z
@@ -57,7 +62,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-const TaskDisplay = ({ task }: { task: ExtendedTask }) => {
+const TaskDisplay = ({ task }: { task: Task }) => {
   return (
     <div className="space-y-4">
       <div>
@@ -197,6 +202,50 @@ export default function DialogTask({
     }
   }, [isOpen, form, defaultTreasuryId]);
 
+  // Add this effect after the other useEffect hooks
+  useEffect(() => {
+    if (defaultTreasuryId && treasuries) {
+      const treasury = treasuries.find(
+        (t) => t.treasuryNftPolicyId === defaultTreasuryId,
+      );
+      if (treasury) {
+        form.setValue("treasuryId", treasury.treasuryNftPolicyId);
+        setSelectedTreasuryId(treasury.treasuryNftPolicyId);
+      }
+    }
+  }, [defaultTreasuryId, treasuries, form]);
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "escrowId" && value.escrowId) {
+        const selectedEscrow = filteredEscrows.find(
+          (e) => e.id === value.escrowId,
+        );
+
+        if (selectedEscrow?.savedAcceptanceCriteria?.length) {
+          // Get current criteria (excluding any previously loaded saved criteria)
+          const currentCriteria = (
+            form.getValues("acceptanceCriteria") || []
+          ).filter((criteria) => criteria.trim() !== "");
+
+          // Add saved criteria from escrow if not empty
+          const newCriteria = [
+            ...currentCriteria,
+            ...selectedEscrow.savedAcceptanceCriteria.filter(
+              (criteria) => criteria.trim() !== "",
+            ),
+          ];
+
+          form.setValue("acceptanceCriteria", newCriteria, {
+            shouldValidate: true,
+          });
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, filteredEscrows]);
+
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
 
@@ -228,7 +277,11 @@ export default function DialogTask({
       [TaskStatus.APPROVED]: "View Approved Task",
       [TaskStatus.ON_CHAIN]: "View On-Chain Task",
       [TaskStatus.COMMITMENT_MADE]: "View Task Commitment",
-      [TaskStatus.COMPLETE]: "View Completed Task",
+      [TaskStatus.COMMITMENT_DENIED]: "Task has been denied",
+      [TaskStatus.COMMITMENT_ACCEPTED]:
+        "Task commitment has been accepted and task is complete",
+      [TaskStatus.BACKLOG]: "Task is in backlog",
+      [TaskStatus.ARCHIVED]: "Task is archived",
     };
     return statusTitles[task.status] || "View Task";
   };
@@ -256,7 +309,9 @@ export default function DialogTask({
       const taskData = {
         title: data.title,
         description: data.description,
-        acceptanceCriteria: data.acceptanceCriteria,
+        acceptanceCriteria: data.acceptanceCriteria.filter(
+          (c) => c.trim() !== "",
+        ),
         lovelace: (data.ada * 1000000).toString(),
         expirationTime: data.expirationTime.getTime().toString(),
       };
@@ -287,7 +342,7 @@ export default function DialogTask({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Task" : "Create Task"}
+        openButton={isEditMode ? "Edit Task" : "Draft a new task"}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
@@ -302,7 +357,7 @@ export default function DialogTask({
       >
         <div className="grid gap-4 py-4">
           {!task || task.status === TaskStatus.DRAFT ? (
-            <>
+            <div className="grid grid-cols-2 gap-5">
               <FormSelect
                 name="treasuryId"
                 label="Treasury"
@@ -316,124 +371,151 @@ export default function DialogTask({
                 placeholder="Select a treasury"
                 disabled={!!defaultTreasuryId || isLoading}
               />
-
-              <FormSelect
-                name="escrowId"
-                label="Escrow"
-                form={form}
-                options={filteredEscrows.map((e) => ({
-                  value: e.id,
-                  label: e.title,
-                }))}
-                placeholder="Select an escrow"
-                disabled={!selectedTreasuryId || isLoading}
-              />
-              <FormInput
-                name="title"
-                label="Task Title"
-                form={form}
-                placeholder="Enter a title for this task"
-                disabled={isLoading}
-              />
-
-              <FormInput
-                name="ada"
-                label="Ada Reward"
-                type="number"
-                min={MIN_ADA}
-                max={1000000}
-                form={form}
-                disabled={isLoading}
-              />
-
-              <FormTextArea
-                name="description"
-                label="Description"
-                form={form}
-                placeholder="Enter task description"
-                height={150}
-                disabled={isLoading}
-              />
-
-              <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Acceptance Criteria
-                </label>
-                {acceptanceCriteria.map((_criterion, index) => (
-                  <div key={index} className="flex gap-2">
+              {selectedTreasuryId && filteredEscrows.length > 0 ? (
+                <>
+                  <FormSelect
+                    name="escrowId"
+                    label="Escrow"
+                    form={form}
+                    options={filteredEscrows.map((e) => ({
+                      value: e.id,
+                      label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
+                    }))}
+                    placeholder="Select an escrow"
+                    disabled={!selectedTreasuryId || isLoading}
+                  />
+                  <div>
                     <FormInput
-                      name={`acceptanceCriteria.${index}`}
+                      name="title"
+                      label="Task Title"
                       form={form}
-                      placeholder={`Criterion ${index + 1}`}
+                      placeholder="Enter a title for this task"
                       disabled={isLoading}
                     />
-                    {acceptanceCriteria.length > 1 && (
-                      <Button
-                        type="button"
-                        intent="destructive"
-                        size="sm"
-                        onClick={() => handleRemoveCriterion(index)}
-                        disabled={isLoading}
+
+                    <FormTextArea
+                      name="description"
+                      label="Description"
+                      form={form}
+                      placeholder="Enter task description"
+                      height={150}
+                      disabled={isLoading}
+                    />
+                    <FormInput
+                      name="ada"
+                      label="Ada Reward"
+                      type="number"
+                      min={MIN_ADA}
+                      max={1000000}
+                      form={form}
+                      disabled={isLoading}
+                    />
+                  </div>
+
+                  <div className="mt-3 flex w-full flex-col space-y-2 border-t border-primary pt-3">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Acceptance Criteria
+                    </label>
+                    <div className="flex w-full flex-col">
+                      {acceptanceCriteria.map((_criterion, index) => (
+                        <div
+                          key={index}
+                          className="flex w-full items-center justify-between gap-2"
+                        >
+                          <div className="flex-1">
+                            <FormInput
+                              name={`acceptanceCriteria.${index}`}
+                              form={form}
+                              placeholder={`Criterion ${index + 1}`}
+                              disabled={isLoading}
+                            />
+                          </div>
+                          {acceptanceCriteria.length > 1 && (
+                            <Button
+                              type="button"
+                              intent="destructive"
+                              size="sm"
+                              onClick={() => handleRemoveCriterion(index)}
+                              disabled={isLoading}
+                            >
+                              X
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    <Button
+                      type="button"
+                      intent="secondary"
+                      size="sm"
+                      onClick={handleAddCriterion}
+                      disabled={isLoading}
+                    >
+                      Add Criterion
+                    </Button>
+                    {form.watch("escrowId") &&
+                      filteredEscrows &&
+                      (filteredEscrows.find(
+                        (e) => e?.id === form.watch("escrowId"),
+                      )?.savedAcceptanceCriteria?.length ?? 0) > 0 && (
+                        <Alert>
+                          <AlertTitle>Saved Criteria Loaded</AlertTitle>
+                          <AlertDescription>
+                            Acceptance criteria have been pre-loaded from the
+                            selected escrow. You can modify or remove them as
+                            needed.
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Expiration Date
+                    </label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button intent="outline" disabled={isLoading}>
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {form.watch("expirationTime") ? (
+                            format(form.watch("expirationTime"), "PPP")
+                          ) : (
+                            <span>Select Expiration Date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="z-50 w-auto p-0"
+                        align="start"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
                       >
-                        Remove
-                      </Button>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <Calendar
+                            mode="single"
+                            selected={form.watch("expirationTime")}
+                            onSelect={(date) => {
+                              if (date) {
+                                form.setValue("expirationTime", date, {
+                                  shouldValidate: true,
+                                });
+                              }
+                            }}
+                            disabled={(date) => date < getMinDate()}
+                            initialFocus
+                          />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    {form.formState.errors.expirationTime && (
+                      <p className="text-sm text-red-500">
+                        {form.formState.errors.expirationTime.message}
+                      </p>
                     )}
                   </div>
-                ))}
-                <Button
-                  type="button"
-                  intent="secondary"
-                  size="sm"
-                  onClick={handleAddCriterion}
-                  disabled={isLoading}
-                >
-                  Add Criterion
-                </Button>
-              </div>
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Expiration Date
-                </label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button intent="outline" disabled={isLoading}>
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {form.watch("expirationTime") ? (
-                        format(form.watch("expirationTime"), "PPP")
-                      ) : (
-                        <span>Select Expiration Date</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto p-0"
-                    align="start"
-                    onOpenAutoFocus={(e) => e.preventDefault()}
-                  >
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <Calendar
-                        mode="single"
-                        selected={form.watch("expirationTime")}
-                        onSelect={(date) => {
-                          if (date) {
-                            form.setValue("expirationTime", date, {
-                              shouldValidate: true,
-                            });
-                          }
-                        }}
-                        disabled={(date) => date < getMinDate()}
-                        initialFocus
-                      />
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                {form.formState.errors.expirationTime && (
-                  <p className="text-sm text-red-500">
-                    {form.formState.errors.expirationTime.message}
-                  </p>
-                )}
-              </div>
-            </>
+                </>
+              ) : (
+                <p>No escrows. Please make one first.</p>
+              )}
+            </div>
           ) : (
             <div className="space-y-4">
               <TaskDisplay task={task} />

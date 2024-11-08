@@ -1,3 +1,4 @@
+import { type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 export type Course = RouterOutputs["course"]["getCourse"];
@@ -30,7 +31,63 @@ export type AssignmentCommitment = {
 };
 
 // Contribution Features
-export type Treasury = RouterOutputs["treasury"]["getTreasuryById"];
-export type Task = RouterOutputs["task"]["getTaskById"];
+export type Treasury = RouterOutputs["treasury"]["getTreasuryById"] & {
+  _count?: {
+    escrows: number;
+  };
+  totalAda?: number;
+  totalTasks?: number;
+};
 
-export type Escrow = RouterOutputs["escrow"]["getEscrowById"];
+export type Escrow = RouterOutputs["escrow"]["getEscrowById"] & {
+  treasury?: Treasury;
+  tasks?: Task[];
+  contributorPrerequisites?: ContributorPrerequisite[];
+  totalAda?: number;
+};
+
+export type Task = {
+  id: string;
+  index: number;
+  title: string;
+  description: string;
+  acceptanceCriteria: string[];
+  status: TaskStatus;
+  hash: string | null;
+  lovelace: string;
+  expirationTime: string;
+  escrowId: string;
+  escrow?: {
+    id: string;
+    title: string | null;
+    escrowNftPolicyId: string;
+    treasuryId: string;
+    isSyncedWithNetwork: boolean;
+    savedAcceptanceCriteria: string[];
+    contributorPrerequisites?: {
+      contributorPolicyId: string;
+      title: string | null;
+    }[];
+  };
+  isEditable?: boolean;
+};
+
+export type ContributorPrerequisite = {
+  contributorPolicyId: string;
+  title: string | null;
+  courseCode: string;
+  course: {
+    id: string;
+    courseCode: string;
+    title: string;
+  };
+  requiredCourseModules: string[];
+  escrows?: {
+    id: string;
+    title: string | null;
+    escrowNftPolicyId: string;
+    isSyncedWithNetwork: boolean;
+    savedAcceptanceCriteria: string[];
+    treasuryId: string;
+  }[];
+};
