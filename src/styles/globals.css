@@ -16,7 +16,7 @@
     --secondary-foreground: 0 0% 20%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 203 51% 25%;
-    --accent: 39 86% 71%;
+    --accent: 39 89% 79%;
     --accent-foreground: 220 15% 16%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -35,33 +35,44 @@
   }
 
   .dark {
-    --background: 222.2 7.6% 12.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 7.6% 12.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 44% 3.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
+    --background: 222.2 7.6% 12.9%; /* Keeping your original dark bg */
+    --foreground: 210 40% 98%; /* Keeping your original fg */
+
+    --card: 222.2 7.6% 12.9%; /* Keeping your original */
+    --card-foreground: 210 40% 98%; /* Keeping your original */
+
+    --popover: 222.2 44% 3.9%; /* Keeping your original */
+    --popover-foreground: 210 40% 98%; /* Keeping your original */
+
+    --primary: 197 55% 75%; /* Muted blue, less saturated */
     --primary-foreground: 222.2 44% 3.9%;
-    --secondary: 222.2 7.6% 12.9%;
+
+    --secondary: 11 45% 55%; /* Much more muted coral */
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 7.6% 17.5%;
+
+    --muted: 217.2 32.6% 17.5%; /* Keeping your original */
+    --muted-foreground: 215 20.2% 65.1%; /* Keeping your original */
+
+    --accent: 39 35% 55%; /* Very muted warm accent */
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+
+    --destructive: 0 45% 40%; /* Calmer destructive red */
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-    --warning: 38 61% 65%;
-    --warning-foreground: 38 92% 50%;
-    --success: 136 61% 65%;
+
+    --border: 217.2 32.6% 17.5%; /* Keeping your original */
+    --input: 217.2 32.6% 17.5%; /* Keeping your original */
+    --ring: 197 45% 65%; /* Muted ring color */
+
+    --warning: 38 45% 55%; /* Much more muted warning */
+    --warning-foreground: 38 92% 50%; /* Keeping your original */
+
+    --success: 136 35% 55%; /* Muted success green */
     --success-foreground: 210 40% 98%;
-    --editor-blue: 217 90% 85%;
-    --editor-green: 92 90% 85%;
-    --editor-orange: 21 90% 85%;
-    --editor-yellow: 39 90% 85%;
+
+    --editor-blue: 217 45% 75%; /* More muted editor colors */
+    --editor-green: 92 45% 75%;
+    --editor-orange: 21 45% 75%;
+    --editor-yellow: 39 45% 75%;
   }
 }
 
