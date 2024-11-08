@@ -3,13 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
-import { Form } from "~/components/ui/form";
+import { Form, FormLabel } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
 import FormInput from "~/components/form/form-input";
 import FormSelect from "~/components/form/form-select";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import useCourseModuleList from "~/hooks/course/useCourseModuleList";
+import { Checkbox } from "~/components/ui/checkbox";
 
 const FormSchema = z.object({
   title: z.string().optional(),
@@ -82,17 +83,21 @@ export default function DialogPrerequisite({
     if (!isOpen) return;
 
     const subscription = form.watch((value, { name }) => {
-      if (name === "courseCode") {
+      if (name === "courseCode" && value.courseCode) {
         setSelectedCourseCode(value.courseCode ?? "");
         // Reset module selections when course changes
-        if (!isEditMode) {
-          form.setValue("requiredCourseModules", []);
+        if (!isEditMode && courseModuleList) {
+          form.setValue(
+            "requiredCourseModules",
+            courseModuleList.map((m) => m.moduleCode),
+            { shouldValidate: true },
+          );
         }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [form, isEditMode, isOpen]);
+  }, [form, isEditMode, isOpen, courseModuleList]);
 
   // Reset form when dialog closes
   useEffect(() => {
@@ -103,22 +108,6 @@ export default function DialogPrerequisite({
       }
     }
   }, [isOpen, form, defaultCourseCode]);
-
-  const requiredModules = form.watch("requiredCourseModules");
-
-  const handleAddModule = () => {
-    const newModules = [...requiredModules, ""];
-    form.setValue("requiredCourseModules", newModules, {
-      shouldValidate: true,
-    });
-  };
-
-  const handleRemoveModule = (index: number) => {
-    const newModules = requiredModules.filter((_, i) => i !== index);
-    form.setValue("requiredCourseModules", newModules, {
-      shouldValidate: true,
-    });
-  };
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -143,7 +132,9 @@ export default function DialogPrerequisite({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Prerequisite" : "Create Prerequisite"}
+        openButton={
+          isEditMode ? "Edit Prerequisite" : "Create New Prerequisite"
+        }
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
@@ -161,8 +152,6 @@ export default function DialogPrerequisite({
         setIsOpen={setIsOpen}
       >
         <div className="grid gap-4 py-4">
-          <pre>{JSON.stringify(courseModuleList, null, 2)}</pre>
-          <pre>SELECTED COURSE CODE: {selectedCourseCode}</pre>
           <FormInput
             name="title"
             label="Title"
@@ -190,47 +179,95 @@ export default function DialogPrerequisite({
             disabled={!!defaultCourseCode || isLoading}
           />
 
-          {selectedCourseCode && (
-            <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Required Modules
-              </label>
-              {requiredModules.map((_, index) => (
-                <div key={index} className="flex gap-2">
-                  <FormSelect
-                    name={`requiredCourseModules.${index}`}
-                    form={form}
-                    options={
-                      courseModuleList?.map((module) => ({
-                        value: module.moduleCode,
-                        label: module.title,
-                      })) ?? []
+          {selectedCourseCode && courseModuleList && (
+            <div className="mt-5 w-2/3 space-y-4">
+              <div className="flex items-center gap-5">
+                <FormLabel className="">Required Modules</FormLabel>
+                <Button
+                  type="button"
+                  intent="secondary"
+                  size="sm"
+                  onClick={() => {
+                    const allModuleCodes = courseModuleList.map(
+                      (m) => m.moduleCode,
+                    );
+                    const currentModules = form.getValues(
+                      "requiredCourseModules",
+                    );
+
+                    // If all are selected, clear the selection
+                    if (currentModules.length === allModuleCodes.length) {
+                      form.setValue("requiredCourseModules", [], {
+                        shouldValidate: true,
+                      });
+                    } else {
+                      // Otherwise, select all
+                      form.setValue("requiredCourseModules", allModuleCodes, {
+                        shouldValidate: true,
+                      });
                     }
-                    placeholder={`Select module ${index + 1}`}
-                    disabled={isLoading}
-                  />
-                  {requiredModules.length > 1 && (
-                    <Button
-                      type="button"
-                      intent="destructive"
-                      size="sm"
-                      onClick={() => handleRemoveModule(index)}
-                      disabled={isLoading}
+                  }}
+                  disabled={isLoading}
+                >
+                  {form.watch("requiredCourseModules").length ===
+                  courseModuleList.length
+                    ? "Unselect All"
+                    : "Select All"}
+                </Button>
+              </div>
+
+              <div className="overflow-y-auto rounded border">
+                {courseModuleList.map((module) => {
+                  const isSelected = form
+                    .watch("requiredCourseModules")
+                    .includes(module.moduleCode);
+
+                  return (
+                    <div
+                      key={module.moduleCode}
+                      className="flex items-center gap-3 py-1 text-foreground"
                     >
-                      Remove
-                    </Button>
-                  )}
-                </div>
-              ))}
-              <Button
-                type="button"
-                intent="secondary"
-                size="sm"
-                onClick={handleAddModule}
-                disabled={isLoading}
-              >
-                Add Module
-              </Button>
+                      <Checkbox
+                        id={`module-${module.moduleCode}`}
+                        checked={isSelected}
+                        onCheckedChange={(checked) => {
+                          const currentModules = form.getValues(
+                            "requiredCourseModules",
+                          );
+                          let newModules: string[];
+
+                          if (checked) {
+                            newModules = [...currentModules, module.moduleCode];
+                          } else {
+                            newModules = currentModules.filter(
+                              (m) => m !== module.moduleCode,
+                            );
+                          }
+
+                          form.setValue("requiredCourseModules", newModules, {
+                            shouldValidate: true,
+                          });
+                        }}
+                        disabled={isLoading}
+                      />
+                      <label
+                        htmlFor={`module-${module.moduleCode}`}
+                        className="cursor-pointer"
+                      >
+                        <div className="">
+                          {module.moduleCode}: {module.title}
+                        </div>
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {form.formState.errors.requiredCourseModules && (
+                <p className="text-sm text-destructive">
+                  {form.formState.errors.requiredCourseModules.message}
+                </p>
+              )}
             </div>
           )}
         </div>

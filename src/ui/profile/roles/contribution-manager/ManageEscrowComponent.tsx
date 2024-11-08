@@ -3,6 +3,7 @@ import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 import { Badge } from "~/components/ui/badge";
+import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
 
 export default function ManageEscrowComponent({
   escrowCode,
@@ -17,7 +18,6 @@ export default function ManageEscrowComponent({
         <div className="col-span-6 mb-12 flex flex-row items-center justify-between">
           <h1 className="text-4xl">{escrow?.title}</h1>
           <div className="space-x-2">
-            <DialogPrerequisite />
             <DialogEscrow id={escrow?.id} />
           </div>
         </div>
@@ -44,9 +44,14 @@ export default function ManageEscrowComponent({
         <div className="col-span-3">
           <PlaceholderComponent name="List of Prereqs">
             <div>
-              <pre>
-                {JSON.stringify(escrow?.contributorPrerequisites, null, 2)}
-              </pre>
+              <p>
+                To commit to a task in this Circle, a Contributor must complete
+                the following Course prerequisites
+              </p>
+              {!!escrow?.id && (
+                <PrerequisiteSelectionManager escrowId={escrow.id} />
+              )}
+              <DialogPrerequisite />
             </div>
           </PlaceholderComponent>
         </div>
