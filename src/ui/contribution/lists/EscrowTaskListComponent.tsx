@@ -9,17 +9,17 @@ import DialogTask from "../dialogs/DialogTask";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
-import { type Task } from "~/types/db";
+import { type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/useSort";
 import { Button } from "~/components/ui/button";
 
 export default function EscrowTaskListComponent({
-  tasks,
+  escrow,
   treasuryId,
   showFilters = true,
   className = "",
 }: {
-  tasks: Task[];
+  escrow?: Escrow;
   treasuryId?: string;
   showFilters?: boolean;
   className?: string;
@@ -38,7 +38,7 @@ export default function EscrowTaskListComponent({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter and sort tasks
-  const filteredTasks = tasks
+  const filteredTasks = escrow?.tasks
     .filter((task) => {
       // Status filter
       if (!selectedStatuses.includes(task.status)) return false;
@@ -112,23 +112,23 @@ export default function EscrowTaskListComponent({
                 sortKey="index"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-12 text-primary-foreground"
+                className="min-w-12 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Title"
                 sortKey="title"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-40 text-primary-foreground"
+                className="min-w-40 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Description"
                 sortKey="description"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-48 text-primary-foreground"
+                className="min-w-48 text-primary-foreground"
               />
-              <TableHead className="w-1/6 text-primary-foreground">
+              <TableHead className="min-w-1/6 text-primary-foreground">
                 Acceptance Criteria
               </TableHead>
               <SortableTableHeader
@@ -136,42 +136,47 @@ export default function EscrowTaskListComponent({
                 sortKey="expirationTime"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-32 text-primary-foreground"
+                className="min-w-32 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Ada"
                 sortKey="lovelace"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-20 text-primary-foreground"
+                className="min-w-20 text-primary-foreground"
               />
               <SortableTableHeader
                 label="Status"
                 sortKey="status"
                 sortConfig={sortConfig}
                 onSort={requestSort}
-                className="w-28 text-primary-foreground"
+                className="min-w-28 text-primary-foreground"
               />
-              <TableHead className="w-24 text-primary-foreground">
+              <TableHead className="min-w-24 text-primary-foreground">
                 Actions
               </TableHead>
             </TableRow>
           </thead>
           <tbody>
-            {filteredTasks.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={9} className="h-24 text-center">
-                  No tasks found
+            {filteredTasks?.length === 0 ? (
+              <TableRow className="">
+                <TableCell colSpan={8}>
+                  <div className="flex w-full flex-col items-center justify-center gap-y-3 py-8">
+                    <p className="">
+                      No tasks found. Get started by drafting one:
+                    </p>
+                    <DialogTask treasuryId={treasuryId} escrow={escrow} />
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
-              filteredTasks.map((task) => (
+              filteredTasks?.map((task) => (
                 <TableRow key={task.id} className="border-t border-black">
                   <TableCell className="align-top">{task.index}</TableCell>
                   <TableCell className="align-top">
-                    {treasuryId && task.escrow ? (
+                    {treasuryId && escrow ? (
                       <Link
-                        href={`/contribution/${treasuryId}/${task.escrow.escrowNftPolicyId}/${task.index}`}
+                        href={`/contribution/${treasuryId}/${escrow.escrowNftPolicyId}/${task.index}`}
                       >
                         {task.title}
                       </Link>
@@ -204,7 +209,7 @@ export default function EscrowTaskListComponent({
                   <TableCell className="items-center justify-center gap-x-2">
                     <DialogTask openButtonSize="sm" id={task.id} />
                     <Link href={`/contribute/task/${task.id}`}>
-                      <Button size="sm">Public Task</Button>
+                      <Button size="dialog">Public Task</Button>
                     </Link>
                   </TableCell>
                 </TableRow>

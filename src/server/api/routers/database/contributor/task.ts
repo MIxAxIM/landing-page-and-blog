@@ -56,6 +56,8 @@ const isValidStatusTransition = (
 
 export const taskRouter = createTRPCRouter({
   // Public procedures
+  // TODO: Currently unused:
+  // when might it be helpful to get all Andamio tasks?
   getTasks: publicProcedure.query(({ ctx }) => {
     return ctx.db.task.findMany({
       include: {
@@ -73,6 +75,8 @@ export const taskRouter = createTRPCRouter({
     });
   }),
 
+  // TODO: currently unused, but referenced in useEscrowTaskBoard, which might be helpful in some contributor-facing user stories
+  // Does a kanban view lead to delight?
   getEscrowTasks: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.db.task.findMany({
       where: { escrowId: input },
@@ -256,6 +260,7 @@ export const taskRouter = createTRPCRouter({
       });
     }),
 
+  // TODO: Currently unused. When might this rout be helpful?
   getTasksByStatus: publicProcedure
     .input(
       z.object({

@@ -145,9 +145,9 @@ export function useTask({
   const refreshQueries = async () => {
     await Promise.all([
       // Invalidate all relevant queries
-      ctx.task.getTasks.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
       ctx.task.getTreasuryTasks.invalidate(),
+      ctx.escrow.getEscrowByPolicyId.invalidate(),
       treasuryNftPolicyId &&
         ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
       // If we have a specific task ID, invalidate that too

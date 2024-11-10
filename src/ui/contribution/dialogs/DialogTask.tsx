@@ -155,7 +155,7 @@ export default function DialogTask({
       description: "",
       acceptanceCriteria: [""],
       treasuryId: defaultTreasuryId ?? "",
-      escrowId: defaultEscrowId ?? "",
+      escrowId: defaultEscrowId ?? escrow?.id ?? "",
       ada: MIN_ADA,
       expirationTime: getMinDate(),
     },

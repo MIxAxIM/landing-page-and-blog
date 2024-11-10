@@ -80,8 +80,8 @@ export function useEscrow({
       ctx.escrow.getEscrows.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
       ctx.escrow.getTreasuryEscrows.invalidate(),
+      ctx.escrow.getEscrowByPolicyId.invalidate(),
       id ? ctx.escrow.getEscrowById.invalidate(id) : Promise.resolve(),
-      id ? ctx.escrow.getEscrowByPolicyId.invalidate(id) : Promise.resolve(),
     ]);
 
     // Explicit refetch calls

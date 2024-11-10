@@ -1,6 +1,8 @@
 import { api } from "~/utils/api";
 import { TaskStatus } from "@prisma/client";
 
+// TODO: This hook is currently unused, and is provided as an example. If it's helpful in a User Story, be sure to use it
+
 export function useTaskBoard(escrowId?: string) {
   const { data: tasks, isLoading } = api.task.getEscrowTasks.useQuery(
     escrowId ?? "",
