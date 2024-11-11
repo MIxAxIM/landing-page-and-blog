@@ -2,9 +2,9 @@ import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisi
 import { useTreasury } from "~/hooks/contribution/useTreasury";
 import { type Task } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
-import { PrerequisiteItem } from "./selection/PrerequisiteSelectionManager";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import { ChatContainer } from "~/components/chat/chat-container";
+import { PrerequisiteItem } from "./lists/PrerequisiteList";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
   const { treasury } = useTreasury(task.escrow?.treasuryId);
