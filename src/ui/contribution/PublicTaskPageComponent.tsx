@@ -12,9 +12,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
     escrowId: task.escrow?.id,
   });
   return (
-    <div className="mx-auto my-24 max-w-5xl space-y-10 rounded-sm border border-primary p-5">
-      <PlaceholderComponent name="If I am committed to this task, view submission UI. I can see how to submit evidence of work, receive feedback, and check the status of submissions." userStory="CONTRIBUTION-010" />
-      <PlaceholderComponent name="Commit to this task" userStory="CONTRIBUTION-011" />
+    <div className="mx-auto my-24 w-full space-y-10 rounded-sm border border-primary p-5">
       <h1 className="my-10 text-4xl">Task: {task.title}</h1>
       <p className="prose text-2xl">
         This is task in the {task.escrow?.title} circle in the {treasury?.title}{" "}
@@ -55,6 +53,8 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
       <div className="rounded-md bg-background text-foreground">
         <ChatContainer roomId={task.id} />
       </div>
+      <PlaceholderComponent name="If I am committed to this task, view submission UI. I can see how to submit evidence of work, receive feedback, and check the status of submissions." userStory="CONTRIBUTION-010" />
+      <PlaceholderComponent name="Commit to this task" userStory="CONTRIBUTION-011" />
       <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
       <PlaceholderComponent name="what user stories are picked up here?" />
     </div>
