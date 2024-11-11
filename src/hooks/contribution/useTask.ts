@@ -2,7 +2,7 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { type Task } from "~/types/db";
 import { TaskStatus } from "@prisma/client";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type SortConfig } from "~/types/sorting";
 import { getNestedValue } from "../useSort";
 
@@ -67,6 +67,8 @@ export function useTask({
   sortConfig?: SortConfig;
 }): UseTaskReturn {
   const ctx = api.useUtils();
+  const [allTasks, setAllTasks] = useState<Task[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Single task query
   const taskQuery = api.task.getTaskById.useQuery(id ?? "", {
@@ -80,8 +82,10 @@ export function useTask({
     },
   });
 
+  const { data: allTasksQueryData, isLoading: isLoadingAllTasks } = api.task.getTasks.useQuery(undefined, { enabled: !treasuryNftPolicyId && !id })
+
   // Treasury tasks query - get all tasks first
-  const { data: allTasks = [], isLoading: isLoadingTreasuryTasks } =
+  const { data: allTreasuryTasksQueryData, isLoading: isLoadingAllTreasuryTasks } =
     api.task.getTreasuryTasks.useQuery(
       { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
       {
@@ -93,6 +97,21 @@ export function useTask({
           })) as Task[],
       },
     );
+
+  useEffect(() => {
+    if (isLoadingAllTasks || isLoadingAllTreasuryTasks) {
+      setIsLoading(true)
+    }
+
+    if (!!allTasksQueryData) {
+      setAllTasks(allTasksQueryData)
+      setIsLoading(false)
+    }
+    if (!!allTreasuryTasksQueryData) {
+      setAllTasks(allTreasuryTasksQueryData)
+      setIsLoading(false)
+    }
+  }, [allTasksQueryData, isLoadingAllTasks, allTreasuryTasksQueryData, isLoadingAllTreasuryTasks])
 
   // Filter and sort tasks using useMemo
   const processedTasks = useMemo(() => {
@@ -107,15 +126,15 @@ export function useTask({
     // Then filter by search query
     const searchFiltered = searchQuery.trim()
       ? filtered.filter((task) => {
-          const searchLower = searchQuery.toLowerCase();
-          return (
-            task.title.toLowerCase().includes(searchLower) ||
-            task.description.toLowerCase().includes(searchLower) ||
-            task.acceptanceCriteria.some((criteria) =>
-              criteria.toLowerCase().includes(searchLower),
-            )
-          );
-        })
+        const searchLower = searchQuery.toLowerCase();
+        return (
+          task.title.toLowerCase().includes(searchLower) ||
+          task.description.toLowerCase().includes(searchLower) ||
+          task.acceptanceCriteria.some((criteria) =>
+            criteria.toLowerCase().includes(searchLower),
+          )
+        );
+      })
       : filtered;
 
     // Then sort
@@ -149,7 +168,7 @@ export function useTask({
       ctx.task.getTreasuryTasks.invalidate(),
       ctx.escrow.getEscrowByPolicyId.invalidate(),
       treasuryNftPolicyId &&
-        ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
+      ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
       // If we have a specific task ID, invalidate that too
       id ? ctx.task.getTaskById.invalidate(id) : Promise.resolve(),
       // If we have a treasury ID, invalidate that specific query
@@ -263,7 +282,7 @@ export function useTask({
     task: taskQuery.data ?? null,
     tasks: allTasks,
     filteredTasks: processedTasks,
-    isLoading: isLoadingTreasuryTasks,
+    isLoading: isLoading,
     isLoadingTask: taskQuery.isLoading,
     createTask: createTaskMutation.mutate,
     updateTask: updateTaskMutation.mutate,
