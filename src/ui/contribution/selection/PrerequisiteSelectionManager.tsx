@@ -18,7 +18,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { type ContributorPrerequisite } from "~/types/db";
 import DialogPrerequisite from "../dialogs/DialogPrerequisite";
-import { Input } from "~/components/ui/input";
 
 interface PrerequisiteManagerProps {
   escrowId: string;
@@ -36,7 +35,6 @@ export default function PrerequisiteManager({
     escrowPrerequisites,
     addPrerequisiteToEscrow,
     removePrerequisiteFromEscrow,
-    isAdding,
     isRemoving,
   } = useEscrowPrerequisites({ escrowId });
 
@@ -62,6 +60,7 @@ export default function PrerequisiteManager({
     return unassignedPrerequisites.filter((prereq) => {
       // Search in prerequisite title
       if (prereq.title?.toLowerCase().includes(query)) return true;
+
 
       // Search in course requirements
       return prereq.courseRequirements.some((req) => {
