@@ -1,12 +1,24 @@
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { type ContributorPrerequisite } from "~/types/db";
-import DialogPrerequisite from "../dialogs/DialogPrerequisite";
 import { PrerequisiteItem, PrerequisiteList } from "../lists/PrerequisiteList";
-import { SearchableCombobox } from "~/components/ui/SearchableCombobox";
+import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import Fuse from 'fuse.js';
+
+const fuseOptions = {
+  keys: [
+    { name: 'title', weight: 0.7 },
+    { name: 'contributorPolicyId', weight: 0.3 },
+    { name: 'courseRequirements.courseCode', weight: 0.5 },
+    { name: 'courseRequirements.course.title', weight: 0.6 },
+    { name: 'courseRequirements.requiredModules', weight: 0.4 }
+  ],
+  threshold: 0.3,
+  minMatchCharLength: 2,
+  ignoreLocation: true
+};
 
 interface PrerequisiteManagerProps {
   escrowId: string;
@@ -26,6 +38,8 @@ export default function PrerequisiteManager({
     isRemoving,
   } = useEscrowPrerequisites({ escrowId });
 
+  const [value, setValue] = useState<string | null>(null);
+
   const unassignedPrerequisites = useMemo(() => {
     return prerequisites.filter(
       (prereq) =>
@@ -35,54 +49,25 @@ export default function PrerequisiteManager({
     );
   }, [escrowPrerequisites, prerequisites]);
 
-  const filterPrerequisites = useCallback((items: ContributorPrerequisite[], query: string) => {
-    if (!query) return items;
+  // Create memoized Fuse instance
+  const fuse = useMemo(() => {
+    return new Fuse(unassignedPrerequisites, fuseOptions);
+  }, [unassignedPrerequisites]);
 
-    const searchTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const prerequisiteByValue = useMemo(
+    () => value && unassignedPrerequisites?.find(prereq => prereq.id === value) || null,
+    [value, unassignedPrerequisites]
+  );
 
-
-    const fuseOptions = {
-      keys: [
-        { name: 'title', weight: 0.7 },
-        { name: 'courseRequirements.courseCode', weight: 0.5 },
-        { name: 'courseRequirements.course.title', weight: 1.0 },
-        { name: 'courseRequirements.requiredModules', weight: 0.3 },
-      ],
-      threshold: 0.3,
-      minMatchCharLength: 2,
-      ignoreLocation: true,
-      shouldSort: true,
-      useExtendedSearch: true,
-      getFn: (obj: ContributorPrerequisite, path: string | string[]) => {
-        // Special handling for courseRequirements
-        if (path[0] === 'courseRequirements') {
-          const lastPathSegment = path[path.length - 1];
-          // Concatenate all values from the array of courseRequirements
-          return obj.courseRequirements.map(req => {
-            if (lastPathSegment === 'courseCode') return req.courseCode;
-            if (lastPathSegment === 'title') return req.course?.title;
-            if (lastPathSegment === 'requiredModules') return req.requiredModules.join(' ');
-            return '';
-          }).join(' '); // Join all values with spaces
-        }
-        // Default Fuse.js getter for other fields
-        return Fuse.config.getFn(obj, path);
-      }
-    };
-
-    const fuse = new Fuse(items, fuseOptions);
-    const fuseQuery = {
-      $and: searchTerms.map(term => ({
-        $or: fuseOptions.keys.map(key => ({
-          [typeof key === 'object' ? key.name : key]: term
-        }))
-      }))
-
+  useEffect(() => {
+    if (prerequisiteByValue) {
+      void addPrerequisiteToEscrow({
+        escrowId: escrowId,
+        prerequisiteId: prerequisiteByValue.contributorPolicyId
+      });
+      setValue(null);
     }
-    const results = fuse.search(fuseQuery);
-
-    return results.map(result => result.item)
-  }, []);
+  }, [prerequisiteByValue, escrowId, addPrerequisiteToEscrow]);
 
   if (!prerequisites?.length) {
     return (
@@ -110,32 +95,39 @@ export default function PrerequisiteManager({
           <div className="font-medium text-muted-foreground">
             Add Prerequisite
           </div>
-          <SearchableCombobox<ContributorPrerequisite>
-            items={unassignedPrerequisites}
-            triggerText="Add a Contributor Prerequisite"
-            searchPlaceholder="search Andamio network for prereqs"
-            emptyStateComponent={
-              <div>
-                <p className="prose my-2 px-8">
-                  No prereqs available for this search term. Want to make a new one?
-                </p>
-                <DialogPrerequisite />
-              </div>
-            }
-            onSelect={(prerequisite) =>
-              addPrerequisiteToEscrow({
-                escrowId,
-                prerequisiteId: prerequisite.contributorPolicyId,
+          <ComboBox
+            value={value}
+            onValueChange={setValue}
+            filterItems={(inputValue, items) =>
+              items.filter(({ value }) => {
+                if (!inputValue) return true;
+
+                const prereq = unassignedPrerequisites.find(p => p.id === value);
+                if (!prereq) return false;
+
+                // Use Fuse to search the prerequisite
+                const results = fuse.search(inputValue);
+                return results.some(result => result.item.id === prereq.id);
               })
             }
-            renderItem={(prerequisite) => (
-              <div className="my-2 w-full border-t border-primary py-2">
-                <PrerequisiteItem prerequisite={prerequisite} />
-              </div>
-            )}
-            filterItems={filterPrerequisites}
-            getItemValue={(prerequisite) => prerequisite.contributorPolicyId}
-          />
+          >
+            <ComboboxInput
+              placeholder="Search prerequisites..."
+              className="w-full"
+            />
+            <ComboboxContent>
+              {unassignedPrerequisites.map((prereq) => (
+                <ComboboxItem
+                  key={prereq.id}
+                  value={prereq.id}
+                  label={prereq.title ?? "Untitled Prerequisite"}
+                >
+                  <PrerequisiteItem prerequisite={prereq} />
+                </ComboboxItem>
+              ))}
+              <ComboboxEmpty>No matching prerequisites found.</ComboboxEmpty>
+            </ComboboxContent>
+          </ComboBox>
         </div>
       )}
     </div>
