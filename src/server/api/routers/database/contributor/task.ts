@@ -56,15 +56,83 @@ const isValidStatusTransition = (
 
 export const taskRouter = createTRPCRouter({
   // Public procedures
-  // TODO: Currently unused:
-  // when might it be helpful to get all Andamio tasks?
-  getTasks: publicProcedure.query(({ ctx }) => {
-    return ctx.db.task.findMany({
-      include: {
-        escrow: true,
-      },
-    });
-  }),
+  // task.ts router
+  getTasks: publicProcedure
+    .input(
+      z.object({
+        search: z.string().optional(),
+        status: z.array(z.nativeEnum(TaskStatus)).optional(),
+        limit: z.number().min(1).max(100).optional(),
+        cursor: z.object({
+          index: z.number(),
+          escrowId: z.string(),
+        }).optional(),
+      }).optional()
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input?.limit ?? 50;
+      const cursor = input?.cursor;
+
+      // Build where conditions
+      const whereConditions: any[] = [];
+
+      if (input?.search) {
+        whereConditions.push({
+          OR: [
+            { title: { contains: input.search, mode: 'insensitive' } },
+            { description: { contains: input.search, mode: 'insensitive' } },
+            { acceptanceCriteria: { has: input.search } },
+          ],
+        });
+      }
+
+      if (input?.status) {
+        whereConditions.push({
+          status: { in: input.status },
+        });
+      }
+
+      const tasks = await ctx.db.task.findMany({
+        take: limit + 1,
+        where: whereConditions.length > 0 ? { AND: whereConditions } : undefined,
+        cursor: cursor ? {
+          escrowId_index: {  // This matches your @@unique constraint
+            escrowId: cursor.escrowId,
+            index: cursor.index,
+          }
+        } : undefined,
+        orderBy: [
+          { escrowId: 'asc' },
+          { index: 'asc' },
+        ],
+        include: {
+          escrow: {
+            select: {
+              id: true,
+              title: true,
+              escrowNftPolicyId: true,
+              treasuryId: true,
+              isSyncedWithNetwork: true,
+              savedAcceptanceCriteria: true,
+            },
+          },
+        },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (tasks.length > limit) {
+        const nextItem = tasks.pop()!;
+        nextCursor = {
+          escrowId: nextItem.escrowId,
+          index: nextItem.index,
+        };
+      }
+
+      return {
+        items: tasks,
+        nextCursor,
+      };
+    }),
 
   getTaskById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.db.task.findUnique({
@@ -340,10 +408,10 @@ export const taskRouter = createTRPCRouter({
               tasks: {
                 where: input.status
                   ? {
-                      status: {
-                        in: input.status,
-                      },
-                    }
+                    status: {
+                      in: input.status,
+                    },
+                  }
                   : undefined,
                 orderBy: { index: "asc" },
               },

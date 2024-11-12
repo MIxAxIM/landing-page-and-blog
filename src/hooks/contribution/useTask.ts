@@ -5,6 +5,7 @@ import { TaskStatus } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
 import { type SortConfig } from "~/types/sorting";
 import { getNestedValue } from "../useSort";
+import { useDebounce } from "../useDebounce";
 
 const isTaskEditable = (status: TaskStatus) => status === TaskStatus.DRAFT;
 
@@ -69,6 +70,9 @@ export function useTask({
   const ctx = api.useUtils();
   const [allTasks, setAllTasks] = useState<Task[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [debouncedSearch] = useDebounce(searchQuery, 300);
+
+  console.log("debouncedSearch", debouncedSearch)
 
   // Single task query
   const taskQuery = api.task.getTaskById.useQuery(id ?? "", {
@@ -82,12 +86,16 @@ export function useTask({
     },
   });
 
-  const { data: allTasksQueryData, isLoading: isLoadingAllTasks } = api.task.getTasks.useQuery(undefined, { enabled: !treasuryNftPolicyId && !id })
+  const { data: allTasksQueryData, isLoading: isLoadingAllTasks } = api.task.getTasks.useQuery({
+    search: debouncedSearch,
+    status: selectedStatuses,
+    limit: 100,
+  }, { enabled: !treasuryNftPolicyId && !id })
 
   // Treasury tasks query - get all tasks first
   const { data: allTreasuryTasksQueryData, isLoading: isLoadingAllTreasuryTasks } =
     api.task.getTreasuryTasks.useQuery(
-      { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
+      { treasuryNftPolicyId: treasuryNftPolicyId ?? "", status: selectedStatuses },
       {
         enabled: !!treasuryNftPolicyId,
         select: (data) =>
@@ -104,7 +112,7 @@ export function useTask({
     }
 
     if (!!allTasksQueryData) {
-      setAllTasks(allTasksQueryData)
+      setAllTasks(allTasksQueryData.items)
       setIsLoading(false)
     }
     if (!!allTreasuryTasksQueryData) {
@@ -115,39 +123,24 @@ export function useTask({
 
   // Filter and sort tasks using useMemo
   const processedTasks = useMemo(() => {
-    // First filter
+    // Filter by escrows (keeping this client-side as it's post-query filtering)
     const filtered = allTasks.filter(
       (task) =>
-        selectedStatuses.includes(task.status) &&
-        (selectedEscrows.length === 0 ||
-          selectedEscrows.includes(task.escrow?.id ?? "")),
+        selectedEscrows.length === 0 ||
+        selectedEscrows.includes(task.escrow?.id ?? ""),
     );
 
-    // Then filter by search query
-    const searchFiltered = searchQuery.trim()
-      ? filtered.filter((task) => {
-        const searchLower = searchQuery.toLowerCase();
-        return (
-          task.title.toLowerCase().includes(searchLower) ||
-          task.description.toLowerCase().includes(searchLower) ||
-          task.acceptanceCriteria.some((criteria) =>
-            criteria.toLowerCase().includes(searchLower),
-          )
-        );
-      })
-      : filtered;
+    // Sort
+    if (!sortConfig.key) return filtered;
 
-    // Then sort
-    if (!sortConfig.key) return searchFiltered;
-
-    return [...searchFiltered].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       const aValue = getNestedValue(a, sortConfig.key);
       const bValue = getNestedValue(b, sortConfig.key);
 
       if (aValue === null || aValue === undefined) return 1;
       if (bValue === null || bValue === undefined) return -1;
 
-      // Handle numeric values (including string representations)
+      // Handle numeric values
       if (!isNaN(Number(aValue)) && !isNaN(Number(bValue))) {
         return sortConfig.direction === "asc"
           ? Number(aValue) - Number(bValue)
@@ -158,7 +151,7 @@ export function useTask({
       const compareResult = String(aValue).localeCompare(String(bValue));
       return sortConfig.direction === "asc" ? compareResult : -compareResult;
     });
-  }, [allTasks, selectedStatuses, selectedEscrows, searchQuery, sortConfig]);
+  }, [allTasks, selectedEscrows, sortConfig]);
 
   // Helper function to invalidate and refetch queries
   const refreshQueries = async () => {
