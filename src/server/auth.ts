@@ -23,6 +23,9 @@ declare module "next-auth" {
       id: string;
       creatorId: string;
       learnerId: string;
+      treasuryOwnerId: string;
+      contributionManagerId: string;
+      contributorId: string;
       unconfirmedTx: string;
       accessTokenMintTx: string;
       hasMintedAccessToken: boolean;
@@ -31,6 +34,8 @@ declare module "next-auth" {
       tncVersion: string;
       // ...other properties
       // role: UserRole;
+      // stripe
+      stripeCustomerId: string;
     };
   }
 
@@ -53,6 +58,9 @@ export const authOptions: NextAuthOptions = {
         include: {
           creator: true,
           learner: { select: { id: true, lessons: true, assignments: true } },
+          treasuryOwner: true,
+          contributionManager: true,
+          contributor: true,
         },
       });
 
@@ -63,6 +71,10 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           creatorId: _user && _user.creator ? _user.creator.id : undefined,
           learnerId: _user && _user.learner ? _user.learner.id : undefined,
+          treasuryOwnerId: _user && _user.treasuryOwner ? _user.treasuryOwner.id : undefined,
+          contributionManagerId: _user && _user.contributionManager ? _user.contributionManager.id : undefined,
+          contributorId: _user && _user.contributor ? _user.contributor.id : undefined,
+
           unconfirmedTx: _user?.unconfirmedTx,
           accessTokenMintTx: _user?.accessTokenMintTx,
           hasMintedAccessToken: _user?.hasMintedAccessToken,
@@ -73,12 +85,12 @@ export const authOptions: NextAuthOptions = {
           assignmentCommitments:
             _user && _user.learner
               ? _user.learner.assignments.map((a) => ({
-                  assignmentId: a.assignmentId,
-                  assignmentCommitmentId: a.id,
-                  learnerNotes: a.learnerNotes,
-                  status: a.status,
-                  archived: a.archived,
-                }))
+                assignmentId: a.assignmentId,
+                assignmentCommitmentId: a.id,
+                learnerNotes: a.learnerNotes,
+                status: a.status,
+                archived: a.archived,
+              }))
               : [],
           tncVersion: _user?.tncVersion,
         },
