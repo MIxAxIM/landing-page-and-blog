@@ -1,13 +1,19 @@
 import { type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
+// Stripe payment types
+export type Subscription = RouterOutputs["billing"]["getCurrentSubscription"]
+
+// Course types
 export type Course = RouterOutputs["course"]["getCourse"];
 export type CoursePublic = RouterOutputs["course"]["getCourses"][number];
 export type CourseModuleOverview =
   RouterOutputs["module"]["getCourseModuleOverviews"][number];
 export type CourseModuleWithAssignmentSummary =
   RouterOutputs["module"]["getCourseModuleWithAssignmentSummary"][number];
-export type User = RouterOutputs["user"]["getUserByName"][number];
+export type User = RouterOutputs["user"]["getUserByName"][number] & {
+  isAdmin: boolean;
+};
 export type Creator = RouterOutputs["creator"]["getCreatorByUser"];
 export type Learner = RouterOutputs["learner"]["getLearnerByUser"];
 export type LearnerSavedCourse =

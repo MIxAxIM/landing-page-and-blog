@@ -2,6 +2,10 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "./routers/database/user/user";
 import { userWalletRouter } from "./routers/database/user/user-wallet";
 
+// stripe routers
+import { billingRouter } from "./routers/stripe/billing";
+import { adminRouter } from "./routers/stripe/admin";
+
 import { courseRouter } from "./routers/database/course/course";
 import { moduleRouter } from "./routers/database/course/module";
 import { courseVariantRouter } from "./routers/database/course/course-variant";
@@ -37,6 +41,10 @@ import { contributorPrerequisiteRouter } from "./routers/database/contributor/co
 export const appRouter = createTRPCRouter({
   user: userRouter,
   userWallet: userWalletRouter,
+
+  billing: billingRouter,
+  admin: adminRouter,
+
   creator: creatorRouter,
   learner: learnerRouter,
 
