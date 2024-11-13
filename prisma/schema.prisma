@@ -66,6 +66,7 @@ model User {
 
   // andamio roles
   roleTypes           RoleType[] // WARNING: check this field in migration
+  isAdmin             Boolean              @default(false)
   learner             Learner?
   creator             Creator?
   treasuryOwner       TreasuryOwner?
@@ -642,6 +643,7 @@ enum StripeSubscriptionStatus {
   past_due
   canceled
   unpaid
+  paused
 }
 
 // where is StripeEvent used?
