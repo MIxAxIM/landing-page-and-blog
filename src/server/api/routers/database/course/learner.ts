@@ -129,4 +129,24 @@ export const learnerRouter = createTRPCRouter({
         },
       });
     }),
+
+
+  updateOnboardingStatus: protectedProcedure
+    .input(
+      z.object({
+        learnerId: z.string().min(1),
+        onboardingStatus: z.enum(["NOT_STARTED", "SKIPPED", "PARTIAL", "COMPLETE"]),
+        onboardingCompletedAt: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.learner.update({
+        where: { id: input.learnerId },
+        data: {
+          onboardingStatus: input.onboardingStatus,
+          onboardingCompletedAt: input.onboardingCompletedAt,
+        },
+      });
+    }),
+
 });

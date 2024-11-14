@@ -1,0 +1,33 @@
+import useTreasuries from "~/hooks/contribution/useTreasuries";
+import ContributionManagerComponent from "./roles/contribution-manager/ContributionManagerComponent";
+import ManageTreasuryComponent from "./roles/contribution-manager/ManageTreasuryComponent";
+import ManageEscrowComponent from "./roles/contribution-manager/ManageEscrowComponent";
+import AppLayout from "./layout/AppLayout";
+
+export default function ContributionManagerPage({
+  selectedTreasuryCode,
+  selectedEscrowCode,
+}: {
+  selectedTreasuryCode?: string;
+  selectedEscrowCode?: string;
+}) {
+  const { treasuries } = useTreasuries();
+
+  const currentTreasury = treasuries?.find(
+    (t) => t.treasuryNftPolicyId === selectedTreasuryCode,
+  );
+
+  return (
+    <AppLayout>
+      {currentTreasury && (
+        <ManageTreasuryComponent treasuryInfo={currentTreasury} />
+      )}
+      {selectedEscrowCode && (
+        <ManageEscrowComponent escrowCode={selectedEscrowCode} />
+      )}
+      {!currentTreasury && !selectedEscrowCode && (
+        <ContributionManagerComponent />
+      )}
+    </AppLayout>
+  );
+}

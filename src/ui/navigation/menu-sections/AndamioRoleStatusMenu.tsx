@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
-import RoleStatus from "~/ui/profile/components/RoleStatus";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import RoleStatus from "~/ui/dashboard/components/RoleStatus";
 
 export default function AndamioRoleStatusMenu({
   dashboardChildRoute,
@@ -19,29 +19,29 @@ export default function AndamioRoleStatusMenu({
             roleDetail={sessionData?.user.name ?? undefined}
           />
           <RoleStatus
-            roleName="Learner Dashboard"
+            roleName="Learner"
             userHasRole={!!sessionData?.user.learnerId}
-            roleInfoUrl="/dashboard/learner"
+            roleInfoUrl="/app/learn"
             current={dashboardChildRoute === "learner"}
           />
           {!!sessionData?.user.creatorId && (
             <RoleStatus
-              roleName="Teacher Dashboard"
+              roleName="Teacher"
               userHasRole={!!sessionData?.user.creatorId}
-              roleInfoUrl="/dashboard/teacher"
+              roleInfoUrl="/app/teach"
               current={dashboardChildRoute === "teacher"}
             />
           )}
           <RoleStatus
-            roleName="Contributor Dashboard"
+            roleName="Contributor"
             userHasRole={true}
-            roleInfoUrl="/dashboard/contributor"
+            roleInfoUrl="/app/contribute"
             current={dashboardChildRoute === "contributor"}
           />
           <RoleStatus
-            roleName="Contribution Manager Dashboard"
+            roleName="Organizer"
             userHasRole={true}
-            roleInfoUrl="/dashboard/contribution-manager"
+            roleInfoUrl="/app/organize"
             current={dashboardChildRoute === "contribution-manager"}
           />
           <RoleStatus

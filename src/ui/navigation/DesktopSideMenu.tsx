@@ -52,17 +52,9 @@ export default function DesktopSideMenu({
   );
 
   useEffect(() => {
-    const isDashboardLearnerRoute = router.asPath.includes("dashboard/learner");
-    const isDashboardTeacherRoute = router.asPath.includes("dashboard/teacher");
     const isDashboardContributionManagerRoute = router.asPath.includes(
       "dashboard/contribution-manager",
     );
-    const isDashboardContributorRoute = router.asPath.includes(
-      "dashboard/contributor",
-    );
-    if (isDashboardLearnerRoute) setDashboardChildRoute("learner");
-    if (isDashboardContributorRoute) setDashboardChildRoute("contributor");
-    if (isDashboardTeacherRoute) setDashboardChildRoute("teacher");
     if (isDashboardContributionManagerRoute)
       setDashboardChildRoute("contribution-manager");
   }, [router]);
@@ -152,7 +144,19 @@ export default function DesktopSideMenu({
               </li>
             )}
             <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/prerequisite-minter">Prereq Explorer</Link>
+              <Link href="/app/prerequisite-minter">Prereq Explorer</Link>
+            </div>
+            <div className="px-8 py-2 text-sm font-semibold">
+              <Link href="/app/contribute">Contribute</Link>
+            </div>
+            <div className="px-8 py-2 text-sm font-semibold">
+              <Link href="/app/learn">Learn</Link>
+            </div>
+            <div className="px-8 py-2 text-sm font-semibold">
+              <Link href="/app/organize">Organize</Link>
+            </div>
+            <div className="px-8 py-2 text-sm font-semibold">
+              <Link href="/app/teach">Teach</Link>
             </div>
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />

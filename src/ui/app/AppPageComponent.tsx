@@ -10,7 +10,12 @@ import { Button } from "~/components/ui/button";
 import AllCourses from "../courses/components/AllCourses";
 import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
 import TreasuryListComponent from "../contribution/lists/TreasuryListComponent";
-import AccessTokenComponent from "../profile/components/AccessTokenComponent";
+import AccessTokenComponent from "../dashboard/components/AccessTokenComponent";
+import OnboardCreator from "../onboarding/OnboardCreator";
+import OnboardContributor from "../onboarding/OnboardContributor";
+import OnboardContributionManager from "../onboarding/OnboardContributionManager";
+import OnboardTreasuryOwner from "../onboarding/OnboardTreasuryOwner";
+import OnboardLearner from "../onboarding/OnboardLearner";
 
 //       <PlaceholderComponent name="additional CTAs" subItems={["view all tasks", "network status", "profile"]} />
 
@@ -33,6 +38,17 @@ export default function AppPageComponent() {
         <Button size="lg" onClick={() => setCurrentView("TASKS")}>View all Tasks</Button>
         <Button size="lg" onClick={() => setCurrentView("TREASURIES")}>View Andamio Treasuries</Button>
         <Button size="lg" onClick={() => setCurrentView("PARTICIPATE")}>Participate</Button>
+
+      </div>
+      <div className="bg-gray-300 p-5 rounded-sm my-24 space-y-8">
+        <h2 className="text-2xl text-center">
+          Onboarding Stuff
+        </h2>
+        <OnboardCreator />
+        <OnboardContributor />
+        <OnboardContributionManager />
+        <OnboardLearner />
+        <OnboardTreasuryOwner />
 
       </div>
       {currentView === "COURSES" && <AllCourses />}

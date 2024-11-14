@@ -1,0 +1,54 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import useCreatorsCoursesPolicies from "~/hooks/onchain/useCreatorsCoursesPolicies";
+import { CardanoWallet } from "@meshsdk/react";
+import AndamioNetworkTeacherCourses from "~/ui/app/roles/teacher/AndamioNetworkTeacherCourses";
+
+export default function TeacherDashboardMenu() {
+  const { accessTokenAlias } = useAccessToken();
+  const router = useRouter();
+
+  const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
+    accessTokenAlias ?? "",
+  );
+
+  const isAssignmentRoute = router.asPath.includes(
+    "dashboard/teacher/assignments",
+  );
+
+  // const isDashboardRoute = router.asPath.includes("dashboard/teacher");
+
+  return (
+    <div className="grid min-h-28 w-full grid-cols-6 items-center gap-5 bg-primary text-primary-foreground">
+      <div className="col-start-1 text-center">
+        <Link href="/dashboard/teacher">
+          <div className={`cursor-pointer p-2 font-semibold`}>
+            Teacher Dashboard Home
+          </div>
+        </Link>
+      </div>
+      <div className="col-span-2 col-start-2">
+        {creatorCoursePolicies ? (
+          <AndamioNetworkTeacherCourses
+            creatorCoursePolicies={creatorCoursePolicies}
+          />
+        ) : (
+          <CardanoWallet />
+        )}
+      </div>
+      <div className="col-span-2 col-start-4 text-center">
+        <Link href="/studio">View Course Studio</Link>
+      </div>
+      <div className="col-start-6 text-center">
+        <Link href="/dashboard/teacher/assignments">
+          <h2
+            className={`cursor-pointer p-2 font-semibold ${isAssignmentRoute ? "bg-accent" : "bg-primary text-primary-foreground"}`}
+          >
+            Review Assignments
+          </h2>
+        </Link>
+      </div>
+    </div>
+  );
+}

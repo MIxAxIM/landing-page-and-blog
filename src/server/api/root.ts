@@ -33,6 +33,9 @@ import { treasuryRouter } from "./routers/database/contributor/treasury";
 import { escrowRouter } from "./routers/database/contributor/escrow";
 import { taskRouter } from "./routers/database/contributor/task";
 import { contributorPrerequisiteRouter } from "./routers/database/contributor/contributor-prerequisite";
+import { contributorRouter } from "./routers/database/contributor/contributor";
+import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwner";
+import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
 /**
  * This is the primary router for your server.
  *
@@ -47,6 +50,9 @@ export const appRouter = createTRPCRouter({
 
   creator: creatorRouter,
   learner: learnerRouter,
+  contributor: contributorRouter,
+  treasuryOwner: treasuryOwnerRouter,
+  contributionManager: contributionManagerRouter,
 
   // course off-chain
   course: courseRouter,

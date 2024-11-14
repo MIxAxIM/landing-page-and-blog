@@ -1,17 +1,10 @@
+import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import ContributorPageComponent from "~/ui/app/ContributorPageComponent";
 
-import PublicContributionPageComponent from "~/ui/contribution/PublicContributionPageComponent";
-import MenuBar from "~/ui/landing/MenuBar";
-import { VideoBackground } from "~/ui/landing/SB7PageLanding";
-
-export default function PublicContributePage() {
-
-
+export default function ContributePage() {
   return (
-    <>
-      <VideoBackground>
-        <MenuBar />
-        <PublicContributionPageComponent />
-      </VideoBackground>
-    </>
+    <DesktopOnlyLayout>
+      <ContributorPageComponent />
+    </DesktopOnlyLayout>
   );
 }
