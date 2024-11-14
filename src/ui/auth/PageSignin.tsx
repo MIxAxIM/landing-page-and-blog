@@ -3,7 +3,6 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import Link from "next/link";
-// import { Button } from "~/components/ui/button";
 
 export default function PageSignin({ redirectUrl }: { redirectUrl?: string }) {
   const [tnc, setTnc] = useState(false);
@@ -50,9 +49,8 @@ export default function PageSignin({ redirectUrl }: { redirectUrl?: string }) {
                         callbackUrl: redirectUrl,
                       })
                     }
-                    className={`flex items-center rounded-lg border border-accent-foreground px-6 py-2 text-sm font-medium text-primary-foreground shadow-md ${
-                      tnc ? 'hover:bg-accent hover:text-accent-foreground bg-primary' : 'bg-gray-300 text-gray-700 cursor-not-allowed'
-                    }`}
+                    className={`flex items-center rounded-lg border border-accent-foreground px-6 py-2 text-sm font-medium text-primary-foreground shadow-md ${tnc ? 'hover:bg-accent hover:text-accent-foreground bg-primary' : 'bg-gray-300 text-gray-700 cursor-not-allowed'
+                      }`}
                   >
                     {provider.id === "discord" && <DiscordIcon />}
                     <span>Sign in with {provider.name}</span>

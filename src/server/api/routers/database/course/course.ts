@@ -1,4 +1,5 @@
 import { AccessTier } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -101,6 +102,33 @@ export const courseRouter = createTRPCRouter({
       if (!ctx.session.user.creatorId) {
         throw new Error("User does not have Creator role.");
       }
+
+      const subscription = await ctx.db.subscription.findUnique({
+        where: { userId: ctx.session.user.id },
+        include: { product: true },
+      });
+
+      const courseCount = await ctx.db.course.count({
+        where: { createdById: ctx.session.user.creatorId }
+      })
+
+      // Users without subscription can create 1 treasury
+      if (!subscription && courseCount >= 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Subscribe to create more than one course",
+        });
+      }
+
+
+      // Check if subscribed user has reached their treasury limit
+      if (subscription && courseCount >= subscription.product.maxAllowedCourses) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: `Your subscription allows up to ${subscription.product.maxAllowedCourses} courses`,
+        });
+      }
+
 
       return ctx.db.course.create({
         data: {
