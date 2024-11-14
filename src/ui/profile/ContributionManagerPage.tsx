@@ -28,7 +28,7 @@ export default function ContributionManagerPage({
         <ManageEscrowComponent escrowCode={selectedEscrowCode} />
       )}
       {!currentTreasury && !selectedEscrowCode && (
-        <ContributionManagerComponent treasuryInfos={treasuries ?? []} />
+        <ContributionManagerComponent />
       )}
     </ProfileLayout>
   );

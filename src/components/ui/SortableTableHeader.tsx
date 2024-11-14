@@ -22,12 +22,12 @@ export function SortableTableHeader({
 
   return (
     <TableHead
-      className={cn("cursor-pointer select-none", className)}
+      className={cn("cursor-pointer select-none py-3", className)}
       onClick={() => onSort(sortKey)}
     >
       <div className="flex items-center space-x-1">
         <span>{label}</span>
-        <span className="text-gray-400">
+        <span className="text-primary-foreground">
           {isSorted ? (
             sortConfig.direction === "asc" ? (
               <ChevronUp className="h-4 w-4" />

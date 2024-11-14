@@ -8,7 +8,6 @@ import { BuiltOnCardano } from "./BuiltOnCardano";
 import { JoinAndamio } from "./JoinAndamio";
 import { SolutionsForContributors } from "./SolutionsForContributors";
 import { FAQ } from "./FAQ";
-import Footer from "./Footer";
 
 export default function SB7PageLanding() {
   const [role, setRole] = useState<"learner" | "organization">("learner");
@@ -41,7 +40,11 @@ export default function SB7PageLanding() {
   );
 }
 
-const VideoBackground = ({ children }: { children: React.ReactNode }) => {
+export const VideoBackground = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <>
       <div className="relative min-h-screen">

@@ -151,7 +151,9 @@ export default function DesktopSideMenu({
                 />
               </li>
             )}
-
+            <div className="px-8 py-2 text-sm font-semibold">
+              <Link href="/prerequisite-minter">Prereq Explorer</Link>
+            </div>
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />
           </ul>

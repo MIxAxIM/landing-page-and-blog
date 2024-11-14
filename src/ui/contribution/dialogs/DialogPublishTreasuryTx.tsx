@@ -108,9 +108,8 @@ export default function DialogPublishTreasuryTx({
 
   return (
     <DialogForm
-      openButton="Publish Approved Tasks"
+      openButton="Sync"
       openButtonIntent="dialog"
-      openButtonSize="sm"
       icon="plus"
       title="Publish Approved Tasks to Network"
       description={`Select tasks to be published. Total value: ${totalValue.toLocaleString()} ADA`}

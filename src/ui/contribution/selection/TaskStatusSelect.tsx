@@ -23,7 +23,7 @@ const statusStyles = {
 };
 
 const validTransitions: Record<TaskStatus, TaskStatus[]> = {
-  DRAFT: [TaskStatus.APPROVED],
+  DRAFT: [TaskStatus.APPROVED, TaskStatus.ARCHIVED, TaskStatus.BACKLOG],
   APPROVED: [TaskStatus.ON_CHAIN, TaskStatus.DRAFT],
   ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
   COMMITMENT_MADE: [

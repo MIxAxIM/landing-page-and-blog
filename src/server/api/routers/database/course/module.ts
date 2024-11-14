@@ -147,15 +147,40 @@ export const moduleRouter = createTRPCRouter({
     }),
 
   getCourseModuleList: publicProcedure
-    .input(z.object({ courseCode: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.module.findMany({
-        where: { originalCourse: { courseCode: input.courseCode } },
+    .input(
+      z.object({
+        courseCodes: z.array(z.string()),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const modules = await ctx.db.module.findMany({
+        where: {
+          originalCourse: {
+            courseCode: {
+              in: input.courseCodes,
+            },
+          },
+        },
         select: {
           moduleCode: true,
           title: true,
+          originalCourse: {
+            select: {
+              courseCode: true,
+            },
+          },
         },
       });
+
+      // Group modules by courseCode
+      return input.courseCodes.reduce<
+        Record<string, { moduleCode: string; title: string }[]>
+      >((acc, courseCode) => {
+        acc[courseCode] = modules
+          .filter((m) => m.originalCourse.courseCode === courseCode)
+          .map(({ moduleCode, title }) => ({ moduleCode, title }));
+        return acc;
+      }, {});
     }),
 
   create: protectedProcedure

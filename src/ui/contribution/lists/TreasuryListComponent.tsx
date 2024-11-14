@@ -13,7 +13,7 @@ export default function TreasuryListComponent() {
     <div className="w-full">
       {isLoadingTreasuries && "loading"}
       {treasuries && (
-        <Table className="w-full table-fixed text-xs">
+        <Table className="mb-8 w-full table-fixed">
           <thead>
             <tr>
               {/* Empty cells for non-grouped columns */}
@@ -42,7 +42,7 @@ export default function TreasuryListComponent() {
             <TableRow className="border-b border-primary">
               <TableHead className="border border-primary">Treasury</TableHead>
               <TableHead className="border border-primary text-center">
-                # Escrows
+                # Circles
               </TableHead>
               <TableHead className="border border-primary text-center">
                 # Contributors

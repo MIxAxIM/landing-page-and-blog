@@ -2,18 +2,22 @@ import { api } from "~/utils/api";
 import { type ContributorPrerequisite } from "~/types/db";
 import toast from "react-hot-toast";
 
+type CourseRequirementInput = {
+  courseCode: string;
+  requiredModules: string[];
+};
+
 type CreatePrerequisiteInput = {
   contributorPolicyId: string;
   title?: string;
-  courseCode: string;
-  requiredCourseModules: string[];
+  courseRequirements: CourseRequirementInput[];
 };
 
 type UpdatePrerequisiteInput = {
+  id: string;
   contributorPolicyId: string;
   title?: string;
-  courseCode?: string;
-  requiredCourseModules: string[];
+  courseRequirements: (CourseRequirementInput & { id?: string })[];
 };
 
 interface UseContributorPrerequisiteReturn {
@@ -40,14 +44,18 @@ export function useContributorPrerequisite(
     api.contributorPrerequisite.getPrerequisiteById.useQuery(id ?? "", {
       enabled: !!id,
       select: (data) =>
-        data && {
+        data &&
+        ({
           ...data,
-          course: {
-            id: data.course.id,
-            courseCode: data.course.courseCode,
-            title: data.course.title,
-          },
-        },
+          courseRequirements: data.courseRequirements.map((req) => ({
+            ...req,
+            course: req.course && {
+              id: req.course.id,
+              courseCode: req.course.courseCode,
+              title: req.course.title,
+            },
+          })),
+        } as ContributorPrerequisite),
     });
 
   const { data: prerequisites = [], isLoading } =
@@ -55,12 +63,15 @@ export function useContributorPrerequisite(
       select: (data) =>
         data.map((item) => ({
           ...item,
-          course: {
-            id: item.course.id,
-            courseCode: item.course.courseCode,
-            title: item.course.title,
-          },
-        })),
+          courseRequirements: item.courseRequirements.map((req) => ({
+            ...req,
+            course: req.course && {
+              id: req.course.id,
+              courseCode: req.course.courseCode,
+              title: req.course.title,
+            },
+          })),
+        })) as ContributorPrerequisite[],
     });
 
   const { data: prerequisitesByCourse = [] } =
@@ -71,12 +82,15 @@ export function useContributorPrerequisite(
         select: (data) =>
           data.map((item) => ({
             ...item,
-            course: {
-              id: item.course.id,
-              courseCode: item.course.courseCode,
-              title: item.course.title,
-            },
-          })),
+            courseRequirements: item.courseRequirements.map((req) => ({
+              ...req,
+              course: req.course && {
+                id: req.course.id,
+                courseCode: req.course.courseCode,
+                title: req.course.title,
+              },
+            })),
+          })) as ContributorPrerequisite[],
       },
     );
 

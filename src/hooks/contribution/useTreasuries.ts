@@ -6,9 +6,9 @@ interface UseTreasuriesReturn {
   isLoadingTreasuries: boolean;
 }
 
-export default function useTreasuries(): UseTreasuriesReturn {
+export default function useTreasuries(disabled?: boolean): UseTreasuriesReturn {
   const { data: treasuries, isLoading: isLoadingTreasuries } =
-    api.treasury.getTreasuries.useQuery();
+    api.treasury.getTreasuries.useQuery(undefined, { enabled: !disabled });
 
   return { treasuries, isLoadingTreasuries };
 }

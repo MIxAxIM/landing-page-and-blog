@@ -21,7 +21,7 @@ import { Calendar } from "~/components/ui/calendar";
 import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { type Task } from "~/types/db";
+import { type Escrow, type Task } from "~/types/db";
 
 // Validation constants
 const MIN_ADA = 2;
@@ -109,6 +109,7 @@ interface TaskDialogProps {
   id?: string;
   escrowId?: string;
   treasuryId?: string;
+  escrow?: Escrow;
   openButtonSize?: "sm" | "lg";
 }
 
@@ -116,6 +117,7 @@ export default function DialogTask({
   id,
   escrowId: defaultEscrowId,
   treasuryId: defaultTreasuryId,
+  escrow,
   openButtonSize,
 }: TaskDialogProps) {
   // State management
@@ -123,8 +125,12 @@ export default function DialogTask({
   const [selectedTreasuryId, setSelectedTreasuryId] = useState(
     defaultTreasuryId ?? "",
   );
+  const [filteredEscrows, setFilteredEscrows] = useState<Escrow[] | undefined>(
+    undefined,
+  );
+  const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
 
-  const isEditMode = !!id;
+  const isEditMode = !!id || !!escrow;
 
   // Custom hooks
   const {
@@ -136,8 +142,10 @@ export default function DialogTask({
     isUpdating,
   } = useTask({ id, treasuryNftPolicyId: defaultTreasuryId });
 
-  const { treasuries, isLoadingTreasuries } = useTreasuries();
-  const { escrows, isLoading: isLoadingEscrows } = useEscrow({});
+  const { treasuries, isLoadingTreasuries } = useTreasuries(!!escrow);
+  const { escrows, isLoading: isLoadingEscrows } = useEscrow({
+    disabled: !!escrow,
+  });
 
   // Form initialization with proper typing
   const form = useForm<FormValues>({
@@ -147,16 +155,30 @@ export default function DialogTask({
       description: "",
       acceptanceCriteria: [""],
       treasuryId: defaultTreasuryId ?? "",
-      escrowId: defaultEscrowId ?? "",
+      escrowId: defaultEscrowId ?? escrow?.id ?? "",
       ada: MIN_ADA,
       expirationTime: getMinDate(),
     },
   });
 
-  // Filtered escrows based on selected treasury
-  const filteredEscrows = escrows
-    .filter((escrow) => escrow?.treasuryId === selectedTreasuryId)
-    .filter((escrow): escrow is NonNullable<typeof escrow> => escrow !== null);
+  // Effect: Handle specified escrow on open
+  useEffect(() => {
+    if (!!escrow && isOpen && !hasLoadedCriteria) {
+      if (escrow?.savedAcceptanceCriteria?.length) {
+        form.setValue(
+          "acceptanceCriteria",
+          escrow.savedAcceptanceCriteria.filter(
+            (criteria) => criteria.trim() !== "",
+          ),
+          { shouldValidate: true },
+        );
+        form.setValue("escrowId", escrow.id);
+        form.setValue("treasuryId", escrow.treasuryId);
+        setFilteredEscrows([escrow]);
+        setHasLoadedCriteria(true);
+      }
+    }
+  }, [escrow, form, isOpen, hasLoadedCriteria]);
 
   // Effect: Handle treasury selection change
   useEffect(() => {
@@ -196,6 +218,7 @@ export default function DialogTask({
   useEffect(() => {
     if (!isOpen) {
       form.reset();
+      setHasLoadedCriteria(false);
       if (!defaultTreasuryId) {
         setSelectedTreasuryId("");
       }
@@ -216,35 +239,42 @@ export default function DialogTask({
   }, [defaultTreasuryId, treasuries, form]);
 
   useEffect(() => {
+    // Filtered escrows based on selected treasury
+    const _filteredEscrows = escrows
+      .filter((escrow) => escrow?.treasuryId === selectedTreasuryId)
+      .filter(
+        (escrow): escrow is NonNullable<typeof escrow> => escrow !== null,
+      );
+    setFilteredEscrows(_filteredEscrows);
+  }, [escrows, selectedTreasuryId]);
+
+  useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "escrowId" && value.escrowId) {
+      if (
+        name === "escrowId" &&
+        value.escrowId &&
+        !!filteredEscrows &&
+        !hasLoadedCriteria
+      ) {
         const selectedEscrow = filteredEscrows.find(
           (e) => e.id === value.escrowId,
         );
 
         if (selectedEscrow?.savedAcceptanceCriteria?.length) {
-          // Get current criteria (excluding any previously loaded saved criteria)
-          const currentCriteria = (
-            form.getValues("acceptanceCriteria") || []
-          ).filter((criteria) => criteria.trim() !== "");
-
-          // Add saved criteria from escrow if not empty
-          const newCriteria = [
-            ...currentCriteria,
-            ...selectedEscrow.savedAcceptanceCriteria.filter(
+          form.setValue(
+            "acceptanceCriteria",
+            selectedEscrow.savedAcceptanceCriteria.filter(
               (criteria) => criteria.trim() !== "",
             ),
-          ];
-
-          form.setValue("acceptanceCriteria", newCriteria, {
-            shouldValidate: true,
-          });
+            { shouldValidate: true },
+          );
+          setHasLoadedCriteria(true);
         }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [form, filteredEscrows]);
+  }, [form, filteredEscrows, hasLoadedCriteria]);
 
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
@@ -342,7 +372,7 @@ export default function DialogTask({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Task" : "Draft a new task"}
+        openButton={!!id ? "Edit Task" : "Draft a new task"}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
@@ -369,9 +399,9 @@ export default function DialogTask({
                   })) ?? []
                 }
                 placeholder="Select a treasury"
-                disabled={!!defaultTreasuryId || isLoading}
+                disabled={!!defaultTreasuryId || !!escrow || isLoading}
               />
-              {selectedTreasuryId && filteredEscrows.length > 0 ? (
+              {!!filteredEscrows ? (
                 <>
                   <FormSelect
                     name="escrowId"

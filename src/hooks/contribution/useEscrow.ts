@@ -39,16 +39,18 @@ export function useEscrow({
   id,
   escrowNftPolicyId,
   treasuryNftPolicyId,
+  disabled,
 }: {
   id?: string;
   escrowNftPolicyId?: string;
   treasuryNftPolicyId?: string;
+  disabled?: boolean;
 }): UseEscrowReturn {
   const ctx = api.useUtils();
 
   // Single escrow query
   const escrowQuery = api.escrow.getEscrowById.useQuery(id ?? "", {
-    enabled: !!id,
+    enabled: !!id && !disabled,
     select: (data) => data as Escrow,
   });
 
@@ -78,8 +80,8 @@ export function useEscrow({
       ctx.escrow.getEscrows.invalidate(),
       ctx.treasury.getTreasuries.invalidate(),
       ctx.escrow.getTreasuryEscrows.invalidate(),
+      ctx.escrow.getEscrowByPolicyId.invalidate(),
       id ? ctx.escrow.getEscrowById.invalidate(id) : Promise.resolve(),
-      id ? ctx.escrow.getEscrowByPolicyId.invalidate(id) : Promise.resolve(),
     ]);
 
     // Explicit refetch calls

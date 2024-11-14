@@ -201,7 +201,7 @@ model Course {
   accessTier AccessTier?
 
   // NEW ---------
-  prerequisiteFor ContributorPrerequisite[] @relation("PrerequisiteCourses")
+  prerequisiteFor CourseRequirement[] @relation("PrerequisiteCourses")
   // END NEW -----
 
   @@unique([courseCode])
@@ -460,16 +460,25 @@ model Escrow {
 }
 
 model ContributorPrerequisite {
-  contributorPolicyId String  @id @unique
+  id                  String  @id @default(cuid())
+  contributorPolicyId String  @unique
   title               String?
 
-  course                Course   @relation("PrerequisiteCourses", fields: [courseCode], references: [courseCode])
-  courseCode            String
-  requiredCourseModules String[]
-
-  escrows Escrow[] @relation("EscrowPrerequisites")
+  courseRequirements CourseRequirement[]
+  escrows            Escrow[]            @relation("EscrowPrerequisites")
 
   @@index([contributorPolicyId])
+}
+
+model CourseRequirement {
+  id              String                  @id @default(cuid())
+  prerequisite    ContributorPrerequisite @relation(fields: [prerequisiteId], references: [id])
+  prerequisiteId  String
+  course          Course                  @relation("PrerequisiteCourses", fields: [courseCode], references: [courseCode])
+  courseCode      String
+  requiredModules String[]
+
+  @@index([prerequisiteId])
   @@index([courseCode])
 }
 
@@ -488,7 +497,7 @@ model Task {
   id                 String     @id @default(cuid())
   index              Int
   title              String
-  description        String
+  description        String     @db.Text
   acceptanceCriteria String[]
   status             TaskStatus @default(DRAFT)
   hash               String?
@@ -502,6 +511,7 @@ model Task {
   @@unique([escrowId, index])
   @@index([escrowId])
   @@index([id])
+  @@index([title])
 }
 
 // ---------------- END OF NEW CONTRIBUTION FEATURES -----------------------------------------

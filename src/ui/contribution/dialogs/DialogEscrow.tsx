@@ -9,8 +9,7 @@ import FormInput from "~/components/form/form-input";
 import FormSelect from "~/components/form/form-select";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
-import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
+import PrerequisiteManager from "../selection/PrerequisiteSelectionManager";
 
 const FormSchema = z.object({
   title: z.string().optional(),
@@ -38,14 +37,6 @@ export default function DialogEscrow({
   const { escrow, createEscrow, updateEscrow, isCreating, isUpdating } =
     useEscrow({ id });
 
-  // TODO: Improve this query so that the user gets a sub-set of available prerequisites -- maybe at Org level?
-  // TODO: Implement search of all prerequisites
-  const { prerequisites } = useContributorPrerequisite();
-  const {
-    escrowPrerequisites,
-    addPrerequisiteToEscrow,
-    removePrerequisiteFromEscrow,
-  } = useEscrowPrerequisites({ escrowId: id });
   const { treasuries } = useTreasuries();
 
   const form = useForm<FormValues>({
@@ -119,17 +110,17 @@ export default function DialogEscrow({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Escrow" : "Create Escrow"}
+        openButton={isEditMode ? "Edit Circle" : "Create Circle"}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
-        title={isEditMode ? "Edit Escrow" : "Create New Escrow"}
+        title={isEditMode ? `Edit ${escrow?.title}` : "Create New Circle"}
         description={
           isEditMode
-            ? "Update the escrow's details."
-            : "Create a new escrow by providing an NFT policy ID and selecting a treasury."
+            ? "Update Circle details."
+            : "Create a new Circle by providing an NFT policy ID and selecting a treasury."
         }
-        buttonLabel={isEditMode ? "Save Changes" : "Create Escrow"}
+        buttonLabel={isEditMode ? "Save Changes" : "Create Circle"}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
         handleSubmit={form.handleSubmit(onSubmit)}
@@ -167,100 +158,54 @@ export default function DialogEscrow({
           )}
 
           {/* Saved Acceptance Criteria Section */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Acceptance Criteria
-            </label>
-            <p className="pb-3 text-xs text-gray-500">
-              Can be used on any Task published in this Cirle
-            </p>
-            {savedCriteria.map((criterion, index) => (
-              <div key={index} className="flex gap-2">
-                <FormInput
-                  name={`savedAcceptanceCriteria.${index}`}
-                  form={form}
-                  placeholder={`Criterion ${index + 1}`}
-                  disabled={isLoading}
-                />
-                {savedCriteria.length > 0 && (
-                  <Button
-                    type="button"
-                    intent="destructive"
-                    size="sm"
-                    onClick={() => handleRemoveCriterion(index)}
-                    disabled={isLoading}
-                  >
-                    Remove
-                  </Button>
-                )}
-              </div>
-            ))}
-            <Button
-              type="button"
-              intent="secondary"
-              size="sm"
-              onClick={handleAddCriterion}
-              disabled={isLoading}
-            >
-              Add Criterion
-            </Button>
-          </div>
 
-          {/* TODO: 2024-11-08 Extract this component and place on Escrow Page  */}
-          {/* Contributor Prerequisites Section */}
-          {isEditMode && prerequisites && prerequisites.length > 0 && (
-            <div className="space-y-4">
+          {id && (
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Contributor Prerequisites
+                Acceptance Criteria
               </label>
-              <div className="space-y-2">
-                {prerequisites.map((prerequisite) => {
-                  const isConnected = escrowPrerequisites.some(
-                    (ep) =>
-                      ep.contributorPolicyId ===
-                      prerequisite.contributorPolicyId,
-                  );
-
-                  return (
-                    <div
-                      key={prerequisite.contributorPolicyId}
-                      className="flex items-center justify-between gap-2 rounded border p-2"
+              <p className="pb-3 text-xs text-gray-500">
+                Can be used on any Task published in this Cirle
+              </p>
+              {savedCriteria.map((criterion, index) => (
+                <div
+                  key={index}
+                  className="flex w-full flex-row items-center gap-2"
+                >
+                  <div className="w-full">
+                    <FormInput
+                      name={`savedAcceptanceCriteria.${index}`}
+                      form={form}
+                      placeholder={`Criterion ${index + 1}`}
+                      disabled={isLoading}
+                      className=""
+                    />
+                  </div>
+                  {savedCriteria.length > 0 && (
+                    <Button
+                      type="button"
+                      intent="destructive"
+                      size="sm"
+                      onClick={() => handleRemoveCriterion(index)}
+                      disabled={isLoading}
                     >
-                      <div>
-                        <p className="font-medium">
-                          {prerequisite.title ?? "Untitled Prerequisite"}
-                        </p>
-                        <p className="break-all text-xs text-muted-foreground">
-                          {prerequisite.contributorPolicyId}
-                        </p>
-                      </div>
-                      <Button
-                        type="button"
-                        intent={isConnected ? "destructive" : "secondary"}
-                        size="sm"
-                        onClick={() => {
-                          if (isConnected) {
-                            removePrerequisiteFromEscrow({
-                              escrowId: id,
-                              prerequisiteId: prerequisite.contributorPolicyId,
-                            });
-                          } else {
-                            addPrerequisiteToEscrow({
-                              escrowId: id,
-                              prerequisiteId: prerequisite.contributorPolicyId,
-                            });
-                          }
-                        }}
-                        disabled={isLoading}
-                      >
-                        {isConnected ? "Remove" : "Add"}
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
+                      X
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button
+                type="button"
+                intent="secondary"
+                size="sm"
+                onClick={handleAddCriterion}
+                disabled={isLoading}
+              >
+                Add Criterion
+              </Button>
             </div>
           )}
+          {id && <PrerequisiteManager escrowId={id} />}
         </div>
       </DialogForm>
     </Form>
