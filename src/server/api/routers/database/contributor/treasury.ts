@@ -25,6 +25,7 @@ type TRPCContext = inferAsyncReturnType<typeof createTRPCContext>;
 const createTreasurySchema = z.object({
   treasuryNftPolicyId: z.string().min(1),
   title: z.string().min(1),
+  treasuryOwnerId: z.string().min(1),
 });
 
 const updateTreasurySchema = z.object({

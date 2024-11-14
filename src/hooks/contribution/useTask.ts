@@ -72,7 +72,6 @@ export function useTask({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [debouncedSearch] = useDebounce(searchQuery, 300);
 
-  console.log("debouncedSearch", debouncedSearch)
 
   // Single task query
   const taskQuery = api.task.getTaskById.useQuery(id ?? "", {

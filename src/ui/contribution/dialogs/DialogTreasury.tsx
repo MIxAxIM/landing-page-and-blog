@@ -6,10 +6,12 @@ import FormInput from "~/components/form/form-input";
 import { useEffect, useState } from "react";
 import { useTreasury } from "~/hooks/contribution/useTreasury";
 import DialogForm from "~/components/form/dialog-form";
+import { useSession } from "next-auth/react";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   treasuryNftPolicyId: z.string().min(1, "Policy ID is required"),
+  treasuryOwnerId: z.string().min(1, "Must have treasury owner"),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -23,6 +25,7 @@ export default function DialogTreasury({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!treasuryNftPolicyId;
+  const { data: sessionData } = useSession()
 
   const {
     treasury,
@@ -38,6 +41,7 @@ export default function DialogTreasury({
     defaultValues: {
       title: "",
       treasuryNftPolicyId: treasuryNftPolicyId ?? "",
+      treasuryOwnerId: sessionData?.user.treasuryOwnerId,
     },
   });
 

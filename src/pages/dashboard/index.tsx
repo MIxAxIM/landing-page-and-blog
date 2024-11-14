@@ -1,10 +1,10 @@
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import DashboardPage from "~/ui/profile/DashboardPage";
+import DashboardPageComponent from "~/ui/dashboard/DashboardPageComponent";
 
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <DesktopOnlyLayout>
-      <DashboardPage />
+      <DashboardPageComponent />
     </DesktopOnlyLayout>
   );
 }

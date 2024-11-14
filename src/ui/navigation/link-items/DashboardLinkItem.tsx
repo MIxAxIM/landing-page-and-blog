@@ -39,7 +39,7 @@ export function DashboardLinkItem({
           )}
           aria-hidden="true"
         />
-        My Dashboard
+        Andamio Roles
       </Link>
       {current && (
         <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute} />

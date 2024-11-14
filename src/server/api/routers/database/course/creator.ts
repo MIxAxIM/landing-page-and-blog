@@ -34,4 +34,22 @@ export const creatorRouter = createTRPCRouter({
         },
       });
     }),
+
+  updateOnboardingStatus: protectedProcedure
+    .input(
+      z.object({
+        creatorId: z.string().min(1),
+        onboardingStatus: z.enum(["NOT_STARTED", "SKIPPED", "PARTIAL", "COMPLETE"]),
+        onboardingCompletedAt: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.creator.update({
+        where: { id: input.creatorId },
+        data: {
+          onboardingStatus: input.onboardingStatus,
+          onboardingCompletedAt: input.onboardingCompletedAt,
+        },
+      });
+    }),
 });

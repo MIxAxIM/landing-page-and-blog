@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { type Treasury } from "~/types/db";
-import DashboardSelectMenu from "~/ui/profile/components/DashboardSelectMenu";
+import DashboardSelectMenu from "~/ui/dashboard/components/DashboardSelectMenu";
 
 export default function SelectTreasuryToManage({
   treasuryInfos,

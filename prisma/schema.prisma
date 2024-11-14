@@ -58,17 +58,50 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  learner Learner?
-  creator Creator?
+  // stripe integrations
+  stripeCustomerId         String?
+  stripeSubscriptionId     String?
+  stripeSubscriptionStatus StripeSubscriptionStatus?
+  subscriptions            Subscription[]
 
-  userWallet           UserWallet?
-  unconfirmedTx        String?
-  accessTokenMintTx    String?
-  hasMintedAccessToken Boolean     @default(false)
-  nostrNsec            String?
-  nostrPubkey          String?
+  // andamio roles
+  roleTypes           RoleType[] // WARNING: check this field in migration
+  isAdmin             Boolean              @default(false)
+  learner             Learner?
+  creator             Creator?
+  treasuryOwner       TreasuryOwner?
+  contributionManager ContributionManager?
+  contributor         Contributor?
 
-  tncVersion String?
+  // user status
+  tncVersion            String?
+  hasMintedAccessToken  Boolean           @default(false)
+  onboardingStatus      OnboardingStatus? // WARNING: needs to be initialized for each user in production db
+  onboardingStartedAt   DateTime?
+  onboardingCompletedAt DateTime?
+
+  userWallet        UserWallet?
+  unconfirmedTx     String?
+  accessTokenMintTx String?
+
+  // nostr
+  nostrNsec   String?
+  nostrPubkey String?
+}
+
+enum RoleType {
+  LEARNER
+  CREATOR
+  TREASURY_OWNER
+  CONTRIUBTION_MANAGER
+  CONTRIBUTOR
+}
+
+enum OnboardingStatus {
+  NOT_STARTED
+  SKIPPED
+  PARTIAL
+  COMPLETE
 }
 
 model VerificationToken {
@@ -188,7 +221,7 @@ model Course {
   category    String?
   imageUrl    String?
   videoUrl    String?
-  live        Boolean?
+  live        Boolean? @default(false)
 
   modules Module[] @relation("CourseModules")
 
@@ -369,11 +402,21 @@ model Introduction {
   @@index([id])
 }
 
+// User Roles
+
 model Creator {
   id String @id @default(cuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // WARNING - these fields are optional for now to help with db migration. After we are safely migrated to production, manage these fields and make non-nullable if safe.
+  isActive  Boolean?  @default(true)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  onboardingStatus      OnboardingStatus? @default(NOT_STARTED)
+  onboardingCompletedAt DateTime?
 
   courses            Course[] @relation("CreatedCourses")
   contributorCourses Course[] @relation("CourseContributors")
@@ -392,10 +435,71 @@ model Learner {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // WARNING - these fields are optional for now to help with db migration. After we are safely migrated to production, manage these fields and make non-nullable if safe.
+  isActive  Boolean?  @default(true)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  onboardingStatus      OnboardingStatus? @default(NOT_STARTED)
+  onboardingCompletedAt DateTime?
+
   savedCourses Course[]               @relation("LearnerCourses")
   lessons      Lesson[]               @relation("LearnerLessons")
   assignments  AssignmentCommitment[] @relation("LearnerAssignments")
   // For Learners, Module completion goes on-chain, so we skip adding it here
+
+  @@unique([userId])
+}
+
+model TreasuryOwner {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  onboardingStatus      OnboardingStatus @default(NOT_STARTED)
+  onboardingCompletedAt DateTime?
+
+  treasuries Treasury[] @relation("TreasuryOwnerTreasuries")
+
+  @@unique([userId])
+}
+
+model ContributionManager {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  onboardingStatus      OnboardingStatus @default(NOT_STARTED)
+  onboardingCompletedAt DateTime?
+
+  treasuries Treasury[] @relation("ContributionManagerTreasuries")
+
+  @@unique([userId])
+}
+
+model Contributor {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  onboardingStatus      OnboardingStatus @default(NOT_STARTED)
+  onboardingCompletedAt DateTime?
+  Treasury              Treasury[]
 
   @@unique([userId])
 }
@@ -412,6 +516,8 @@ model UserWallet {
   @@unique([userId])
 }
 
+// Andamio AI
+
 model AndamioAIQueries {
   id        String   @id @default(cuid())
   userId    String
@@ -421,6 +527,8 @@ model AndamioAIQueries {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ClientsDomain -> Premium Feature
 
 model ClientsDomain {
   id       String @id @default(cuid())
@@ -434,9 +542,19 @@ model Treasury {
   treasuryNftPolicyId String @id @unique
   title               String
 
-  escrows Escrow[] @relation("TreasuryEscrows")
+  live Boolean @default(false)
+
+  treasuryOwner   TreasuryOwner @relation("TreasuryOwnerTreasuries", fields: [treasuryOwnerId], references: [id])
+  treasuryOwnerId String
+
+  escrows              Escrow[]              @relation("TreasuryEscrows")
+  ContributionManagers ContributionManager[] @relation("ContributionManagerTreasuries")
+  Contributor          Contributor?          @relation(fields: [contributorId], references: [id])
+  contributorId        String?
 
   @@index([treasuryNftPolicyId])
+  @@index([treasuryOwnerId])
+  @@index([contributorId])
 }
 
 model Escrow {
@@ -516,6 +634,111 @@ model Task {
 
 // ---------------- END OF NEW CONTRIBUTION FEATURES -----------------------------------------
 
+// ---------------- STRIPE INTEGRATIONS ------------------------------------------------------
+enum StripeSubscriptionStatus {
+  incomplete
+  incomplete_expired
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+  paused
+}
+
+// where is StripeEvent used?
+model StripeEvent {
+  id               String   @id @unique
+  api_version      String?
+  data             Json
+  request          Json?
+  type             String
+  object           String
+  account          String?
+  created          DateTime
+  livemode         Boolean
+  pending_webhooks Int
+}
+
+model Feature {
+  id          String    @id @default(cuid())
+  name        String // e.g., "max_contributors" OR "custom_url_allowed"
+  value       String // e.g., "10", "50", "unlimited" OR "true", "false"
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id String @id @unique // from Stripe
+
+  name        String
+  description String
+  image       String
+
+  active Boolean @default(true)
+
+  maxAllowedCourses      Int
+  maxAllowedTreasuries   Int
+  treasuryDepositLimit   BigInt
+  canPublish             Boolean // determines whether the user can publish owned courses and owned treasuries so that are visible on Andamio Network
+  transactionFeeDiscount Int // As percentage, e.g. 10 -> "10% discount on network fees"
+
+  additionalFeatures Feature[]
+  prices             Price[]
+  subscriptions      Subscription[]
+}
+
+model Price {
+  id String @id @unique // from Stripe
+
+  active          Boolean //(can the price be used for new subscriptions?)
+  description     String?
+  unitAmount      BigInt // (e.g. lovelace or cents, not ada or dollars)
+  currency        String // Three-letter ISO currency code, lowercase
+  type            String // e.g. one_time || recurring - see stripe docs: are there other options?
+  interval        String // e.g. day || week || month || year
+  intervalCount   Int // number of intervals included in this price
+  trialPeriodDays Int     @default(0)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  subscriptions Subscription[]
+
+  @@index([productId])
+}
+
+model Subscription {
+  id String @id @unique // is the subscription ID from Stripe
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  priceId String
+  price   Price  @relation(fields: [priceId], references: [id])
+
+  status StripeSubscriptionStatus
+
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean  @default(false)
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  @@unique([userId])
+  @@index([userId])
+  @@index([priceId])
+  @@index([productId])
+}
+
+// ---------------- END STRIPE INTEGRATIONS --------------------------------------------------
+
 // ---------------- END OF CURRENT SCHEMA -------------------------
 
 // Keeping for reference when we implement variants:
@@ -577,7 +800,7 @@ model Task {
 // }
 
 // Consider Posts, Comments, or Subscriptions
-// model Subscription {
+// model ContentSubscription {
 //   id String @id @default(cuid())
 
 //   createdAt   DateTime @default(now())

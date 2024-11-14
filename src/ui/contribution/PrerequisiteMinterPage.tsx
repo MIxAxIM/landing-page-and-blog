@@ -1,10 +1,10 @@
-import ProfileLayout from "../profile/layout/ProfileLayout";
+import AppLayout from "../app/layout/AppLayout";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import PrerequisiteForm from "./form/PrerequisiteFormComponent";
 
 export default function PrerequisiteMinterPage() {
   return (
-    <ProfileLayout>
+    <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
         <h2 className="my-10 text-4xl">Mint a New Andamio Prerequisite</h2>
         <div className="flex w-full flex-col">
@@ -20,6 +20,6 @@ export default function PrerequisiteMinterPage() {
           </div>
         </PlaceholderComponent>
       </div>
-    </ProfileLayout>
+    </AppLayout>
   );
 }

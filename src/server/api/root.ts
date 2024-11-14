@@ -2,6 +2,10 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "./routers/database/user/user";
 import { userWalletRouter } from "./routers/database/user/user-wallet";
 
+// stripe routers
+import { billingRouter } from "./routers/stripe/billing";
+import { adminRouter } from "./routers/stripe/admin";
+
 import { courseRouter } from "./routers/database/course/course";
 import { moduleRouter } from "./routers/database/course/module";
 import { courseVariantRouter } from "./routers/database/course/course-variant";
@@ -29,6 +33,9 @@ import { treasuryRouter } from "./routers/database/contributor/treasury";
 import { escrowRouter } from "./routers/database/contributor/escrow";
 import { taskRouter } from "./routers/database/contributor/task";
 import { contributorPrerequisiteRouter } from "./routers/database/contributor/contributor-prerequisite";
+import { contributorRouter } from "./routers/database/contributor/contributor";
+import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwner";
+import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
 /**
  * This is the primary router for your server.
  *
@@ -37,8 +44,15 @@ import { contributorPrerequisiteRouter } from "./routers/database/contributor/co
 export const appRouter = createTRPCRouter({
   user: userRouter,
   userWallet: userWalletRouter,
+
+  billing: billingRouter,
+  admin: adminRouter,
+
   creator: creatorRouter,
   learner: learnerRouter,
+  contributor: contributorRouter,
+  treasuryOwner: treasuryOwnerRouter,
+  contributionManager: contributionManagerRouter,
 
   // course off-chain
   course: courseRouter,

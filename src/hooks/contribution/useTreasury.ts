@@ -8,6 +8,7 @@ interface UseTreasuryReturn {
   createTreasury: (data: {
     treasuryNftPolicyId: string;
     title: string;
+    treasuryOwnerId: string;
   }) => void;
   updateTreasury: (data: {
     treasuryNftPolicyId: string;

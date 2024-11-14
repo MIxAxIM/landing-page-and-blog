@@ -21,8 +21,12 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
+      isAdmin: string;
       creatorId: string;
       learnerId: string;
+      treasuryOwnerId: string;
+      contributionManagerId: string;
+      contributorId: string;
       unconfirmedTx: string;
       accessTokenMintTx: string;
       hasMintedAccessToken: boolean;
@@ -31,6 +35,8 @@ declare module "next-auth" {
       tncVersion: string;
       // ...other properties
       // role: UserRole;
+      // stripe
+      stripeCustomerId: string;
     };
   }
 
@@ -53,6 +59,9 @@ export const authOptions: NextAuthOptions = {
         include: {
           creator: true,
           learner: { select: { id: true, lessons: true, assignments: true } },
+          treasuryOwner: true,
+          contributionManager: true,
+          contributor: true,
         },
       });
 
@@ -61,10 +70,14 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: user.id,
+          isAdmin: _user?.isAdmin,
+
           creatorId: _user && _user.creator ? _user.creator.id : undefined,
           learnerId: _user && _user.learner ? _user.learner.id : undefined,
-          unconfirmedTx: _user?.unconfirmedTx,
-          accessTokenMintTx: _user?.accessTokenMintTx,
+          treasuryOwnerId: _user && _user.treasuryOwner ? _user.treasuryOwner.id : undefined,
+          contributionManagerId: _user && _user.contributionManager ? _user.contributionManager.id : undefined,
+          contributorId: _user && _user.contributor ? _user.contributor.id : undefined,
+
           hasMintedAccessToken: _user?.hasMintedAccessToken,
           lessonIds:
             _user && _user.learner
@@ -73,12 +86,12 @@ export const authOptions: NextAuthOptions = {
           assignmentCommitments:
             _user && _user.learner
               ? _user.learner.assignments.map((a) => ({
-                  assignmentId: a.assignmentId,
-                  assignmentCommitmentId: a.id,
-                  learnerNotes: a.learnerNotes,
-                  status: a.status,
-                  archived: a.archived,
-                }))
+                assignmentId: a.assignmentId,
+                assignmentCommitmentId: a.id,
+                learnerNotes: a.learnerNotes,
+                status: a.status,
+                archived: a.archived,
+              }))
               : [],
           tncVersion: _user?.tncVersion,
         },
