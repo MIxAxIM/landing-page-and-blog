@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useTreasury } from "~/hooks/contribution/useTreasury";
 import DialogForm from "~/components/form/dialog-form";
 import { useSession } from "next-auth/react";
+import { Card } from "~/components/ui/card";
+import { Button } from "~/components/ui/button";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -34,6 +36,7 @@ export default function DialogTreasury({
     isCreating,
     isUpdating,
     isLoading: isTreasuryLoading,
+    treasuryError,
   } = useTreasury(treasuryNftPolicyId ?? undefined);
 
   const form = useForm<FormValues>({
@@ -71,41 +74,52 @@ export default function DialogTreasury({
   const isLoading = isCreating || isUpdating;
 
   return (
-    <Form {...form}>
-      <DialogForm
-        openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
-        openButtonIntent="default"
-        openButtonSize={openButtonSize ?? undefined}
-        icon={isEditMode ? "pencil" : "plus"}
-        title={isEditMode ? "Edit Treasury" : "Create New Treasury"}
-        description={
-          isEditMode
-            ? "Update the treasury's title."
-            : "Create a new treasury by providing a title and NFT policy ID."
-        }
-        buttonLabel={isEditMode ? "Save Changes" : "Create Treasury"}
-        buttonLoading={isLoading}
-        buttonDisabled={isLoading}
-        handleSubmit={form.handleSubmit(onSubmit)}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      >
-        <div className="grid gap-4 py-4">
-          <FormInput
-            name="title"
-            label="Title"
-            form={form}
-            placeholder="Enter treasury title"
-          />
-          <FormInput
-            name="treasuryNftPolicyId"
-            label="NFT Policy ID"
-            form={form}
-            placeholder="Enter NFT policy ID"
-            disabled={!!isEditMode}
-          />
-        </div>
-      </DialogForm>
-    </Form>
+    <>
+      {!!treasuryError ? (
+        <Form {...form}>
+          <DialogForm
+            openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
+            openButtonIntent="default"
+            openButtonSize={openButtonSize ?? undefined}
+            icon={isEditMode ? "pencil" : "plus"}
+            title={isEditMode ? "Edit Treasury" : "Create New Treasury"}
+            description={
+              isEditMode
+                ? "Update the treasury's title."
+                : "Create a new treasury by providing a title and NFT policy ID."
+            }
+            buttonLabel={isEditMode ? "Save Changes" : "Create Treasury"}
+            buttonLoading={isLoading}
+            buttonDisabled={isLoading}
+            handleSubmit={form.handleSubmit(onSubmit)}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          >
+            <div className="grid gap-4 py-4">
+              <FormInput
+                name="title"
+                label="Title"
+                form={form}
+                placeholder="Enter treasury title"
+              />
+              <FormInput
+                name="treasuryNftPolicyId"
+                label="NFT Policy ID"
+                form={form}
+                placeholder="Enter NFT policy ID"
+                disabled={!!isEditMode}
+              />
+            </div>
+          </DialogForm>
+        </Form>
+
+      ) : (
+        <Card>
+          <h1>You cannot have more Treasuries</h1>
+          <Button>Upgrade Andamio Subscription to Create Additional Treasuries</Button>
+        </Card>
+
+      )}
+    </>
   );
 }

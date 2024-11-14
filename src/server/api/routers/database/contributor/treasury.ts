@@ -1,5 +1,5 @@
 import { type Treasury } from "@prisma/client";
-import { type inferAsyncReturnType } from "@trpc/server";
+import { TRPCError, type inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -104,9 +104,37 @@ export const treasuryRouter = createTRPCRouter({
     }),
 
   // Protected procedures
+
   createTreasury: protectedProcedure
     .input(createTreasurySchema)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      // Get user's current subscription and product details
+      const subscription = await ctx.db.subscription.findUnique({
+        where: { userId: ctx.session.user.id },
+        include: { product: true },
+      });
+
+      // Get user's current treasury count
+      const treasuryCount = await ctx.db.treasury.count({
+        where: { treasuryOwnerId: input.treasuryOwnerId },
+      });
+
+      // Users without subscription can create 1 treasury
+      if (!subscription && treasuryCount >= 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Subscribe to create more than one treasury",
+        });
+      }
+
+      // Check if subscribed user has reached their treasury limit
+      if (subscription && treasuryCount >= subscription.product.maxAllowedTreasuries) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: `Your subscription allows up to ${subscription.product.maxAllowedTreasuries} treasuries`,
+        });
+      }
+
       return ctx.db.treasury.create({
         data: input,
       });

@@ -36,10 +36,10 @@ export function useRoles() {
     );
   };
 
-  const getTreasuryOwner = (userId: string) => {
+  const getTreasuryOwner = () => {
     return api.treasuryOwner.getTreasuryOwnerByUser.useQuery(
-      { userId },
-      { enabled: !!userId }
+      { userId: sessionData?.user.id ?? "" },
+      { enabled: (!!sessionData?.user.id) }
     );
   };
 

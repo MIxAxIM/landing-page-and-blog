@@ -1,6 +1,7 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { type Treasury } from "~/types/db";
+import { useState } from "react";
 
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
@@ -18,10 +19,12 @@ interface UseTreasuryReturn {
   isCreating: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
+  treasuryError: string | null;
 }
 
 export function useTreasury(id?: string): UseTreasuryReturn {
   const ctx = api.useUtils();
+  const [appError, setAppError] = useState<string | null>(null)
 
   // Query for getting treasury data
   const { data: treasury, isLoading } = api.treasury.getTreasuryById.useQuery(
@@ -41,8 +44,12 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       const errorMessage = e.data?.zodError?.fieldErrors;
       if (errorMessage) {
         toast.error("Some inputs are missing or invalid");
+
+      } else if (!!e.shape?.message) {
+        toast.error(e.shape.message)
+        setAppError(e.shape.message)
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error(JSON.stringify(e));
       }
     },
   });
@@ -85,5 +92,6 @@ export function useTreasury(id?: string): UseTreasuryReturn {
     isCreating: createTreasuryMutation.isLoading,
     isUpdating: updateTreasuryMutation.isLoading,
     isDeleting: deleteTreasuryMutation.isLoading,
+    treasuryError: appError,
   };
 }
