@@ -16,6 +16,7 @@ const navigation = [
   { name: "Blog", href: "https://blog.andamio.io" },
   { name: "Roadmap", href: "/roadmap" },
   { name: "Open App", href: "/app" },
+  { name: "Pricing", href: "/pricing" },
 ];
 
 export default function MenuBar({
@@ -101,8 +102,8 @@ function Desktop({
           <Button
             onClick={() => setRole("learner")}
             className={`cursor-pointer rounded px-4 py-2 ${role === "learner"
-                ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
-                : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
+              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >
             I am a&nbsp;
@@ -113,8 +114,8 @@ function Desktop({
           <Button
             onClick={() => setRole("organization")}
             className={`cursor-pointer rounded px-4 py-2 ${role === "organization"
-                ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
-                : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
+              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >
             I am an&nbsp;
@@ -221,8 +222,8 @@ function Mobile({
                   setRole("learner");
                 }}
                 className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "learner"
-                    ? "bg-white text-primary hover:bg-primary hover:text-white"
-                    : "bg-primary text-white hover:bg-white hover:text-primary"
+                  ? "bg-white text-primary hover:bg-primary hover:text-white"
+                  : "bg-primary text-white hover:bg-white hover:text-primary"
                   }`}
               >
                 I am a&nbsp;
@@ -234,8 +235,8 @@ function Mobile({
                   setRole("organization");
                 }}
                 className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "organization"
-                    ? "bg-white text-primary hover:bg-primary hover:text-white"
-                    : "bg-primary text-white hover:bg-white hover:text-primary"
+                  ? "bg-white text-primary hover:bg-primary hover:text-white"
+                  : "bg-primary text-white hover:bg-white hover:text-primary"
                   }`}
               >
                 I am an&nbsp;
