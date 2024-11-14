@@ -1,11 +1,12 @@
-import { buffer } from "micro";
-import { type NextApiRequest, type NextApiResponse } from "next";
-import { stripe } from "~/config/stripe";
+import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
+import { buffer } from "micro";
+import { stripe } from "~/config/stripe";
+import { handleSubscriptionCreatedOrUpdated, handleInvoicePaid, handleSubscriptionCanceled } from "~/server/stripe/webhook-handlers";
 import { db } from "~/server/db";
 import { Prisma } from "@prisma/client";
 
-// Disable body parsing, need the raw body for webhook signature verification
+// Stripe requires the raw body to construct the event.
 export const config = {
 	api: {
 		bodyParser: false,
@@ -14,261 +15,87 @@ export const config = {
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// Type guards for event types
-function isSubscriptionEvent(event: Stripe.Event): event is Stripe.Event & {
-	data: { object: Stripe.Subscription }
-} {
-	return event.type.startsWith('customer.subscription.');
-}
-
-// Subscription handlers
-async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
-	return db.$transaction(async (tx) => {
-		const customerId = subscription.customer as string;
-		const user = await tx.user.findFirst({
-			where: { stripeCustomerId: customerId },
-		});
-
-		if (!user) {
-			throw new Error(`No user found for Stripe customer ID: ${customerId}`);
-		}
-
-		// Check if a subscription already exists and is in a more final state
-		const existingSubscription = await tx.subscription.findUnique({
-			where: { id: subscription.id },
-		});
-
-		if (existingSubscription && subscription.status === 'incomplete' &&
-			['active', 'trialing'].includes(existingSubscription.status)) {
-			console.log(`Skipping incomplete subscription update for ${subscription.id} as it's already ${existingSubscription.status}`);
-			return;
-		}
-
-		const priceId = subscription.items.data[0]?.price.id ?? "";
-		const productId = subscription.items.data[0]?.price.product as string;
-
-		await tx.subscription.upsert({
-			where: { id: subscription.id },
-			create: {
-				id: subscription.id,
-				userId: user.id,
-				status: subscription.status,
-				priceId,
-				productId,
-				currentPeriodStart: new Date(subscription.current_period_start * 1000),
-				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-				cancelAtPeriodEnd: subscription.cancel_at_period_end,
-			},
-			update: {
-				status: subscription.status,
-				currentPeriodStart: new Date(subscription.current_period_start * 1000),
-				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-				cancelAtPeriodEnd: subscription.cancel_at_period_end,
-			},
-		});
-
-		// Only update user subscription status if it's not going backward
-		if (!user.stripeSubscriptionStatus ||
-			user.stripeSubscriptionStatus === 'incomplete' ||
-			subscription.status !== 'incomplete') {
-			await tx.user.update({
-				where: { id: user.id },
-				data: {
-					stripeSubscriptionId: subscription.id,
-					stripeSubscriptionStatus: subscription.status,
-				},
-			});
-		}
-	});
-}
-
-async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
-	return db.$transaction(async (tx) => {
-		const existingSubscription = await tx.subscription.findUnique({
-			where: { id: subscription.id },
-		});
-
-		// Don't downgrade from active/trialing to incomplete
-		if (existingSubscription &&
-			['active', 'trialing'].includes(existingSubscription.status) &&
-			subscription.status === 'incomplete') {
-			console.log(`Skipping downgrade of subscription ${subscription.id} from ${existingSubscription.status} to incomplete`);
-			return;
-		}
-
-		// If subscription doesn't exist, create it
-		if (!existingSubscription) {
-			const customerId = subscription.customer as string;
-			const user = await tx.user.findFirst({
-				where: { stripeCustomerId: customerId },
-			});
-
-			if (!user) {
-				throw new Error(`No user found for Stripe customer ID: ${customerId}`);
-			}
-
-			// Get the price and product details
-			const priceId = subscription.items.data[0]?.price.id ?? "";
-			const productId = subscription.items.data[0]?.price.product as string;
-
-			await tx.subscription.create({
-				data: {
-					id: subscription.id,
-					userId: user.id,
-					status: subscription.status,
-					priceId,
-					productId,
-					currentPeriodStart: new Date(subscription.current_period_start * 1000),
-					currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-					cancelAtPeriodEnd: subscription.cancel_at_period_end,
-				},
-			});
-
-			// Update user's subscription status
-			await tx.user.update({
-				where: { id: user.id },
-				data: {
-					stripeSubscriptionId: subscription.id,
-					stripeSubscriptionStatus: subscription.status,
-				},
-			});
-
-			return;
-		}
-
-		// Otherwise, update the existing subscription
-		await tx.subscription.update({
-			where: { id: subscription.id },
-			data: {
-				status: subscription.status,
-				currentPeriodStart: new Date(subscription.current_period_start * 1000),
-				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-				cancelAtPeriodEnd: subscription.cancel_at_period_end,
-				updated: new Date(), // Update the updated timestamp
-			},
-		});
-
-		// Update the user's subscription status
-		await tx.user.update({
-			where: { id: existingSubscription.userId },
-			data: {
-				stripeSubscriptionStatus: subscription.status,
-			},
-		});
-	});
-}
-
-async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
-	return db.$transaction(async (tx) => {
-		const sub = await tx.subscription.findUnique({
-			where: { id: subscription.id },
-			select: { userId: true },
-		});
-
-		await tx.subscription.delete({
-			where: { id: subscription.id },
-		});
-
-		if (sub) {
-			await tx.user.update({
-				where: { id: sub.userId },
-				data: {
-					stripeSubscriptionId: null,
-					stripeSubscriptionStatus: null,
-				},
-			});
-		}
-	});
-}
-
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	if (req.method !== "POST") {
-		return res.status(405).json({ message: "Method not allowed" });
-	}
-
-	if (!webhookSecret) {
-		return res.status(500).json({ message: "Webhook secret not configured" });
-	}
-
-	try {
+	if (!webhookSecret) return
+	if (req.method === "POST") {
 		const buf = await buffer(req);
 		const sig = req.headers["stripe-signature"];
 
-		if (!sig) {
-			return res.status(400).json({ message: "No signature provided" });
-		}
+		let event: Stripe.Event;
 
-		const event = stripe.webhooks.constructEvent(
-			buf,
-			sig,
-			webhookSecret
-		);
-
-		// Check for duplicate events
-		const existingEvent = await db.stripeEvent.findUnique({
-			where: { id: event.id },
-		});
-
-		if (existingEvent) {
-			return res.json({ received: true });
-		}
-
-		// Store the event in the database
-		await db.stripeEvent.create({
-			data: {
-				id: event.id,
-				type: event.type,
-				object: event.object,
-				api_version: event.api_version,
-				account: event.account,
-				created: new Date(event.created * 1000),
-				data: event.data.object as unknown as Prisma.InputJsonValue,
-				livemode: event.livemode,
-				pending_webhooks: event.pending_webhooks,
-				request: (event.request ?? {}) as unknown as Prisma.InputJsonValue,
-			},
-		});
-
-		// Process the event
 		try {
-			if (isSubscriptionEvent(event)) {
-				switch (event.type) {
-					case "customer.subscription.created":
-						await handleSubscriptionCreated(event.data.object);
-						break;
-					case "customer.subscription.updated":
-						await handleSubscriptionUpdated(event.data.object);
-						break;
-					case "customer.subscription.deleted":
-						await handleSubscriptionDeleted(event.data.object);
-						break;
-				}
+			event = stripe.webhooks.constructEvent(buf, sig as string, webhookSecret);
+
+			// Handle the event
+			switch (event.type) {
+				case "invoice.paid":
+					// Used to provision services after the trial has ended.
+					// The status of the invoice will show up as paid. Store the status in your database to reference when a user accesses your service to avoid hitting rate limits.
+					await handleInvoicePaid({
+						event,
+						stripe,
+						prisma: db,
+					});
+					break;
+				case "customer.subscription.created":
+					// Used to provision services as they are added to a subscription.
+					await handleSubscriptionCreatedOrUpdated({
+						event,
+						prisma: db,
+					});
+					break;
+				case "customer.subscription.updated":
+					// Used to provision services as they are updated.
+					await handleSubscriptionCreatedOrUpdated({
+						event,
+						prisma: db,
+					});
+					break;
+				case "invoice.payment_failed":
+					// If the payment fails or the customer does not have a valid payment method,
+					//  an invoice.payment_failed event is sent, the subscription becomes past_due.
+					// Use this webhook to notify your user that their payment has
+					// failed and to retrieve new card details.
+					// Can also have Stripe send an email to the customer notifying them of the failure. See settings: https://dashboard.stripe.com/settings/billing/automatic
+					break;
+				case "customer.subscription.deleted":
+					// handle subscription cancelled automatically based
+					// upon your subscription settings.
+					await handleSubscriptionCanceled({
+						event,
+						prisma: db,
+					});
+					break;
+				default:
+				// Unexpected event type
 			}
-			// Add handlers for other event types here
-		} catch (processError) {
-			// Log the error but don't return an error response
-			// This prevents Stripe from retrying webhooks that we've already stored
-			console.error("Error processing webhook:", processError);
-		}
 
-		return res.json({ received: true });
-	} catch (err) {
-		// Handle webhook verification errors
-		if (err instanceof stripe.errors.StripeSignatureVerificationError) {
-			return res.status(400).json({
-				message: "Invalid signature",
-				error: err.message
+			// record the event in the database
+			await db.stripeEvent.create({
+				data: {
+					id: event.id,
+					type: event.type,
+					object: event.object,
+					api_version: event.api_version,
+					account: event.account,
+					created: new Date(event.created * 1000), // convert to milliseconds
+					data: event.data.object as unknown as Prisma.InputJsonValue,
+					livemode: event.livemode,
+					pending_webhooks: event.pending_webhooks,
+					request: (event.request ?? {}) as unknown as Prisma.InputJsonValue,
+				},
 			});
-		}
 
-		// Handle all other errors
-		console.error("Critical webhook error:", err);
-		return res.status(500).json({
-			message: "Internal server error",
-			error: err instanceof Error ? err.message : "Unknown error"
-		});
+			res.json({ received: true });
+		} catch (err) {
+			res.status(400).send(`Webhook Error: ${(err as any).message}`);
+			return;
+		}
+	} else {
+		res.setHeader("Allow", "POST");
+		res.status(405).end("Method Not Allowed");
 	}
 }
