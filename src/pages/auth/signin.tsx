@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import PageSignin from "~/ui/auth/PageSignin";
 
-export default function SignIn({}: InferGetServerSidePropsType<
+export default function SignIn({ }: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   return <PageSignin />;
@@ -63,7 +63,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (context.query.callbackUrl) {
       return { redirect: { destination: context.query.callbackUrl } };
     }
-    return { redirect: { destination: "/dashboard" } };
+    return { redirect: { destination: "/app" } };
   }
 
   const providers = await getProviders();
