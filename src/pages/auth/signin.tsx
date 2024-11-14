@@ -10,7 +10,7 @@ import PageSignin from "~/ui/auth/PageSignin";
 export default function SignIn({ }: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
-  return <PageSignin />;
+  return <PageSignin redirectUrl="/app" />;
   // // todo: hardcode providers for now, because on vercel, it's not working
   // const _providers = [
   //   {
@@ -61,7 +61,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   if (session) {
     if (context.query.callbackUrl) {
-      return { redirect: { destination: context.query.callbackUrl } };
+      return { redirect: { destination: "/app" } };
     }
     return { redirect: { destination: "/app" } };
   }

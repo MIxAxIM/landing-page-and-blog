@@ -13,7 +13,7 @@ export default function ProfileLayout({
   const route = useRouter();
 
   if (sessionData === null) {
-    return <PageSignin redirectUrl={route.asPath} />;
+    return <PageSignin redirectUrl="/app" />;
   }
 
   return (
