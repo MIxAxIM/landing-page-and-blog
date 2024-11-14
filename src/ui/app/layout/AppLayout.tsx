@@ -5,16 +5,15 @@ import { useRouter } from "next/router";
 import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
 import SideMenu from "~/ui/navigation/SideMenu";
 
-export default function ProfileLayout({
+export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const { data: sessionData } = useSession();
-  const route = useRouter();
 
   if (sessionData === null) {
-    return <PageSignin redirectUrl={route.asPath} />;
+    return
   }
 
   return (
