@@ -33,12 +33,23 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 			throw new Error(`No user found for Stripe customer ID: ${customerId}`);
 		}
 
-		// Get the price and product details
+		// Check if a subscription already exists and is in a more final state
+		const existingSubscription = await tx.subscription.findUnique({
+			where: { id: subscription.id },
+		});
+
+		if (existingSubscription && subscription.status === 'incomplete' &&
+			['active', 'trialing'].includes(existingSubscription.status)) {
+			console.log(`Skipping incomplete subscription update for ${subscription.id} as it's already ${existingSubscription.status}`);
+			return;
+		}
+
 		const priceId = subscription.items.data[0]?.price.id ?? "";
 		const productId = subscription.items.data[0]?.price.product as string;
 
-		await tx.subscription.create({
-			data: {
+		await tx.subscription.upsert({
+			where: { id: subscription.id },
+			create: {
 				id: subscription.id,
 				userId: user.id,
 				status: subscription.status,
@@ -48,21 +59,43 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
 				cancelAtPeriodEnd: subscription.cancel_at_period_end,
 			},
-		});
-
-		// Update user's subscription status
-		await tx.user.update({
-			where: { id: user.id },
-			data: {
-				stripeSubscriptionId: subscription.id,
-				stripeSubscriptionStatus: subscription.status,
+			update: {
+				status: subscription.status,
+				currentPeriodStart: new Date(subscription.current_period_start * 1000),
+				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+				cancelAtPeriodEnd: subscription.cancel_at_period_end,
 			},
 		});
+
+		// Only update user subscription status if it's not going backward
+		if (!user.stripeSubscriptionStatus ||
+			user.stripeSubscriptionStatus === 'incomplete' ||
+			subscription.status !== 'incomplete') {
+			await tx.user.update({
+				where: { id: user.id },
+				data: {
+					stripeSubscriptionId: subscription.id,
+					stripeSubscriptionStatus: subscription.status,
+				},
+			});
+		}
 	});
 }
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 	return db.$transaction(async (tx) => {
+		const existingSubscription = await tx.subscription.findUnique({
+			where: { id: subscription.id },
+		});
+
+		// Don't downgrade from active/trialing to incomplete
+		if (existingSubscription &&
+			['active', 'trialing'].includes(existingSubscription.status) &&
+			subscription.status === 'incomplete') {
+			console.log(`Skipping downgrade of subscription ${subscription.id} from ${existingSubscription.status} to incomplete`);
+			return;
+		}
+
 		await tx.subscription.update({
 			where: { id: subscription.id },
 			data: {
