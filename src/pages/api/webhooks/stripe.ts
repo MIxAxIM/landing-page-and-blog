@@ -96,6 +96,47 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 			return;
 		}
 
+		// If subscription doesn't exist, create it
+		if (!existingSubscription) {
+			const customerId = subscription.customer as string;
+			const user = await tx.user.findFirst({
+				where: { stripeCustomerId: customerId },
+			});
+
+			if (!user) {
+				throw new Error(`No user found for Stripe customer ID: ${customerId}`);
+			}
+
+			// Get the price and product details
+			const priceId = subscription.items.data[0]?.price.id ?? "";
+			const productId = subscription.items.data[0]?.price.product as string;
+
+			await tx.subscription.create({
+				data: {
+					id: subscription.id,
+					userId: user.id,
+					status: subscription.status,
+					priceId,
+					productId,
+					currentPeriodStart: new Date(subscription.current_period_start * 1000),
+					currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+					cancelAtPeriodEnd: subscription.cancel_at_period_end,
+				},
+			});
+
+			// Update user's subscription status
+			await tx.user.update({
+				where: { id: user.id },
+				data: {
+					stripeSubscriptionId: subscription.id,
+					stripeSubscriptionStatus: subscription.status,
+				},
+			});
+
+			return;
+		}
+
+		// Otherwise, update the existing subscription
 		await tx.subscription.update({
 			where: { id: subscription.id },
 			data: {
@@ -103,22 +144,17 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 				currentPeriodStart: new Date(subscription.current_period_start * 1000),
 				currentPeriodEnd: new Date(subscription.current_period_end * 1000),
 				cancelAtPeriodEnd: subscription.cancel_at_period_end,
+				updated: new Date(), // Update the updated timestamp
 			},
 		});
 
-		const sub = await tx.subscription.findUnique({
-			where: { id: subscription.id },
-			select: { userId: true },
+		// Update the user's subscription status
+		await tx.user.update({
+			where: { id: existingSubscription.userId },
+			data: {
+				stripeSubscriptionStatus: subscription.status,
+			},
 		});
-
-		if (sub) {
-			await tx.user.update({
-				where: { id: sub.userId },
-				data: {
-					stripeSubscriptionStatus: subscription.status,
-				},
-			});
-		}
 	});
 }
 
