@@ -110,17 +110,17 @@ export default function DialogEscrow({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Circle" : "Create Circle"}
+        openButton={isEditMode ? "Edit Project" : "Create Project"}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
-        title={isEditMode ? `Edit ${escrow?.title}` : "Create New Circle"}
+        title={isEditMode ? `Edit ${escrow?.title}` : "Create New Project"}
         description={
           isEditMode
-            ? "Update Circle details."
-            : "Create a new Circle by providing an NFT policy ID and selecting a treasury."
+            ? "Update Project details."
+            : "After you initialize this project, you will be able to create tasks."
         }
-        buttonLabel={isEditMode ? "Save Changes" : "Create Circle"}
+        buttonLabel={isEditMode ? "Save Changes" : "Create Project"}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
         handleSubmit={form.handleSubmit(onSubmit)}
@@ -130,7 +130,7 @@ export default function DialogEscrow({
         <div className="grid gap-4 py-4">
           <FormInput
             name="title"
-            label="Escrow Name"
+            label="Project Name"
             form={form}
             placeholder="Enter a name for this Escrow"
           />

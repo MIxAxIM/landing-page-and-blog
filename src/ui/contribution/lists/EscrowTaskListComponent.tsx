@@ -208,7 +208,7 @@ export default function EscrowTaskListComponent({
                   </TableCell>
                   <TableCell className="items-center justify-center gap-x-2">
                     <DialogTask openButtonSize="sm" id={task.id} />
-                    <Link href={`/contribute/task/${task.id}`}>
+                    <Link href={`/app/contribute/task/${task.id}`}>
                       <Button size="dialog">Public Task</Button>
                     </Link>
                   </TableCell>

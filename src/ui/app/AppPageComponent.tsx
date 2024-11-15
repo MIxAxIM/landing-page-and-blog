@@ -38,7 +38,7 @@ export default function AppPageComponent() {
       <div className="flex flex-row w-full gap-5 mx-auto items-center justify-center my-12">
         <Button size="lg" onClick={() => setCurrentView("COURSES")}>View all Courses</Button>
         <Button size="lg" onClick={() => setCurrentView("TASKS")}>View all Tasks</Button>
-        <Button size="lg" onClick={() => setCurrentView("TREASURIES")}>View Andamio Treasuries</Button>
+        <Button size="lg" onClick={() => setCurrentView("TREASURIES")}>View Organizations</Button>
         <Button size="lg" onClick={() => setCurrentView("PARTICIPATE")}>Participate</Button>
 
       </div>

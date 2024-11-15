@@ -40,7 +40,7 @@ export default function TaskEscrowFilter({
             selectedEscrows.length < escrows.length && "border-dashed",
           )}
         >
-          <span>Filter by Escrow</span>
+          <span>Filter by Project</span>
           <Badge variant="secondary" className="ml-2 rounded-sm">
             {selectedEscrows.length}
           </Badge>

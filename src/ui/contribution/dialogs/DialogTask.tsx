@@ -318,7 +318,7 @@ export default function DialogTask({
 
   const getDialogDescription = () => {
     if (!isEditMode) {
-      return "Create a new task by selecting a treasury and escrow, then providing task details.";
+      return "Create a new task by selecting an organization and a project. Then, provide task details. This is a draft, and you will be able to change these details later.";
     }
     if (!task) return "";
 
@@ -378,7 +378,7 @@ export default function DialogTask({
         icon={isEditMode ? "pencil" : "plus"}
         title={getDialogTitle()}
         description={getDialogDescription()}
-        buttonLabel={isEditMode ? "Save Changes" : "Create Task"}
+        buttonLabel={isEditMode ? "Save Changes" : "Save Draft"}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
         handleSubmit={form.handleSubmit(handleSubmit)}
@@ -405,13 +405,13 @@ export default function DialogTask({
                 <>
                   <FormSelect
                     name="escrowId"
-                    label="Escrow"
+                    label="Project"
                     form={form}
                     options={filteredEscrows.map((e) => ({
                       value: e.id,
                       label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
                     }))}
-                    placeholder="Select an escrow"
+                    placeholder="Select a project"
                     disabled={!selectedTreasuryId || isLoading}
                   />
                   <div>

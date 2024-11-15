@@ -112,7 +112,7 @@ export function useEscrow({
 
   const updateEscrowMutation = api.escrow.updateEscrow.useMutation({
     onSuccess: async () => {
-      toast.success("Escrow updated successfully");
+      toast.success("Project updated successfully");
       await refreshQueries();
     },
     onError: (error) => {
@@ -130,7 +130,7 @@ export function useEscrow({
 
   const updateEscrowSyncStatus = api.escrow.updateEscrowSyncStatus.useMutation({
     onSuccess: async () => {
-      toast.success("Escrow is synced with Andamio Network");
+      toast.success("Project is synced with Andamio Network");
       await refreshQueries();
     },
     onError: (error) => {

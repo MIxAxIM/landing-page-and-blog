@@ -17,10 +17,9 @@ export default function ManageTreasuryComponent({
   return (
     <div>
       <div className="mx-auto mb-48 mt-12 grid w-11/12 grid-cols-6 gap-3">
-        <div className="col-span-6 flex w-full flex-row items-center justify-between">
-          <div className="flex flex-col space-y-2">
-            <h2 className="text-4xl">Treasury: {treasuryInfo?.title}</h2>
-            <p>CONTRIBUTION-007: View Treasury Dashboard</p>
+        <div className="col-span-6 flex w-full flex-row items-center justify-between mb-6">
+          <div className="">
+            <h2 className="text-4xl">{treasuryInfo?.title}</h2>
           </div>
 
           <div className="flex flex-row space-x-2">
@@ -53,25 +52,7 @@ export default function ManageTreasuryComponent({
         <DashboardDataComponent title="approved contributors" data="0" />
         <div className="col-span-6">
           <PlaceholderComponent
-            name="List of Active Tasks"
-            userStory="CONTRIBUTION-001"
-          >
-            <>
-              {!!treasuryInfo?.treasuryNftPolicyId && (
-                <TreasuryTaskListComponent
-                  treasury={treasuryInfo.treasuryNftPolicyId}
-                />
-              )}
-              <DialogTask
-                treasuryId={treasuryInfo?.treasuryNftPolicyId}
-                key={treasuryInfo?.treasuryNftPolicyId}
-              />
-            </>
-          </PlaceholderComponent>
-        </div>
-        <div className="col-span-4">
-          <PlaceholderComponent
-            name="Treasury Circles"
+            name="Current Projects"
             userStory="CONTRIBUTION-007"
           >
             <>
@@ -91,13 +72,31 @@ export default function ManageTreasuryComponent({
             </>
           </PlaceholderComponent>
         </div>
+        <div className="col-span-6">
+          <PlaceholderComponent
+            name="List of Active Tasks"
+            userStory="CONTRIBUTION-001"
+          >
+            <>
+              {!!treasuryInfo?.treasuryNftPolicyId && (
+                <TreasuryTaskListComponent
+                  treasury={treasuryInfo.treasuryNftPolicyId}
+                />
+              )}
+              <DialogTask
+                treasuryId={treasuryInfo?.treasuryNftPolicyId}
+                key={treasuryInfo?.treasuryNftPolicyId}
+              />
+            </>
+          </PlaceholderComponent>
+        </div>
         <div className="col-span-2">
           <PlaceholderComponent
             name="List of Active Contributors"
             userStory="CONTRIBUTION-001"
           />
         </div>
-        <div className="col-span-6">
+        <div className="col-span-2">
           <PlaceholderComponent
             name="Manage Treasury Tasks"
             subItems={[

@@ -28,7 +28,7 @@ export default function AppLayout({
         </div>
       </main>
       <LightDarkToggle />
-      <FloatingStatusButton defaultOpen={true}>
+      <FloatingStatusButton defaultOpen={!sessionData?.user.contributorId}>
         <h2 className="prose-h2 text-2xl mb-8">Andamio Onboarding Status</h2>
         <p>Check here any time to see how you are doing</p>
         <AndamioRoleStatusMenu dashboardChildRoute="/" />

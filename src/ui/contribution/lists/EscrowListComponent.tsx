@@ -27,7 +27,7 @@ export default function EscrowListComponent({
       {treasuryEscrows && (
         <Table className="mb-8 w-full table-fixed">
           <TableRow>
-            <TableHead>Escrow</TableHead>
+            <TableHead>Project</TableHead>
             <TableHead>CS</TableHead>
             {/* TODO: Do we need Decision Makers? Not if they are solely defined at Treasury Level */}
             {/* <TableHead>Decision Makers</TableHead> */}
@@ -57,7 +57,7 @@ export default function EscrowListComponent({
                 <TableCell>
                   <div className="flex flex-row gap-1">
                     <Link
-                      href={`/dashboard/contribution-manager/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
+                      href={`/app/organize/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
                     >
                       <Button size="dialog">View</Button>
                     </Link>

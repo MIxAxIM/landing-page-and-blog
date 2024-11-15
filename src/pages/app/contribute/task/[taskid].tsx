@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
+import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
 import { useTask } from "~/hooks/contribution/useTask";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
-import MenuBar from "~/ui/landing/MenuBar";
-import { VideoBackground } from "~/ui/landing/SB7PageLanding";
 
 export default function PublicTaskPage() {
   const router = useRouter();
@@ -22,11 +21,8 @@ export default function PublicTaskPage() {
   }
 
   return (
-    <>
-      <VideoBackground>
-        <MenuBar />
-        <PublicTaskPageComponent task={task} />
-      </VideoBackground>
-    </>
+    <DesktopOnlyLayout>
+      <PublicTaskPageComponent task={task} />
+    </DesktopOnlyLayout>
   );
 }
