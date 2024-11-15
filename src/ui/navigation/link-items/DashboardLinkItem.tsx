@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import AndamioRoleStatusMenu from "../menu-sections/AndamioRoleStatusMenu";
+import AndamioDashboardMenu from "../menu-sections/AndamioDashboardMenu";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -8,7 +8,6 @@ function classNames(...classes: string[]) {
 
 export function DashboardLinkItem({
   current,
-  dashboardChildRoute,
 }: {
   current: boolean;
   dashboardChildRoute: string;
@@ -39,10 +38,11 @@ export function DashboardLinkItem({
           )}
           aria-hidden="true"
         />
-        Andamio Roles
+        Andamio Dashboard
       </Link>
+
       {current && (
-        <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute} />
+        <AndamioDashboardMenu />
       )}
     </li>
   );

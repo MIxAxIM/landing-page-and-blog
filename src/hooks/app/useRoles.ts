@@ -8,31 +8,31 @@ export function useRoles() {
   const { data: sessionData, update: updateSession } = useSession();
 
   // Queries
-  const getCreator = (userId: string) => {
+  const getCreator = () => {
     return api.creator.getCreatorByUser.useQuery(
-      { userId },
-      { enabled: !!userId }
+      { userId: sessionData?.user.id ?? "" },
+      { enabled: (!!sessionData?.user.id) }
     );
   };
 
-  const getLearner = (userId: string) => {
+  const getLearner = () => {
     return api.learner.getLearnerByUser.useQuery(
-      { userId },
-      { enabled: !!userId }
+      { userId: sessionData?.user.id ?? "" },
+      { enabled: (!!sessionData?.user.id) }
     );
   };
 
-  const getContributor = (userId: string) => {
+  const getContributor = () => {
     return api.contributor.getContributorByUser.useQuery(
-      { userId },
-      { enabled: !!userId }
+      { userId: sessionData?.user.id ?? "" },
+      { enabled: (!!sessionData?.user.id) }
     );
   };
 
-  const getContributionManager = (userId: string) => {
+  const getContributionManager = () => {
     return api.contributionManager.getContributionManagerByUser.useQuery(
-      { userId },
-      { enabled: !!userId }
+      { userId: sessionData?.user.id ?? "" },
+      { enabled: (!!sessionData?.user.id) }
     );
   };
 
@@ -150,6 +150,143 @@ export function useRoles() {
     createTreasuryOwner.mutate({ userId: sessionData.user.id });
   };
 
+  // Update Onboarding Statuses
+  const updateCreatorOnboarding = api.creator.updateOnboardingStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Onboarding status updated successfully!");
+      void ctx.creator.getCreatorByUser.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Failed to update onboarding status");
+      } else {
+        toast.error("An error occurred while updating onboarding status");
+      }
+    },
+  });
+
+  const updateLearnerOnboarding = api.learner.updateOnboardingStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Onboarding status updated successfully!");
+      void ctx.learner.getLearnerByUser.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Failed to update onboarding status");
+      } else {
+        toast.error("An error occurred while updating onboarding status");
+      }
+    },
+  });
+
+  const updateContributorOnboarding = api.contributor.updateOnboardingStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Onboarding status updated successfully!");
+      void ctx.contributor.getContributorByUser.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Failed to update onboarding status");
+      } else {
+        toast.error("An error occurred while updating onboarding status");
+      }
+    },
+  });
+
+  const updateContributionManagerOnboarding = api.contributionManager.updateOnboardingStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Onboarding status updated successfully!");
+      void ctx.contributionManager.getContributionManagerByUser.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Failed to update onboarding status");
+      } else {
+        toast.error("An error occurred while updating onboarding status");
+      }
+    },
+  });
+
+  const updateTreasuryOwnerOnboarding = api.treasuryOwner.updateOnboardingStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Onboarding status updated successfully!");
+      void ctx.treasuryOwner.getTreasuryOwnerByUser.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Failed to update onboarding status");
+      } else {
+        toast.error("An error occurred while updating onboarding status");
+      }
+    },
+  });
+
+  // Add a helper function that makes it easy to update onboarding status
+  const updateCreatorOnboardingStatus = (
+    creatorId: string,
+    status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
+    completedAt?: Date
+  ) => {
+    updateCreatorOnboarding.mutate({
+      creatorId,
+      onboardingStatus: status,
+      onboardingCompletedAt: completedAt
+    });
+  };
+
+  const updateLearnerOnboardingStatus = (
+    learnerId: string,
+    status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
+    completedAt?: Date
+  ) => {
+    updateLearnerOnboarding.mutate({
+      learnerId,
+      onboardingStatus: status,
+      onboardingCompletedAt: completedAt
+    });
+  };
+
+  const updateContributorOnboardingStatus = (
+    contributorId: string,
+    status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
+    completedAt?: Date
+  ) => {
+    updateContributorOnboarding.mutate({
+      contributorId,
+      onboardingStatus: status,
+      onboardingCompletedAt: completedAt
+    });
+  };
+
+  const updateContributionManagerOnboardingStatus = (
+    contributionManagerId: string,
+    status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
+    completedAt?: Date
+  ) => {
+    updateContributionManagerOnboarding.mutate({
+      contributionManagerId,
+      onboardingStatus: status,
+      onboardingCompletedAt: completedAt
+    });
+  };
+
+  const updateTreasuryManagerOnboardingStatus = (
+    treasuryOwnerId: string,
+    status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
+    completedAt?: Date
+  ) => {
+    updateTreasuryOwnerOnboarding.mutate({
+      treasuryOwnerId,
+      onboardingStatus: status,
+      onboardingCompletedAt: completedAt
+    });
+  };
+
   return {
     // Session data
     sessionData,
@@ -169,6 +306,11 @@ export function useRoles() {
     enableTreasuryOwner,
 
     // Update Onboarding Status
+    updateCreatorOnboardingStatus,
+    updateLearnerOnboardingStatus,
+    updateContributorOnboardingStatus,
+    updateContributionManagerOnboardingStatus,
+    updateTreasuryManagerOnboardingStatus,
 
     // Loading states
     isCreating: createCreator.isLoading || createLearner.isLoading,

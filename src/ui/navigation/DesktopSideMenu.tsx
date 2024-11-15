@@ -12,6 +12,7 @@ import CourseOutline from "../course/components/layout/SideMenu/CourseOutline";
 import StudioOutline from "../studio/components/layout/SideMenu/StudioOutline";
 import { CourseStudioLinkItem, DashboardLinkItem } from "./link-items";
 import { BrowseCoursesSideMenu } from "./link-items/BrowseCoursesSideMenu";
+import AndamioRoleStatusMenu from "./menu-sections/AndamioRoleStatusMenu";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -143,21 +144,8 @@ export default function DesktopSideMenu({
                 />
               </li>
             )}
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/prerequisite-minter">Prereq Explorer</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/contribute">Contribute</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/learn">Learn</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/organize">Organize</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/teach">Teach</Link>
-            </div>
+            <h2 className="mt-5 mb-3 pb-3 border-b border-primary pl-2 font-bold">App</h2>
+            <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />
           </ul>
