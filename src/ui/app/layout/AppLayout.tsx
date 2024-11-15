@@ -11,9 +11,10 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const { data: sessionData } = useSession();
+  const route = useRouter();
 
   if (sessionData === null) {
-    return
+    return <PageSignin redirectUrl={route.asPath} />;
   }
 
   return (
