@@ -228,60 +228,60 @@ export function useRoles() {
 
   // Add a helper function that makes it easy to update onboarding status
   const updateCreatorOnboardingStatus = (
-    creatorId: string,
+    id: string,
     status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
     completedAt?: Date
   ) => {
     updateCreatorOnboarding.mutate({
-      creatorId,
+      creatorId: id,
       onboardingStatus: status,
       onboardingCompletedAt: completedAt
     });
   };
 
   const updateLearnerOnboardingStatus = (
-    learnerId: string,
+    id: string,
     status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
     completedAt?: Date
   ) => {
     updateLearnerOnboarding.mutate({
-      learnerId,
+      learnerId: id,
       onboardingStatus: status,
       onboardingCompletedAt: completedAt
     });
   };
 
   const updateContributorOnboardingStatus = (
-    contributorId: string,
+    id: string,
     status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
     completedAt?: Date
   ) => {
     updateContributorOnboarding.mutate({
-      contributorId,
+      contributorId: id,
       onboardingStatus: status,
       onboardingCompletedAt: completedAt
     });
   };
 
   const updateContributionManagerOnboardingStatus = (
-    contributionManagerId: string,
+    id: string,
     status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
     completedAt?: Date
   ) => {
     updateContributionManagerOnboarding.mutate({
-      contributionManagerId,
+      contributionManagerId: id,
       onboardingStatus: status,
       onboardingCompletedAt: completedAt
     });
   };
 
   const updateTreasuryManagerOnboardingStatus = (
-    treasuryOwnerId: string,
+    id: string,
     status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE",
     completedAt?: Date
   ) => {
     updateTreasuryOwnerOnboarding.mutate({
-      treasuryOwnerId,
+      treasuryOwnerId: id,
       onboardingStatus: status,
       onboardingCompletedAt: completedAt
     });
