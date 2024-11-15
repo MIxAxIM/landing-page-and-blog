@@ -79,26 +79,38 @@ export default function DesktopSideMenu({
         {/* Navigation */}
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col">
-            {/* Top level routes: Studio, Dashboard and Courses */}
             {!isStudioContentRoute && (
-              <li className="mb-7">
-                <ul role="list" className="space-y-1 px-3">
-                  {/* Dashboard */}
-                  <DashboardLinkItem
-                    current={isDashboardRoute}
-                    dashboardChildRoute={dashboardChildRoute ?? ""}
-                  />
-                  {/* Studio */}
-                  {isCreator && (
-                    <CourseStudioLinkItem
-                      current={isStudioRoute}
-                      ownerCourses={ownerCourses ?? []}
+              <>
+                {/* Top level routes: Studio, Dashboard and Courses */}
+                <Link href="/app">
+                  <h2 className=" mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</h2>
+                </Link>
+                <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
+                <li className="mb-7">
+                  <ul role="list" className="space-y-1">
+                    {/* Dashboard */}
+                    <Link href="/app">
+                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Dashboard</h2>
+                    </Link>
+                    <DashboardLinkItem
+                      current={isDashboardRoute}
+                      dashboardChildRoute={dashboardChildRoute ?? ""}
                     />
-                  )}
-                  {/* Link to Public Courses */}
-                  <BrowseCoursesSideMenu current={false} />
-                </ul>
-              </li>
+                    {/* Studio */}
+                    <Link href="/app">
+                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Courses</h2>
+                    </Link>
+                    {isCreator && (
+                      <CourseStudioLinkItem
+                        current={isStudioRoute}
+                        ownerCourses={ownerCourses ?? []}
+                      />
+                    )}
+                    {/* Link to Public Courses */}
+                    <BrowseCoursesSideMenu current={false} />
+                  </ul>
+                </li>
+              </>
             )}
 
             {/* Course Outline in Edit Mode */}
@@ -144,10 +156,6 @@ export default function DesktopSideMenu({
                 />
               </li>
             )}
-            <Link href="/app">
-              <h2 className="mt-5 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</h2>
-            </Link>
-            <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />
           </ul>

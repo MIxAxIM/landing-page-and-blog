@@ -18,7 +18,7 @@ export function LightDarkToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button intent="outline" className="fixed bottom-[100px] right-5 z-50 rounded-full p-3">
+        <Button intent="outline" className="fixed bottom-[85px] right-5 z-50 rounded-full p-3">
           <SunIcon className="h-6 w-6 rotate-0 scale-100 dark:-rotate-90 dark:scale-0" />
           <MoonIcon className="absolute h-6 w-6 rotate-90 scale-0 dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
