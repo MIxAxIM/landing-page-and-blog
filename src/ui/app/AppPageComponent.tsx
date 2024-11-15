@@ -31,7 +31,7 @@ export default function AppPageComponent() {
   return (
     <div className="mx-auto my-24 max-w-7xl">
       <h1 className="text-2xl mt-24 mb-6 text-primary text-center">Welcome to Andamio</h1>
-      <h2 className="text-6xl mt-10 mb-24 text-center font-bold">What do you want to work on today?</h2>
+      <h2 className="text-6xl mt-10 mb-24 text-center font-bold">What do you want to work  on today?</h2>
       {courses && <TaskComboboxDemo courses={courses} />}
       <div className="flex flex-row w-full gap-5 mx-auto items-center justify-center my-12">
         <Button size="lg" onClick={() => setCurrentView("COURSES")}>View all Courses</Button>
@@ -120,7 +120,7 @@ function TaskComboboxDemo({ courses }: { courses: CoursePublic[] }) {
                 <h2 className="text-xl font-bold pb-2 mb-2 border-b border-primary">  {title}
                 </h2>
                 <p>{formatPosixTime(expirationTime)}</p>
-                <p>Escrow: {escrow?.title}</p>
+                <p>Escrows: {escrow?.title}</p>
                 <p>Reward: {parseInt(lovelace) / 1000000} </p>
 
               </div>

@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import Link from "next/link";
+// import { Button } from "~/components/ui/button";
 
 export default function PageSignin({ redirectUrl }: { redirectUrl?: string }) {
   const [tnc, setTnc] = useState(false);
