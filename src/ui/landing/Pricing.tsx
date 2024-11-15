@@ -101,7 +101,7 @@ export function Pricing() {
     try {
       const { url } = await initializeSubcription({
         priceId: priceId,
-        successUrl: `${window.location.origin}/dashboard/subscription`,
+        successUrl: `${window.location.origin}/dashboard/subscription/success`,
         cancelUrl: `${window.location.origin}/cancel`,
       })
       if (url) {
