@@ -144,7 +144,9 @@ export default function DesktopSideMenu({
                 />
               </li>
             )}
-            <h2 className="mt-5 mb-3 pb-3 border-b border-primary pl-2 font-bold">App</h2>
+            <Link href="/app">
+              <h2 className="mt-5 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</h2>
+            </Link>
             <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />

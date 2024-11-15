@@ -75,7 +75,7 @@ export default function DialogTreasury({
 
   return (
     <>
-      {!!treasuryError ? (
+      {!treasuryError ? (
         <Form {...form}>
           <DialogForm
             openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
