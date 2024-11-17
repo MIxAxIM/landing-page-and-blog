@@ -9,6 +9,7 @@ import DialogForm from "~/components/form/dialog-form";
 import { useSession } from "next-auth/react";
 import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
+import { useTerminology } from "~/contexts/terminology-context";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -28,6 +29,7 @@ export default function DialogTreasury({
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!treasuryNftPolicyId;
   const { data: sessionData } = useSession()
+  const { translate, translatePlural, translateCaps, translateCapsPlural } = useTerminology()
 
   const {
     treasury,
@@ -78,17 +80,17 @@ export default function DialogTreasury({
       {!treasuryError ? (
         <Form {...form}>
           <DialogForm
-            openButton={isEditMode ? "Treasury Settings" : "Create Treasury"}
+            openButton={isEditMode ? `${translateCaps('treasury')} Settings` : `Create ${translateCaps('treasury')}`}
             openButtonIntent="default"
             openButtonSize={openButtonSize ?? undefined}
             icon={isEditMode ? "pencil" : "plus"}
-            title={isEditMode ? "Edit Treasury" : "Create New Treasury"}
+            title={isEditMode ? `Edit ${translateCaps('treasury')}` : `Create New ${translateCaps('treasury')}`}
             description={
               isEditMode
-                ? "Update the treasury's title."
-                : "Create a new treasury by providing a title and NFT policy ID."
+                ? `Update the ${translatePlural('treasury')} title.`
+                : `Create a new ${translate('treasury')} by providing a title and NFT policy ID.`
             }
-            buttonLabel={isEditMode ? "Save Changes" : "Create Treasury"}
+            buttonLabel={isEditMode ? "Save Changes" : `Create ${translateCaps('treasury')}`}
             buttonLoading={isLoading}
             buttonDisabled={isLoading}
             handleSubmit={form.handleSubmit(onSubmit)}
@@ -100,7 +102,7 @@ export default function DialogTreasury({
                 name="title"
                 label="Title"
                 form={form}
-                placeholder="Enter treasury title"
+                placeholder={`Enter ${translate('treasury')} title`}
               />
               <FormInput
                 name="treasuryNftPolicyId"
@@ -115,8 +117,8 @@ export default function DialogTreasury({
 
       ) : (
         <Card>
-          <h1>You cannot have more Treasuries</h1>
-          <Button>Upgrade Andamio Subscription to Create Additional Treasuries</Button>
+          <h1>You cannot have more {translateCapsPlural('treasury')}</h1>
+          <Button>Upgrade Andamio Subscription to Create Additional {translateCapsPlural('treasury')}</Button>
         </Card>
 
       )}

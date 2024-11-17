@@ -10,6 +10,7 @@ import FormSelect from "~/components/form/form-select";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Button } from "~/components/ui/button";
 import PrerequisiteManager from "../selection/PrerequisiteSelectionManager";
+import { useTerminology } from "~/contexts/terminology-context";
 
 const FormSchema = z.object({
   title: z.string().optional(),
@@ -38,6 +39,7 @@ export default function DialogEscrow({
     useEscrow({ id });
 
   const { treasuries } = useTreasuries();
+  const { translateCaps, translate, translateCapsPlural } = useTerminology()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -110,17 +112,17 @@ export default function DialogEscrow({
   return (
     <Form {...form}>
       <DialogForm
-        openButton={isEditMode ? "Edit Project" : "Create Project"}
+        openButton={isEditMode ? `Edit ${translateCaps('escrow')}` : `Create ${translateCaps('escrow')}`}
         openButtonIntent="default"
         openButtonSize={openButtonSize}
         icon={isEditMode ? "pencil" : "plus"}
-        title={isEditMode ? `Edit ${escrow?.title}` : "Create New Project"}
+        title={isEditMode ? `Edit ${escrow?.title}` : `Create New ${translateCaps('escrow')}`}
         description={
           isEditMode
-            ? "Update Project details."
-            : "After you initialize this project, you will be able to create tasks."
+            ? `Update ${translateCaps('escrow')} details.`
+            : `After you initialize this ${translateCaps('escrow')}, you will be able to create ${translateCapsPlural('task')}.`
         }
-        buttonLabel={isEditMode ? "Save Changes" : "Create Project"}
+        buttonLabel={isEditMode ? "Save Changes" : `Create ${translateCaps('escrow')}`}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
         handleSubmit={form.handleSubmit(onSubmit)}
@@ -130,9 +132,9 @@ export default function DialogEscrow({
         <div className="grid gap-4 py-4">
           <FormInput
             name="title"
-            label="Project Name"
+            label={`${translateCaps('escrow')} Name`}
             form={form}
-            placeholder="Enter a name for this Escrow"
+            placeholder={`Enter a name for this ${translateCaps('escrow')}`}
           />
           <FormInput
             name="escrowNftPolicyId"
@@ -144,7 +146,7 @@ export default function DialogEscrow({
           {!isEditMode && (
             <FormSelect
               name="treasuryId"
-              label="Treasury"
+              label={`${translateCaps('treasury')}`}
               form={form}
               options={
                 treasuries?.map((t) => ({
@@ -152,7 +154,7 @@ export default function DialogEscrow({
                   label: t.title,
                 })) ?? []
               }
-              placeholder="Select a treasury"
+              placeholder={`Select a ${translate('task')}`}
               disabled={!!defaultTreasuryId}
             />
           )}
@@ -165,7 +167,7 @@ export default function DialogEscrow({
                 Acceptance Criteria
               </label>
               <p className="pb-3 text-xs text-gray-500">
-                Can be used on any Task published in this Cirle
+                Can be used on any {translateCaps('task')} published in this {translateCaps('escrow')}
               </p>
               {savedCriteria.map((criterion, index) => (
                 <div

@@ -1,6 +1,7 @@
 import { useRoles } from "~/hooks/app/useRoles";
 import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
 import OnboardRole from "./components/OnboardingComponent";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function OnboardContributor() {
 
@@ -34,9 +35,10 @@ function FirstStep() {
 }
 
 function NextStep() {
+  const { translateCaps } = useTerminology()
   return (
     <div>
-      <p>create a treasury the network</p>
+      <p>create a {translateCaps('treasury')} the network</p>
       <AllTasksListComponent />
     </div>
 

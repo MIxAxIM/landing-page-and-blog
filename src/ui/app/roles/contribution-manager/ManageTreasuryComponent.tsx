@@ -8,12 +8,14 @@ import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
 import TreasuryTaskListComponent from "~/ui/contribution/lists/TreasuryTaskListComponent";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
 }: {
   treasuryInfo: Treasury;
 }) {
+  const { translate, translateCaps } = useTerminology();
   return (
     <div>
       <div className="mx-auto mb-48 mt-12 grid w-11/12 grid-cols-6 gap-3">
@@ -38,7 +40,7 @@ export default function ManageTreasuryComponent({
             )}
           </div>
         </div>
-        <DashboardDataComponent title="total funds in treasury" data="0" />
+        <DashboardDataComponent title={`total funds in ${translate('treasury')}`} data="0" />
         <DashboardDataComponent
           title="allocated ada"
           data={(treasuryInfo?.totalAda ?? 0).toString()}
@@ -47,12 +49,12 @@ export default function ManageTreasuryComponent({
           title="open tasks"
           data={treasuryInfo?.totalTasks.toString() ?? "0"}
         />
-        <DashboardDataComponent title="tasks in progress" data="0" />
-        <DashboardDataComponent title="tasks pending review" data="0" />
-        <DashboardDataComponent title="approved contributors" data="0" />
+        <DashboardDataComponent title={`${translate('task')} in progress`} data="0" />
+        <DashboardDataComponent title={`${translate('task')} pending review`} data="0" />
+        <DashboardDataComponent title={`approved ${translate('contributor')}`} data="0" />
         <div className="col-span-6">
           <PlaceholderComponent
-            name="Current Projects"
+            name={`Current ${translateCaps('treasury')}`}
             userStory="CONTRIBUTION-007"
           >
             <>

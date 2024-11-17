@@ -16,6 +16,7 @@ import OnboardContributor from "../onboarding/OnboardContributor";
 import OnboardTreasuryOwner from "../onboarding/OnboardTreasuryOwner";
 import OnboardLearner from "../onboarding/OnboardLearner";
 import OnboardOrganizer from "../onboarding/OnboardOrganizer";
+import { useTerminology } from "~/contexts/terminology-context";
 
 
 // NOTE: There are currently two search patterns demonstrated here:
@@ -26,19 +27,20 @@ import OnboardOrganizer from "../onboarding/OnboardOrganizer";
 
 export default function AppPageComponent() {
   const { courses } = useCourses()
+  const { translateCapsPlural } = useTerminology()
   const [currentView, setCurrentView] = useState<"COURSES" | "TASKS" | "TREASURIES" | "PARTICIPATE" | undefined>(undefined)
   return (
     <div className="mx-auto my-24 max-w-7xl">
       <h1 className="text-2xl mt-24 mb-6 text-primary text-center">Welcome to Andamio</h1>
 
       <h2 className="text-6xl mt-10 mb-24 text-center font-bold">What do you want to work  on today?</h2>
-      <h1 className="text-2xl mt-24 mb-6 text-primary text-center">Try typing &quot;Start learning&quot;</h1>
+      <h1 className="text-2xl mt-24 mb-6 text-primary text-center">type &quot;Start learning&quot;</h1>
 
       {courses && <TaskComboboxDemo courses={courses} />}
       <div className="flex flex-row w-full gap-5 mx-auto items-center justify-center my-12">
         <Button size="lg" onClick={() => setCurrentView("COURSES")}>View all Courses</Button>
-        <Button size="lg" onClick={() => setCurrentView("TASKS")}>View all Tasks</Button>
-        <Button size="lg" onClick={() => setCurrentView("TREASURIES")}>View Organizations</Button>
+        <Button size="lg" onClick={() => setCurrentView("TASKS")}>View all {translateCapsPlural('task')}</Button>
+        <Button size="lg" onClick={() => setCurrentView("TREASURIES")}>View {translateCapsPlural('treasury')}</Button>
         <Button size="lg" onClick={() => setCurrentView("PARTICIPATE")}>Participate</Button>
 
       </div>
@@ -52,13 +54,14 @@ export default function AppPageComponent() {
 
 type OnboardingTask = { title: string, id: string }
 function TaskComboboxDemo({ courses }: { courses: CoursePublic[] }) {
+  const { translate, translateCaps } = useTerminology()
 
   const onboardingTasks: OnboardingTask[] = [
     { title: "Start learning", id: "oLearn" },
     { title: "Start contributing", id: "oContribute" },
-    { title: "Start a new project", id: "oTreasury" },
+    { title: `Start a new ${translate('treasury')}`, id: "oTreasury" },
     { title: "Start teaching", id: "oTeach" },
-    { title: "Manage and govern projects", id: "oOrganize" },
+    { title: `Manage and govern a ${translate('treasury')}`, id: "oOrganize" },
   ]
   const [value, setValue] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string | null>(null);
@@ -136,7 +139,7 @@ function TaskComboboxDemo({ courses }: { courses: CoursePublic[] }) {
           {tasks.length > 0 && (
 
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
-              <h3>Tasks</h3>
+              <h3>{translateCaps('task')}s</h3>
             </div>
           )}
           {tasks.map(({ title, escrow, expirationTime, lovelace, id }) => (

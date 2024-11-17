@@ -64,11 +64,11 @@ export default function FloatingStatusButton({
               ease: "easeInOut"
             }
           }}
-          className="fixed bottom-[150px] right-5 z-50"
+          className="rounded-full"
         >
           <Button
             intent="outline"
-            className="fixed bottom-[150px] right-5 z-50 rounded-full p-3 bg-inherit"
+            className="z-50 rounded-full p-3 bg-inherit"
           >
             {isCompleted ? (
               <Check className="h-6 w-6 shrink-0" />

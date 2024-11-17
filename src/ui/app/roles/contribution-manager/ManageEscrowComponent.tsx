@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function ManageEscrowComponent({
   escrowCode,
@@ -19,6 +20,7 @@ export default function ManageEscrowComponent({
   escrowCode: string;
 }) {
   const { escrow } = useEscrow({ escrowNftPolicyId: escrowCode });
+  const { translate, translateCaps, translateCapsPlural } = useTerminology()
 
   return (
     <div>
@@ -53,8 +55,8 @@ export default function ManageEscrowComponent({
                   Contributor Prerequisites
                 </h2>
                 <p className="mb-5">
-                  To commit to a task in this Project, a Contributor must
-                  complete the following Course prerequisites
+                  To commit to a task in this {translateCaps('escrow')}, a Contributor must
+                  complete the following Course {translateCapsPlural('prerequisite')}
                 </p>
               </AccordionTrigger>
               <AccordionContent className="border border-primary">
@@ -73,11 +75,11 @@ export default function ManageEscrowComponent({
             <AccordionItem value="acceptance-criteria">
               <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
                 <h2 className="my-3 text-xl font-bold">
-                  Project Acceptance Criteria
+                  {translateCaps('escrow')} Acceptance Criteria
                 </h2>
                 <p>
-                  For any project, you can create a list of pre-defined acceptance
-                  criteria that will be preloaded into new tasks.
+                  For any {translate('escrow')}, you can create a list of pre-defined acceptance
+                  criteria that will be preloaded into new {translateCapsPlural("task")}.
                 </p>
               </AccordionTrigger>
               <AccordionContent className="border border-primary">

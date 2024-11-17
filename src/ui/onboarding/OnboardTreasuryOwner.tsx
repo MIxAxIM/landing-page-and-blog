@@ -1,6 +1,7 @@
 import { useRoles } from "~/hooks/app/useRoles";
 import DialogTreasury from "../contribution/dialogs/DialogTreasury";
 import OnboardRole from "./components/OnboardingComponent";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function OnboardTreasuryOwner() {
 
@@ -35,9 +36,10 @@ function FirstStep() {
 }
 
 function NextStep() {
+  const { translateCaps } = useTerminology()
   return (
     <div>
-      <p>create a treasury the network</p>
+      <p>create a {translateCaps('task')} the network</p>
     </div>
 
   )
