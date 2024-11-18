@@ -1,22 +1,45 @@
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
 import { useRoles } from "~/hooks/app/useRoles";
+import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
+import OnboardRole from "./components/OnboardingComponent";
 
-// TODO: Build a user journey from first login to Course Contributor status
-export default function OnboardLearner() {
+export default function OnboardOrganizer() {
 
-  const { enableLearner, sessionData } = useRoles()
+  const { enableContributionManager, getContributionManager, updateContributionManagerOnboardingStatus } = useRoles()
+
+  const { data: contributionManagerStatus } = getContributionManager()
 
   return (
-    <div className="flex flex-col w-full bg-accent p-5 rounded-sm">
-      <h1>Learn on Andamio</h1>
-      {!!sessionData?.user.learnerId ? (
-        <Link href="/studio">
-          Start Learning
-        </Link>
-      ) : (
-        <Button onClick={enableLearner}>Start onboarding as a Learner</Button>
-      )}
-    </div>
+
+    <OnboardRole
+      title="Manage a Project in an Organization"
+      roleStatus={contributionManagerStatus}
+      enableRole={enableContributionManager}
+      updateRoleStatus={updateContributionManagerOnboardingStatus}
+      FirstStepContent={FirstStep}
+      NextStepContent={NextStep}
+
+    />
   );
+}
+
+
+function FirstStep() {
+  return (
+    <div className="space-y-2">
+      <h2 className="prose-h2 text-lg">
+        Next step: view projects
+      </h2>
+      <AllTasksListComponent />
+    </div>
+
+  )
+}
+
+function NextStep() {
+  return (
+    <div>
+      <p>get involved by following these steps...</p>
+    </div>
+
+  )
 }

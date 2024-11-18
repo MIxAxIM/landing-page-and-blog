@@ -1,18 +1,42 @@
+import Link from "next/link";
 import { Button } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
 import ProfileLayout from "~/ui/dashboard/layout/ProfileLayout";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import { api } from "~/utils/api";
 
 
 export default function SubscriptionPage() {
+  const { data: subscription, isLoading } = api.billing.getCurrentSubscription.useQuery()
+  if (isLoading) return <LoadingCircle />
   return (
     <ProfileLayout>
-      <PlaceholderComponent name="now you have a subscription">
-        <div>
-          <h1>Your account</h1>
-          <Button>Upgrade</Button>
-          <p>Billing details: on Stripe use a component</p>
-        </div>
-      </PlaceholderComponent>
+      {!!subscription ? (
+        <>
+          <Card className="p-8 text-left">
+            <h1 className="prose-h1 text-2xl pb-8">You have a subscription to Andamio {subscription?.product.name}!</h1>
+            {/* Add CTAs to start using features */}
+            <p className="prose">Price: ${((subscription?.price.unitAmount ?? 0n) / 100n).toString()} / {subscription?.price.interval}</p>
+            <p className="prose">Status: {subscription?.status}</p>
+            <p className="prose">Created: {subscription?.created.toLocaleDateString()}</p>
+            <p className="prose">Subscription Expires: {subscription?.currentPeriodEnd.toLocaleDateString()}</p>
+          </Card>
+          <Link href="/pricing">
+            <Button>Upgrade</Button>
+          </Link>
+        </>
+
+      ) : (
+        <>
+          <Card className="p-8 text-left">
+            <h1 className="prose-h1 text-2xl pb-8">Want to get more out of Andamio?</h1>
+            {/* Add CTAs to start using features */}
+          </Card>
+          <Link href="/pricing">
+            <Button>View Pricing</Button>
+          </Link>
+        </>
+      )}
 
     </ProfileLayout>
   );

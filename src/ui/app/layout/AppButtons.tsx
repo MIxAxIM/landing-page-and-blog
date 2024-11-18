@@ -1,0 +1,30 @@
+import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { TerminologyToggle } from "../TerminologyToggle";
+import FloatingStatusButton from "../components/FloatingStatusButton";
+import AndamioRoleStatusMenu from "~/ui/navigation/menu-sections/AndamioRoleStatusMenu";
+import { useSession } from "next-auth/react";
+
+export default function AppButtons() {
+
+  const { data: sessionData } = useSession();
+
+  return (
+    <div className="fixed bottom-[96px] right-5 flex flex-col space-y-8 items-center justify-center">
+      <FloatingStatusButton defaultOpen={!sessionData?.user.contributorId}>
+        <h2 className="prose-h2 text-2xl mb-8">Andamio Onboarding Status</h2>
+        <p>Check here any time to see how you are doing</p>
+        <AndamioRoleStatusMenu dashboardChildRoute="/" />
+      </FloatingStatusButton>
+      <TerminologyToggle />
+      <LightDarkToggle />
+    </div>
+  )
+}
+
+
+// Light Dark:
+// className="fixed bottom-[85px] right-5 z-50 rounded-full p-3"
+//
+// Floating:
+// (Has animiation too!)
+// className="fixed bottom-[150px] right-5 z-50 rounded-full p-3 bg-inherit"

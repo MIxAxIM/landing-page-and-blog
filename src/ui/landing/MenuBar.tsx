@@ -15,6 +15,8 @@ const navigation = [
   { name: "About", href: "/about" },
   { name: "Blog", href: "https://blog.andamio.io" },
   { name: "Roadmap", href: "/roadmap" },
+  { name: "Open App", href: "/app" },
+  { name: "Pricing", href: "/pricing" },
 ];
 
 export default function MenuBar({
@@ -99,11 +101,10 @@ function Desktop({
         <div className="flex gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
           <Button
             onClick={() => setRole("learner")}
-            className={`cursor-pointer rounded px-4 py-2 ${
-              role === "learner"
-                ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
-                : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
-            }`}
+            className={`cursor-pointer rounded px-4 py-2 ${role === "learner"
+              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
+              }`}
           >
             I am a&nbsp;
             <span className="font-montserrat font-semibold uppercase">
@@ -112,11 +113,10 @@ function Desktop({
           </Button>
           <Button
             onClick={() => setRole("organization")}
-            className={`cursor-pointer rounded px-4 py-2 ${
-              role === "organization"
-                ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
-                : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
-            }`}
+            className={`cursor-pointer rounded px-4 py-2 ${role === "organization"
+              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
+              }`}
           >
             I am an&nbsp;
             <span className="font-montserrat font-semibold uppercase">
@@ -221,11 +221,10 @@ function Mobile({
                   setMobileMenuOpen(false);
                   setRole("learner");
                 }}
-                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${
-                  role === "learner"
-                    ? "bg-white text-primary hover:bg-primary hover:text-white"
-                    : "bg-primary text-white hover:bg-white hover:text-primary"
-                }`}
+                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "learner"
+                  ? "bg-white text-primary hover:bg-primary hover:text-white"
+                  : "bg-primary text-white hover:bg-white hover:text-primary"
+                  }`}
               >
                 I am a&nbsp;
                 <span className="font-montserrat font-semibold">LEARNER</span>
@@ -235,11 +234,10 @@ function Mobile({
                   setMobileMenuOpen(false);
                   setRole("organization");
                 }}
-                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${
-                  role === "organization"
-                    ? "bg-white text-primary hover:bg-primary hover:text-white"
-                    : "bg-primary text-white hover:bg-white hover:text-primary"
-                }`}
+                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "organization"
+                  ? "bg-white text-primary hover:bg-primary hover:text-white"
+                  : "bg-primary text-white hover:bg-white hover:text-primary"
+                  }`}
               >
                 I am an&nbsp;
                 <span className="font-montserrat font-semibold">

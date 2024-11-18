@@ -22,6 +22,7 @@ import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { type Escrow, type Task } from "~/types/db";
+import { useTerminology } from "~/contexts/terminology-context";
 
 // Validation constants
 const MIN_ADA = 2;
@@ -146,6 +147,7 @@ export default function DialogTask({
   const { escrows, isLoading: isLoadingEscrows } = useEscrow({
     disabled: !!escrow,
   });
+  const { translate, translateCaps, translatePlural } = useTerminology()
 
   // Form initialization with proper typing
   const form = useForm<FormValues>({
@@ -318,19 +320,19 @@ export default function DialogTask({
 
   const getDialogDescription = () => {
     if (!isEditMode) {
-      return "Create a new task by selecting a treasury and escrow, then providing task details.";
+      return `Create a new task by selecting the ${translateCaps('treasury')} and a ${translateCaps('escrow')}. Then, provide ${translateCaps('task')} details. This is a draft, and you will be able to change these details later.`;
     }
     if (!task) return "";
 
     if (task.status === TaskStatus.DRAFT) {
-      return "Update the task's details.";
+      return "Update details.";
     }
 
     if (task.status === TaskStatus.APPROVED) {
-      return "This task is approved. You must revert it to draft status to make changes.";
+      return `This ${translate('task')} is already approved. You must revert it to draft status to make changes.`;
     }
 
-    return "This task cannot be edited in its current status.";
+    return `This ${translate('task')} cannot be edited in its current status.`;
   };
 
   // Form submission handler
@@ -378,7 +380,7 @@ export default function DialogTask({
         icon={isEditMode ? "pencil" : "plus"}
         title={getDialogTitle()}
         description={getDialogDescription()}
-        buttonLabel={isEditMode ? "Save Changes" : "Create Task"}
+        buttonLabel={isEditMode ? "Save Changes" : "Save Draft"}
         buttonLoading={isLoading}
         buttonDisabled={isLoading}
         handleSubmit={form.handleSubmit(handleSubmit)}
@@ -390,7 +392,7 @@ export default function DialogTask({
             <div className="grid grid-cols-2 gap-5">
               <FormSelect
                 name="treasuryId"
-                label="Treasury"
+                label={`${translateCaps('treasury')}`}
                 form={form}
                 options={
                   treasuries?.map((t) => ({
@@ -398,28 +400,28 @@ export default function DialogTask({
                     label: t.title,
                   })) ?? []
                 }
-                placeholder="Select a treasury"
+                placeholder={`Select a ${translateCaps('treasury')}`}
                 disabled={!!defaultTreasuryId || !!escrow || isLoading}
               />
               {!!filteredEscrows ? (
                 <>
                   <FormSelect
                     name="escrowId"
-                    label="Escrow"
+                    label={`${translateCaps('escrow')}`}
                     form={form}
                     options={filteredEscrows.map((e) => ({
                       value: e.id,
                       label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
                     }))}
-                    placeholder="Select an escrow"
+                    placeholder={`Select ${translateCaps('escrow')}`}
                     disabled={!selectedTreasuryId || isLoading}
                   />
                   <div>
                     <FormInput
                       name="title"
-                      label="Task Title"
+                      label={`${translateCaps('task')} Title`}
                       form={form}
-                      placeholder="Enter a title for this task"
+                      placeholder={`Enter a title for this ${translate('task')}`}
                       disabled={isLoading}
                     />
 
@@ -427,7 +429,7 @@ export default function DialogTask({
                       name="description"
                       label="Description"
                       form={form}
-                      placeholder="Enter task description"
+                      placeholder="Enter description"
                       height={150}
                       disabled={isLoading}
                     />
@@ -481,7 +483,7 @@ export default function DialogTask({
                       onClick={handleAddCriterion}
                       disabled={isLoading}
                     >
-                      Add Criterion
+                      Add Acceptance Criterion
                     </Button>
                     {form.watch("escrowId") &&
                       filteredEscrows &&
@@ -492,7 +494,7 @@ export default function DialogTask({
                           <AlertTitle>Saved Criteria Loaded</AlertTitle>
                           <AlertDescription>
                             Acceptance criteria have been pre-loaded from the
-                            selected escrow. You can modify or remove them as
+                            selected {translate('escrow')}. You can modify or remove them as
                             needed.
                           </AlertDescription>
                         </Alert>
@@ -543,7 +545,7 @@ export default function DialogTask({
                   </div>
                 </>
               ) : (
-                <p>No escrows. Please make one first.</p>
+                <p>No {translatePlural('escrow')}. Please make one first.</p>
               )}
             </div>
           ) : (
@@ -552,9 +554,9 @@ export default function DialogTask({
               {task.status === TaskStatus.APPROVED && (
                 <>
                   <Alert>
-                    <AlertTitle>Task is locked</AlertTitle>
+                    <AlertTitle>{translateCaps('task')} is locked</AlertTitle>
                     <AlertDescription>
-                      This task is approved and its content is locked. To make
+                      This {translate('task')} is approved and its content is locked. To make
                       changes, you must first revert it to draft status.
                     </AlertDescription>
                   </Alert>

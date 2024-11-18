@@ -8,19 +8,20 @@ import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
 import TreasuryTaskListComponent from "~/ui/contribution/lists/TreasuryTaskListComponent";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
 }: {
   treasuryInfo: Treasury;
 }) {
+  const { translate, translateCaps } = useTerminology();
   return (
     <div>
       <div className="mx-auto mb-48 mt-12 grid w-11/12 grid-cols-6 gap-3">
-        <div className="col-span-6 flex w-full flex-row items-center justify-between">
-          <div className="flex flex-col space-y-2">
-            <h2 className="text-4xl">Treasury: {treasuryInfo?.title}</h2>
-            <p>CONTRIBUTION-007: View Treasury Dashboard</p>
+        <div className="col-span-6 flex w-full flex-row items-center justify-between mb-6">
+          <div className="">
+            <h2 className="text-4xl">{treasuryInfo?.title}</h2>
           </div>
 
           <div className="flex flex-row space-x-2">
@@ -39,7 +40,7 @@ export default function ManageTreasuryComponent({
             )}
           </div>
         </div>
-        <DashboardDataComponent title="total funds in treasury" data="0" />
+        <DashboardDataComponent title={`total funds in ${translate('treasury')}`} data="0" />
         <DashboardDataComponent
           title="allocated ada"
           data={(treasuryInfo?.totalAda ?? 0).toString()}
@@ -48,30 +49,12 @@ export default function ManageTreasuryComponent({
           title="open tasks"
           data={treasuryInfo?.totalTasks.toString() ?? "0"}
         />
-        <DashboardDataComponent title="tasks in progress" data="0" />
-        <DashboardDataComponent title="tasks pending review" data="0" />
-        <DashboardDataComponent title="approved contributors" data="0" />
+        <DashboardDataComponent title={`${translate('task')} in progress`} data="0" />
+        <DashboardDataComponent title={`${translate('task')} pending review`} data="0" />
+        <DashboardDataComponent title={`approved ${translate('contributor')}`} data="0" />
         <div className="col-span-6">
           <PlaceholderComponent
-            name="List of Active Tasks"
-            userStory="CONTRIBUTION-001"
-          >
-            <>
-              {!!treasuryInfo?.treasuryNftPolicyId && (
-                <TreasuryTaskListComponent
-                  treasury={treasuryInfo.treasuryNftPolicyId}
-                />
-              )}
-              <DialogTask
-                treasuryId={treasuryInfo?.treasuryNftPolicyId}
-                key={treasuryInfo?.treasuryNftPolicyId}
-              />
-            </>
-          </PlaceholderComponent>
-        </div>
-        <div className="col-span-4">
-          <PlaceholderComponent
-            name="Treasury Circles"
+            name={`Current ${translateCaps('treasury')}`}
             userStory="CONTRIBUTION-007"
           >
             <>
@@ -91,13 +74,31 @@ export default function ManageTreasuryComponent({
             </>
           </PlaceholderComponent>
         </div>
+        <div className="col-span-6">
+          <PlaceholderComponent
+            name="List of Active Tasks"
+            userStory="CONTRIBUTION-001"
+          >
+            <>
+              {!!treasuryInfo?.treasuryNftPolicyId && (
+                <TreasuryTaskListComponent
+                  treasury={treasuryInfo.treasuryNftPolicyId}
+                />
+              )}
+              <DialogTask
+                treasuryId={treasuryInfo?.treasuryNftPolicyId}
+                key={treasuryInfo?.treasuryNftPolicyId}
+              />
+            </>
+          </PlaceholderComponent>
+        </div>
         <div className="col-span-2">
           <PlaceholderComponent
             name="List of Active Contributors"
             userStory="CONTRIBUTION-001"
           />
         </div>
-        <div className="col-span-6">
+        <div className="col-span-2">
           <PlaceholderComponent
             name="Manage Treasury Tasks"
             subItems={[

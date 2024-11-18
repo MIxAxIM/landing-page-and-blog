@@ -13,14 +13,15 @@ export default function ProfileLayout({
   const route = useRouter();
 
   if (sessionData === null) {
-    return <PageSignin redirectUrl="/app" />;
+    return <PageSignin redirectUrl={route.asPath} />;
   }
 
   return (
     <div>
       <SideMenu />
       <main className="lg:pl-80">
-        <div className="mx-auto flex w-full flex-col justify-center">
+
+        <div className="mx-auto flex w-full flex-col justify-center max-w-5xl my-12 space-y-12 items-center">
           {children}
         </div>
       </main>

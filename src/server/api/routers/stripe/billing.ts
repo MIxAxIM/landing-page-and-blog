@@ -148,7 +148,7 @@ export const billingRouter = createTRPCRouter({
       switch (input.feature) {
         case "CREATE_COURSE":
           const courseCount = await ctx.db.course.count({
-            where: { createdById: ctx.session.user.id },
+            where: { createdById: ctx.session.user.creatorId },
           });
           return {
             hasAccess: courseCount < product.maxAllowedCourses,
