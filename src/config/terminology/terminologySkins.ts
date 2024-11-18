@@ -41,4 +41,14 @@ export const terminologySkins: TerminologySkins = {
 		prerequisite: 'prerequisite',
 		credential: 'credential',
 	},
+	s3: {
+		organization: 'organization',
+		treasury: 'circle',
+		escrow: 'sub-circle',
+		task: 'task',
+		contributor: 'contributor',
+		taskStatus: 'status',
+		prerequisite: 'role',
+		credential: 'credential',
+	},
 } as const;
