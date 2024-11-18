@@ -13,7 +13,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
     escrowId: task.escrow?.id,
   });
   return (
-    <AppLayout>
+    <>
       <div className="mx-auto my-24 max-w-7xl space-y-10">
         <h1 className="my-10 text-4xl">{task.title}</h1>
         <p className="prose text-2xl">
@@ -59,6 +59,6 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
         <PlaceholderComponent name="what user stories are picked up here?" />
       </div>
-    </AppLayout>
+    </>
   );
 }

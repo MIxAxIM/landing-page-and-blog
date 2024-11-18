@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
 import { useTask } from "~/hooks/contribution/useTask";
+import AppLayout from "~/ui/app/layout/AppLayout";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
 
 export default function PublicTaskPage() {
@@ -22,7 +23,9 @@ export default function PublicTaskPage() {
 
   return (
     <DesktopOnlyLayout>
-      <PublicTaskPageComponent task={task} />
+      <AppLayout>
+        <PublicTaskPageComponent task={task} />
+      </AppLayout>
     </DesktopOnlyLayout>
   );
 }
