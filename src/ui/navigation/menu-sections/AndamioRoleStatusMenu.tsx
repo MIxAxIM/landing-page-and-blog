@@ -14,11 +14,6 @@ export default function AndamioRoleStatusMenu({
       <div className="grid w-full grid-cols-1 gap-1">
         <ul role="list" className="">
           <RoleStatus
-            roleName="Discord Account"
-            userHasRole={!!sessionData}
-            roleDetail={sessionData?.user.name ?? undefined}
-          />
-          <RoleStatus
             roleName="Learner"
             userHasRole={!!sessionData?.user.learnerId}
             roleInfoUrl="/app/learn"
@@ -49,6 +44,11 @@ export default function AndamioRoleStatusMenu({
             userHasRole={!!accessTokenAlias}
             roleDetail={accessTokenAlias}
             roleInfoUrl="/dashboard"
+          />
+          <RoleStatus
+            roleName="Prerequisite Studio"
+            userHasRole={!!accessTokenAlias}
+            roleInfoUrl="/app/prerequisite-minter"
           />
         </ul>
       </div>

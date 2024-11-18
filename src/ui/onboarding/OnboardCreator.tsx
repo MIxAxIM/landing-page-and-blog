@@ -1,25 +1,40 @@
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
 import { useRoles } from "~/hooks/app/useRoles";
+import DialogCourse from "../studio/components/dialogs/DialogCourse";
+import OnboardRole from "./components/OnboardingComponent";
 
-// TODO: Build a user journey from first login to Course Creator status
 export default function OnboardCreator() {
 
-  const { enableCreator, sessionData } = useRoles()
+  const { enableCreator, getCreator, updateCreatorOnboardingStatus } = useRoles()
+
+  const { data: creatorStatus } = getCreator()
 
   return (
-    <div className="flex flex-col w-full bg-accent p-5 rounded-sm">
-      <h1>Teacher Onboarding</h1>
-      {!!sessionData?.user.creatorId ? (
-        <Link href="/studio">
-          You&apos;re a Teacher - go build a Course!
-        </Link>
-      ) : (
-        <Button onClick={enableCreator}>Teach on Andamio</Button>
-      )}
-    </div>
+    <OnboardRole
+      title="Build a course on Andamio"
+      roleStatus={creatorStatus}
+      enableRole={enableCreator}
+      updateRoleStatus={updateCreatorOnboardingStatus}
+      FirstStepContent={FirstStep}
+      NextStepContent={NextStep}
+
+    />
   );
 }
 
+function FirstStep() {
+  return (
+    <div>
+      <DialogCourse />
+    </div>
 
+  )
+}
 
+function NextStep() {
+  return (
+    <div>
+      <p>publish your course</p>
+    </div>
+
+  )
+}

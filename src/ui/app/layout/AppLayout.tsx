@@ -2,8 +2,8 @@
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
 import SideMenu from "~/ui/navigation/SideMenu";
+import AppButtons from "./AppButtons";
 
 export default function AppLayout({
   children,
@@ -25,7 +25,7 @@ export default function AppLayout({
           {children}
         </div>
       </main>
-      <LightDarkToggle />
+      <AppButtons />
     </div>
   );
 }

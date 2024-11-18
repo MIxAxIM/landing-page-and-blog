@@ -4,9 +4,11 @@ import { type Treasury } from "~/types/db";
 import Link from "next/link";
 import DialogTask from "../dialogs/DialogTask";
 import DialogTreasury from "../dialogs/DialogTreasury";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
+  const { translate, translateCaps } = useTerminology();
 
   // Simple component -> Table
   return (
@@ -23,14 +25,14 @@ export default function TreasuryListComponent() {
                 className="border border-primary bg-secondary px-4 text-center font-medium text-secondary-foreground"
                 colSpan={3}
               >
-                Tasks
+                {translateCaps('task')}s
               </th>
               {/* Empty cells for remaining columns */}
               <th
                 className="border border-primary bg-primary px-4 text-center font-medium text-primary-foreground"
                 colSpan={3}
               >
-                Treasury Funds
+                {translateCaps('treasury')} Funds
               </th>
               <th
                 className="border border-primary bg-secondary px-4 text-center font-medium text-secondary-foreground"
@@ -40,12 +42,12 @@ export default function TreasuryListComponent() {
               </th>
             </tr>
             <TableRow className="border-b border-primary">
-              <TableHead className="border border-primary">Treasury</TableHead>
+              <TableHead className="border border-primary">{translateCaps('treasury')}</TableHead>
               <TableHead className="border border-primary text-center">
-                # Circles
+                # {translateCaps('escrow')}s
               </TableHead>
               <TableHead className="border border-primary text-center">
-                # Contributors
+                # {translateCaps('contributor')}s
               </TableHead>
               <TableHead className="border-x border-primary text-center">
                 Open
@@ -66,10 +68,10 @@ export default function TreasuryListComponent() {
                 Spent
               </TableHead>
               <TableHead className="border-x border-primary text-center">
-                Edit Treasury
+                Edit {translateCaps('treasury')}
               </TableHead>
               <TableHead className="border-x border-primary text-center">
-                Draft a Task
+                Draft New {translateCaps('task')}
               </TableHead>
             </TableRow>
           </thead>
@@ -81,7 +83,7 @@ export default function TreasuryListComponent() {
             >
               <TableCell className="relative border-x border-gray-500">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -89,7 +91,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -97,7 +99,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -105,7 +107,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -113,7 +115,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -121,7 +123,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -129,7 +131,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -137,7 +139,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -145,7 +147,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/dashboard/contribution-manager/${t?.treasuryNftPolicyId}`}
+                  href={`/app/organize/${t?.treasuryNftPolicyId}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />

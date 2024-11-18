@@ -20,7 +20,8 @@ export default function ProfileLayout({
     <div>
       <SideMenu />
       <main className="lg:pl-80">
-        <div className="mx-auto flex w-full flex-col justify-center">
+
+        <div className="mx-auto flex w-full flex-col justify-center max-w-5xl my-12 space-y-12 items-center">
           {children}
         </div>
       </main>

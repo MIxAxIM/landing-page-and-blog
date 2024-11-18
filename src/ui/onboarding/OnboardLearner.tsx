@@ -1,22 +1,28 @@
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import AllCourses from "../courses/components/AllCourses";
 import { useRoles } from "~/hooks/app/useRoles";
+import OnboardRole from "./components/OnboardingComponent";
+import PlaceholderComponent from "../prototype/PlaceholderComponent";
 
-// TODO: Build a user journey from first login to Course Contributor status
 export default function OnboardLearner() {
-
-  const { enableLearner, sessionData } = useRoles()
+  const { enableLearner, getLearner, updateLearnerOnboardingStatus } = useRoles();
+  const { data: learnerStatus } = getLearner();
 
   return (
-    <div className="flex flex-col w-full bg-accent p-5 rounded-sm">
-      <h1>Learn on Andamio</h1>
-      {!!sessionData?.user.learnerId ? (
-        <Link href="/studio">
-          Start Learning
-        </Link>
-      ) : (
-        <Button onClick={enableLearner}>Start onboarding as a Learner</Button>
-      )}
-    </div>
+    <OnboardRole
+      title="Start learning on Andamio"
+      roleStatus={learnerStatus}
+      enableRole={enableLearner}
+      updateRoleStatus={updateLearnerOnboardingStatus}
+      FirstStepContent={FirstLesson}
+      NextStepContent={AllCourses}
+    />
   );
+}
+
+function FirstLesson() {
+  return (
+    <div>
+      <PlaceholderComponent name="A first example lesson, just to get you going. Make individual lessons visible in this UX" />
+    </div>
+  )
 }

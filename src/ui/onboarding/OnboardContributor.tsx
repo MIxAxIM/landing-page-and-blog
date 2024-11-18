@@ -1,22 +1,46 @@
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
 import { useRoles } from "~/hooks/app/useRoles";
+import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
+import OnboardRole from "./components/OnboardingComponent";
+import { useTerminology } from "~/contexts/terminology-context";
 
-// TODO: Build a user journey from first login to Course Contributor status
 export default function OnboardContributor() {
 
-  const { enableContributor, sessionData } = useRoles()
+  const { enableContributor, getContributor, updateContributorOnboardingStatus } = useRoles()
+
+  const { data: contributorStatus } = getContributor()
 
   return (
-    <div className="flex flex-col w-full bg-accent p-5 rounded-sm">
-      <h1>{sessionData?.user.contributorId ? "Current" : "Add"} Contributor</h1>
-      {!!sessionData?.user.contributorId ? (
-        <Link href="/app/contribute">
-          <Button>Open App</Button>
-        </Link>
-      ) : (
-        <Button onClick={enableContributor}>Be a Contributor</Button>
-      )}
-    </div>
+
+    <OnboardRole
+      title="Find opportunities to contribute to projects"
+      roleStatus={contributorStatus}
+      enableRole={enableContributor}
+      updateRoleStatus={updateContributorOnboardingStatus}
+      FirstStepContent={FirstStep}
+      NextStepContent={NextStep}
+
+    />
   );
+}
+function FirstStep() {
+  return (
+    <div className="space-y-2">
+      <h2 className="prose-h2 text-lg">
+        Make your first contribution
+      </h2>
+      <p>Here is a task to get you started...</p>
+    </div>
+
+  )
+}
+
+function NextStep() {
+  const { translateCaps } = useTerminology()
+  return (
+    <div>
+      <p>create a {translateCaps('treasury')} the network</p>
+      <AllTasksListComponent />
+    </div>
+
+  )
 }

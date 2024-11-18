@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import { Card } from "~/components/ui/card";
 import { api } from "~/utils/api";
 
 // pages/subscription/success.tsx
 const SubscriptionSuccess = () => {
   // Poll until status changes from incomplete to active
+  const router = useRouter()
+
   const { data: subscription, isLoading } = api.billing.getCurrentSubscription.useQuery(
     undefined,
     {
@@ -39,13 +42,7 @@ const SubscriptionSuccess = () => {
   }
 
   if (subscription.status === 'active') {
-    return (
-      <Card className="text-center p-8">
-        <h1>Welcome to {subscription.product.name}!</h1>
-        <p>Your subscription is now active</p>
-        {/* Add CTAs to start using features */}
-      </Card>
-    );
+    router.push("/dashboard/subscription")
   }
 
   // Handle other potential states

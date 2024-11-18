@@ -28,6 +28,8 @@ export default function DialogCourse({ course }: { course?: Course }) {
         const errorMessage = e.data?.zodError?.fieldErrors;
         if (errorMessage) {
           toast.error("Some inputs are missing or invalid");
+        } else if (!!e.shape?.message) {
+          toast.error(e.shape.message)
         } else {
           toast.error("Course Code taken. Please try again.");
         }
@@ -133,7 +135,7 @@ export default function DialogCourse({ course }: { course?: Course }) {
   return (
     <Form {...form}>
       <DialogForm
-        openButton={course ? "Edit Course" : "Make a Course"}
+        openButton={course ? "Edit Course" : "Create a New Course"}
         openButtonIntent="dialog"
         title={course ? `Editing ${course.title}` : "Create a new course"}
         description={

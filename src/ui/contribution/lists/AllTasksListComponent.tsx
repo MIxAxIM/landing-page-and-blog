@@ -12,8 +12,13 @@ import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { Button } from "~/components/ui/button";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function AllTasksListComponent() {
+
+
+  const { translate, translateCaps } = useTerminology()
+
   // Status filter state
   const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
     Object.values(TaskStatus),
@@ -52,7 +57,7 @@ export default function AllTasksListComponent() {
             selectedStatuses={selectedStatuses}
             onChange={setSelectedStatuses}
           />
-          <Button>Show tasks I am qualified contribute to</Button>
+          <Button>Show {translate('task')}s I am qualified contribute to</Button>
         </div>
         <TaskSearch searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       </div>
@@ -122,7 +127,7 @@ export default function AllTasksListComponent() {
             ) : filteredTasks.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={9} className="h-24 text-center">
-                  No tasks found
+                  No ${translate('task')}s found
                 </TableCell>
               </TableRow>
             ) : (
@@ -164,7 +169,7 @@ export default function AllTasksListComponent() {
                   </TableCell>
                   <TableCell className="items-center justify-center gap-x-2">
                     <Link href={`/app/contribute/task/${task.id}`}>
-                      <Button size="sm">View Task</Button>
+                      <Button size="sm">View {translateCaps('task')}</Button>
                     </Link>
                   </TableCell>
                 </TableRow>

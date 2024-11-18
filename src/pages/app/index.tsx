@@ -1,14 +1,12 @@
 import AppPageComponent from "~/ui/app/AppPageComponent";
-import MenuBar from "~/ui/landing/MenuBar";
-import { VideoBackground } from "~/ui/landing/SB7PageLanding";
+import AppLayout from "~/ui/app/layout/AppLayout";
 
 export default function AndamioAppPage() {
   return (
     <>
-      <VideoBackground>
-        <MenuBar />
+      <AppLayout>
         <AppPageComponent />
-      </VideoBackground>
+      </AppLayout>
     </>
   )
 }

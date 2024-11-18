@@ -12,6 +12,7 @@ import CourseOutline from "../course/components/layout/SideMenu/CourseOutline";
 import StudioOutline from "../studio/components/layout/SideMenu/StudioOutline";
 import { CourseStudioLinkItem, DashboardLinkItem } from "./link-items";
 import { BrowseCoursesSideMenu } from "./link-items/BrowseCoursesSideMenu";
+import AndamioRoleStatusMenu from "./menu-sections/AndamioRoleStatusMenu";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -78,26 +79,38 @@ export default function DesktopSideMenu({
         {/* Navigation */}
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col">
-            {/* Top level routes: Studio, Dashboard and Courses */}
             {!isStudioContentRoute && (
-              <li className="mb-7">
-                <ul role="list" className="space-y-1 px-3">
-                  {/* Dashboard */}
-                  <DashboardLinkItem
-                    current={isDashboardRoute}
-                    dashboardChildRoute={dashboardChildRoute ?? ""}
-                  />
-                  {/* Studio */}
-                  {isCreator && (
-                    <CourseStudioLinkItem
-                      current={isStudioRoute}
-                      ownerCourses={ownerCourses ?? []}
+              <>
+                {/* Top level routes: Studio, Dashboard and Courses */}
+                <Link href="/app">
+                  <h2 className=" mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</h2>
+                </Link>
+                <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
+                <li className="mb-7">
+                  <ul role="list" className="space-y-1">
+                    {/* Dashboard */}
+                    <Link href="/dashboard">
+                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Dashboard</h2>
+                    </Link>
+                    <DashboardLinkItem
+                      current={isDashboardRoute}
+                      dashboardChildRoute={dashboardChildRoute ?? ""}
                     />
-                  )}
-                  {/* Link to Public Courses */}
-                  <BrowseCoursesSideMenu current={false} />
-                </ul>
-              </li>
+                    {/* Studio */}
+                    <Link href="/app">
+                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Courses</h2>
+                    </Link>
+                    {isCreator && (
+                      <CourseStudioLinkItem
+                        current={isStudioRoute}
+                        ownerCourses={ownerCourses ?? []}
+                      />
+                    )}
+                    {/* Link to Public Courses */}
+                    <BrowseCoursesSideMenu current={false} />
+                  </ul>
+                </li>
+              </>
             )}
 
             {/* Course Outline in Edit Mode */}
@@ -143,21 +156,6 @@ export default function DesktopSideMenu({
                 />
               </li>
             )}
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/prerequisite-minter">Prereq Explorer</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/contribute">Contribute</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/learn">Learn</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/organize">Organize</Link>
-            </div>
-            <div className="px-8 py-2 text-sm font-semibold">
-              <Link href="/app/teach">Teach</Link>
-            </div>
             {/* Profile in menu footer */}
             <SideMenuSessionProfile />
           </ul>
