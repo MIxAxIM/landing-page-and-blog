@@ -36,6 +36,8 @@ import { contributorPrerequisiteRouter } from "./routers/database/contributor/co
 import { contributorRouter } from "./routers/database/contributor/contributor";
 import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwner";
 import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
+
+import { projectGeneralRouter } from "./routers/contracts/project/general";
 /**
  * This is the primary router for your server.
  *
@@ -77,6 +79,9 @@ export const appRouter = createTRPCRouter({
   escrow: escrowRouter,
   task: taskRouter,
   contributorPrerequisite: contributorPrerequisiteRouter,
+
+  // contribution onchain
+  projectGeneral: projectGeneralRouter,
 
   // admin
   andamioAdminTransactions: andamioAdminTxRouter,
