@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useTerminology } from "~/contexts/terminology-context";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import RoleStatus from "~/ui/dashboard/components/RoleStatus";
 
@@ -9,6 +10,7 @@ export default function AndamioRoleStatusMenu({
 }) {
   const { data: sessionData } = useSession();
   const { accessTokenAlias } = useAccessToken();
+  const { translateCaps } = useTerminology()
   return (
     <>
       <div className="grid w-full grid-cols-1 gap-1">
@@ -28,13 +30,13 @@ export default function AndamioRoleStatusMenu({
             />
           )}
           <RoleStatus
-            roleName="Contributor"
+            roleName={`${translateCaps('contributor')}`}
             userHasRole={true}
             roleInfoUrl="/app/contribute"
             current={dashboardChildRoute === "contributor"}
           />
           <RoleStatus
-            roleName="Organizer"
+            roleName={`${translateCaps('contributionManager')}`}
             userHasRole={true}
             roleInfoUrl="/app/organize"
             current={dashboardChildRoute === "contribution-manager"}
@@ -46,8 +48,8 @@ export default function AndamioRoleStatusMenu({
             roleInfoUrl="/dashboard"
           />
           <RoleStatus
-            roleName="Prerequisite Studio"
-            userHasRole={!!accessTokenAlias}
+            roleName={`${translateCaps('prerequisite')} Studio`}
+            userHasRole={true}
             roleInfoUrl="/app/prerequisite-minter"
           />
         </ul>

@@ -66,7 +66,7 @@ export default function AllTasksListComponent() {
           <thead>
             <TableRow className="bg-primary hover:bg-primary">
               <SortableTableHeader
-                label="Task"
+                label={translateCaps('task')}
                 sortKey="title"
                 sortConfig={sortConfig}
                 onSort={requestSort}
@@ -89,7 +89,7 @@ export default function AllTasksListComponent() {
               />
               **/}
               <TableHead className="w-1/6 text-primary-foreground">
-                Acceptance Criteria
+                {translateCaps('acceptanceCriteria')}
               </TableHead>
               <SortableTableHeader
                 label="Expiration Time"

@@ -45,7 +45,7 @@ const FormSchema = z.object({
     .transform((criteria) => criteria.filter((c) => c.trim() !== ""))
     .refine(
       (criteria) => criteria.length >= 1,
-      "At least one acceptance criteria must be provided",
+      "At least one criterion must be provided",
     ),
   treasuryId: z.string().min(1, "Please select a treasury"),
   escrowId: z.string().min(1, "Please select an escrow"),
@@ -493,7 +493,7 @@ export default function DialogTask({
                         <Alert>
                           <AlertTitle>Saved Criteria Loaded</AlertTitle>
                           <AlertDescription>
-                            Acceptance criteria have been pre-loaded from the
+                            {translateCaps('acceptanceCriteria')} have been pre-loaded from the
                             selected {translate('escrow')}. You can modify or remove them as
                             needed.
                           </AlertDescription>

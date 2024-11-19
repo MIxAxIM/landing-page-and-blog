@@ -5,9 +5,10 @@ import { formatPosixTime } from "~/utils/time";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { PrerequisiteItem } from "./lists/PrerequisiteList";
-import AppLayout from "../app/layout/AppLayout";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
+  const { translateCaps, translateCapsPlural } = useTerminology()
   const { treasury } = useTreasury(task.escrow?.treasuryId);
   const { escrowPrerequisites } = useEscrowPrerequisites({
     escrowId: task.escrow?.id,
@@ -21,7 +22,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         </p>
         <div className="space-y-3">
           <p className="prose">{task.description}</p>
-          <h2 className="prose">Acceptance Criteria</h2>
+          <h2 className="prose">{translateCaps('acceptanceCriteria')}</h2>
           <ul className="prose ml-5 list-decimal">
             {task.acceptanceCriteria.map((ac, i) => (
               <li key={i}>{ac}</li>
@@ -36,7 +37,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         </div>
 
         <p className="prose my-10 text-2xl">
-          The following prerequisites must be completed:
+          The following {translateCapsPlural('prerequisite')} must be completed:
         </p>
 
         {escrowPrerequisites?.map((ep, i) => (

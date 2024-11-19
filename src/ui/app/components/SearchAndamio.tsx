@@ -21,7 +21,7 @@ import { OnboardingTasks, type OnboardingTask } from "~/ui/onboarding/Onboarding
 // TODO: Post MVP, continually refine search according to needs in futture user stories. 
 
 export default function SearchAndamio() {
-  const { translateCaps } = useTerminology()
+  const { translateCaps, translate } = useTerminology()
   const { courses } = useCourses()
   const onboardingTasks = OnboardingTasks()
 
@@ -81,7 +81,7 @@ export default function SearchAndamio() {
           }))
 
       }}>
-        <ComboboxInput placeholder="Search for a task, lesson, or course" onSelect={() => setSearchValue(null)} />
+        <ComboboxInput placeholder={`Search for a ${translate('task')}, lesson, or course`} onSelect={() => setSearchValue(null)} />
         <ComboboxContent>
           {filteredOnboardingTasks.length > 0 && (
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">

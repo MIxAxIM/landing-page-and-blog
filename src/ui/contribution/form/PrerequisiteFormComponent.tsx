@@ -9,6 +9,7 @@ import { Form } from "~/components/ui/form";
 import { Checkbox } from "~/components/ui/checkbox";
 import FormInput from "~/components/form/form-input";
 import FormSelect from "~/components/form/form-select";
+import { useTerminology } from "~/contexts/terminology-context";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -31,6 +32,7 @@ export default function PrerequisiteForm() {
   // Get course data
   const { data: courses } = api.course.getCourses.useQuery();
   const { createPrerequisite, isCreating } = useContributorPrerequisite();
+  const { translate, translateCaps, translateCapsPlural } = useTerminology()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -86,13 +88,13 @@ export default function PrerequisiteForm() {
             name="title"
             label="Title"
             form={form}
-            placeholder="Enter a title for this prerequisite"
+            placeholder={`Enter a title for this ${translateCaps('prerequisite')}`}
           />
           <FormInput
             name="contributorPolicyId"
-            label="Contributor Policy ID"
+            label={`${translateCaps('contributor')} Policy ID`}
             form={form}
-            placeholder="Enter contributor policy ID"
+            placeholder={`Enter ${translateCaps('contributor')} policy ID`}
           />
 
           {/* Course Requirements Section */}
@@ -166,7 +168,7 @@ export default function PrerequisiteForm() {
                           {form.watch(
                             `courseRequirements.${index}.requiredModules`,
                           ).length ===
-                          courseModuleLists[requirement.courseCode]?.length
+                            courseModuleLists[requirement.courseCode]?.length
                             ? "Unselect All"
                             : "Select All"}
                         </Button>
@@ -193,8 +195,8 @@ export default function PrerequisiteForm() {
                                   const newModules = checked
                                     ? [...currentModules, module.moduleCode]
                                     : currentModules.filter(
-                                        (m) => m !== module.moduleCode,
-                                      );
+                                      (m) => m !== module.moduleCode,
+                                    );
 
                                   form.setValue(
                                     `courseRequirements.${index}.requiredModules`,
@@ -231,7 +233,7 @@ export default function PrerequisiteForm() {
         </div>
 
         <Button type="submit" className="w-full" disabled={isCreating}>
-          {isCreating ? "Creating..." : "Create Prerequisite"}
+          {isCreating ? "Creating..." : `Create ${translateCaps('prerequisite')}`}
         </Button>
       </form>
     </Form>

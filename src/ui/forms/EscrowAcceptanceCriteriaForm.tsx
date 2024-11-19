@@ -6,7 +6,7 @@ import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import { useState } from "react";
-import { ToggleEditableField } from "~/components/ui/toggle-editable-field";
+import { useTerminology } from "~/contexts/terminology-context";
 
 const FormSchema = z.object({
   newCriterion: z.string().min(1, "Criterion text is required"),
@@ -23,6 +23,7 @@ export default function EscrowAcceptanceCriteriaForm({
 }: EscrowAcceptanceCriteriaFormProps) {
   // Get escrow data and mutation
   const { escrow, updateEscrow, isUpdating } = useEscrow({ id: escrowId });
+  const { translateCaps } = useTerminology()
 
   // Track which criterion is being edited
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -85,9 +86,9 @@ export default function EscrowAcceptanceCriteriaForm({
     <div className="space-y-6">
       {/* Existing Criteria */}
       <div className="space-y-2">
-        <h3 className="text-lg font-medium">Saved Acceptance Criteria</h3>
+        <h3 className="text-lg font-medium">Saved {translateCaps('acceptanceCriteria')}</h3>
         <p className="text-sm text-muted-foreground">
-          You can still customize acceptance criteria in each individual task
+          You can still customize ${translateCaps('acceptanceCriteria')} in each individual task
         </p>
 
         <div className="space-y-2">
@@ -130,7 +131,7 @@ export default function EscrowAcceptanceCriteriaForm({
 
           {savedCriteria.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              No saved criteria yet. Add some below.
+              No saved ${translateCaps('acceptanceCriteria')} yet. Add some below.
             </p>
           )}
         </div>
@@ -143,7 +144,7 @@ export default function EscrowAcceptanceCriteriaForm({
             name="newCriterion"
             label="Add New Criterion"
             form={form}
-            placeholder="Enter new acceptance criterion"
+            placeholder={`Enter new ${translateCaps('acceptanceCriteria')}`}
           />
           <Button type="submit" disabled={isUpdating} className="w-full">
             Add Criterion

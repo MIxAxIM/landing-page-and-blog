@@ -75,11 +75,11 @@ export default function ManageEscrowComponent({
             <AccordionItem value="acceptance-criteria">
               <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
                 <h2 className="my-3 text-xl font-bold">
-                  {translateCaps('escrow')} Acceptance Criteria
+                  {translateCaps('escrow')} ${translateCaps('acceptanceCriteria')}
                 </h2>
                 <p>
-                  For any {translate('escrow')}, you can create a list of pre-defined acceptance
-                  criteria that will be preloaded into new {translateCapsPlural("task")}.
+                  For any {translate('escrow')}, you can create a list of pre-defined
+                  ${translateCaps('acceptanceCriteria')} that will be preloaded into new {translateCapsPlural("task")}.
                 </p>
               </AccordionTrigger>
               <AccordionContent className="border border-primary">
