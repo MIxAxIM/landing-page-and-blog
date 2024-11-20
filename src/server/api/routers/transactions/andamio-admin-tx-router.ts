@@ -3,11 +3,11 @@ import { indexerGetWithParams } from "~/lib/axios/indexer";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-type InitCourseStepOneParams = {
+type InitStepOneParams = {
   aliases: string;
 };
 
-type InitCourseStepTwoAndThreeParams = {
+type InitStepTwoAndThreeParams = {
   policy: string;
 };
 
@@ -16,7 +16,14 @@ type AddRemoveCourseCreatorParams = {
   policy: string;
 };
 
+type InitStepFourParams = {
+  policy: string;
+  prerequisite: string;
+}
+
 export const andamioAdminTxRouter = createTRPCRouter({
+
+  // Course Routers
   initCourseStepOne: publicProcedure
     .input(
       z.object({
@@ -24,12 +31,12 @@ export const andamioAdminTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const stepOneParams: InitCourseStepOneParams = {
+      const stepOneParams: InitStepOneParams = {
         aliases: JSON.stringify(input.aliases),
       };
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
-        InitCourseStepOneParams
+        InitStepOneParams
       >(`/tx/admin/init-course-step-1`, stepOneParams);
 
       if (builtTxResponse) return builtTxResponse;
@@ -43,12 +50,12 @@ export const andamioAdminTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const stepTwoParams: InitCourseStepTwoAndThreeParams = {
+      const stepTwoParams: InitStepTwoAndThreeParams = {
         policy: input.policy,
       };
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
-        InitCourseStepTwoAndThreeParams
+        InitStepTwoAndThreeParams
       >(`/tx/admin/init-course-step-2`, stepTwoParams);
 
       if (builtTxResponse) return builtTxResponse;
@@ -62,13 +69,13 @@ export const andamioAdminTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const stepThreeParams: InitCourseStepTwoAndThreeParams = {
+      const stepThreeParams: InitStepTwoAndThreeParams = {
         policy: input.policy,
       };
       try {
         const builtTxResponse = await indexerGetWithParams<
           { courseNftPolicyId: string; unsignedTxCBOR: string },
-          InitCourseStepTwoAndThreeParams
+          InitStepTwoAndThreeParams
         >(`/tx/admin/init-course-step-3`, stepThreeParams);
 
 
@@ -98,7 +105,7 @@ export const andamioAdminTxRouter = createTRPCRouter({
         AddRemoveCourseCreatorParams
       >(`/tx/admin/add-course-creators`, creatorParams);
 
-      https: if (builtTxResponse) return builtTxResponse;
+      if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not add course creators");
     }),
 
@@ -119,7 +126,102 @@ export const andamioAdminTxRouter = createTRPCRouter({
         AddRemoveCourseCreatorParams
       >(`/tx/admin/rm-course-creators`, creatorParams);
 
-      https: if (builtTxResponse) return builtTxResponse;
+      if (builtTxResponse) return builtTxResponse;
       else throw new Error("Could not remove course creators");
+    }),
+
+
+  // Project Contribution Routers
+
+  initProjectStepOne: publicProcedure
+    .input(
+      z.object({
+        aliases: z.array(z.string().min(1)),
+      }),
+    )
+    .query(async ({ input }) => {
+      const stepOneParams: InitStepOneParams = {
+        aliases: JSON.stringify(input.aliases),
+      };
+      const builtTxResponse = await indexerGetWithParams<
+        { projectNftPolicyId: string; unsignedTxCBOR: string },
+        InitStepOneParams
+      >(`/tx/admin/init-project-step-1`, stepOneParams);
+
+      if (builtTxResponse) return builtTxResponse;
+      else throw new Error("Could not complete step 1");
+    }),
+
+  initProjectStepTwo: publicProcedure
+    .input(
+      z.object({
+        policy: z.string().length(56),
+      }),
+    )
+    .query(async ({ input }) => {
+      const stepTwoParams: InitStepTwoAndThreeParams = {
+        policy: input.policy,
+      };
+      const builtTxResponse = await indexerGetWithParams<
+        { projectNftPolicyId: string; unsignedTxCBOR: string },
+        InitStepTwoAndThreeParams
+      >(`/tx/admin/init-project-step-2`, stepTwoParams);
+
+      if (builtTxResponse) return builtTxResponse;
+      else throw new Error("Could not complete step 2");
+    }),
+
+  initProjectStepThree: publicProcedure
+    .input(
+      z.object({
+        policy: z.string().length(56),
+      }),
+    )
+    .query(async ({ input }) => {
+      const stepThreeParams: InitStepTwoAndThreeParams = {
+        policy: input.policy,
+      };
+      try {
+        const builtTxResponse = await indexerGetWithParams<
+          { projectNftPolicyId: string; unsignedTxCBOR: string },
+          InitStepTwoAndThreeParams
+        >(`/tx/admin/init-project-step-3`, stepThreeParams);
+
+
+        if (builtTxResponse) return builtTxResponse;
+        else throw new Error("Could not complete step 3");
+
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }),
+
+  initProjectStepFour: publicProcedure
+    .input(
+      z.object({
+        policy: z.string().length(56),
+        prerequisite: z.string().length(56),
+      }),
+    )
+    .query(async ({ input }) => {
+      const stepFourParams: InitStepFourParams = {
+        policy: input.policy,
+        prerequisite: input.prerequisite,
+      };
+      try {
+        const builtTxResponse = await indexerGetWithParams<
+          { projectNftPolicyId: string; unsignedTxCBOR: string },
+          InitStepFourParams
+        >(`/tx/admin/init-project-step-4`, stepFourParams);
+
+
+        if (builtTxResponse) return builtTxResponse;
+        else throw new Error("Could not complete step 4");
+
+      }
+      catch (error) {
+        console.log(error)
+      }
     }),
 });
