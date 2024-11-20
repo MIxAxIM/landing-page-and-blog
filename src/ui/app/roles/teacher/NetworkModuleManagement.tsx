@@ -23,7 +23,7 @@ export default function NetworkModuleManagement({
 
   return (
     <div key={key} className="mx-auto w-full">
-      <h2 className="my-5 text-6xl">{courseInfo?.title}</h2>
+      <h2>{courseInfo?.title}</h2>
       <div className="mb-5 flex w-full flex-row items-center justify-between border-b border-accent pb-5">
         <p>{assignmentStats?.courseModules} modules</p>
         <p>

@@ -5,7 +5,7 @@ export default function ContributorPageComponent() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
-        <h2 className="my-10 text-4xl">Contributor Page</h2>
+        <h2>Contributor Page</h2>
         <AllTasksListComponent />
       </div>
     </AppLayout>

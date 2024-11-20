@@ -5,7 +5,7 @@ export default function TeacherConnectWalletCard() {
   return (
     <Card className="">
       <CardHeader className="flex w-full flex-row items-center justify-between">
-        <h2 className="text-xl font-bold">
+        <h2>
           Connect a Wallet to Manage Your Courses
         </h2>
       </CardHeader>

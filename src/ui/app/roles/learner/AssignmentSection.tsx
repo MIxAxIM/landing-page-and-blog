@@ -60,7 +60,7 @@ export default function AssignmentsSection({
   return (
     <div className="mx-auto flex w-11/12 flex-col gap-3 lg:w-5/6">
       <div className="flex flex-row items-center justify-between">
-        <h2 className="my-10 text-4xl">My Assignment Notes</h2>
+        <h2>My Assignment Notes</h2>
         <Button className="my-5" onClick={() => setShowArchived(!showArchived)}>
           {showArchived
             ? "Hide Archived Assignments"
@@ -97,7 +97,7 @@ export default function AssignmentsSection({
                   </Link>
                 </div>
                 <div className="col-span-2 rounded-md bg-white p-5">
-                  <h2 className="pb-2 text-lg font-bold">
+                  <h2>
                     What I want to remember about this Assignment:
                   </h2>
                   <p>{la.learnerNote}</p>

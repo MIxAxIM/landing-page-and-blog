@@ -92,7 +92,7 @@ export default function ProductForm() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6 space-y-8">
-      <h2 className="text-2xl font-bold">Create New Product</h2>
+      <h2>Create New Product</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -231,7 +231,7 @@ export default function ProductForm() {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium">Additional Features</h3>
+              <h3>Additional Features</h3>
               <Button type="button" onClick={addFeature}>
                 Add Feature
               </Button>

@@ -43,10 +43,10 @@ export default function CourseModuleAccordionItem({
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
         <div className="grid w-full grid-cols-5 gap-5">
-          <h2 className="col-span-1 text-xl">
+          <h2>
             <span className="text-sm">Module</span> {cm.moduleCode}
           </h2>
-          <h2 className="col-span-2 text-left text-xl font-semibold">
+          <h2>
             {cm.title}
           </h2>
           <div className="flex h-full flex-row items-center gap-5">
@@ -73,7 +73,7 @@ export default function CourseModuleAccordionItem({
       </AccordionTrigger>
       <AccordionContent className="mb-5 grid grid-cols-1 border-x border-b border-primary px-2 py-2 md:grid-cols-3">
         <div className="col-span-2 flex h-full flex-col">
-          <h3 className="mb-2 text-lg font-semibold">
+          <h3>
             Student Learning Targets (SLTs)
           </h3>
           {slts.map((slt, j) => (
@@ -88,7 +88,7 @@ export default function CourseModuleAccordionItem({
           ))}
           {cm.assignments?.length > 0 && (
             <>
-              <h3 className="my-2 text-lg font-semibold">Assignment</h3>
+              <h3>Assignment</h3>
               <p>{cm.assignments[0]?.title}</p>
             </>
           )}

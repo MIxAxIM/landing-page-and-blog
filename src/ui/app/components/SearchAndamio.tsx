@@ -92,7 +92,7 @@ export default function SearchAndamio() {
             <ComboboxItem key={id} value={id} label={title} className="mb-3" >
 
               <div>
-                <h2 className="text-xl font-bold pb-2 mb-2">  {title}
+                <h2>  {title}
                 </h2>
 
               </div>
@@ -108,7 +108,7 @@ export default function SearchAndamio() {
             <ComboboxItem key={id} value={id} label={title} className="mb-3" >
 
               <div>
-                <h2 className="text-xl font-bold pb-2 mb-2 border-b border-primary">  {title}
+                <h2>  {title}
                 </h2>
                 <p>{formatPosixTime(expirationTime)}</p>
                 <p>Escrows: {escrow?.title}</p>
@@ -123,7 +123,7 @@ export default function SearchAndamio() {
               <h3>Courses</h3>
               {filteredCourses.map(({ title, description, id }) => (
                 <ComboboxItem key={id} value={id} label={title} className="mb-3">
-                  <h2 className="text-xl font-bold pb-2 mb-2 border-b border-primary">{title}</h2>
+                  <h2>{title}</h2>
                   <p>{description}</p>
 
 

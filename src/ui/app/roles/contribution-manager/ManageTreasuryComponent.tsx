@@ -21,7 +21,7 @@ export default function ManageTreasuryComponent({
       <div className="mx-auto mb-48 mt-12 grid w-11/12 grid-cols-6 gap-3">
         <div className="col-span-6 flex w-full flex-row items-center justify-between mb-6">
           <div className="">
-            <h2 className="text-4xl">{treasuryInfo?.title}</h2>
+            <h2>{treasuryInfo?.title}</h2>
           </div>
 
           <div className="flex flex-row space-x-2">

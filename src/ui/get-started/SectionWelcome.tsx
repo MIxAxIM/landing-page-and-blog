@@ -9,7 +9,7 @@ export default function SectionWelcome() {
   return (
     <div className="mx-auto flex flex-col items-center gap-24 md:flex-row">
       <div className="mx-auto max-w-2xl lg:text-center">
-        <h2 className="mb-12 text-3xl font-bold tracking-tight  sm:text-8xl">
+        <h2>
           Welcome to Andamio
         </h2>
         {pageCopy.map((pc, i) => (

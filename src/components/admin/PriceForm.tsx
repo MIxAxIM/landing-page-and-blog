@@ -87,7 +87,7 @@ export default function CreatePriceForm() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6 space-y-8">
-      <h2 className="text-2xl font-bold">Create New Price</h2>
+      <h2>Create New Price</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

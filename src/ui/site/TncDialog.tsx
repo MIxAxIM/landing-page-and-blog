@@ -57,9 +57,9 @@ export default function TncDialog() {
         <DialogHeader className="font-bold">
           Changes to Terms and Conditions + Privacy Policy
         </DialogHeader>
-        <h2 className="text-sm text-secondary-foreground">
+        <div className="text-sm text-secondary-foreground">
           Terms and Conditions Version 1.0.0
-        </h2>
+        </div>
 
         <p className="text-sm text-secondary-foreground">
           Andamio Version 0.2.21

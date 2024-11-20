@@ -31,7 +31,7 @@ export default function LearnerCourses({
   return (
     <>
       <div className="mb-3 flex w-full flex-col rounded-md border border-primary p-3">
-        <h2 className="text-xl">Current Courses</h2>
+        <h2>Current Courses</h2>
         <p>You are currently enrolled in these courses:</p>
         {globalStateDatum &&
           globalStateDatum.TokenInfos.map((c, i) => {
@@ -50,7 +50,7 @@ export default function LearnerCourses({
           })}
       </div>
       <div className="mb-3 flex w-full flex-col rounded-md border border-primary p-3">
-        <h2 className="text-xl">Previous Courses</h2>
+        <h2>Previous Courses</h2>
         <p>You have completed the following courses:</p>
         {globalStateDatum &&
           globalStateDatum.TokenInfos.map((c, i) => {

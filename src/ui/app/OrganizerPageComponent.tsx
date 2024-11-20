@@ -7,7 +7,7 @@ export default function OrganizerPageComponent() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
-        <h2 className="my-10 text-4xl">Organizer Page</h2>
+        <h2>Organizer Page</h2>
         <div className="flex w-full flex-col">
           Some organizer stuff
         </div>

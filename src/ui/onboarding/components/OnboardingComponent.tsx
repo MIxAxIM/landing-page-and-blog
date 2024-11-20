@@ -105,7 +105,7 @@ export default function OnboardRole({
 
           {roleStatus?.onboardingStatus === "PARTIAL" && (
             <div className="space-y-2">
-              <h2 className="prose-h2 text-lg">How to start:</h2>
+              <h2>How to start:</h2>
               {FirstStepContent && <FirstStepContent />}
             </div>
           )}
@@ -113,7 +113,7 @@ export default function OnboardRole({
           {(roleStatus?.onboardingStatus === "SKIPPED" ||
             roleStatus?.onboardingStatus === "COMPLETE") && (
               <div className="space-y-2">
-                <h2 className="prose-h2 text-lg">
+                <h2>
                   Keep going - here is your next step
                 </h2>
                 {NextStepContent && <NextStepContent />}

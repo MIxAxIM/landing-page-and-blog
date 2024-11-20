@@ -59,11 +59,11 @@ export default function AdminCreateProjectInstanceStepOne() {
           />
         ) : (
           <>
-            <h2 className="text-2xl font-semibold">
+            <h2>
               Step 1: Initialize Project
             </h2>
             {/* About this Module */}
-            <h2 className="mt-5 text-xl font-semibold">About</h2>
+            <h2>About</h2>
             <p className="mb-5">December: How to automate this step for self-service</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>

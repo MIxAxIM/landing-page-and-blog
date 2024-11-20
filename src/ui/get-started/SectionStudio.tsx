@@ -13,7 +13,7 @@ export default function SectionStudio() {
   return (
     <div className="mx-auto  max-w-7xl px-6  lg:px-8">
       <div className="mx-auto max-w-4xl lg:text-center">
-        <h2 className="teacking-tight mb-12 text-3xl font-bold text-primary-foreground sm:text-8xl">
+        <h2>
           Want to create a course?
         </h2>
 

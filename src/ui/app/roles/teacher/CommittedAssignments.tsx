@@ -31,9 +31,9 @@ export default function CommittedAssignments({
   return (
     <div className="my-5 flex w-full flex-col border-t border-accent pt-5">
       {showCourseDetails && !!courseInfo && (
-        <h2 className="my-5 text-4xl">{courseInfo.title}</h2>
+        <h2>{courseInfo.title}</h2>
       )}
-      <h3 className="my-5 text-2xl font-semibold">
+      <h3>
         Review Student Assignments
       </h3>
 

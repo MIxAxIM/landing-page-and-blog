@@ -42,14 +42,14 @@ export default function GetStartedSteps() {
 
   return (
     <div className="mx-auto flex w-full flex-col pt-12">
-      <h2 className="my-12 text-center text-3xl font-bold tracking-tight text-foreground md:text-6xl">
+      <h2>
         Get Started
       </h2>
       <div className="mx-auto my-3 w-full md:w-2/3">
         <div className="grid grid-cols-1 gap-12">
           <Card size="md" className="border-none bg-accent shadow-xl">
             <CardHeader>
-              <h2 className="text-2xl font-bold">
+              <h2>
                 Step 1: Log into Andamio with Discord
               </h2>
             </CardHeader>
@@ -62,7 +62,7 @@ export default function GetStartedSteps() {
 
               {sessionData?.user.name ? (
                 <>
-                  <h2 className="my-5 text-2xl font-semibold">Success!</h2>
+                  <h2>Success!</h2>
                   <div className="mt-5 flex w-full flex-row items-center gap-10 px-5">
                     <CheckCircledIcon className="h-[50px] w-[50px] rounded-full bg-success-foreground" />
                     <p className="prose text-left text-lg leading-8">
@@ -83,7 +83,7 @@ export default function GetStartedSteps() {
           </Card>
           <Card size="md" className="border-none bg-accent shadow-xl">
             <CardHeader>
-              <h2 className="text-2xl font-bold">
+              <h2>
                 Step 2: Activate Learner Status
               </h2>
             </CardHeader>
@@ -91,7 +91,7 @@ export default function GetStartedSteps() {
               <div>
                 {sessionData?.user.learnerId ? (
                   <>
-                    <h2 className="my-5 text-2xl font-semibold">Success!</h2>
+                    <h2>Success!</h2>
                     <div className="mt-5 flex w-full flex-row items-center gap-10 px-5">
                       <CheckCircledIcon className="h-[50px] w-[50px] rounded-full bg-success-foreground" />
                       <p className="prose text-left text-lg leading-8">
@@ -131,7 +131,7 @@ export default function GetStartedSteps() {
           </Card>
           <Card size="md" className="border-none bg-accent shadow-xl">
             <CardHeader>
-              <h2 className="text-2xl font-bold">
+              <h2>
                 Step 3: Getting Started With Andamio Course
               </h2>
             </CardHeader>
@@ -144,7 +144,7 @@ export default function GetStartedSteps() {
                 </p>
                 {sessionData?.user.learnerId && (
                   <>
-                    <h2 className="my-5 text-2xl font-semibold">Ready?</h2>
+                    <h2>Ready?</h2>
                     <div className="mt-5 flex w-full flex-row items-center gap-10 px-5">
                       <BoxIcon className="h-[50px] w-[50px] rounded-md bg-secondary" />
                       <p className="prose text-left text-lg font-bold leading-8 underline">
@@ -164,7 +164,7 @@ export default function GetStartedSteps() {
             className="border-none bg-success-foreground shadow-xl"
           >
             <CardHeader>
-              <h2 className="text-center text-2xl font-bold">Next Steps</h2>
+              <h2>Next Steps</h2>
             </CardHeader>
             <CardContent>
               <div className="flex w-full flex-col items-center justify-center">

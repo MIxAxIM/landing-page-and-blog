@@ -176,7 +176,7 @@ export default function LearnerCourseModuleDetailsComponent({
               className={`flex flex-col justify-between rounded-sm p-5 ${credentialColor}`}
             >
               <div>
-                <h2 className="mb-2 font-semibold">
+                <h2>
                   Network Assignment Credential
                 </h2>
                 {learnerModuleStatus === "COMPLETED_COMMITMENT" && (
@@ -220,7 +220,7 @@ export default function LearnerCourseModuleDetailsComponent({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger className="text-left">
-                    <h2 className="mb-2 font-semibold">
+                    <h2>
                       Personal Assignment Notes
                     </h2>
                     <p>{assignmentCommitment?.learnerNotes}</p>

@@ -45,9 +45,9 @@ export default function RoadmapEpicComponent({
         key={key}
         className="col-span-1 mx-auto my-5 flex flex-row items-center"
       >
-        <h2 className="hidden text-center font-beckman text-2xl md:block">
+        <div className="hidden text-center font-beckman text-2xl md:block">
           Q{epic.quarter}
-        </h2>
+        </div>
       </div>
       <div
         key={key}
@@ -59,7 +59,7 @@ export default function RoadmapEpicComponent({
         <div
           className={`flex w-full flex-col border-l-2 ${borderColor} pl-8 text-sm`}
         >
-          <h1 className="font-beckman text-lg">{epic.name}</h1>
+          <div className="font-beckman text-lg">{epic.name}</div>
           <p className="w-11/12">{epic.description}</p>
         </div>
         <Badge variant={epic.status} className="hidden md:block">

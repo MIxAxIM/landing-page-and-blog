@@ -83,14 +83,14 @@ export default function DesktopSideMenu({
               <>
                 {/* Top level routes: Studio, Dashboard and Courses */}
                 <Link href="/app">
-                  <h2 className=" mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</h2>
+                  <div className=" mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</div>
                 </Link>
                 <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
                 <li className="mb-7">
                   <ul role="list" className="space-y-1">
                     {/* Dashboard */}
                     <Link href="/dashboard">
-                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Dashboard</h2>
+                      <div className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Dashboard</div>
                     </Link>
                     <DashboardLinkItem
                       current={isDashboardRoute}
@@ -98,7 +98,7 @@ export default function DesktopSideMenu({
                     />
                     {/* Studio */}
                     <Link href="/app">
-                      <h2 className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Courses</h2>
+                      <div className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Courses</div>
                     </Link>
                     {isCreator && (
                       <CourseStudioLinkItem
@@ -118,7 +118,7 @@ export default function DesktopSideMenu({
               <>
                 <div className=" p-2">
                   <p className="text-sm">editing:</p>
-                  <h2 className="text-xl font-semibold">{course.title}</h2>
+                  <div className="text-xl font-semibold">{course.title}</div>
                 </div>
                 <StudioOutline
                   currentCourseCode={coursecode}

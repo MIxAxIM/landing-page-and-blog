@@ -11,7 +11,7 @@ export default function TeacherPageComponent() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
-        <h2 className="my-10 text-4xl">Teacher Page</h2>
+        <h2>Teacher Page</h2>
         <CardanoWallet />
         {!!accessTokenAlias && (
           <>

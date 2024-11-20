@@ -8,7 +8,7 @@ export default function PrerequisiteMinterPage() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
-        <h2 className="my-10 text-4xl">Mint a New Andamio {translateCaps('prerequisite')}</h2>
+        <h2>Mint a New Andamio {translateCaps('prerequisite')}</h2>
         <div className="flex w-full flex-col">
           <PrerequisiteForm />
         </div>
