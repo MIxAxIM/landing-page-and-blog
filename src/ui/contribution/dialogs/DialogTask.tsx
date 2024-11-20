@@ -67,15 +67,15 @@ const TaskDisplay = ({ task }: { task: Task }) => {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-medium">Title</h3>
+        <h3>Title</h3>
         <p>{task.title}</p>
       </div>
       <div>
-        <h3 className="font-medium">Description</h3>
+        <h3>Description</h3>
         <p className="whitespace-pre-wrap">{task.description}</p>
       </div>
       <div>
-        <h3 className="font-medium">Acceptance Criteria</h3>
+        <h3>Acceptance Criteria</h3>
         <ul className="list-disc pl-5">
           {task.acceptanceCriteria.map((criterion, index) => (
             <li key={index}>{criterion}</li>
@@ -84,22 +84,22 @@ const TaskDisplay = ({ task }: { task: Task }) => {
       </div>
       {task.hash && (
         <div>
-          <h3 className="font-medium">Content Hash</h3>
+          <h3>Content Hash</h3>
           <code className="block break-all rounded bg-muted p-2 text-xs">
             {task.hash}
           </code>
         </div>
       )}
       <div>
-        <h3 className="font-medium">Status</h3>
+        <h3>Status</h3>
         <p>{task.status}</p>
       </div>
       <div>
-        <h3 className="font-medium">Reward</h3>
+        <h3>Reward</h3>
         <p>{parseInt(task.lovelace) / 1_000_000} ADA</p>
       </div>
       <div>
-        <h3 className="font-medium">Expiration</h3>
+        <h3>Expiration</h3>
         <p>{format(new Date(parseInt(task.expirationTime)), "PPP")}</p>
       </div>
     </div>

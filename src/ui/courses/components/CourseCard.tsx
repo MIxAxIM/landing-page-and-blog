@@ -70,7 +70,7 @@ export default function CourseCard({
         </div>
       </CardHeader>
       <CardContent className="mt-5">
-        <h3 className="text-lg font-semibold leading-8 tracking-tight text-foreground">
+        <h3>
           {course.title}
         </h3>
         <p className="prose max-h-16 overflow-hidden text-sm">

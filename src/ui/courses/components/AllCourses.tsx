@@ -29,7 +29,7 @@ export default function AllCourses() {
       {courses && (
         <>
           <div className="my-3 border-t border-accent-foreground/50 py-3">
-            <h3 className="my-10 text-center text-3xl font-bold">
+            <h3>
               Featured Courses
             </h3>
 

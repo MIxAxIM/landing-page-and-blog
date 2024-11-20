@@ -34,7 +34,7 @@ export default function NetworkModuleManagement({
         </p>
         <Button>Edit in Course Studio</Button>
       </div>
-      <h3 className="my-5 text-2xl font-semibold">Manage Course Modules</h3>
+      <h3>Manage Course Modules</h3>
       {courseInfo?.courseCode && (
         <Accordion type="multiple">
           {courseModuleOverviews?.map((cm, i) => (

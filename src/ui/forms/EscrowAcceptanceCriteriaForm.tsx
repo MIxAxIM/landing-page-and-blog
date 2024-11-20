@@ -86,7 +86,7 @@ export default function EscrowAcceptanceCriteriaForm({
     <div className="space-y-6">
       {/* Existing Criteria */}
       <div className="space-y-2">
-        <h3 className="text-lg font-medium">Saved {translateCaps('acceptanceCriteria')}</h3>
+        <h3>Saved {translateCaps('acceptanceCriteria')}</h3>
         <p className="text-sm text-muted-foreground">
           You can still customize ${translateCaps('acceptanceCriteria')} in each individual task
         </p>

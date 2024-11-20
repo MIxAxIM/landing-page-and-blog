@@ -42,13 +42,13 @@ export default function CourseModuleAccordionItem({
         className={`items-center border-b border-primary p-2 ${isAccordionOpen ? "bg-primary text-primary-foreground" : "bg-background text-foreground"}`}
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
-        <div className="grid w-full grid-cols-5 gap-5">
+        <div className="grid w-full grid-cols-5 gap-5 text-left">
           <h2>
             <span className="text-sm">Module</span> {cm.moduleCode}
           </h2>
-          <h2>
+          <div className="text-base col-span-2 h-full flex items-center">
             {cm.title}
-          </h2>
+          </div>
           <div className="flex h-full flex-row items-center gap-5">
             <p>
               {slts.length} <span className="text-sm">SLTs</span>

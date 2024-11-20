@@ -184,7 +184,7 @@ export default function DialogPrerequisite({
           {/* Course Requirements Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Course Requirements</h3>
+              <h3>Course Requirements</h3>
               <Button
                 type="button"
                 onClick={addCourseRequirement}

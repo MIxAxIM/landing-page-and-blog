@@ -100,7 +100,7 @@ export default function PrerequisiteForm() {
           {/* Course Requirements Section */}
           <div className="space-y-4 rounded-md border border-black p-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Course Requirements</h3>
+              <h3>Course Requirements</h3>
             </div>
 
             {form.watch("courseRequirements").map((requirement, index) => (
