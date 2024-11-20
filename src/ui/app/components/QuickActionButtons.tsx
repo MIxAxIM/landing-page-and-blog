@@ -5,6 +5,7 @@ import AllTasksListComponent from "~/ui/contribution/lists/AllTasksListComponent
 import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
 import AllCourses from "~/ui/courses/components/AllCourses";
 import AccessTokenComponent from "~/ui/dashboard/components/AccessTokenComponent";
+import DialogOrganization from "./dialogs/DialogOrganization";
 
 export default function QuickActionButtons() {
   const [currentView, setCurrentView] = useState<"COURSES" | "TASKS" | "TREASURIES" | "PARTICIPATE" | undefined>(undefined)
@@ -24,6 +25,7 @@ export default function QuickActionButtons() {
       {currentView === "TASKS" && <AllTasksListComponent />}
       {currentView === "TREASURIES" && <TreasuryListComponent />}
       {currentView === "PARTICIPATE" && <AccessTokenComponent />}
+      <DialogOrganization />
     </>
   )
 }
