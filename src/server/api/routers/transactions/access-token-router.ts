@@ -26,7 +26,7 @@ export const accessTokenTxRouter = createTRPCRouter({
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AccessTokenMintingParams
-      >(`tx/access-token/mint`, accessTokenMintingParams);
+      >(`/tx/access-token/mint`, accessTokenMintingParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not mint access token");

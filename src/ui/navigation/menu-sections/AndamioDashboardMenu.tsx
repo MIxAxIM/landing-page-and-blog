@@ -21,7 +21,7 @@ export default function AndamioDashboardMenu() {
           <RoleStatus
             roleName="Network Credentials"
             userHasRole={!!sessionData}
-            roleInfoUrl="/dashboard/credentials"
+            roleInfoUrl="/dashboard/network-credentials"
           />
         </ul>
       </div>

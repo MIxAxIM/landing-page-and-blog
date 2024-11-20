@@ -2,7 +2,7 @@ import axios from "axios";
 import { INDEXER_URL } from "~/config/indexer";
 
 export const indexer = axios.create({
-  baseURL: `${INDEXER_URL}/api/`,
+  baseURL: `${INDEXER_URL}`,
   headers: { cache: "no-store" },
 });
 

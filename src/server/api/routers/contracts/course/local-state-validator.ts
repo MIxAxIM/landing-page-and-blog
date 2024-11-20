@@ -26,7 +26,7 @@ export const localStateValidatorRouter = createTRPCRouter({
         DecodedCourseStateDatum,
         CourseStateQueryParams
       >(
-        "course-state/decodedCourseStateDatumByCourseNftPolicyAndAlias",
+        "course-state/decoded-datum",
         courseStateQueryParams,
       );
       return localStateValidator;
