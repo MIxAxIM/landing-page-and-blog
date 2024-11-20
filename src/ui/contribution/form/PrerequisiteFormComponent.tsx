@@ -32,7 +32,7 @@ export default function PrerequisiteForm() {
   // Get course data
   const { data: courses } = api.course.getCourses.useQuery();
   const { createPrerequisite, isCreating } = useContributorPrerequisite();
-  const { translate, translateCaps, translateCapsPlural } = useTerminology()
+  const { translateCaps } = useTerminology()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),

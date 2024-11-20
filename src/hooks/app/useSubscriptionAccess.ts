@@ -1,7 +1,6 @@
 import { api } from "~/utils/api";
 
 export function useSubscriptionAccess() {
-  const ctx = api.useUtils();
 
   const checkFeatureAccess = (feature: "CREATE_COURSE" | "CREATE_TREASURY" | "PUBLISH_CONTENT" | "CUSTOM_DOMAIN") => {
     return api.billing.checkAccess.useQuery(

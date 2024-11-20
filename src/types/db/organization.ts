@@ -1,5 +1,4 @@
-
-import { OrganizationRole } from "@prisma/client";
+import { type OrganizationRole } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 

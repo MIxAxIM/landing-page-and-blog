@@ -4,7 +4,7 @@ import { useTerminology } from "~/contexts/terminology-context"
 export type OnboardingTask = { title: string, id: string }
 
 export function OnboardingTasks() {
-  const { translate, translateCaps } = useTerminology()
+  const { translate } = useTerminology()
 
   const onboardingTasks: OnboardingTask[] = [
     { title: "Start learning", id: "oLearn" },

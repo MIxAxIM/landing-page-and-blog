@@ -4,7 +4,7 @@ import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import PrerequisiteForm from "./form/PrerequisiteFormComponent";
 
 export default function PrerequisiteMinterPage() {
-  const { translate, translateCaps } = useTerminology()
+  const { translateCaps } = useTerminology()
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">

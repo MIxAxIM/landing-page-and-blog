@@ -7,7 +7,6 @@ import { TaskStatus } from "@prisma/client";
 import { useState, useCallback } from "react";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import DialogTask from "../dialogs/DialogTask";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";

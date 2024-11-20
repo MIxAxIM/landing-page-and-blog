@@ -1,12 +1,9 @@
-import { CardanoWallet, useWallet } from "@meshsdk/react";
+import { CardanoWallet } from "@meshsdk/react";
 import { Card } from "~/components/ui/card";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import AccessTokenComponent from "~/ui/dashboard/components/AccessTokenComponent";
 
 export default function MintAccessToken() {
 
-  const { connected } = useWallet();
-  const { accessTokenAlias } = useAccessToken();
   return (
     <div className="mx-auto my-24 w-2/3 space-y-5">
       <div className="col-span-4">

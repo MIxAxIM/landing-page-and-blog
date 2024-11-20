@@ -1,6 +1,5 @@
 import { api } from "~/utils/api";
 import { useToast } from "~/components/ui/use-toast";
-import { type OrganizationMemberWithUser } from "~/types/db";
 
 export const useOrganizationMembers = (organizationId: string) => {
   const { data: members, isLoading } = api.organizationMember.getMembers.useQuery(

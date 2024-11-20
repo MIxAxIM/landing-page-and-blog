@@ -1,8 +1,7 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { Slot } from "@radix-ui/react-slot";
-import { VariantProps, cva } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import React from "react";
-import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import classNames from "~/utils/classnames";
 import { cn } from "~/utils/shadcn";

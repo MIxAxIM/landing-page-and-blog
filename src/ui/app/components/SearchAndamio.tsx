@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTask } from "~/hooks/contribution/useTask";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
-import { CoursePublic } from "~/types/db";
+import { type CoursePublic } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
 import { useTerminology } from "~/contexts/terminology-context";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
@@ -28,9 +28,9 @@ export default function SearchAndamio() {
   const [value, setValue] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const { tasks } = useTask({ searchQuery: searchValue ?? "" });
-  const taskByValue = useMemo(() => (value && tasks?.find(task => task.id === value) || null), [value])
-  const courseByValue = useMemo(() => (value && courses?.find(course => course.id === value) || null), [value])
-  const onboardByValue = useMemo(() => (value && onboardingTasks.find(obt => obt.id === value) || null), [value])
+  const taskByValue = useMemo(() => (value && tasks?.find(task => task.id === value) || null), [value, tasks])
+  const courseByValue = useMemo(() => (value && courses?.find(course => course.id === value) || null), [value, courses])
+  const onboardByValue = useMemo(() => (value && onboardingTasks.find(obt => obt.id === value) || null), [value, onboardingTasks])
   const [filteredCourses, setFilteredCourses] = useState<CoursePublic[] | undefined>(courses)
   const [filteredOnboardingTasks, setFilteredOnboardingTasks] = useState<OnboardingTask[]>(onboardingTasks)
 

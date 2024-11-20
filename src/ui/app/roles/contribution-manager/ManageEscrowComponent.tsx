@@ -4,7 +4,6 @@ import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
 import EscrowAcceptanceCriteriaForm from "~/ui/forms/EscrowAcceptanceCriteriaForm";
 import EscrowTaskListComponent from "~/ui/contribution/lists/EscrowTaskListComponent";
-import { type Task } from "~/types/db";
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import {
   Accordion,

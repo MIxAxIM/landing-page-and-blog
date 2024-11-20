@@ -1,4 +1,4 @@
-import { TerminologySkins } from "~/types/terminology";
+import { type TerminologySkins } from "~/types/terminology";
 
 export const terminologySkins: TerminologySkins = {
 	default: {

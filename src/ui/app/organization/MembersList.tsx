@@ -18,6 +18,8 @@ import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useOrganizationMembers } from "~/hooks/organization/useOrganizationMembers";
 
+// TODO: Implement addMember
+
 export default function MembersList({ organizationId }: { organizationId: string }) {
   const { members, addMember } = useOrganizationMembers(organizationId);
   const [isAddingMember, setIsAddingMember] = useState(false);

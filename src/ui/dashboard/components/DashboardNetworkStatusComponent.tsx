@@ -8,6 +8,8 @@ import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { Card } from "~/components/ui/card";
 
+// TODO: How to handle creator course policies?
+
 export default function DashboardNetworkStatusComponent() {
   const { connected } = useWallet();
   const { accessTokenAlias } = useAccessToken();

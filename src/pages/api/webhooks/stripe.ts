@@ -4,7 +4,7 @@ import { buffer } from "micro";
 import { stripe } from "~/config/stripe";
 import { handleSubscriptionCreatedOrUpdated, handleInvoicePaid, handleSubscriptionCanceled } from "~/server/stripe/webhook-handlers";
 import { db } from "~/server/db";
-import { Prisma } from "@prisma/client";
+import { type Prisma } from "@prisma/client";
 
 // Stripe requires the raw body to construct the event.
 export const config = {

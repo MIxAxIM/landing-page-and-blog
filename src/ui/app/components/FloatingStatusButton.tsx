@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
-import { Check, Play, X, HelpingHand, WorkflowIcon, Goal } from 'lucide-react';
+import { Check, X, Goal } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from "~/utils/shadcn";
 import { Button } from '~/components/ui/button';
