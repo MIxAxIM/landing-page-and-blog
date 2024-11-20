@@ -16,13 +16,13 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
   return (
     <>
       <div className="mx-auto my-24 max-w-7xl space-y-10">
-        <h1 className="my-10 text-4xl">{task.title}</h1>
+        <h1>{task.title}</h1>
         <p className="prose text-2xl">
           This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
         </p>
         <div className="space-y-3">
           <p className="prose">{task.description}</p>
-          <h2 className="prose">{translateCaps('acceptanceCriteria')}</h2>
+          <h2>{translateCaps('acceptanceCriteria')}</h2>
           <ul className="prose ml-5 list-decimal">
             {task.acceptanceCriteria.map((ac, i) => (
               <li key={i}>{ac}</li>

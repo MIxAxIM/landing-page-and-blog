@@ -9,7 +9,7 @@ export default function CalendarPage() {
       <MenuBar />
 
       <div className="card z-10 mx-auto max-w-5xl p-5 shadow-xl md:mt-24">
-        <h1 className="pb-10 pt-5 text-4xl">Andamio Public Calendar</h1>
+        <h1>Andamio Public Calendar</h1>
         <div className="">
           <section className="relative">
             <iframe

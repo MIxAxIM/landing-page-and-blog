@@ -18,7 +18,7 @@ export default function CourseTitle({ course }: { course: Course }) {
     <>
       <div className="flex min-h-[150px] items-start">
         <div className="flex flex-grow flex-col gap-2">
-          <h1 className="text-4xl font-bold">{course.title}</h1>
+          <h1>{course.title}</h1>
 
           <div className="prose dark:prose-invert">
             <Markdown>{course.description}</Markdown>

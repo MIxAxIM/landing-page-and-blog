@@ -107,7 +107,7 @@ function Page({
       return (
         <>
           <div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h1>
               {introduction.title}
             </h1>
             {/* <p className="pb-10 text-xl leading-8">
@@ -117,7 +117,7 @@ function Page({
               <VideoPlayer videoId={introduction.videoUrl} />
             )}
             <div className="my-5 rounded-md bg-accent px-3 pb-1 pt-2 shadow-lg">
-              <h2 className="py-3 text-xl font-bold">
+              <h2>
                 Student Learning Targets
               </h2>
               {slts.map((slt, i) => (

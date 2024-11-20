@@ -50,9 +50,9 @@ export default function MintCourseModuleDialog({
           />
         ) : (
           <>
-            <h1 className="text-lg">Publish Credential Criteria</h1>
+            <h1>Publish Credential Criteria</h1>
             {/* What it means to mint a Module */}
-            <h2 className="my-3 font-semibold">
+            <h2>
               What it means to publish credential criteria
             </h2>
             <p>
@@ -64,7 +64,7 @@ export default function MintCourseModuleDialog({
             </p>
             <p>If yes, then you can put this module on-chain!</p>
             {/* About this Module */}
-            <h2 className="my-3 font-semibold">Student Learning Targets</h2>
+            <h2>Student Learning Targets</h2>
             <p className="mb-2">
               Click on each SLT to confirm Credential Criteria:
             </p>
@@ -84,7 +84,7 @@ export default function MintCourseModuleDialog({
                 </p>
               </motion.div>
             ))}
-            <h2 className="my-3 font-semibold">Assignment:</h2>
+            <h2>Assignment:</h2>
             {courseModuleOverview.assignments?.length > 0 && (
               <p>{courseModuleOverview.assignments[0]?.title}</p>
             )}

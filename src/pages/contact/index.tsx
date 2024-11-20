@@ -12,7 +12,7 @@ export default function AboutPage() {
         <MenuBar />
 
         <div className="card z-10 mx-auto mt-24 max-w-5xl p-5 shadow-xl">
-          <h1 className="py-5 text-2xl font-bold">Get In Touch</h1>
+          <h1>Get In Touch</h1>
           <p className="py-3 font-medium">
             Email: <Link href="mailto:hello@andamio.io">hello@andamio.io</Link>
           </p>

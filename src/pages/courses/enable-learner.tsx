@@ -37,7 +37,7 @@ export default function AddLearnerPage() {
 
   return (
     <StudioLayout>
-      <h1 className="text-2xl">Enable Learner</h1>
+      <h1>Enable Learner</h1>
       <p className="py-3">Note</p>
       <p className="py-3">
         <Link href="#">Terms and Conditions</Link>

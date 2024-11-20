@@ -3,16 +3,16 @@ import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
-export default function ContributionManagerComponent({}: {}) {
+export default function ContributionManagerComponent({ }: {}) {
   return (
     <div>
       <div className="mx-auto mt-12 grid w-11/12 grid-cols-3 gap-5">
         <div className="col-span-3 flex flex-row items-center justify-between">
-          <h2 className="text-4xl">Contribution Manager Dashboard Home</h2>
+          <h2>Contribution Manager Dashboard Home</h2>
           <DialogTask />
         </div>
         <div className="col-span-3">
-          <h1 className="my-5 text-2xl font-bold">All Network Treasuries</h1>
+          <h1>All Network Treasuries</h1>
           <TreasuryListComponent />
           <div className="mx-auto mt-5 w-1/2 bg-accent p-5">
             <p className="mb-5">

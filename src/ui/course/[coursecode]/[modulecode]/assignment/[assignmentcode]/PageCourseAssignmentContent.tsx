@@ -114,7 +114,7 @@ function Page({
     return (
       <>
         <div>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h1>
             {assignment.title}
           </h1>
           {/* <p className="py-5 text-xl leading-8">{assignment.description}</p> */}

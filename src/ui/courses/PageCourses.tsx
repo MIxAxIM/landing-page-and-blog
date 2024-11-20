@@ -29,7 +29,7 @@ export default function PageCourses() {
 
       <div className="mx-auto min-h-[50vh] max-w-7xl px-6 sm:my-48 lg:px-8">
         <div className="mx-auto lg:mx-0">
-          <h1 className="my-[78px] text-[3rem] font-bold leading-[5rem]">
+          <h1>
             Andamio Course List
           </h1>
           {/* <FeaturedCourses /> */}

@@ -128,7 +128,7 @@ export default function CourseDetails({
     <div className="mx-auto w-11/12 px-5" key={course?.id}>
       <div className=" flex min-h-[150px] w-full flex-col">
         <div className="mb-12 flex w-full flex-row items-center justify-between">
-          <h1 className="text-6xl font-semibold">{course?.title}</h1>
+          <h1>{course?.title}</h1>
           {course?.imageUrl && (
             <div className="flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -196,8 +196,8 @@ export default function CourseDetails({
       </div>
 
       <div className="">
-        <h2 className="my-10">{course?.description}</h2>
-        <h2 className="my-5 text-2xl font-bold">{course?.title} Outline</h2>
+        <h2>{course?.description}</h2>
+        <h2>{course?.title} Outline</h2>
         {courseModuleOverviews
           ?.sort((a, b) => {
             return a.moduleCode.localeCompare(b.moduleCode);
