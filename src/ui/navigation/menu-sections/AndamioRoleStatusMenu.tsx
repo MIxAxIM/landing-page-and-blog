@@ -52,6 +52,11 @@ export default function AndamioRoleStatusMenu({
             userHasRole={true}
             roleInfoUrl="/app/prerequisite-minter"
           />
+          <RoleStatus
+            roleName={`Andamio Admin (private)`}
+            userHasRole={!!sessionData?.user.isAdmin}
+            roleInfoUrl="/app/admin"
+          />
         </ul>
       </div>
     </>
