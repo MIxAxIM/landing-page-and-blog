@@ -4,9 +4,9 @@ import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type AccessTokenMintingParams = {
-  userAddress: string;
-  alias: string;
-  userInfo: string;
+  user_address: string;
+  new_alias: string;
+  user_info: string;
 };
 
 export const accessTokenTxRouter = createTRPCRouter({
@@ -19,14 +19,14 @@ export const accessTokenTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const accessTokenMintingParams: AccessTokenMintingParams = {
-        userAddress: input.userAddress,
-        alias: input.alias,
-        userInfo: "Andamio Access Token",
+        user_address: input.userAddress,
+        new_alias: input.alias,
+        user_info: "Andamio Access Token",
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         AccessTokenMintingParams
-      >(`txs/mintAccessToken`, accessTokenMintingParams);
+      >(`tx/access-token/mint`, accessTokenMintingParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not mint access token");
