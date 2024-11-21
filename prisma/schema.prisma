@@ -338,13 +338,7 @@ model CourseOnChainInstance {
   course     Course @relation("CourseInstance", fields: [courseCode], references: [courseCode])
   courseCode String
 
-  LocalStateValidatorAddress String?
-  CourseCreatorNFTPolicyID   String
-  LocalStatePolicyID         String?
-  CourseInstanceUTxO         String?
-  LocalStatePolicyRefUTxO    String?
-  AssignmentValidatorAddress String?
-  ModuleValidatorAddress     String?
+  CourseCreatorNFTPolicyID String
 
   @@index([courseCode])
 }
