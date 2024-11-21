@@ -37,4 +37,23 @@ export const projectGeneralRouter = createTRPCRouter({
         info: info,
       };
     }),
+
+  addFunds: publicProcedure
+    .input(
+      z.object({
+        policy: z.string(),
+        dipositorsAddress: z.string(),
+        adaAmount: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const txCbor = await indexerGetWithParams<any, any>("/tx/treasury/add-funds", {
+        policy: input.policy,
+        user_address : input.dipositorsAddress,
+        amount : input.adaAmount,
+      });
+      return {
+        txCbor: txCbor,
+      };
+    }),
 });

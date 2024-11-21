@@ -34,7 +34,9 @@ const PolicyPage: React.FC = () => {
           return (
             <div>
               <pre>{JSON.stringify(project, null, 2)}</pre>
+              <Link href={`./${policy as string}/commit`}>
               <Button>Commit</Button>
+              </Link>
               <br />
             </div>
           );
