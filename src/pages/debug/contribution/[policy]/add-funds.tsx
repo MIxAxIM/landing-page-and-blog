@@ -31,7 +31,7 @@ const AddFunds: React.FC = () => {
     <>
       <div>
         <label>
-          Depositor's Address:
+          Depositor&apos;s Address:
           <input
             type="text"
             name="dipositorsAddress"

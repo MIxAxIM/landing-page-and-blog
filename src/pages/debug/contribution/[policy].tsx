@@ -32,10 +32,10 @@ const PolicyPage: React.FC = () => {
         <br />
         {treasuryInfo?.info.projects.map((project: any) => {
           return (
-            <div>
+            <div key={project.id}>
               <pre>{JSON.stringify(project, null, 2)}</pre>
               <Link href={`./${policy as string}/commit`}>
-              <Button>Commit</Button>
+                <Button>Commit</Button>
               </Link>
               <br />
             </div>
