@@ -26,7 +26,7 @@ export default function OnboardTreasuryOwner() {
 function FirstStep() {
   return (
     <div className="space-y-2">
-      <h2 className="prose-h2 text-lg">
+      <h2>
         Next step: start your new project
       </h2>
       <DialogTreasury />

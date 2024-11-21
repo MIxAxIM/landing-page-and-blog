@@ -73,6 +73,9 @@ model User {
   contributionManager ContributionManager?
   contributor         Contributor?
 
+  // organization relationships
+  memberOrganizations OrganizationMember[] @relation("MemberOrganizations")
+
   // user status
   tncVersion            String?
   hasMintedAccessToken  Boolean           @default(false)
@@ -110,6 +113,66 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  courses    OrganizationCourse[]
+  treasuries OrganizationTreasury[]
+  members    OrganizationMember[]
+}
+
+model OrganizationCourse {
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  courseId       String
+  course         Course       @relation(fields: [courseId], references: [id])
+  createdAt      DateTime     @default(now())
+
+  @@id([organizationId, courseId])
+  @@index([organizationId])
+  @@index([courseId])
+}
+
+model OrganizationTreasury {
+  organizationId      String
+  organization        Organization @relation(fields: [organizationId], references: [id])
+  treasuryNftPolicyId String
+  treasury            Treasury     @relation(fields: [treasuryNftPolicyId], references: [treasuryNftPolicyId])
+  createdAt           DateTime     @default(now())
+
+  @@id([organizationId, treasuryNftPolicyId])
+  @@index([organizationId])
+  @@index([treasuryNftPolicyId])
+}
+
+model OrganizationMember {
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  userId         String
+  user           User             @relation("MemberOrganizations", fields: [userId], references: [id])
+  role           OrganizationRole @default(MEMBER)
+  joinedAt       DateTime         @default(now())
+  invitedBy      String? // ID of the user who invited this member
+  updatedAt      DateTime         @updatedAt
+
+  @@id([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+}
+
+enum OrganizationRole {
+  OWNER // Can do everything, can't be removed
+  ADMIN // Can manage members, courses and projects
+  MEMBER // Contribution and Decision-Making access, depending on network credentials. Can draft tasks.
+  GUEST // View-only access
 }
 
 model Slt {
@@ -234,7 +297,8 @@ model Course {
   accessTier AccessTier?
 
   // NEW ---------
-  prerequisiteFor CourseRequirement[] @relation("PrerequisiteCourses")
+  prerequisiteFor CourseRequirement[]  @relation("PrerequisiteCourses")
+  organizations   OrganizationCourse[]
   // END NEW -----
 
   @@unique([courseCode])
@@ -552,6 +616,8 @@ model Treasury {
   Contributor          Contributor?          @relation(fields: [contributorId], references: [id])
   contributorId        String?
 
+  organizations OrganizationTreasury[]
+
   @@index([treasuryNftPolicyId])
   @@index([treasuryOwnerId])
   @@index([contributorId])
@@ -679,11 +745,12 @@ model Product {
 
   active Boolean @default(true)
 
-  maxAllowedCourses      Int
-  maxAllowedTreasuries   Int
-  treasuryDepositLimit   BigInt
-  canPublish             Boolean // determines whether the user can publish owned courses and owned treasuries so that are visible on Andamio Network
-  transactionFeeDiscount Int // As percentage, e.g. 10 -> "10% discount on network fees"
+  maxAllowedOrganizations Int     @default(0)
+  maxAllowedCourses       Int
+  maxAllowedTreasuries    Int
+  treasuryDepositLimit    BigInt
+  canPublish              Boolean // determines whether the user can publish owned courses and owned treasuries so that are visible on Andamio Network
+  transactionFeeDiscount  Int // As percentage, e.g. 10 -> "10% discount on network fees"
 
   additionalFeatures Feature[]
   prices             Price[]

@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { useTerminology } from "~/contexts/terminology-context";
+import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -74,6 +75,7 @@ export default function DialogTreasury({
   };
 
   const isLoading = isCreating || isUpdating;
+  if (isTreasuryLoading) return <LoadingCircle />
 
   return (
     <>

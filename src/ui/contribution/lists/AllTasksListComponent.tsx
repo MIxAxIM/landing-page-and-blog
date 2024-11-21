@@ -7,7 +7,6 @@ import { TaskStatus } from "@prisma/client";
 import { useState, useCallback } from "react";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import DialogTask from "../dialogs/DialogTask";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
@@ -66,7 +65,7 @@ export default function AllTasksListComponent() {
           <thead>
             <TableRow className="bg-primary hover:bg-primary">
               <SortableTableHeader
-                label="Task"
+                label={translateCaps('task')}
                 sortKey="title"
                 sortConfig={sortConfig}
                 onSort={requestSort}
@@ -89,7 +88,7 @@ export default function AllTasksListComponent() {
               />
               **/}
               <TableHead className="w-1/6 text-primary-foreground">
-                Acceptance Criteria
+                {translateCaps('acceptanceCriteria')}
               </TableHead>
               <SortableTableHeader
                 label="Expiration Time"

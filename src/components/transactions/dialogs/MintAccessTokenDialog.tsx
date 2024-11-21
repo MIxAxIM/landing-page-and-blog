@@ -98,11 +98,11 @@ export default function MintAccessTokenDialog() {
           />
         ) : (
           <>
-            <h2 className="text-2xl font-semibold">
+            <h2>
               Mint Andamio Network Token
             </h2>
             {/* About this Module */}
-            <h2 className="mt-5 text-xl font-semibold">About</h2>
+            <h2>About</h2>
             <p className="mb-5">
               When you mint an Andamio Network Token, you gain access to
               credentials on the Andamio Network.

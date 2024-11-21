@@ -16,7 +16,7 @@ export default function AccessTokenComponent() {
 
   return (
     <Card intent="dashboard" size="dashboard">
-      <h2 className="mb-3 text-lg font-bold">Connect to the Andamio Network</h2>
+      <h2>Connect to the Andamio Network</h2>
       <p className="mx-auto mb-3 w-5/6 text-left text-lg">
         You are now connected to the Andamio Platform with Discord. To access
         the Andamio Network, you can also connect a Cardano wallet and mint an

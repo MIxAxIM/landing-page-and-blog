@@ -15,7 +15,7 @@ export default function PersonalNotesCard({
     return (
       <Card className="border border-primary shadow-md">
         <CardHeader className="flex w-full flex-row items-center justify-between">
-          <h2 className="text-xl font-bold"> Personal Assignment Notes</h2>
+          <h2> Personal Assignment Notes</h2>
           {currentCommitment?.status && (
             <AssignmentBadges status={currentCommitment.status} />
           )}

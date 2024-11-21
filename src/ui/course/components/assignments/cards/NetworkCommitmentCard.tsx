@@ -30,7 +30,7 @@ export default function NetworkCommitmentCard({
   return (
     <Card className="border border-primary shadow-md">
       <CardHeader className="flex w-full flex-row items-center justify-between">
-        <h2 className="text-xl font-bold">
+        <h2>
           Commit to Assignment on Andamio Network
         </h2>
 

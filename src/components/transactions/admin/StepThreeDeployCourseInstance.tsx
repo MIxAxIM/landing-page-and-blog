@@ -4,6 +4,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
+import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
 
 export default function StepThreeDeployCourseInstance({
   policy,
@@ -41,7 +42,7 @@ export default function StepThreeDeployCourseInstance({
   }
 
   return (
-    <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
+    <TransactionPlaceholderComponent name="StepThreeDeployCourseInstance">
       {builtTxResponse ? (
         <Button onClick={onSubmit}>
           Course Instance Step 3: Deploy Course
@@ -51,6 +52,6 @@ export default function StepThreeDeployCourseInstance({
           <TransactionLoading wallet={wallet} />
         </div>
       )}
-    </div>
+    </TransactionPlaceholderComponent>
   );
 }

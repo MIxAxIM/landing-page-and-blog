@@ -5,23 +5,24 @@ import { formatPosixTime } from "~/utils/time";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { PrerequisiteItem } from "./lists/PrerequisiteList";
-import AppLayout from "../app/layout/AppLayout";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
+  const { translateCaps, translateCapsPlural } = useTerminology()
   const { treasury } = useTreasury(task.escrow?.treasuryId);
   const { escrowPrerequisites } = useEscrowPrerequisites({
     escrowId: task.escrow?.id,
   });
   return (
-    <AppLayout>
+    <>
       <div className="mx-auto my-24 max-w-7xl space-y-10">
-        <h1 className="my-10 text-4xl">{task.title}</h1>
+        <h1>{task.title}</h1>
         <p className="prose text-2xl">
           This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
         </p>
         <div className="space-y-3">
           <p className="prose">{task.description}</p>
-          <h2 className="prose">Acceptance Criteria</h2>
+          <h2>{translateCaps('acceptanceCriteria')}</h2>
           <ul className="prose ml-5 list-decimal">
             {task.acceptanceCriteria.map((ac, i) => (
               <li key={i}>{ac}</li>
@@ -36,7 +37,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         </div>
 
         <p className="prose my-10 text-2xl">
-          The following prerequisites must be completed:
+          The following {translateCapsPlural('prerequisite')} must be completed:
         </p>
 
         {escrowPrerequisites?.map((ep, i) => (
@@ -59,6 +60,6 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
         <PlaceholderComponent name="what user stories are picked up here?" />
       </div>
-    </AppLayout>
+    </>
   );
 }

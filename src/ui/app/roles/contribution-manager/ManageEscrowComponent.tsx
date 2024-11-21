@@ -4,7 +4,6 @@ import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
 import EscrowAcceptanceCriteriaForm from "~/ui/forms/EscrowAcceptanceCriteriaForm";
 import EscrowTaskListComponent from "~/ui/contribution/lists/EscrowTaskListComponent";
-import { type Task } from "~/types/db";
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import {
   Accordion,
@@ -26,7 +25,7 @@ export default function ManageEscrowComponent({
     <div>
       <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-11/12 grid-cols-6 gap-10">
         <div className="col-span-6 mb-12 flex flex-row items-center justify-between">
-          <h1 className="text-4xl">{escrow?.title}</h1>
+          <h1>{escrow?.title}</h1>
           <div className="space-x-2">
             <DialogEscrow id={escrow?.id} treasuryId={escrow?.treasuryId} />
             {!!escrow && (
@@ -36,7 +35,7 @@ export default function ManageEscrowComponent({
         </div>
         <div className="col-span-6 flex w-full">
           <div>
-            <h2 className="my-3 text-xl font-bold">
+            <h2>
               {escrow?.title} Task List
             </h2>
             {!!escrow?.tasks && (
@@ -51,7 +50,7 @@ export default function ManageEscrowComponent({
           <Accordion type="single" collapsible>
             <AccordionItem value="contrib-prereqs">
               <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
-                <h2 className="my-3 text-xl font-bold">
+                <h2>
                   Contributor Prerequisites
                 </h2>
                 <p className="mb-5">
@@ -74,12 +73,12 @@ export default function ManageEscrowComponent({
           <Accordion type="single" collapsible>
             <AccordionItem value="acceptance-criteria">
               <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
-                <h2 className="my-3 text-xl font-bold">
-                  {translateCaps('escrow')} Acceptance Criteria
+                <h2>
+                  {translateCaps('escrow')} ${translateCaps('acceptanceCriteria')}
                 </h2>
                 <p>
-                  For any {translate('escrow')}, you can create a list of pre-defined acceptance
-                  criteria that will be preloaded into new {translateCapsPlural("task")}.
+                  For any {translate('escrow')}, you can create a list of pre-defined
+                  ${translateCaps('acceptanceCriteria')} that will be preloaded into new {translateCapsPlural("task")}.
                 </p>
               </AccordionTrigger>
               <AccordionContent className="border border-primary">

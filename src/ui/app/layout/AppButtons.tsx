@@ -11,7 +11,7 @@ export default function AppButtons() {
   return (
     <div className="fixed bottom-[96px] right-5 flex flex-col space-y-8 items-center justify-center">
       <FloatingStatusButton defaultOpen={!sessionData?.user.contributorId}>
-        <h2 className="prose-h2 text-2xl mb-8">Andamio Onboarding Status</h2>
+        <h2>Andamio Onboarding Status</h2>
         <p>Check here any time to see how you are doing</p>
         <AndamioRoleStatusMenu dashboardChildRoute="/" />
       </FloatingStatusButton>

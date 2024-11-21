@@ -12,7 +12,7 @@ export default function DashboardDataComponent({
       <p className="text-2xl">
         <b>{data}</b>
       </p>
-      <h2 className="mt-auto ">{title}</h2>
+      <div className="mt-auto ">{title}</div>
     </Card>
   );
 }

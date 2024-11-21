@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOnClickOutside } from 'usehooks-ts';
 
@@ -39,7 +39,7 @@ const btn = {
   hidden: { rotate: 0 }
 };
 
-function FloatingButton({ className, children, triggerContent }: FloatingButtonProps) {
+function FloatingButton({ children, triggerContent }: FloatingButtonProps) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 

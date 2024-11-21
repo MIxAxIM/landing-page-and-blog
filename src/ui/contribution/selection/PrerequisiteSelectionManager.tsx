@@ -1,11 +1,11 @@
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { type ContributorPrerequisite } from "~/types/db";
+import { useEffect, useMemo, useState } from "react";
 import { PrerequisiteItem, PrerequisiteList } from "../lists/PrerequisiteList";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import Fuse from 'fuse.js';
+import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 
 const fuseOptions = {
   keys: [
@@ -79,6 +79,8 @@ export default function PrerequisiteManager({
       </Alert>
     );
   }
+
+  if (isLoadingPrerequisites) return <LoadingCircle />
 
   return (
     <div className={`my-5 space-y-4 ${className}`}>

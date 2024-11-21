@@ -8,13 +8,15 @@ import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { Card } from "~/components/ui/card";
 
+// TODO: How to handle creator course policies?
+
 export default function DashboardNetworkStatusComponent() {
   const { connected } = useWallet();
   const { accessTokenAlias } = useAccessToken();
   const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "");
-  const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
-    accessTokenAlias ?? "",
-  );
+  //const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
+  //  accessTokenAlias ?? "",
+  //);
   return (
     <div className="mx-auto my-24 w-2/3 space-y-5">
       {!connected && (
@@ -33,6 +35,9 @@ export default function DashboardNetworkStatusComponent() {
           <AccessTokenComponent />
         </div>
       )}
+
+      <pre>{JSON.stringify(accessTokenAlias, null, 2)}</pre>
+      <pre>{JSON.stringify(globalStateDatum, null, 2)}</pre>
 
       <div className="col-span-3">
         <Card>
@@ -62,16 +67,6 @@ export default function DashboardNetworkStatusComponent() {
               </p>
             </div>
           )}
-          {!!creatorCoursePolicies && creatorCoursePolicies.length > 0 && (
-            <div>
-              <p className="my-3 text-lg font-bold">Build your course(s)</p>
-              <p>
-                You are a Teacher in {creatorCoursePolicies.length} courses.
-                Select <span className="font-semibold">Teacher Dashboard</span>{" "}
-                manage courses.
-              </p>
-            </div>
-          )}
         </Card>
       </div>
       {globalStateDatum && (
@@ -81,12 +76,6 @@ export default function DashboardNetworkStatusComponent() {
               title="Courses Enrolled"
               data={globalStateDatum?.TokenInfos.length.toString() ?? ""}
             />
-            {!!creatorCoursePolicies && creatorCoursePolicies.length > 0 && (
-              <DashboardDataComponent
-                title="Courses Owned"
-                data={creatorCoursePolicies?.length.toString() ?? ""}
-              />
-            )}
             <DashboardDataComponent
               title="Access Token Info"
               data={globalStateDatum?.UserInfo ?? ""}
@@ -99,3 +88,21 @@ export default function DashboardNetworkStatusComponent() {
     </div>
   );
 }
+// TODO: Creator Course Policies
+//{!!creatorCoursePolicies && creatorCoursePolicies.length > 0 && (
+//  <div>
+//    <p className="my-3 text-lg font-bold">Build your course(s)</p>
+//    <p>
+//      You are a Teacher in {creatorCoursePolicies.length} courses.
+//      Select <span className="font-semibold">Teacher Dashboard</span>{" "}
+//      manage courses.
+//    </p>
+//  </div>
+//)}
+//
+//{!!creatorCoursePolicies && creatorCoursePolicies.length > 0 && (
+//  <DashboardDataComponent
+//    title="Courses Owned"
+//    data={creatorCoursePolicies?.length.toString() ?? ""}
+//  />
+//)}

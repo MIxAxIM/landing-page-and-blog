@@ -102,12 +102,12 @@ export default function ControlPanel({
             </div>
           </SheetTrigger>
           <SheetContent className="p-5">
-            <h3 className="pb-3 text-xl">Help</h3>
+            <h3>Help</h3>
             <p className="prose">
               Can create custom components for this that are easy to edit -
               would be passed as props
             </p>
-            <h3 className="py-3 text-xl">Learn More</h3>
+            <h3>Learn More</h3>
             <p className="prose">Andamio 101 Course</p>
           </SheetContent>
         </Sheet>

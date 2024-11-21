@@ -12,9 +12,9 @@ export default function SuccessTxModalContent({
 }) {
   return (
     <div className="flex flex-col content-center items-center gap-3 py-5">
-      <h2 className="text-lg">Successful {txName} Transaction</h2>
+      <h2>Successful {txName} Transaction</h2>
 
-      <h2 className="my-3 w-5/6 border-t border-accent pt-3 text-xl">
+      <h2>
         Next Steps:
       </h2>
       <ul className="mb-5 ml-3 w-5/6 list-disc">

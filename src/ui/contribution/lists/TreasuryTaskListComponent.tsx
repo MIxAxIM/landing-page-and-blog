@@ -13,12 +13,14 @@ import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { Button } from "~/components/ui/button";
+import { useTerminology } from "~/contexts/terminology-context";
 
 export default function TreasuryTaskListComponent({
   treasury,
 }: {
   treasury: string;
 }) {
+  const { translateCaps } = useTerminology()
   // Status filter state
   const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
     Object.values(TaskStatus),
@@ -117,7 +119,7 @@ export default function TreasuryTaskListComponent({
                 className="w-32 text-primary-foreground"
               />
               <TableHead className="w-1/6 text-primary-foreground">
-                Acceptance Criteria
+                ${translateCaps('acceptanceCriteria')}
               </TableHead>
               <SortableTableHeader
                 label="Expiration Time"

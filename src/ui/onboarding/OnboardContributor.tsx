@@ -25,7 +25,7 @@ export default function OnboardContributor() {
 function FirstStep() {
   return (
     <div className="space-y-2">
-      <h2 className="prose-h2 text-lg">
+      <h2>
         Make your first contribution
       </h2>
       <p>Here is a task to get you started...</p>

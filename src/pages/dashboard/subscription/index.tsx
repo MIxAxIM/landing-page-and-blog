@@ -14,7 +14,7 @@ export default function SubscriptionPage() {
       {!!subscription ? (
         <>
           <Card className="p-8 text-left">
-            <h1 className="prose-h1 text-2xl pb-8">You have a subscription to Andamio {subscription?.product.name}!</h1>
+            <h1>You have a subscription to Andamio {subscription?.product.name}!</h1>
             {/* Add CTAs to start using features */}
             <p className="prose">Price: ${((subscription?.price.unitAmount ?? 0n) / 100n).toString()} / {subscription?.price.interval}</p>
             <p className="prose">Status: {subscription?.status}</p>
@@ -29,7 +29,7 @@ export default function SubscriptionPage() {
       ) : (
         <>
           <Card className="p-8 text-left">
-            <h1 className="prose-h1 text-2xl pb-8">Want to get more out of Andamio?</h1>
+            <h1>Want to get more out of Andamio?</h1>
             {/* Add CTAs to start using features */}
           </Card>
           <Link href="/pricing">

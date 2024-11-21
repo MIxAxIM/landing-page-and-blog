@@ -36,11 +36,11 @@ export default function LearnerDashboardMenu() {
       </div>
       <div className="col-start-6 text-center">
         <Link href="/dashboard/learner/assignments">
-          <h2
+          <div
             className={`cursor-pointer p-2 font-semibold ${isAssignmentRoute ? "bg-accent" : "bg-primary text-primary-foreground"}`}
           >
             All Assignment Notes
-          </h2>
+          </div>
         </Link>
       </div>
     </div>

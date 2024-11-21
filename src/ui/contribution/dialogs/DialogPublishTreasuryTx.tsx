@@ -90,8 +90,7 @@ export default function DialogPublishTreasuryTx({
       await Promise.all(updatePromises);
 
       toast.success(
-        `Successfully published ${checkedTasks.size} task${
-          checkedTasks.size === 1 ? "" : "s"
+        `Successfully published ${checkedTasks.size} task${checkedTasks.size === 1 ? "" : "s"
         } to the network`,
       );
       setIsOpen(false);
@@ -124,7 +123,7 @@ export default function DialogPublishTreasuryTx({
         {Object.entries(tasksByEscrow).map(([escrowTitle, tasks]) => (
           <div key={escrowTitle} className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">{escrowTitle}</h3>
+              <h3>{escrowTitle}</h3>
               <div className="flex items-center gap-2">
                 <Checkbox
                   id={`escrow-${escrowTitle}`}

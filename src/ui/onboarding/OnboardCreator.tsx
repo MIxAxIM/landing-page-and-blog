@@ -8,6 +8,8 @@ export default function OnboardCreator() {
 
   const { data: creatorStatus } = getCreator()
 
+  if (!creatorStatus) return "Not a creator"
+
   return (
     <OnboardRole
       title="Build a course on Andamio"

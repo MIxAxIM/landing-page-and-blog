@@ -8,7 +8,8 @@ export default function AdminPage() {
     return <pre>{JSON.stringify(sessionData, null, 2)}</pre>
   }
   return (
-    <div className="my-48 max-w-5xl mx-auto"><h1>Andamio Admin</h1>
+    <div className="my-48 max-w-5xl mx-auto">
+      <h1>Andamio Admin</h1>
       <AddProductForm />
       <AddPriceForm />
       <PriceList />

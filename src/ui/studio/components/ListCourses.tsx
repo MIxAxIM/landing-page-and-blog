@@ -30,7 +30,7 @@ export default function ListCourses() {
             </div>
           ) : (
             <Card intent="default" size="default">
-              <h1 className="pb-5 text-2xl font-bold">
+              <h1>
                 You do not have any courses yet
               </h1>
               <p className="pb-5">

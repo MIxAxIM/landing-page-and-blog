@@ -56,11 +56,11 @@ export default function AdminCreateCourseInstanceStepOne() {
           />
         ) : (
           <>
-            <h2 className="text-2xl font-semibold">
+            <h2>
               Step 1: Mint and Lock Course NFT
             </h2>
             {/* About this Module */}
-            <h2 className="mt-5 text-xl font-semibold">About</h2>
+            <h2>About</h2>
             <p className="mb-5">Feature: Tell what is happening at this step</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>

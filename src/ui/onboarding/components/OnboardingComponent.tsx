@@ -2,7 +2,8 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import OnboardingStatusButtons from "./OnboardingStatusButtons";
-import { OnboardingStatus } from "@prisma/client";
+import { type OnboardingStatus } from "@prisma/client";
+import { motion } from "framer-motion";
 
 type RoleStatus = {
   id: string;
@@ -31,51 +32,117 @@ export default function OnboardRole({
   FirstStepContent,
   NextStepContent,
 }: OnboardRoleProps) {
+  const duration = 0.4
   return (
-    <div className="flex flex-row justify-between item-center w-full h-full bg-background border border-primary p-5 rounded-sm gap-x-10">
-      <div className="flex flex-col w-full space-y-4">
-        <h1 className="prose-h1 text-2xl">{title}</h1>
-        <Badge className="w-48 py-1">{roleStatus?.onboardingStatus}</Badge>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {
+          scaleY: 0,
+          originY: 0.5,
+          backgroundColor: "rgba(0, 0, 0, 0)",
+        },
+        visible: {
+          scaleY: 1,
+          transition: {
+            duration: duration,
+            ease: "easeOut",
+            staggerChildren: 0.1,
+          },
+        },
+      }}
+      className="flex flex-row justify-between items-center w-full min-w-7xl h-full bg-background border border-primary p-5 rounded-sm gap-x-10"
+    >
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, x: -20 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: duration }
+          }
+        }}
+        className="flex flex-col w-full space-y-4"
+      >
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: -20 },
+            visible: { opacity: 1, y: 0 }
+          }}
+          className="prose-h1 text-2xl"
+        >
+          {title}
+        </motion.h1>
 
-        {roleStatus?.onboardingStatus === "NOT_STARTED" && (
-          <Card>
-            <h2>Onboarding not started</h2>
-            <Button onClick={() => updateRoleStatus(roleStatus.id, "PARTIAL")}>
-              Start now!
-            </Button>
-          </Card>
-        )}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: { opacity: 1, scale: 1 }
+          }}
+        >
+          <Badge className="w-48 py-1">{roleStatus?.onboardingStatus}</Badge>
+        </motion.div>
 
-        {roleStatus?.onboardingStatus === "PARTIAL" && (
-          <div className="space-y-2">
-            <h2 className="prose-h2 text-lg">How to start:</h2>
-            {FirstStepContent && <FirstStepContent />}
-          </div>
-        )}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: duration * 2 }
+            },
+          }}
+        >
+          {roleStatus?.onboardingStatus === "NOT_STARTED" && (
+            <Card>
+              <h2>Onboarding not started</h2>
+              <Button onClick={() => updateRoleStatus(roleStatus.id, "PARTIAL")}>
+                Start now!
+              </Button>
+            </Card>
+          )}
 
-        {(roleStatus?.onboardingStatus === "SKIPPED" ||
-          roleStatus?.onboardingStatus === "COMPLETE") && (
+          {roleStatus?.onboardingStatus === "PARTIAL" && (
             <div className="space-y-2">
-              <h2 className="prose-h2 text-lg">
-                Keep going - here is your next step
-              </h2>
-              {NextStepContent && <NextStepContent />}
+              <h2>How to start:</h2>
+              {FirstStepContent && <FirstStepContent />}
             </div>
           )}
 
-        {!roleStatus && (
-          <Button onClick={enableRole}>Get Started</Button>
-        )}
-      </div>
+          {(roleStatus?.onboardingStatus === "SKIPPED" ||
+            roleStatus?.onboardingStatus === "COMPLETE") && (
+              <div className="space-y-2">
+                <h2>
+                  Keep going - here is your next step
+                </h2>
+                {NextStepContent && <NextStepContent />}
+              </div>
+            )}
 
-      <div>
+          {!roleStatus && (
+            <Button onClick={enableRole}>Get Started</Button>
+          )}
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, x: 20 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: duration }
+          }
+        }}
+      >
         {!!roleStatus?.id && (
           <OnboardingStatusButtons
             roleId={roleStatus.id}
             onStatusChange={updateRoleStatus}
           />
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

@@ -10,10 +10,10 @@ export default function PrivacyPolicyPage() {
       <MenuBar />
 
       <div className="card z-10 mx-auto mt-24 max-w-5xl p-5 font-mono shadow-xl">
-        <h1 className="pt-5 text-4xl">Andamio Privacy Policy</h1>
+        <h1>Andamio Privacy Policy</h1>
         <p className="pb-5 text-xl text-secondary-foreground">Version 1.0.0</p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           1. Introduction
         </h2>
         <p className="py-2">
@@ -24,11 +24,11 @@ export default function PrivacyPolicyPage() {
           collection and use of information in accordance with this policy.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           2. Information We Collect
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Personal Information</h3>
+        <h3>Personal Information</h3>
         <p className="py-2">
           When you create an account, contact us, or participate in our
           services, we may collect personal information, including but not
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
           <li className="py-1">Other contact information</li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           Course and Contribution Data
         </h3>
         <p className="py-2">
@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Usage Data</h3>
+        <h3>Usage Data</h3>
         <p className="py-2">
           We may collect information on how the service is accessed and used,
           including:
@@ -70,11 +70,11 @@ export default function PrivacyPolicyPage() {
           <li className="py-1">Pages visited and time spent</li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           3. How We Use Your Information
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           To Provide and Maintain Our Service
         </h3>
         <ul className="ml-5 list-disc">
@@ -87,7 +87,7 @@ export default function PrivacyPolicyPage() {
           <li className="py-1">To provide customer support</li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">To Improve Our Services</h3>
+        <h3>To Improve Our Services</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">To understand and analyze usage trends</li>
           <li className="py-1">
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">For Communication</h3>
+        <h3>For Communication</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             To send administrative information, such as updates and changes to
@@ -107,7 +107,7 @@ export default function PrivacyPolicyPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">For Legal Compliance</h3>
+        <h3>For Legal Compliance</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             To comply with legal obligations and protect our rights
@@ -117,11 +117,11 @@ export default function PrivacyPolicyPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           4. How We Share Your Information
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           Third-Party Service Providers
         </h3>
         <p className="py-2">
@@ -135,14 +135,14 @@ export default function PrivacyPolicyPage() {
           <li className="py-1">KYC providers (Know Your Customer)</li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Legal Requirements</h3>
+        <h3>Legal Requirements</h3>
         <p className="py-2">
           We may disclose your information if required by law or in response to
           valid requests by public authorities (e.g., court orders or government
           agencies).
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Business Transfers</h3>
+        <h3>Business Transfers</h3>
         <p className="py-2">
           If Andamio is involved in a merger, acquisition, or asset sale, your
           information may be transferred. We will provide notice before your
@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
           privacy policy.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           5. Data Security
         </h2>
         <p className="py-2">
@@ -160,7 +160,7 @@ export default function PrivacyPolicyPage() {
           secure, and we cannot guarantee absolute security.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           6. Data Retention
         </h2>
         <p className="py-2">
@@ -170,25 +170,25 @@ export default function PrivacyPolicyPage() {
           data is deleted after 5 years unless requested for earlier deletion.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           7. Your Data Privacy Rights
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Access and Correction</h3>
+        <h3>Access and Correction</h3>
         <p className="py-2">
           You have the right to access and correct your personal data. You can
           update your information through your account settings or by contacting
           us.
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Deletion</h3>
+        <h3>Deletion</h3>
         <p className="py-2">
           You have the right to request the deletion of your personal data. We
           will remove your data from our databases within 90 days of your
           request. Note that on-chain data cannot be deleted.
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           Objection and Restriction
         </h3>
         <p className="py-2">
@@ -198,7 +198,7 @@ export default function PrivacyPolicyPage() {
           consent before its withdrawal.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           8. Children’s Privacy
         </h2>
         <p className="py-2">
@@ -209,7 +209,7 @@ export default function PrivacyPolicyPage() {
           steps to remove that information.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           9. Data Protection Officer
         </h2>
         <p className="py-2">
@@ -227,7 +227,7 @@ export default function PrivacyPolicyPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           10. Changes to This Privacy Policy
         </h2>
         <p className="py-2">
@@ -237,7 +237,7 @@ export default function PrivacyPolicyPage() {
           advised to review this Privacy Policy periodically for any changes.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           11. Contact Us
         </h2>
         <p className="py-2">

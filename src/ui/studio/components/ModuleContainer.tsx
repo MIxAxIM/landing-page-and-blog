@@ -97,6 +97,7 @@ export default function ModuleContainer({
         setIsContentPublished(true);
       },
       onError: (e) => {
+        console.log(e)
         toast.error("Could not publish content");
       },
     });

@@ -15,6 +15,7 @@ import useCourseModuleList, {
 import { Checkbox } from "~/components/ui/checkbox";
 import { type CoursePublic } from "~/types/db";
 import toast from "react-hot-toast";
+import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 
 const FormSchema = z.object({
   title: z.string().optional(),
@@ -141,6 +142,8 @@ export default function DialogPrerequisite({
 
   const isLoading = isCreating || isUpdating;
 
+  if (isLoadingCourseModuleLists) return <LoadingCircle />
+
   return (
     <Form {...form}>
       <DialogForm
@@ -181,7 +184,7 @@ export default function DialogPrerequisite({
           {/* Course Requirements Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Course Requirements</h3>
+              <h3>Course Requirements</h3>
               <Button
                 type="button"
                 onClick={addCourseRequirement}

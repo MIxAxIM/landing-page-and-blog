@@ -6,7 +6,7 @@ export default function PageStudio() {
       <MenuBar />
       <div className="mx-auto mt-32 min-h-[50vh] max-w-7xl px-6 sm:mt-56 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-lg font-semibold text-primary">
+          <h2>
             Whether you&apos;re an individual, a team, or an organization, are you
             seeking to effectively guide and onboard contributors to your
             projects?

@@ -11,10 +11,10 @@ export default function TermAndConditionsPage() {
       <MenuBar />
 
       <div className="card z-10 mx-auto mt-24 max-w-5xl p-5 font-mono shadow-xl">
-        <h1 className="pt-5 text-4xl">Andamio Terms + Conditions</h1>
+        <h1>Andamio Terms + Conditions</h1>
         <p className="pb-5 text-xl text-secondary-foreground">Version 1.0.0</p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           1. Introduction
         </h2>
         <p className="py-2">
@@ -26,7 +26,7 @@ export default function TermAndConditionsPage() {
           use the services.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           2. Company Information
         </h2>
         <ul className="ml-5 list-disc">
@@ -42,17 +42,17 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           3. User Information
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Types of Users</h3>
+        <h3>Types of Users</h3>
         <p className="py-2">
           Andamio serves both organizations/companies and individual
           learners/contributors.
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Age Restrictions</h3>
+        <h3>Age Restrictions</h3>
         <p className="py-2">
           Users must be 18 years or older and legally able to engage in
           commercial transactions and agree to terms and conditions in Wyoming.
@@ -61,11 +61,11 @@ export default function TermAndConditionsPage() {
           all of the Terms and Conditions.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           4. Platform Services
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Services Offered</h3>
+        <h3>Services Offered</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Course creation and content uploading for organizations
@@ -73,7 +73,7 @@ export default function TermAndConditionsPage() {
           <li className="py-1">Mastery-based certification for learners.</li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           Paid Services and Subscriptions
         </h3>
         <ul className="ml-5 list-disc">
@@ -86,11 +86,11 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           5. User Conduct
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Rules and Guidelines</h3>
+        <h3>Rules and Guidelines</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">Only legal content is allowed.</li>
           <li className="py-1">
@@ -106,7 +106,7 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Prohibited Conduct</h3>
+        <h3>Prohibited Conduct</h3>
         <p className="py-2">Users agree not to:</p>
         <ul className="ml-5 list-disc">
           <li className="py-1">
@@ -128,7 +128,7 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Actions for Violations</h3>
+        <h3>Actions for Violations</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             For dangerous content (violent, obscene), Andamio may disable
@@ -140,17 +140,17 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           6. Content Management
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Ownership</h3>
+        <h3>Ownership</h3>
         <p className="py-2">
           Content uploaded by organizations and learners is owned by the content
           creator or client organization.
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           Intellectual Property Rights
         </h3>
         <p className="py-2">
@@ -158,7 +158,7 @@ export default function TermAndConditionsPage() {
           claims no copyright on non-Andamio-created content.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           7. Data Privacy
         </h2>
 
@@ -169,7 +169,7 @@ export default function TermAndConditionsPage() {
           </span>
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Breach Notification</h3>
+        <h3>Breach Notification</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             In case of a data breach, we will notify users and the relevant
@@ -182,17 +182,17 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           8. Liability and Disclaimers
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Content Accuracy</h3>
+        <h3>Content Accuracy</h3>
         <p className="py-2">
           Andamio is not responsible for content accuracy. Content creators must
           vouch for their rights to the data they post.
         </p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Limitation of Liability</h3>
+        <h3>Limitation of Liability</h3>
         <p className="py-2">
           To the fullest extent permitted by law, Andamio disclaims all
           warranties, express or implied, including, but not limited to, implied
@@ -220,11 +220,11 @@ export default function TermAndConditionsPage() {
           last 12 months.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           9. Termination of Service
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Termination by Andamio</h3>
+        <h3>Termination by Andamio</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Access can be terminated at any time without cause.
@@ -235,7 +235,7 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">
+        <h3>
           User-Requested Termination
         </h3>
         <ul className="ml-5 list-disc">
@@ -249,21 +249,21 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           10. Dispute Resolution
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Method</h3>
+        <h3>Method</h3>
         <p className="py-2">Preferred method: Mediation.</p>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Jurisdiction</h3>
+        <h3>Jurisdiction</h3>
         <p className="py-2">Disputes resolved under Wyoming, USA law.</p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           11. Updates to Terms and Conditions
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Notification</h3>
+        <h3>Notification</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Users will be notified via email and prompted to re-agree to updated
@@ -274,11 +274,11 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           12. Content Removal Process
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Reporting Violations</h3>
+        <h3>Reporting Violations</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Users can report violations via Discord channels or support email.
@@ -290,21 +290,21 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           13. Content Review
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Review Policy</h3>
+        <h3>Review Policy</h3>
         <p className="py-2">
           Andamio does not actively monitor content but reserves the right to
           remove inappropriate or illegal content.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           14. Contributor Roles
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Role Differentiation</h3>
+        <h3>Role Differentiation</h3>
         <p className="py-2">
           Different permissions for contributors, course creators, and
           contribution managers.
@@ -323,21 +323,21 @@ export default function TermAndConditionsPage() {
           </ul>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           15. Data Retention
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Retention Period</h3>
+        <h3>Retention Period</h3>
         <p className="py-2">
           User data is retained for 5 years. Inactive account data is deleted
           after 5 years unless requested for earlier deletion.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           16. Data Deletion
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Deletion Process</h3>
+        <h3>Deletion Process</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">On-chain data cannot be deleted.</li>
           <li className="py-1">
@@ -346,11 +346,11 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           17. Third-party Services
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Integration</h3>
+        <h3>Integration</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Andamio may use third-party services (e.g., payment processors and
@@ -362,20 +362,20 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           18. User Support
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Support Channels</h3>
+        <h3>Support Channels</h3>
         <p className="py-2">
           Support is available via Discord server and support email.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           19. Payment and Refund Policies
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Future Policies</h3>
+        <h3>Future Policies</h3>
         <ul className="ml-5 list-disc">
           <li className="py-1">
             Subscription cancellations are effective at the billing cycle end.
@@ -386,22 +386,22 @@ export default function TermAndConditionsPage() {
           </li>
         </ul>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           20. Marketing and Communications
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Communication Opt-out</h3>
+        <h3>Communication Opt-out</h3>
         <p className="py-2">
           Users may opt out of marketing communications. However, they cannot
           opt out of the system and transactional messages while maintaining an
           account.
         </p>
 
-        <h2 className="pb-4 pt-8 text-2xl font-bold underline">
+        <h2>
           21. Governing Law
         </h2>
 
-        <h3 className="pb-1 pt-5 text-xl font-bold">Agreement Governing Law</h3>
+        <h3>Agreement Governing Law</h3>
         <p className="py-2">
           The agreement is governed by the laws of Wyoming, USA.
         </p>

@@ -4,6 +4,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
+import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
 
 export default function StepOneMintCourseNft({
   alias,
@@ -40,8 +41,9 @@ export default function StepOneMintCourseNft({
     }
   }
 
+
   return (
-    <div className="mx-4 flex flex-col items-center justify-center gap-2 rounded-md border px-4 py-3 text-sm">
+    <TransactionPlaceholderComponent name="StepOneMintCourseNft">
       {builtTxResponse ? (
         <>
           <Button onClick={onSubmit}>
@@ -56,6 +58,6 @@ export default function StepOneMintCourseNft({
           <TransactionLoading wallet={wallet} />
         </div>
       )}
-    </div>
+    </TransactionPlaceholderComponent>
   );
 }

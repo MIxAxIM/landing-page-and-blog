@@ -90,7 +90,7 @@ export default function PageCourse({
     <CourseLayout>
       <Metatags title={_currentCourseVariant.title} />
       <div className="mx-auto flex w-3/4 max-w-5xl flex-col">
-        <h1 className="text-[3rem] font-bold leading-[5rem]">
+        <h1>
           {_currentCourseVariant.title}
         </h1>
         <div className="prose py-10 text-xl leading-8 dark:prose-invert">
@@ -123,7 +123,7 @@ export default function PageCourse({
             )}
           </div>
           <div>
-            <h1 className="mt-10 text-[2.0rem] font-bold">Course Outline</h1>
+            <h1>Course Outline</h1>
             <p className="mb-5 mt-3 font-bold">
               Click a Module to view Student Learning Targets
             </p>
@@ -265,7 +265,7 @@ function ModuleContainer({
               )}
             </div>
             <div className="col-span-3">
-              <h2 className="pb-3 text-xl font-bold">
+              <h2>
                 Student Learning Targets
               </h2>
               {_module.slts.map((slt, i) => (

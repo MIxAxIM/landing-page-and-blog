@@ -8,7 +8,7 @@ import { useTerminology } from "~/contexts/terminology-context";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
-  const { translate, translateCaps } = useTerminology();
+  const { translateCaps } = useTerminology();
 
   // Simple component -> Table
   return (

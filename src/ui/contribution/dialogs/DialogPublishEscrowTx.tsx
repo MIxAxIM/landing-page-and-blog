@@ -107,7 +107,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
       <div className="max-h-[60vh] space-y-6 overflow-y-auto py-4">
         {/* Tasks Section */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Tasks to Publish</h3>
+          <h3>Tasks to Publish</h3>
           <div className="space-y-2">
             {filteredTasks.map((task) => (
               <div key={task.id} className="flex items-center space-x-2">
@@ -142,7 +142,7 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
 
         {/* Prerequisites Section */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Prerequisites to Publish</h3>
+          <h3>Prerequisites to Publish</h3>
           <div className="space-y-2">
             {escrow?.contributorPrerequisites?.map((prereq) => (
               <div

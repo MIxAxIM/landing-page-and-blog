@@ -38,6 +38,10 @@ import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwne
 import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
 
 import { projectGeneralRouter } from "./routers/contracts/project/general";
+import { organizationRouter } from "./routers/database/organization/organization";
+import { organizationMemberRouter } from "./routers/database/organization/member";
+import { organizationTreasuryRouter } from "./routers/database/organization/organization-treasury";
+import { organizationCourseRouter } from "./routers/database/organization/organization-course";
 /**
  * This is the primary router for your server.
  *
@@ -46,6 +50,11 @@ import { projectGeneralRouter } from "./routers/contracts/project/general";
 export const appRouter = createTRPCRouter({
   user: userRouter,
   userWallet: userWalletRouter,
+
+  organization: organizationRouter,
+  organizationMember: organizationMemberRouter,
+  organizationTreasury: organizationTreasuryRouter,
+  organizationCourse: organizationCourseRouter,
 
   billing: billingRouter,
   admin: adminRouter,

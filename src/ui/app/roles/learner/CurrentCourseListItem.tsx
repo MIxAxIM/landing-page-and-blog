@@ -130,7 +130,7 @@ export default function CurrentCourseListItem({
     <Link href={`/dashboard/learner/${courseInfo?.courseCode}`}>
       <div key={key} className="my-3 flex flex-col">
         <div className="flex w-full flex-col items-center bg-primary px-3 py-2 text-primary-foreground md:flex-row md:justify-between">
-          <h2 className="text-xl font-semibold">{courseInfo?.title}</h2>
+          <div className="text-xl font-semibold">{courseInfo?.title}</div>
           <div className="flex flex-row items-center gap-1">
             <QuestionMarkCircledIcon />
             <p>Assignments Complete: {completionPercentage} </p>

@@ -6,7 +6,7 @@ export default function StudioHeader() {
   return (
     <div className="flex min-h-[150px] items-center">
       <div className="flex-grow">
-        <h1 className="text-2xl font-bold md:text-6xl">Your Courses</h1>
+        <h1>Your Courses</h1>
       </div>
       {canCreateCourse.data?.hasAccess && (
         <div>

@@ -42,11 +42,11 @@ export default function TeacherDashboardMenu() {
       </div>
       <div className="col-start-6 text-center">
         <Link href="/dashboard/teacher/assignments">
-          <h2
+          <div
             className={`cursor-pointer p-2 font-semibold ${isAssignmentRoute ? "bg-accent" : "bg-primary text-primary-foreground"}`}
           >
             Review Assignments
-          </h2>
+          </div>
         </Link>
       </div>
     </div>

@@ -39,10 +39,15 @@ export default function TeacherSection({
 
   if (isLoadingCreatorCoursePolicies) return <LoadingCircle />;
 
-  if (!isTeacher) return null;
+  //if (!isTeacher) return null;
 
   return (
-    <div className="mx-auto flex w-11/12 flex-col">
+    <div className="mx-auto flex w-full flex-col">
+      <h1>Here is an example of course details</h1>
+      <h2>This should be on the route /app/teach/{course?.courseCode}</h2>
+      <h3>{course?.description}</h3>
+      <p>On chain instance: {!!course?.onchainInstance ? "yes" : "no"}</p>
+      <pre>{JSON.stringify(course, null, 2)}</pre>
       <NetworkModuleManagement
         courseNftPolicyId={selectedCoursePolicyId ?? ""}
         key={selectedCoursePolicyId ?? 0}

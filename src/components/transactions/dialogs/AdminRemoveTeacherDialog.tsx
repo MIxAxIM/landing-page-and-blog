@@ -67,9 +67,9 @@ export default function AdminRemoveTeacherDialog() {
           />
         ) : (
           <>
-            <h2 className="text-2xl font-semibold">Remove a Teacher</h2>
+            <h2>Remove a Teacher</h2>
             {/* About this Module */}
-            <h2 className="mt-5 text-xl font-semibold">About</h2>
+            <h2>About</h2>
             <p className="mb-5">Feature: Tell what is happening at this step</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
