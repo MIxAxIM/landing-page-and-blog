@@ -1,7 +1,7 @@
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { type Asset, type BrowserWallet } from "@meshsdk/core";
 import { ACCESS_TOKEN_POLICY_ID } from "~/andamio.config";
-import { INDEXER_URL } from "~/config/indexer";
+import { env } from "~/env";
 
 export default async function checkIfEnrolled(
   courseNftPolicy: string,
@@ -17,7 +17,7 @@ export default async function checkIfEnrolled(
   const alias = Buffer.from(accessToken.unit.substring(62), "hex").toString();
 
   const response = await fetch(
-    `${INDEXER_URL}/api/global-state/decodedGlobalStateDatumByAlias?alias=${alias}`,
+    `${env.API_URL}/global-state/decoded-datum?alias=${alias}`,
     { cache: "no-store" },
   );
   const datum: DecodedGlobalStateDatum = await response.json();

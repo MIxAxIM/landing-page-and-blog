@@ -36,6 +36,8 @@ import { contributorPrerequisiteRouter } from "./routers/database/contributor/co
 import { contributorRouter } from "./routers/database/contributor/contributor";
 import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwner";
 import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
+
+import { projectGeneralRouter } from "./routers/contracts/project/general";
 import { organizationRouter } from "./routers/database/organization/organization";
 import { organizationMemberRouter } from "./routers/database/organization/member";
 import { organizationTreasuryRouter } from "./routers/database/organization/organization-treasury";
@@ -86,6 +88,9 @@ export const appRouter = createTRPCRouter({
   escrow: escrowRouter,
   task: taskRouter,
   contributorPrerequisite: contributorPrerequisiteRouter,
+
+  // contribution onchain
+  projectGeneral: projectGeneralRouter,
 
   // admin
   andamioAdminTransactions: andamioAdminTxRouter,
