@@ -153,9 +153,10 @@ export default function DialogAssignment({
       ) : (
         <Form {...form}>
           <DialogForm
-            openButton={assignment ? "Edit Assignment" : "Add Assignment"}
+            openButton={assignment ? "Edit Assignment" : "Create Assignment"}
             openButtonIntent="dialog"
             title="Create a new Assignment"
+            icon="plus"
             description={`Adding Assignment to Module ${courseModule.moduleCode}`}
             buttonLabel={assignment ? "Update Assignment" : "Create Assignment"}
             buttonLoading={isLoadingAssignmentCreate}

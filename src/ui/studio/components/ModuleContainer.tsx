@@ -198,7 +198,7 @@ export default function ModuleContainer({
 
   return (
     <div
-      className="mx-5 my-3 w-full rounded-md border border-secondary-foreground sm:mx-auto sm:w-[630px] md:w-[750px] lg:w-[800px] xl:w-[950px] 2xl:w-[1100px]"
+      className="my-3 w-full sm:mx-auto sm:w-[630px] md:w-[750px] lg:w-[800px] xl:w-[950px] 2xl:w-[1100px] bg-primary rounded-md"
       key={`${course?.courseCode}-${currentModule.moduleCode}`}
     >
       <AccordionItem
@@ -207,7 +207,7 @@ export default function ModuleContainer({
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
         <AccordionTrigger
-          className={`flex w-full flex-row justify-between ${isAccordionOpen ? "rounded-t-md" : "rounded-md"} min-h-[75px] items-center bg-primary px-3 py-3 text-primary-foreground`}
+          className={`flex w-full flex-row justify-between mb-0 ${isAccordionOpen ? "rounded-t-md" : "rounded-md"} h-full min-h-[75px] items-center bg-primary px-3 text-primary-foreground`}
         >
           <div className="grid w-full grid-cols-12 py-1">
             <div className="col-span-1 flex h-full items-center">
@@ -238,53 +238,49 @@ export default function ModuleContainer({
             </div>
           </div>
         </AccordionTrigger>
-        <AccordionContent>
-          <>
-            <div className="flex flex-col pt-3">
-              <IntroductionContainer
-                courseCode={course?.courseCode ?? ""}
-                moduleCode={currentModule.moduleCode}
-              />
+        <AccordionContent className="mt-0 border-b border-x border-primary rounded-b-md flex flex-col bg-gradient-to-br from-background to-sky-100">
+          <IntroductionContainer
+            courseCode={course?.courseCode ?? ""}
+            moduleCode={currentModule.moduleCode}
+          />
 
-              <DndContext
-                collisionDetection={closestCenter}
-                onDragStart={({ active }) => {
-                  setActiveSLT(active);
-                }}
-                onDragEnd={onDragEnd}
-                modifiers={[restrictToVerticalAxis]}
-              >
-                <SortableContext
-                  items={sltIndexes}
-                  strategy={verticalListSortingStrategy}
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragStart={({ active }) => {
+              setActiveSLT(active);
+            }}
+            onDragEnd={onDragEnd}
+            modifiers={[restrictToVerticalAxis]}
+          >
+            <SortableContext
+              items={sltIndexes}
+              strategy={verticalListSortingStrategy}
+            >
+              {sltIndexes.map((sI) => (
+                <SortableSLT
+                  slt={sI.slt}
+                  module={currentModule}
+                  courseCode={course?.courseCode ?? ""}
+                  key={sI.slt.id}
+                  published={isAssignmentOnchain ?? false}
+                />
+              ))}
+            </SortableContext>
+            {/* todo implelment the rest of dnd-kit - look at codesandbox example - can imagine extracting this component and adding overlay */}
+          </DndContext>
+          {isLoadingAssignment ? (
+            <LoadingCircle />
+          ) : (
+            <>
+              {assignment && (
+                <Link
+                  href={`/studio/${course?.courseCode}/${currentModule.moduleCode}/assignment/${assignment.assignmentCode}`}
                 >
-                  {sltIndexes.map((sI) => (
-                    <SortableSLT
-                      slt={sI.slt}
-                      module={currentModule}
-                      courseCode={course?.courseCode ?? ""}
-                      key={sI.slt.id}
-                      published={isAssignmentOnchain ?? false}
-                    />
-                  ))}
-                </SortableContext>
-                {/* todo implelment the rest of dnd-kit - look at codesandbox example - can imagine extracting this component and adding overlay */}
-              </DndContext>
-              {isLoadingAssignment ? (
-                <LoadingCircle />
-              ) : (
-                <>
-                  {assignment && (
-                    <Link
-                      href={`/studio/${course?.courseCode}/${currentModule.moduleCode}/assignment/${assignment.assignmentCode}`}
-                    >
-                      <AssignmentContainer assignment={assignment} />
-                    </Link>
-                  )}
-                </>
+                  <AssignmentContainer assignment={assignment} />
+                </Link>
               )}
-            </div>
-          </>
+            </>
+          )}
           {isAssignmentOnchain ? (
             <div className="mx-auto my-5 flex w-11/12 flex-row items-center">
               <p>
@@ -301,57 +297,61 @@ export default function ModuleContainer({
               </p>
             </div>
           ) : (
-            <Card className="mx-auto flex flex-row justify-between sm:w-5/6 lg:w-2/3">
-              <DialogSLT
-                sltDialogOpen={sltDialogOpen}
-                setSltDialogOpen={setSltDialogOpen}
-                courseCode={course?.courseCode ?? ""}
-                currentModule={currentModule}
-              />
-              <DialogAssignment
-                assignmentDialogOpen={assignmentDialogOpen}
-                setAssignmentDialogOpen={setAssignmentDialogOpen}
-                courseCode={course?.courseCode ?? ""}
-                courseModule={currentModule}
-                assignment={assignment}
-              />
-            </Card>
-          )}
-          {isContentPublished ? (
-            <div className="mx-auto my-5 flex flex-row items-center justify-center">
-              <p>
-                All Content is Live at{" "}
-                <Link
-                  href={`/course/${course?.courseCode}/${currentModule.moduleCode}`}
-                  className="cursor-pointer font-semibold text-primary"
-                >
-                  andamio.io/course/{course?.courseCode}/
-                  {currentModule.moduleCode}
-                </Link>
-              </p>
-            </div>
-          ) : (
-            <div className="mx-auto my-5 flex flex-col items-center justify-center">
-              {isLoadingPublish ? (
-                <p>publishing all module content...</p>
+            <div className="grid grid-cols-3 mx-auto w-full items-center bg-accent py-3 mt-8 rounded-b-md">
+              <div className="flex w-full justify-center">
+                <DialogSLT
+                  sltDialogOpen={sltDialogOpen}
+                  setSltDialogOpen={setSltDialogOpen}
+                  courseCode={course?.courseCode ?? ""}
+                  currentModule={currentModule}
+                />
+              </div>
+              <div className="flex w-full justify-center">
+                <DialogAssignment
+                  assignmentDialogOpen={assignmentDialogOpen}
+                  setAssignmentDialogOpen={setAssignmentDialogOpen}
+                  courseCode={course?.courseCode ?? ""}
+                  courseModule={currentModule}
+                  assignment={assignment}
+                />
+              </div>
+              {isContentPublished ? (
+                <div className="flex w-full justify-center">
+                  <p>
+                    All Content is Live at{" "}
+                    <Link
+                      href={`/course/${course?.courseCode}/${currentModule.moduleCode}`}
+                      className="cursor-pointer font-semibold text-primary"
+                    >
+                      andamio.io/course/{course?.courseCode}/
+                      {currentModule.moduleCode}
+                    </Link>
+                  </p>
+                </div>
               ) : (
-                <>
-                  <Button
-                    intent="dialog"
-                    size="dialog"
-                    onClick={() =>
-                      publishModuleContent({ moduleId: currentModule.id })
-                    }
-                  >
-                    Publish Module Content
-                  </Button>
-                  {currentModule.releaseDate && (
-                    <p className="mt-3">
-                      This Module is scheduled for release on{" "}
-                      {format(currentModule.releaseDate, "PPPP")}
-                    </p>
+                <div className="flex w-full justify-center">
+                  {isLoadingPublish ? (
+                    <p>publishing all module content...</p>
+                  ) : (
+                    <>
+                      <Button
+                        intent="dialog"
+                        size="dialog"
+                        onClick={() =>
+                          publishModuleContent({ moduleId: currentModule.id })
+                        }
+                      >
+                        Publish Module Content
+                      </Button>
+                      {currentModule.releaseDate && (
+                        <p className="mt-3">
+                          This Module is scheduled for release on{" "}
+                          {format(currentModule.releaseDate, "PPPP")}
+                        </p>
+                      )}
+                    </>
                   )}
-                </>
+                </div>
               )}
             </div>
           )}

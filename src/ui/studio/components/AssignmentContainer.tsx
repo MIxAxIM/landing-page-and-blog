@@ -9,11 +9,15 @@ export default function AssignmentContainer({
   if (!assignment) return;
 
   return (
-    <Card intent="module" size="wide">
-      <div>
-        Assignment {assignment.assignmentCode}: {assignment.title}
+    <div className="flex justify-between items-center w-11/12 mx-auto px-8 py-2 border-2 border-secondary rounded-md hover:bg-orange-100">
+      <div className="font-bold">
+        Assignment {assignment.assignmentCode}
+      </div>
+      <div className="text-xl">
+        {assignment.title}
       </div>
       <div>{assignment.slts.length} SLTs Measured</div>
-    </Card>
+    </div>
   );
 }
+
