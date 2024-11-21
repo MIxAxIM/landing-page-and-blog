@@ -142,15 +142,15 @@ model OrganizationCourse {
 }
 
 model OrganizationTreasury {
-  organizationId      String
-  organization        Organization @relation(fields: [organizationId], references: [id])
-  treasuryNftPolicyId String
-  treasury            Treasury     @relation(fields: [treasuryNftPolicyId], references: [treasuryNftPolicyId])
-  createdAt           DateTime     @default(now())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  treasuryId     String
+  treasury       Treasury     @relation(fields: [treasuryId], references: [id])
+  createdAt      DateTime     @default(now())
 
-  @@id([organizationId, treasuryNftPolicyId])
+  @@id([organizationId, treasuryId])
   @@index([organizationId])
-  @@index([treasuryNftPolicyId])
+  @@index([treasuryId])
 }
 
 model OrganizationMember {
@@ -597,7 +597,8 @@ model ClientsDomain {
 // ---------------- NEW CONTRIBUTION FEATURES - PREPROD ONLY ---------------------------------
 
 model Treasury {
-  treasuryNftPolicyId String @id @unique
+  id                  String  @id @default(cuid())
+  treasuryNftPolicyId String? @unique
   title               String
 
   live Boolean @default(false)
@@ -612,6 +613,7 @@ model Treasury {
 
   organizations OrganizationTreasury[]
 
+  @@index([id])
   @@index([treasuryNftPolicyId])
   @@index([treasuryOwnerId])
   @@index([contributorId])
@@ -626,7 +628,7 @@ model Escrow {
   savedAcceptanceCriteria String[]
 
   treasuryId String
-  treasury   Treasury @relation("TreasuryEscrows", fields: [treasuryId], references: [treasuryNftPolicyId])
+  treasury   Treasury @relation("TreasuryEscrows", fields: [treasuryId], references: [id])
 
   tasks Task[] @relation("EscrowTasks")
 
