@@ -43,6 +43,8 @@ export type Task = {
   isEditable?: boolean;
 };
 
+// TODO: Need course policyId to sent to Project APIs
+
 export type CourseRequirement = {
   id: string;
   prerequisiteId: string;
@@ -52,6 +54,9 @@ export type CourseRequirement = {
     id: string;
     courseCode: string;
     title: string;
+    onchainInstance: {
+      CourseCreatorNFTPolicyID: string;
+    }[]
   };
 };
 

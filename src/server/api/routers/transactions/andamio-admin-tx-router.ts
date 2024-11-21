@@ -4,7 +4,7 @@ import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type InitStepOneParams = {
-  aliases: string;
+  aliases: string[];
 };
 
 type InitStepTwoAndThreeParams = {
@@ -32,7 +32,7 @@ export const andamioAdminTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const stepOneParams: InitStepOneParams = {
-        aliases: JSON.stringify(input.aliases),
+        aliases: input.aliases,
       };
       const builtTxResponse = await indexerGetWithParams<
         { courseNftPolicyId: string; unsignedTxCBOR: string },
@@ -132,8 +132,9 @@ export const andamioAdminTxRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const stepOneParams: InitStepOneParams = {
-        aliases: JSON.stringify(input.aliases),
+        aliases: input.aliases,
       };
+      console.log("check88888", stepOneParams)
       const builtTxResponse = await indexerGetWithParams<
         { projectNftPolicyId: string; unsignedTxCBOR: string },
         InitStepOneParams

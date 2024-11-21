@@ -16,7 +16,7 @@ export default function ProjectStepOne({
   const { toast } = useToast();
 
   const { wallet } = useWallet();
-
+  // TODO: Implement multi alias - just needs to be sent from Parent + changed here
   const { data: builtTxResponse } =
     api.andamioAdminTransactions.initProjectStepOne.useQuery({
       aliases: [alias],

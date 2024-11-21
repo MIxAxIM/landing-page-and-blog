@@ -109,7 +109,7 @@ export const escrowRouter = createTRPCRouter({
 
   getEscrowPrerequisites: publicProcedure
     .input(z.string())
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       return ctx.db.escrow
         .findUnique({
           where: { id: input },
@@ -124,6 +124,7 @@ export const escrowRouter = createTRPCRouter({
                         courseCode: true,
                         title: true,
                       },
+                      include: { onchainInstance: { select: { CourseCreatorNFTPolicyID: true } } },
                     },
                   },
                 },

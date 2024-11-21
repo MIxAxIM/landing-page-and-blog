@@ -12,7 +12,19 @@ import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepFour from "../admin/ProjectStepFour";
 
-// TODO: Get notes on how prerequisites work
+// TODO: Write notes on how prerequisites work
+// NOTE: About Prerequisites
+// How do prereqs work?
+// What do they mean for users?
+// How to build an onboarding pathway?
+
+
+
+// TODO: In this form, select from a menu of prerequisites
+// 1. Load prepreqs from built components
+// 2. Parse data into correct format - Following MintCourseModule as an example (mark mC)
+// 3. Test the transaction
+// 4. Allow multiple prereqs?
 export default function AdminCreateProjectInstanceStepFour() {
   const address = useAddress();
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<

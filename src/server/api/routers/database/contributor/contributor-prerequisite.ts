@@ -52,6 +52,13 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                 courseCode: true,
                 title: true,
               },
+              include: {
+                onchainInstance: {
+                  select: {
+                    CourseCreatorNFTPolicyID: true,
+                  }
+                },
+              },
             },
           },
         },
@@ -82,6 +89,13 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                   id: true,
                   courseCode: true,
                   title: true,
+                },
+                include: {
+                  onchainInstance: {
+                    select: {
+                      CourseCreatorNFTPolicyID: true,
+                    }
+                  },
                 },
               },
             },
@@ -119,6 +133,13 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                   id: true,
                   courseCode: true,
                   title: true,
+                },
+                include: {
+                  onchainInstance: {
+                    select: {
+                      CourseCreatorNFTPolicyID: true,
+                    }
+                  },
                 },
               },
             },
