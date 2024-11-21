@@ -18,7 +18,7 @@ export default function DialogPublishTreasuryTx({
   const [isOpen, setIsOpen] = useState(false);
 
   // Get all escrows for this treasury
-  const { treasuryEscrows } = useEscrow({ treasuryNftPolicyId: treasuryId });
+  const { treasuryEscrows } = useEscrow({ treasuryId: treasuryId });
 
   // Get all approved tasks for this treasury
   const { filteredTasks, updateTaskStatus, isUpdating } = useTask({

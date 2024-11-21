@@ -6,15 +6,15 @@ import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPublishEscrow from "~/ui/contribution/dialogs/DialogPublishEscrowTx";
 
 export default function EscrowListComponent({
-  treasuryNftPolicyId,
+  treasuryId,
 }: {
-  treasuryNftPolicyId: string;
+  treasuryId: string;
 }) {
   // Simple component -> Table
   //
 
   const { treasuryEscrows, numUnusedTreasuryEscrows } = useEscrow({
-    treasuryNftPolicyId,
+    treasuryId,
   });
 
   return (
@@ -57,7 +57,7 @@ export default function EscrowListComponent({
                 <TableCell>
                   <div className="flex flex-row gap-1">
                     <Link
-                      href={`/app/organize/${treasuryNftPolicyId}/${escrow.escrowNftPolicyId}`}
+                      href={`/app/organize/${treasuryId}/${escrow.escrowNftPolicyId}`}
                     >
                       <Button size="dialog">View</Button>
                     </Link>

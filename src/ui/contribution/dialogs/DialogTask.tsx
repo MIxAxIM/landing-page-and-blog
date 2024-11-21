@@ -234,8 +234,8 @@ export default function DialogTask({
         (t) => t.treasuryNftPolicyId === defaultTreasuryId,
       );
       if (treasury) {
-        form.setValue("treasuryId", treasury.treasuryNftPolicyId);
-        setSelectedTreasuryId(treasury.treasuryNftPolicyId);
+        form.setValue("treasuryId", treasury.id);
+        setSelectedTreasuryId(treasury.id);
       }
     }
   }, [defaultTreasuryId, treasuries, form]);

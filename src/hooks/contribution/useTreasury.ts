@@ -7,12 +7,12 @@ interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
   isLoading: boolean;
   createTreasury: (data: {
-    treasuryNftPolicyId: string;
+    treasuryNftPolicyId?: string;
     title: string;
     treasuryOwnerId: string;
   }) => void;
   updateTreasury: (data: {
-    treasuryNftPolicyId: string;
+    id: string;
     title?: string;
   }) => void;
   deleteTreasury: (id: string) => void;

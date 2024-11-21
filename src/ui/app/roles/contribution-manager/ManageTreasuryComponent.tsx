@@ -26,11 +26,11 @@ export default function ManageTreasuryComponent({
 
           <div className="flex flex-row space-x-2">
             <DialogTask
-              treasuryId={treasuryInfo?.treasuryNftPolicyId}
+              treasuryId={treasuryInfo?.id}
               key={treasuryInfo?.treasuryNftPolicyId}
             />
             <DialogTreasury
-              treasuryNftPolicyId={treasuryInfo?.treasuryNftPolicyId}
+              treasuryId={treasuryInfo?.id}
             />
             <Button>Add Funds</Button>
             {!!treasuryInfo?.treasuryNftPolicyId && (
@@ -61,8 +61,8 @@ export default function ManageTreasuryComponent({
               {!!treasuryInfo?.treasuryNftPolicyId && (
                 <>
                   <EscrowListComponent
-                    treasuryNftPolicyId={
-                      treasuryInfo?.treasuryNftPolicyId ?? ""
+                    treasuryId={
+                      treasuryInfo?.id ?? ""
                     }
                   />
                   <DialogEscrow
@@ -86,7 +86,7 @@ export default function ManageTreasuryComponent({
                 />
               )}
               <DialogTask
-                treasuryId={treasuryInfo?.treasuryNftPolicyId}
+                treasuryId={treasuryInfo?.id}
                 key={treasuryInfo?.treasuryNftPolicyId}
               />
             </>

@@ -11,7 +11,7 @@ import {
 // Input validation schemas
 const addTreasurySchema = z.object({
 	organizationId: z.string(),
-	treasuryNftPolicyId: z.string(),
+	treasuryId: z.string(),
 });
 
 
@@ -59,7 +59,7 @@ export const organizationTreasuryRouter = createTRPCRouter({
 
 			// Check if treasury exists
 			const treasury = await ctx.db.treasury.findUnique({
-				where: { treasuryNftPolicyId: input.treasuryNftPolicyId },
+				where: { id: input.treasuryId },
 			});
 
 			if (!treasury) {
@@ -72,9 +72,9 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			// Check if treasury is already in organization
 			const existingRelation = await ctx.db.organizationTreasury.findUnique({
 				where: {
-					organizationId_treasuryNftPolicyId: {
+					organizationId_treasuryId: {
 						organizationId: input.organizationId,
-						treasuryNftPolicyId: input.treasuryNftPolicyId,
+						treasuryId: input.treasuryId,
 					},
 				},
 			});
@@ -89,7 +89,7 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			return ctx.db.organizationTreasury.create({
 				data: {
 					organizationId: input.organizationId,
-					treasuryNftPolicyId: input.treasuryNftPolicyId,
+					treasuryId: input.treasuryId,
 				},
 				include: {
 					treasury: {
@@ -127,9 +127,9 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			// Check if the relationship exists
 			const existingRelation = await ctx.db.organizationTreasury.findUnique({
 				where: {
-					organizationId_treasuryNftPolicyId: {
+					organizationId_treasuryId: {
 						organizationId: input.organizationId,
-						treasuryNftPolicyId: input.treasuryNftPolicyId,
+						treasuryId: input.treasuryId,
 					},
 				},
 			});
@@ -143,9 +143,9 @@ export const organizationTreasuryRouter = createTRPCRouter({
 
 			return ctx.db.organizationTreasury.delete({
 				where: {
-					organizationId_treasuryNftPolicyId: {
+					organizationId_treasuryId: {
 						organizationId: input.organizationId,
-						treasuryNftPolicyId: input.treasuryNftPolicyId,
+						treasuryId: input.treasuryId,
 					},
 				},
 			});
@@ -156,7 +156,7 @@ export const organizationTreasuryRouter = createTRPCRouter({
 		.input(
 			z.object({
 				organizationId: z.string(),
-				treasuryNftPolicyIds: z.array(z.string()),
+				treasuryIds: z.array(z.string()),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -180,12 +180,12 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			const treasuries = await ctx.db.treasury.findMany({
 				where: {
 					treasuryNftPolicyId: {
-						in: input.treasuryNftPolicyIds,
+						in: input.treasuryIds,
 					},
 				},
 			});
 
-			if (treasuries.length !== input.treasuryNftPolicyIds.length) {
+			if (treasuries.length !== input.treasuryIds.length) {
 				throw new TRPCError({
 					code: "NOT_FOUND",
 					message: "One or more treasuries not found",
@@ -196,17 +196,17 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			const existingRelations = await ctx.db.organizationTreasury.findMany({
 				where: {
 					organizationId: input.organizationId,
-					treasuryNftPolicyId: {
-						in: input.treasuryNftPolicyIds,
+					treasuryId: {
+						in: input.treasuryIds,
 					},
 				},
 			});
 
 			// Filter out treasuries that are already in the organization
 			const existingTreasuryIds = new Set(
-				existingRelations.map((relation) => relation.treasuryNftPolicyId),
+				existingRelations.map((relation) => relation.treasuryId),
 			);
-			const newTreasuryIds = input.treasuryNftPolicyIds.filter(
+			const newTreasuryIds = input.treasuryIds.filter(
 				(id) => !existingTreasuryIds.has(id),
 			);
 
@@ -216,9 +216,9 @@ export const organizationTreasuryRouter = createTRPCRouter({
 
 			// Create new relations
 			return ctx.db.organizationTreasury.createMany({
-				data: newTreasuryIds.map((treasuryNftPolicyId) => ({
+				data: newTreasuryIds.map((treasuryId) => ({
 					organizationId: input.organizationId,
-					treasuryNftPolicyId,
+					treasuryId,
 				})),
 			});
 		}),
@@ -250,7 +250,7 @@ export const organizationTreasuryRouter = createTRPCRouter({
 			return ctx.db.organizationTreasury.deleteMany({
 				where: {
 					organizationId: input.organizationId,
-					treasuryNftPolicyId: {
+					treasuryId: {
 						in: input.treasuryNftPolicyIds,
 					},
 				},
@@ -260,9 +260,9 @@ export const organizationTreasuryRouter = createTRPCRouter({
 	// Additional queries
 	getOrganizationsForTreasury: publicProcedure
 		.input(z.string())
-		.query(({ ctx, input: treasuryNftPolicyId }) => {
+		.query(({ ctx, input: treasuryId }) => {
 			return ctx.db.organizationTreasury.findMany({
-				where: { treasuryNftPolicyId },
+				where: { treasuryId },
 				include: {
 					organization: {
 						include: {

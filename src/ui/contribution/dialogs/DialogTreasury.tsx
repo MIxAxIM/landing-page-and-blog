@@ -10,25 +10,23 @@ import { useSession } from "next-auth/react";
 import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { useTerminology } from "~/contexts/terminology-context";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  treasuryNftPolicyId: z.string().min(1, "Policy ID is required"),
   treasuryOwnerId: z.string().min(1, "Must have treasury owner"),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
 
 export default function DialogTreasury({
-  treasuryNftPolicyId,
+  treasuryId,
   openButtonSize,
 }: {
-  treasuryNftPolicyId?: string;
+  treasuryId?: string;
   openButtonSize?: "sm";
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const isEditMode = !!treasuryNftPolicyId;
+  const isEditMode = !!treasuryId;
   const { data: sessionData } = useSession()
   const { translate, translatePlural, translateCaps, translateCapsPlural } = useTerminology()
 
@@ -40,13 +38,12 @@ export default function DialogTreasury({
     isUpdating,
     isLoading: isTreasuryLoading,
     treasuryError,
-  } = useTreasury(treasuryNftPolicyId ?? undefined);
+  } = useTreasury(treasuryId ?? undefined);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
-      treasuryNftPolicyId: treasuryNftPolicyId ?? "",
       treasuryOwnerId: sessionData?.user.treasuryOwnerId,
     },
   });
@@ -56,7 +53,6 @@ export default function DialogTreasury({
     if (treasury && isEditMode) {
       form.reset({
         title: treasury.title,
-        treasuryNftPolicyId: treasury.treasuryNftPolicyId,
       });
     }
   }, [treasury, form, isEditMode]);
@@ -64,7 +60,7 @@ export default function DialogTreasury({
   const onSubmit = async (data: FormValues) => {
     if (isEditMode) {
       updateTreasury({
-        treasuryNftPolicyId: data.treasuryNftPolicyId,
+        id: treasuryId ?? "",
         title: data.title,
       });
     } else {
@@ -75,7 +71,6 @@ export default function DialogTreasury({
   };
 
   const isLoading = isCreating || isUpdating;
-  if (isTreasuryLoading) return <LoadingCircle />
 
   return (
     <>
@@ -105,13 +100,6 @@ export default function DialogTreasury({
                 label="Title"
                 form={form}
                 placeholder={`Enter ${translate('treasury')} title`}
-              />
-              <FormInput
-                name="treasuryNftPolicyId"
-                label="NFT Policy ID"
-                form={form}
-                placeholder="Enter NFT policy ID"
-                disabled={!!isEditMode}
               />
             </div>
           </DialogForm>

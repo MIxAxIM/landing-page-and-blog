@@ -23,13 +23,13 @@ type TreasuryWithTotals = TreasuryWithCount & {
 type TRPCContext = inferAsyncReturnType<typeof createTRPCContext>;
 
 const createTreasurySchema = z.object({
-  treasuryNftPolicyId: z.string().min(1),
+  treasuryNftPolicyId: z.string().optional(),
   title: z.string().min(1),
   treasuryOwnerId: z.string().min(1),
 });
 
 const updateTreasurySchema = z.object({
-  treasuryNftPolicyId: z.string().min(1),
+  id: z.string().min(1),
   title: z.string().min(1).optional(),
 });
 
@@ -48,7 +48,7 @@ const transformTreasuryWithTotals = async (
 ): Promise<TreasuryWithTotals> => {
   // Get all escrows with their tasks for this treasury
   const escrows = await ctx.db.escrow.findMany({
-    where: { treasuryId: treasury.treasuryNftPolicyId },
+    where: { treasuryId: treasury.id }, // Updated to use id instead of treasuryNftPolicyId
     include: { tasks: true, _count: { select: { tasks: true } } },
   });
 
@@ -90,7 +90,7 @@ export const treasuryRouter = createTRPCRouter({
     .input(z.string())
     .query(async ({ ctx, input }) => {
       const treasury = await ctx.db.treasury.findUnique({
-        where: { treasuryNftPolicyId: input },
+        where: { id: input },
         include: {
           _count: {
             select: { escrows: true },
@@ -104,7 +104,6 @@ export const treasuryRouter = createTRPCRouter({
     }),
 
   // Protected procedures
-
   createTreasury: protectedProcedure
     .input(createTreasurySchema)
     .mutation(async ({ ctx, input }) => {
@@ -143,9 +142,9 @@ export const treasuryRouter = createTRPCRouter({
   updateTreasury: protectedProcedure
     .input(updateTreasurySchema)
     .mutation(({ ctx, input }) => {
-      const { treasuryNftPolicyId, ...updateData } = input;
+      const { id, ...updateData } = input;
       return ctx.db.treasury.update({
-        where: { treasuryNftPolicyId },
+        where: { id },
         data: updateData,
       });
     }),
@@ -173,7 +172,7 @@ export const treasuryRouter = createTRPCRouter({
 
         // Finally delete the treasury
         return tx.treasury.delete({
-          where: { treasuryNftPolicyId: input },
+          where: { id: input },
         });
       });
     }),

@@ -14,7 +14,7 @@ export default function ContributionManagerPage({
   const { treasuries } = useTreasuries();
 
   const currentTreasury = treasuries?.find(
-    (t) => t.treasuryNftPolicyId === selectedTreasuryCode,
+    (t) => t.id === selectedTreasuryCode,
   );
 
   return (

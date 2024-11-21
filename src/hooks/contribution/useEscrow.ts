@@ -38,12 +38,12 @@ interface UseEscrowReturn {
 export function useEscrow({
   id,
   escrowNftPolicyId,
-  treasuryNftPolicyId,
+  treasuryId,
   disabled,
 }: {
   id?: string;
   escrowNftPolicyId?: string;
-  treasuryNftPolicyId?: string;
+  treasuryId?: string;
   disabled?: boolean;
 }): UseEscrowReturn {
   const ctx = api.useUtils();
@@ -70,8 +70,8 @@ export function useEscrow({
 
   // Treasury escrows query
   const treasuryEscrowsQuery = api.escrow.getTreasuryEscrows.useQuery(
-    treasuryNftPolicyId ?? "",
-    { enabled: !!treasuryNftPolicyId, select: (data) => data as Escrow[] },
+    treasuryId ?? "",
+    { enabled: !!treasuryId, select: (data) => data as Escrow[] },
   );
 
   // Helper function to invalidate and refetch queries
