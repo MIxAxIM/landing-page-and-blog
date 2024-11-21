@@ -11,6 +11,8 @@ import { Form } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepFour from "../admin/ProjectStepFour";
+import PrerequisiteFormSelect from "~/ui/contribution/selection/PrerequisiteFormSelect";
+import { ContributorPrerequisite } from "~/types/db";
 
 // TODO: Write notes on how prerequisites work
 // NOTE: About Prerequisites
@@ -22,7 +24,7 @@ import ProjectStepFour from "../admin/ProjectStepFour";
 
 // TODO: In this form, select from a menu of prerequisites
 // 1. Load prepreqs from built components
-// 2. Parse data into correct format - Following MintCourseModule as an example (mark mC)
+// 2. Parse data into correct format - Following MintCourseModule as an example
 // 3. Test the transaction
 // 4. Allow multiple prereqs?
 export default function AdminCreateProjectInstanceStepFour() {
@@ -30,8 +32,8 @@ export default function AdminCreateProjectInstanceStepFour() {
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<
     string | undefined
   >(undefined);
-  const [prerequisites, setPrerequisites] = useState<
-    string | undefined
+  const [prerequisite, setPrerequisite] = useState<
+    ContributorPrerequisite | undefined
   >(undefined);
 
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
@@ -42,7 +44,7 @@ export default function AdminCreateProjectInstanceStepFour() {
     projectNftPolicyId: z.string().min(56, {
       message: "A policy id must be 56 characters.",
     }),
-    prerequisites: z.string().min(2, {
+    prerequisiteId: z.string().min(2, {
       message: "Min 2 characters",
     }),
   });
@@ -57,21 +59,17 @@ export default function AdminCreateProjectInstanceStepFour() {
   const { register, watch } = form;
 
   const projectNft = watch("projectNftPolicyId");
-  const prereqs = watch("prerequisites");
 
   function onSubmit() {
     if (projectNft.length === 56) {
       setProjectNftPolicyId(projectNft);
     }
-    if (prereqs.length > 2) {
-      setPrerequisites(prereqs)
-    }
   }
 
   return (
-    <Dialog>
+    <Dialog modal={false}>
       <DialogTrigger>Step 4: Add prereqs - but where are they created?</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-7xl border border-primary">
         {successTxHash ? (
           <SuccessTxModalContent
             txName="Prerequisites added to course"
@@ -95,14 +93,25 @@ export default function AdminCreateProjectInstanceStepFour() {
                   placeholder="56 character policy id"
                   form={form}
                 />
-                <Button>Submit</Button>
+                <PrerequisiteFormSelect form={form} name="prerequisiteId" prerequisite={prerequisite} setPrerequisite={setPrerequisite} />
+                <Button className="mt-8">Submit</Button>
               </form>
             </Form>
-            {address && projectNftPolicyId && prerequisites && (
+            {!!prerequisite && (
+              <div className="border-t border-primary mt-3 pt-3">
+
+                <h4>Selected Prerequisite: {prerequisite.title}</h4>
+                <h3>{prerequisite?.courseRequirements[0]?.course?.title}</h3>
+                <p>Course NFT Policy ID: {prerequisite?.courseRequirements[0]?.course?.courseCreatorNFTPolicyID}</p>
+                <p>Required Modules: {prerequisite?.courseRequirements[0]?.requiredModules.join(", ")}</p>
+
+              </div>
+            )}
+            {address && projectNftPolicyId && prerequisite && (
               <>
                 <ProjectStepFour
                   projectNftPolicyId={projectNftPolicyId}
-                  prerequisites={prerequisites}
+                  prerequisites={prerequisite?.id ?? ""}
                   setSuccessTxHash={setSuccessTxHash}
                 />
               </>

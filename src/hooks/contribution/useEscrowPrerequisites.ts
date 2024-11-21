@@ -28,6 +28,19 @@ export function useEscrowPrerequisites({
   const { data: escrowPrerequisites = [], isLoading } =
     api.escrow.getEscrowPrerequisites.useQuery(escrowId ?? "", {
       enabled: !!escrowId,
+      select: (data) =>
+        data.map((item) => ({
+          ...item,
+          courseRequirements: item.courseRequirements.map((req) => ({
+            ...req,
+            course: req.course && {
+              id: req.course.id,
+              courseCode: req.course.courseCode,
+              title: req.course.title,
+              courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
+            },
+          })),
+        })) as ContributorPrerequisite[],
     });
 
   // Helper function to invalidate and refetch queries

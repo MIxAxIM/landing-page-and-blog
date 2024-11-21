@@ -59,63 +59,13 @@ export default function ShowCourseOnchain({
             <div className="grid grid-cols-1">
               <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
                 <div className="text-xs font-light text-foreground">
-                  LocalStateValidatorAddress
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.LocalStateValidatorAddress}
-                </span>
-              </div>
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
                   CourseCreatorNFTPolicyID
                 </div>
                 <span className="break-normal text-sm">
                   {selectedOnChainInstance.CourseCreatorNFTPolicyID}
                 </span>
               </div>
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  LocalStatePolicyID
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.LocalStatePolicyID}
-                </span>
-              </div>
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  CourseInstanceUTxO
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.CourseInstanceUTxO}
-                </span>
-              </div>
 
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  LocalStatePolicyRefUTxO
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.LocalStatePolicyRefUTxO}
-                </span>
-              </div>
-
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  AssignmentValidatorAddress
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.AssignmentValidatorAddress}
-                </span>
-              </div>
-
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  ModuleValidatorAddress
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.ModuleValidatorAddress}
-                </span>
-              </div>
 
               <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
                 <div className="text-xs font-light text-foreground">

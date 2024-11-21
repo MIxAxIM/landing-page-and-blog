@@ -53,6 +53,7 @@ export function useContributorPrerequisite(
               id: req.course.id,
               courseCode: req.course.courseCode,
               title: req.course.title,
+              courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
             },
           })),
         } as ContributorPrerequisite),
@@ -69,6 +70,7 @@ export function useContributorPrerequisite(
               id: req.course.id,
               courseCode: req.course.courseCode,
               title: req.course.title,
+              courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
             },
           })),
         })) as ContributorPrerequisite[],
@@ -88,6 +90,7 @@ export function useContributorPrerequisite(
                 id: req.course.id,
                 courseCode: req.course.courseCode,
                 title: req.course.title,
+                courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
               },
             })),
           })) as ContributorPrerequisite[],
@@ -103,8 +106,8 @@ export function useContributorPrerequisite(
         : Promise.resolve(),
       courseCode
         ? ctx.contributorPrerequisite.getPrerequisitesByCourse.invalidate(
-            courseCode,
-          )
+          courseCode,
+        )
         : Promise.resolve(),
       ctx.escrow.getEscrows.invalidate(),
     ]);

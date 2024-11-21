@@ -36,26 +36,14 @@ export const courseOnChainInstanceRouter = createTRPCRouter({
       z.object({
         courseCode: z.string().min(1),
         network: z.nativeEnum(Network),
-        LocalStateValidatorAddress: z.string().optional(),
         CourseCreatorNFTPolicyID: z.string().optional(),
-        LocalStatePolicyID: z.string().optional(),
-        CourseInstanceUTxO: z.string().optional(),
-        LocalStatePolicyRefUTxO: z.string().optional(),
-        AssignmentValidatorAddress: z.string().optional(),
-        ModuleValidatorAddress: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.courseOnChainInstance.create({
         data: {
           network: input.network,
-          LocalStateValidatorAddress: input.LocalStateValidatorAddress ?? "",
           CourseCreatorNFTPolicyID: input.CourseCreatorNFTPolicyID ?? "",
-          LocalStatePolicyID: input.LocalStatePolicyID ?? "",
-          CourseInstanceUTxO: input.CourseInstanceUTxO ?? "",
-          LocalStatePolicyRefUTxO: input.LocalStatePolicyRefUTxO ?? "",
-          AssignmentValidatorAddress: input.AssignmentValidatorAddress ?? "",
-          ModuleValidatorAddress: input.ModuleValidatorAddress ?? "",
           course: {
             connect: {
               courseCode: input.courseCode,
@@ -70,13 +58,7 @@ export const courseOnChainInstanceRouter = createTRPCRouter({
       z.object({
         id: z.string().min(1),
         network: z.nativeEnum(Network),
-        LocalStateValidatorAddress: z.string().optional(),
         CourseCreatorNFTPolicyID: z.string().optional(),
-        LocalStatePolicyID: z.string().optional(),
-        CourseInstanceUTxO: z.string().optional(),
-        LocalStatePolicyRefUTxO: z.string().optional(),
-        AssignmentValidatorAddress: z.string().optional(),
-        ModuleValidatorAddress: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -86,13 +68,7 @@ export const courseOnChainInstanceRouter = createTRPCRouter({
         },
         data: {
           network: input.network,
-          LocalStateValidatorAddress: input.LocalStateValidatorAddress ?? "",
           CourseCreatorNFTPolicyID: input.CourseCreatorNFTPolicyID ?? "",
-          LocalStatePolicyID: input.LocalStatePolicyID ?? "",
-          CourseInstanceUTxO: input.CourseInstanceUTxO ?? "",
-          LocalStatePolicyRefUTxO: input.LocalStatePolicyRefUTxO ?? "",
-          AssignmentValidatorAddress: input.AssignmentValidatorAddress ?? "",
-          ModuleValidatorAddress: input.ModuleValidatorAddress ?? "",
         },
       });
     }),

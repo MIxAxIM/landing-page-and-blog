@@ -77,7 +77,7 @@ export default function DialogPrerequisite({
     .map((req) => req.courseCode);
 
   // Use our updated hook to get module lists
-  const { courseModuleLists, isLoadingCourseModuleLists } =
+  const { courseModuleLists } =
     useCourseModuleList(selectedCourseCodes);
 
   // Update form when prerequisite data is loaded
@@ -142,7 +142,6 @@ export default function DialogPrerequisite({
 
   const isLoading = isCreating || isUpdating;
 
-  if (isLoadingCourseModuleLists) return <LoadingCircle />
 
   return (
     <Form {...form}>

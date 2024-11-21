@@ -92,46 +92,46 @@ export default function PrerequisiteManager({
         title="Current Prerequisites"
       />
 
-      {unassignedPrerequisites.length > 0 && (
-        <div className="w-full space-y-2">
-          <div className="font-medium text-muted-foreground">
-            Add Prerequisite
-          </div>
-          <ComboBox
-            value={value}
-            onValueChange={setValue}
-            filterItems={(inputValue, items) =>
-              items.filter(({ value }) => {
-                if (!inputValue) return true;
+      <h2>HELLO</h2>
 
-                const prereq = unassignedPrerequisites.find(p => p.id === value);
-                if (!prereq) return false;
-
-                // Use Fuse to search the prerequisite
-                const results = fuse.search(inputValue);
-                return results.some(result => result.item.id === prereq.id);
-              })
-            }
-          >
-            <ComboboxInput
-              placeholder="Search prerequisites..."
-              className="w-full"
-            />
-            <ComboboxContent>
-              {unassignedPrerequisites.map((prereq) => (
-                <ComboboxItem
-                  key={prereq.id}
-                  value={prereq.id}
-                  label={prereq.title ?? "Untitled Prerequisite"}
-                >
-                  <PrerequisiteItem prerequisite={prereq} />
-                </ComboboxItem>
-              ))}
-              <ComboboxEmpty>No matching prerequisites found.</ComboboxEmpty>
-            </ComboboxContent>
-          </ComboBox>
+      <div className="w-full space-y-2">
+        <div className="font-medium text-muted-foreground">
+          Add Prerequisite
         </div>
-      )}
+        <ComboBox
+          value={value}
+          onValueChange={setValue}
+          filterItems={(inputValue, items) =>
+            items.filter(({ value }) => {
+              if (!inputValue) return true;
+
+              const prereq = unassignedPrerequisites.find(p => p.id === value);
+              if (!prereq) return false;
+
+              // Use Fuse to search the prerequisite
+              const results = fuse.search(inputValue);
+              return results.some(result => result.item.id === prereq.id);
+            })
+          }
+        >
+          <ComboboxInput
+            placeholder="Search prerequisites..."
+            className="w-full"
+          />
+          <ComboboxContent>
+            {unassignedPrerequisites.map((prereq) => (
+              <ComboboxItem
+                key={prereq.id}
+                value={prereq.id}
+                label={prereq.title ?? "Untitled Prerequisite"}
+              >
+                <PrerequisiteItem prerequisite={prereq} />
+              </ComboboxItem>
+            ))}
+            <ComboboxEmpty>No matching prerequisites found.</ComboboxEmpty>
+          </ComboboxContent>
+        </ComboBox>
+      </div>
     </div>
   );
 }

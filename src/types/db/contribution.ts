@@ -54,9 +54,7 @@ export type CourseRequirement = {
     id: string;
     courseCode: string;
     title: string;
-    onchainInstance: {
-      CourseCreatorNFTPolicyID: string;
-    }[]
+    courseCreatorNFTPolicyID: string;
   };
 };
 
