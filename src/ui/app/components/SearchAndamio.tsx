@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTask } from "~/hooks/contribution/useTask";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
-import { type CoursePublic } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
 import { useTerminology } from "~/contexts/terminology-context";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
@@ -12,7 +11,7 @@ import OnboardContributor from "~/ui/onboarding/OnboardContributor";
 import OnboardTreasuryOwner from "~/ui/onboarding/OnboardTreasuryOwner";
 import OnboardOrganizer from "~/ui/onboarding/OnboardOrganizer";
 import useCourses from "~/hooks/course/useCourses";
-import { OnboardingTasks, type OnboardingTask } from "~/ui/onboarding/OnboardingTasks";
+import { useOnboardingTasks } from "~/hooks/useOnboardingTasks";
 
 // NOTE: There are currently two search patterns demonstrated here:
 // 1. Given data like `courses`, we can map over it on the client side
@@ -23,35 +22,28 @@ import { OnboardingTasks, type OnboardingTask } from "~/ui/onboarding/Onboarding
 export default function SearchAndamio() {
   const { translateCaps, translate } = useTerminology()
   const { courses } = useCourses()
-  const onboardingTasks = OnboardingTasks()
-
+  const { onboardingTasks } = useOnboardingTasks()
   const [value, setValue] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const { tasks } = useTask({ searchQuery: searchValue ?? "" });
+
   const taskByValue = useMemo(() => (value && tasks?.find(task => task.id === value) || null), [value, tasks])
   const courseByValue = useMemo(() => (value && courses?.find(course => course.id === value) || null), [value, courses])
   const onboardByValue = useMemo(() => (value && onboardingTasks.find(obt => obt.id === value) || null), [value, onboardingTasks])
-  const [filteredCourses, setFilteredCourses] = useState<CoursePublic[] | undefined>(courses)
-  const [filteredOnboardingTasks, setFilteredOnboardingTasks] = useState<OnboardingTask[]>(onboardingTasks)
-
-  useEffect(() => {
-    if (searchValue && courses) {
-      const _courses: CoursePublic[] = courses.filter(c => (
-        c.title.toLowerCase().includes(searchValue?.toLowerCase() ?? ""
-        )))
-      setFilteredCourses(_courses)
-    }
+  const filteredCourses = useMemo(() => {
+    if (!searchValue || !courses) return courses
+    return courses.filter(c =>
+      c.title.toLowerCase().includes(searchValue.toLowerCase())
+    )
   }, [searchValue, courses])
 
-
-  useEffect(() => {
-    if (searchValue) {
-      const _ot: OnboardingTask[] = onboardingTasks.filter(ot => (
-        ot.title.toLowerCase().includes(searchValue?.toLowerCase() ?? ""
-        )))
-      setFilteredOnboardingTasks(_ot)
-    }
+  const filteredOnboardingTasks = useMemo(() => {
+    if (!searchValue) return onboardingTasks
+    return onboardingTasks.filter(ot =>
+      ot.title.toLowerCase().includes(searchValue.toLowerCase())
+    )
   }, [searchValue, onboardingTasks])
+
 
   return (
     <>
@@ -85,7 +77,7 @@ export default function SearchAndamio() {
         <ComboboxContent>
           {filteredOnboardingTasks.length > 0 && (
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
-              <h3>Onboarding</h3>
+              <h3>Interactive Tutorials</h3>
             </div>
           )}
           {filteredOnboardingTasks.map(({ title, id }) => (
@@ -118,20 +110,20 @@ export default function SearchAndamio() {
             </ComboboxItem>
           ))}
           {!!filteredCourses && (
-
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
               <h3>Courses</h3>
-              {filteredCourses.map(({ title, description, id }) => (
-                <ComboboxItem key={id} value={id} label={title} className="mb-3">
-                  <h2>{title}</h2>
-                  <p>{description}</p>
-
-
-                </ComboboxItem>
-              ))}
-
             </div>
+
           )}
+          {filteredCourses?.map(({ title, description, id }) => (
+            <ComboboxItem key={id} value={id} label={title} className="mb-3">
+              <h2>{title}</h2>
+              <p>{description}</p>
+
+
+            </ComboboxItem>
+          ))}
+
 
           <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
             <h3>Lessons</h3>

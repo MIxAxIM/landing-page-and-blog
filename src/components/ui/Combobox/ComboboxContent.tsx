@@ -51,7 +51,7 @@ export const ComboboxContent = ({
         onOpenAutoFocus?.(e);
       }}
       className={cn(
-        'w-[--radix-popper-anchor-width] p-0 [[data-radix-popper-content-wrapper]:has(&)]:h-0',
+        'w-[--radix-popper-anchor-width] p-0 pb-4 [[data-radix-popper-content-wrapper]:has(&)]:h-0 border border-primary',
         !isOpen && 'pointer-events-none',
         !openedOnce && 'hidden'
       )}
