@@ -55,7 +55,7 @@ export default function ProfilePage() {
         <pre>Can publish content: {JSON.stringify(canPublishContent.data, null, 2)}</pre>
       </div>
       <div className="my-12 p-2 text-xs bg-secondary text-secondary-foreground">
-        <h3>This needs to be summary data - refactor so we're just getting lists of relationships without details</h3>
+        <h3>This needs to be summary data - refactor to make lists of relationships without details</h3>
         <pre>{JSON.stringify(relationships, null, 2)}</pre>
       </div>
 
