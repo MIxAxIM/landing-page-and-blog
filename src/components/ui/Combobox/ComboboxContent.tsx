@@ -51,13 +51,13 @@ export const ComboboxContent = ({
         onOpenAutoFocus?.(e);
       }}
       className={cn(
-        'w-[--radix-popper-anchor-width] p-0 pb-4 [[data-radix-popper-content-wrapper]:has(&)]:h-0 border border-primary',
+        'w-[--radix-popper-anchor-width] p-0 pb-4 [[data-radix-popper-content-wrapper]:has(&)]:h-0 border border-primary min-h-[500px]',
         !isOpen && 'pointer-events-none',
         !openedOnce && 'hidden'
       )}
       {...getMenuProps?.()}
     >
-      <ScrollArea className='[&>[data-radix-scroll-area-viewport]]:max-h-80 [&>[data-radix-scroll-area-viewport]]:p-1'>
+      <ScrollArea className='[&>[data-radix-scroll-area-viewport]]:max-h-80 [&>[data-radix-scroll-area-viewport]]:min-h-[500px] [&>[data-radix-scroll-area-viewport]]:p-1'>
         {children}
       </ScrollArea>
     </PopoverContent>

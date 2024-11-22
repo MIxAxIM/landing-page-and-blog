@@ -20,7 +20,7 @@ import { useOnboardingTasks } from "~/hooks/useOnboardingTasks";
 // TODO: Post MVP, continually refine search according to needs in futture user stories. 
 
 export default function SearchAndamio() {
-  const { translateCaps, translate } = useTerminology()
+  const { translateCaps, translate, translateCapsPlural } = useTerminology()
   const { courses } = useCourses()
   const { onboardingTasks } = useOnboardingTasks()
   const [value, setValue] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export default function SearchAndamio() {
           }))
 
       }}>
-        <ComboboxInput placeholder={`Search for a ${translate('task')}, lesson, or course`} onSelect={() => setSearchValue(null)} />
+        <ComboboxInput placeholder={`Search for a ${translate('treasury')} or course`} onSelect={() => setSearchValue(null)} />
         <ComboboxContent>
           {filteredOnboardingTasks.length > 0 && (
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
@@ -84,8 +84,8 @@ export default function SearchAndamio() {
             <ComboboxItem key={id} value={id} label={title} className="mb-3" >
 
               <div>
-                <h2>  {title}
-                </h2>
+                <div className="text-xl py-2 hover:font-semibold">  {title}
+                </div>
 
               </div>
             </ComboboxItem>
@@ -93,15 +93,15 @@ export default function SearchAndamio() {
           {tasks.length > 0 && (
 
             <div className="flex w-full px-3 py-5 mb-5 border-b border-primary text-2xl font-bold text-primary bg-muted">
-              <h3>{translateCaps('task')}s</h3>
+              <h3>{translateCapsPlural('task')}</h3>
             </div>
           )}
           {tasks.map(({ title, escrow, expirationTime, lovelace, id }) => (
             <ComboboxItem key={id} value={id} label={title} className="mb-3" >
 
               <div>
-                <h2>  {title}
-                </h2>
+                <div className="text-xl py-2 hover:font-semibold">  {title}
+                </div>
                 <p>{formatPosixTime(expirationTime)}</p>
                 <p>Escrows: {escrow?.title}</p>
                 <p>Reward: {parseInt(lovelace) / 1000000} </p>
@@ -117,7 +117,7 @@ export default function SearchAndamio() {
           )}
           {filteredCourses?.map(({ title, description, id }) => (
             <ComboboxItem key={id} value={id} label={title} className="mb-3">
-              <h2>{title}</h2>
+              <div className="text-xl py-2 hover:font-semibold">{title}</div>
               <p>{description}</p>
 
 

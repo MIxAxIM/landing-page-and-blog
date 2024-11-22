@@ -13,6 +13,7 @@ export default function OnboardCreator() {
   return (
     <OnboardRole
       title="Build a course on Andamio"
+      cta={`Teach contributors on Andamio.`}
       roleStatus={creatorStatus}
       enableRole={enableCreator}
       updateRoleStatus={updateCreatorOnboardingStatus}

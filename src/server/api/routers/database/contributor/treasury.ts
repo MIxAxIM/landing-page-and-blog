@@ -28,9 +28,23 @@ const createTreasurySchema = z.object({
   treasuryOwnerId: z.string().min(1),
 });
 
+const initializeTreasuryWithEscrowSchema = z.object({
+
+  treasuryNftPolicyId: z.string().optional(),
+  title: z.string().min(1),
+  treasuryOwnerId: z.string().min(1),
+})
+//escrow: z.object({
+//  escrowNftPolicyId: z.string().optional(),
+//  title: z.string().optional(),
+//  savedAcceptanceCriteria: z.array(z.string()).default([]),
+//}),
+//});
+
 const updateTreasurySchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1).optional(),
+  treasuryNftPolicyId: z.string().optional(),
 });
 
 // Helper function to calculate total ADA from tasks
@@ -103,6 +117,9 @@ export const treasuryRouter = createTRPCRouter({
       return transformTreasuryWithTotals(treasury, ctx);
     }),
 
+  // TODO: Implement create Treasury with Escrow
+  // TODO: Implement adding policy ids at time of Admin Transactions
+
   // Protected procedures
   createTreasury: protectedProcedure
     .input(createTreasurySchema)
@@ -136,6 +153,59 @@ export const treasuryRouter = createTRPCRouter({
 
       return ctx.db.treasury.create({
         data: input,
+      });
+    }),
+
+  initializeTreasuryWithEscrow: protectedProcedure
+    .input(initializeTreasuryWithEscrowSchema)
+    .mutation(async ({ ctx, input }) => {
+      // Get user's current subscription and product details
+      const subscription = await ctx.db.subscription.findUnique({
+        where: { userId: ctx.session.user.id },
+        include: { product: true },
+      });
+
+      // Get user's current treasury count
+      const treasuryCount = await ctx.db.treasury.count({
+        where: { treasuryOwnerId: input.treasuryOwnerId },
+      });
+
+      // Users without subscription can create 1 treasury
+      if (!subscription && treasuryCount >= 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Subscribe to create more than one treasury",
+        });
+      }
+
+      // Check if subscribed user has reached their treasury limit
+      if (subscription && treasuryCount >= subscription.product.maxAllowedTreasuries) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: `Your subscription allows up to ${subscription.product.maxAllowedTreasuries} treasuries`,
+        });
+      }
+
+      // Use a transaction to ensure both treasury and escrow are created or neither is
+      return ctx.db.$transaction(async (tx) => {
+        // Create the treasury first
+        const treasury = await tx.treasury.create({
+          data: input,
+        });
+
+        // Create an escrow with a matching new in the new treasury
+        const escrow = await tx.escrow.create({
+          data: {
+            title: input.title,
+            treasuryId: treasury.id,
+          },
+        });
+
+        // Return both created entities
+        return {
+          treasury,
+          escrow,
+        };
       });
     }),
 

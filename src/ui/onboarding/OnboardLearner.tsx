@@ -10,6 +10,7 @@ export default function OnboardLearner() {
   return (
     <OnboardRole
       title="Start learning on Andamio"
+      cta={`Discover courses on Andamio.`}
       roleStatus={learnerStatus}
       enableRole={enableLearner}
       updateRoleStatus={updateLearnerOnboardingStatus}

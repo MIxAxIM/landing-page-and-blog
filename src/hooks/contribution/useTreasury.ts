@@ -2,11 +2,17 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { type Treasury } from "~/types/db";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
   isLoading: boolean;
   createTreasury: (data: {
+    treasuryNftPolicyId?: string;
+    title: string;
+    treasuryOwnerId: string;
+  }) => void;
+  initializeTreasuryWithEscrow: (data: {
     treasuryNftPolicyId?: string;
     title: string;
     treasuryOwnerId: string;
@@ -25,6 +31,7 @@ interface UseTreasuryReturn {
 export function useTreasury(id?: string): UseTreasuryReturn {
   const ctx = api.useUtils();
   const [appError, setAppError] = useState<string | null>(null)
+  const router = useRouter()
 
   // Query for getting treasury data
   const { data: treasury, isLoading } = api.treasury.getTreasuryById.useQuery(
@@ -39,6 +46,29 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       // Invalidate both the specific treasury and the full treasury list
       if (id) void ctx.treasury.getTreasuryById.invalidate(id);
       void ctx.treasury.getTreasuries.invalidate();
+      router.push(`/app/projects`)
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors;
+      if (errorMessage) {
+        toast.error("Some inputs are missing or invalid");
+
+      } else if (!!e.shape?.message) {
+        toast.error(e.shape.message)
+        setAppError(e.shape.message)
+      } else {
+        toast.error(JSON.stringify(e));
+      }
+    },
+  });
+
+  const initializeTreasuryWithEscrowMutation = api.treasury.initializeTreasuryWithEscrow.useMutation({
+    onSuccess: (data) => {
+      toast.success("Project created - welcome to Andamio!");
+      // Invalidate both the specific treasury and the full treasury list
+      if (id) void ctx.treasury.getTreasuryById.invalidate(id);
+      void ctx.treasury.getTreasuries.invalidate();
+      router.push(`/app/projects/${data.treasury.id}/${data.escrow.id}`)
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors;
@@ -87,6 +117,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
     treasury,
     isLoading,
     createTreasury: createTreasuryMutation.mutate,
+    initializeTreasuryWithEscrow: initializeTreasuryWithEscrowMutation.mutate,
     updateTreasury: updateTreasuryMutation.mutate,
     deleteTreasury: deleteTreasuryMutation.mutate,
     isCreating: createTreasuryMutation.isLoading,

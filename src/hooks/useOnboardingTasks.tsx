@@ -10,10 +10,10 @@ type BaseTask = {
 
 const ONBOARDING_TASKS: BaseTask[] = [
   { id: "oLearn", titleTemplate: "Start learning" },
-  { id: "oContribute", titleTemplate: "Start contributing" },
   { id: "oTreasury", titleTemplate: "Start a new %s", terms: ["treasury"] },
-  { id: "oTeach", titleTemplate: "Start teaching" },
-  { id: "oOrganize", titleTemplate: "Manage and govern a %s", terms: ["treasury"] }
+  { id: "oContribute", titleTemplate: "Find contribution opportunities" },
+  { id: "oTeach", titleTemplate: "Build a new course" },
+  { id: "oOrganize", titleTemplate: "Join a %s", terms: ["treasury"] }
 ] as const
 
 export type OnboardingTask = {

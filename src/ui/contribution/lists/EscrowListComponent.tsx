@@ -43,7 +43,7 @@ export default function EscrowListComponent({
               <TableRow key={i}>
                 <TableCell>{escrow?.title}</TableCell>
                 <TableCell>
-                  {escrow?.escrowNftPolicyId.substring(0, 6)}...
+                  {escrow?.escrowNftPolicyId?.substring(0, 6)}...
                 </TableCell>
                 {/* <TableCell>coming soon</TableCell> */}
                 <TableCell>
@@ -57,7 +57,7 @@ export default function EscrowListComponent({
                 <TableCell>
                   <div className="flex flex-row gap-1">
                     <Link
-                      href={`/app/organize/${treasuryId}/${escrow.escrowNftPolicyId}`}
+                      href={`/app/projects/${treasuryId}/${escrow.escrowNftPolicyId}`}
                     >
                       <Button size="dialog">View</Button>
                     </Link>

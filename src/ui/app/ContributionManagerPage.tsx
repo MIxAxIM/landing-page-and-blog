@@ -6,10 +6,10 @@ import AppLayout from "./layout/AppLayout";
 
 export default function ContributionManagerPage({
   selectedTreasuryCode,
-  selectedEscrowCode,
+  selectedEscrowId,
 }: {
   selectedTreasuryCode?: string;
-  selectedEscrowCode?: string;
+  selectedEscrowId?: string;
 }) {
   const { treasuries } = useTreasuries();
 
@@ -22,10 +22,10 @@ export default function ContributionManagerPage({
       {currentTreasury && (
         <ManageTreasuryComponent treasuryInfo={currentTreasury} />
       )}
-      {selectedEscrowCode && (
-        <ManageEscrowComponent escrowCode={selectedEscrowCode} />
+      {selectedEscrowId && (
+        <ManageEscrowComponent escrowId={selectedEscrowId} />
       )}
-      {!currentTreasury && !selectedEscrowCode && (
+      {!currentTreasury && !selectedEscrowId && (
         <ContributionManagerComponent />
       )}
     </AppLayout>

@@ -17,6 +17,7 @@ type RoleStatus = {
 
 interface OnboardRoleProps {
   title: string;
+  cta: string;
   roleStatus: RoleStatus
   enableRole: () => void;
   updateRoleStatus: (id: string, status: OnboardingStatus) => void;
@@ -26,6 +27,7 @@ interface OnboardRoleProps {
 
 export default function OnboardRole({
   title,
+  cta,
   roleStatus,
   enableRole,
   updateRoleStatus,
@@ -74,6 +76,8 @@ export default function OnboardRole({
         >
           {title}
         </motion.h1>
+
+        <p>{cta}</p>
 
         <motion.div
           variants={{

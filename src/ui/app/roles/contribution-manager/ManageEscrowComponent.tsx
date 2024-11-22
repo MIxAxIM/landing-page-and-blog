@@ -14,11 +14,11 @@ import {
 import { useTerminology } from "~/contexts/terminology-context";
 
 export default function ManageEscrowComponent({
-  escrowCode,
+  escrowId,
 }: {
-  escrowCode: string;
+  escrowId: string;
 }) {
-  const { escrow } = useEscrow({ escrowNftPolicyId: escrowCode });
+  const { escrow } = useEscrow({ id: escrowId });
   const { translate, translateCaps, translateCapsPlural } = useTerminology()
 
   return (
@@ -53,7 +53,7 @@ export default function ManageEscrowComponent({
                 <h2>
                   Contributor Prerequisites
                 </h2>
-                <p className="mb-5">
+                <p className="w-2/3 mx-auto mb-5">
                   To commit to a task in this {translateCaps('escrow')}, a Contributor must
                   complete the following Course {translateCapsPlural('prerequisite')}
                 </p>
@@ -74,11 +74,11 @@ export default function ManageEscrowComponent({
             <AccordionItem value="acceptance-criteria">
               <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
                 <h2>
-                  {translateCaps('escrow')} ${translateCaps('acceptanceCriteria')}
+                  {translateCaps('escrow')} {translateCaps('acceptanceCriteria')}
                 </h2>
-                <p>
+                <p className="w-2/3 mx-auto mb-5">
                   For any {translate('escrow')}, you can create a list of pre-defined
-                  ${translateCaps('acceptanceCriteria')} that will be preloaded into new {translateCapsPlural("task")}.
+                  {translateCaps('acceptanceCriteria')} that will be preloaded into new {translateCapsPlural("task")}.
                 </p>
               </AccordionTrigger>
               <AccordionContent className="border border-primary">

@@ -8,11 +8,13 @@ export default function OnboardContributor() {
   const { enableContributor, getContributor, updateContributorOnboardingStatus } = useRoles()
 
   const { data: contributorStatus } = getContributor()
+  const { translateCaps, translateCapsPlural } = useTerminology()
 
   return (
 
     <OnboardRole
-      title="Find opportunities to contribute to projects"
+      title={`Find opportunities to contribute to ${translateCapsPlural("treasury")}`}
+      cta={`Learn how to contribute to ${translateCapsPlural("treasury")} on Andamio.`}
       roleStatus={contributorStatus}
       enableRole={enableContributor}
       updateRoleStatus={updateContributorOnboardingStatus}

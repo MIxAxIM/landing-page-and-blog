@@ -83,7 +83,7 @@ export default function TreasuryListComponent() {
             >
               <TableCell className="relative border-x border-gray-500">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -91,7 +91,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -99,7 +99,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -107,7 +107,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -115,7 +115,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -123,7 +123,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -131,7 +131,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -139,7 +139,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -147,7 +147,7 @@ export default function TreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/organize/${t?.id}`}
+                  href={`/app/projects/${t?.id}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />

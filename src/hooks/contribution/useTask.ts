@@ -158,7 +158,7 @@ export function useTask({
       // Invalidate all relevant queries
       ctx.treasury.getTreasuries.invalidate(),
       ctx.task.getTreasuryTasks.invalidate(),
-      ctx.escrow.getEscrowByPolicyId.invalidate(),
+      ctx.escrow.getEscrowById.invalidate(),
       treasuryNftPolicyId &&
       ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
       // If we have a specific task ID, invalidate that too
@@ -173,7 +173,7 @@ export function useTask({
   // Mutations
   const createTaskMutation = api.task.createTask.useMutation({
     onSuccess: async () => {
-      toast.success("Task created successfully");
+      toast.success("Task drafted successfully");
       await refreshQueries();
     },
     onError: (error) => {

@@ -4,7 +4,7 @@ import { type Escrow } from "~/types/db";
 
 type CreateEscrowInput = {
   title?: string;
-  escrowNftPolicyId: string;
+  escrowNftPolicyId?: string;
   savedAcceptanceCriteria: string[];
   treasuryId: string;
 };

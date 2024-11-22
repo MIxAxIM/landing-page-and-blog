@@ -38,7 +38,7 @@ export default function AndamioRoleStatusMenu({
           <RoleStatus
             roleName={`${translateCaps('contributionManager')}`}
             userHasRole={true}
-            roleInfoUrl="/app/organize"
+            roleInfoUrl="/app/projects"
             current={dashboardChildRoute === "contribution-manager"}
           />
           <RoleStatus

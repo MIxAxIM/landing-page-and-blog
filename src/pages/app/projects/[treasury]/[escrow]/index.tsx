@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
 import ContributionManagerPage from "~/ui/app/ContributionManagerPage";
-
+// TODO: If Escrow NFT exists, use that in route
 export default function DashboardContributionManagerEscrowPage() {
 	const [escrowCode, setEscrowCode] = useState<string | undefined>(undefined);
 	const router = useRouter();
@@ -18,7 +18,7 @@ export default function DashboardContributionManagerEscrowPage() {
 
 	return (
 		<DesktopOnlyLayout>
-			<ContributionManagerPage selectedEscrowCode={escrowCode ?? ""} />
+			<ContributionManagerPage selectedEscrowId={escrowCode ?? ""} />
 		</DesktopOnlyLayout>
 	);
 }

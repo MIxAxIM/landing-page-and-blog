@@ -439,7 +439,7 @@ export const taskRouter = createTRPCRouter({
           escrow: {
             id: escrow.id,
             title: escrow.title,
-            escrowNftPolicyId: escrow.escrowNftPolicyId,
+            escrowNftPolicyId: escrow.escrowNftPolicyId ?? "",
             treasuryId: escrow.treasuryId,
             isSyncedWithNetwork: escrow.isSyncedWithNetwork,
             savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,

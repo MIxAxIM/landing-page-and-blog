@@ -141,7 +141,7 @@ export default function DialogTask({
     revertToDraftFromApproved,
     isCreating,
     isUpdating,
-  } = useTask({ id, treasuryNftPolicyId: defaultTreasuryId });
+  } = useTask({ id: defaultTreasuryId });
 
   const { treasuries, isLoadingTreasuries } = useTreasuries(!!escrow);
   const { escrows, isLoading: isLoadingEscrows } = useEscrow({
@@ -396,7 +396,7 @@ export default function DialogTask({
                 form={form}
                 options={
                   treasuries?.map((t) => ({
-                    value: t.treasuryNftPolicyId,
+                    value: t.id,
                     label: t.title,
                   })) ?? []
                 }

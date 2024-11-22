@@ -3,7 +3,7 @@ import AppLayout from "../app/layout/AppLayout";
 import TreasuryListComponent from "../contribution/lists/TreasuryListComponent";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 
-export default function OrganizerPageComponent() {
+export default function ProjectsPageComponent() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">

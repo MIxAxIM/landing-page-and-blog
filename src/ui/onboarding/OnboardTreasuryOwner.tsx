@@ -1,17 +1,18 @@
 import { useRoles } from "~/hooks/app/useRoles";
-import DialogTreasury from "../contribution/dialogs/DialogTreasury";
 import OnboardRole from "./components/OnboardingComponent";
 import { useTerminology } from "~/contexts/terminology-context";
+import DialogInitializeProject from "./components/Dialogs/DialogInitializeProject";
 
 export default function OnboardTreasuryOwner() {
 
   const { enableTreasuryOwner, getTreasuryOwner, updateTreasuryManagerOnboardingStatus } = useRoles()
 
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
-
+  const { translateCaps } = useTerminology()
   return (
     <OnboardRole
-      title="Start a Project on Andamio"
+      title={`Start a ${translateCaps("treasury")} on Andamio`}
+      cta={`Learn how to build a ${translateCaps("treasury")} on Andamio.`}
       roleStatus={treasuryOwnerStatus}
       enableRole={enableTreasuryOwner}
       updateRoleStatus={updateTreasuryManagerOnboardingStatus}
@@ -29,7 +30,7 @@ function FirstStep() {
       <h2>
         Next step: start your new project
       </h2>
-      <DialogTreasury />
+      <DialogInitializeProject />
     </div>
 
   )

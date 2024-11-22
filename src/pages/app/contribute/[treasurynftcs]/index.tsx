@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import ContributionManagerPage from "~/ui/app/ContributionManagerPage";
+import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
-export default function DashboardContributionManagerTreasuryPage() {
+export default function ContributeTreasuryPage() {
   const [treasuryCode, setTreasuryCode] = useState<string | undefined>(
     undefined,
   );
@@ -20,7 +20,8 @@ export default function DashboardContributionManagerTreasuryPage() {
 
   return (
     <DesktopOnlyLayout>
-      <ContributionManagerPage selectedTreasuryCode={treasuryCode ?? ""} />
+      <PlaceholderComponent name="contributor can view a project treasury" />
+      <pre>{treasuryCode}</pre>
     </DesktopOnlyLayout>
   );
 }

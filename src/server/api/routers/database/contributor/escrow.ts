@@ -9,7 +9,7 @@ import {
 
 const createEscrowSchema = z.object({
   title: z.string().optional(),
-  escrowNftPolicyId: z.string().min(1),
+  escrowNftPolicyId: z.string().optional(),
   treasuryId: z.string().min(1),
   savedAcceptanceCriteria: z.array(z.string()).default([]),
 });

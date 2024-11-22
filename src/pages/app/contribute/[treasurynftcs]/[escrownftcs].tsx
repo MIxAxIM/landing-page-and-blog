@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import ContributionManagerPage from "~/ui/app/ContributionManagerPage";
+import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
-export default function DashboardContributionManagerEscrowPage() {
+export default function ContributeEscrowPage() {
   const [escrowCode, setEscrowCode] = useState<string | undefined>(undefined);
   const router = useRouter();
   const { escrownftcs } = router.query;
@@ -18,7 +18,8 @@ export default function DashboardContributionManagerEscrowPage() {
 
   return (
     <DesktopOnlyLayout>
-      <ContributionManagerPage selectedEscrowCode={escrowCode ?? ""} />
+      <PlaceholderComponent name="contributor can view escrow details here" />
+      <pre>{escrowCode}</pre>
     </DesktopOnlyLayout>
   );
 }

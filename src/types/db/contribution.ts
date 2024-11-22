@@ -31,7 +31,7 @@ export type Task = {
   escrow?: {
     id: string;
     title: string | null;
-    escrowNftPolicyId: string;
+    escrowNftPolicyId: string | null;
     treasuryId: string;
     isSyncedWithNetwork: boolean;
     savedAcceptanceCriteria: string[];

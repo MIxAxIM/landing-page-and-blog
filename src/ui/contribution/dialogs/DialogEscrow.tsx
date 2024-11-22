@@ -56,7 +56,7 @@ export default function DialogEscrow({
     if (escrow && isEditMode && isOpen) {
       form.reset({
         title: escrow.title ?? "",
-        escrowNftPolicyId: escrow.escrowNftPolicyId,
+        escrowNftPolicyId: escrow.escrowNftPolicyId ?? "",
         treasuryId: escrow.treasuryId,
         savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,
       });
