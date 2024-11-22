@@ -92,7 +92,6 @@ export default function PrerequisiteManager({
         title="Current Prerequisites"
       />
 
-      <h2>HELLO</h2>
 
       <div className="w-full space-y-2">
         <div className="font-medium text-muted-foreground">

@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
+import { ContributorPrerequisite } from "~/types/db";
 
 export default function ProjectStepFour({
   projectNftPolicyId,
@@ -12,17 +13,19 @@ export default function ProjectStepFour({
   setSuccessTxHash,
 }: {
   projectNftPolicyId: string;
-  prerequisites: string;
+  prerequisites: ContributorPrerequisite;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { toast } = useToast();
 
   const { wallet } = useWallet();
 
+  const formattedPrereqs = prerequisites.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
+
   const { data: builtTxResponse } =
     api.andamioAdminTransactions.initProjectStepFour.useQuery({
       policy: projectNftPolicyId,
-      prerequisite: prerequisites,
+      prerequisite: JSON.stringify(formattedPrereqs),
     });
 
   async function onSubmit() {
@@ -55,6 +58,7 @@ export default function ProjectStepFour({
         </>
       ) : (
         <div className="flex flex-col">
+          <pre>{JSON.stringify(formattedPrereqs)}</pre>
           <TransactionLoading wallet={wallet} />
         </div>
       )}

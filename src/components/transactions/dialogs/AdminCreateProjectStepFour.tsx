@@ -111,7 +111,7 @@ export default function AdminCreateProjectInstanceStepFour() {
               <>
                 <ProjectStepFour
                   projectNftPolicyId={projectNftPolicyId}
-                  prerequisites={prerequisite?.id ?? ""}
+                  prerequisites={prerequisite}
                   setSuccessTxHash={setSuccessTxHash}
                 />
               </>

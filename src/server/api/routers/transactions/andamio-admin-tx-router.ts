@@ -185,7 +185,7 @@ export const andamioAdminTxRouter = createTRPCRouter({
     .input(
       z.object({
         policy: z.string().length(56),
-        prerequisite: z.string().length(56),
+        prerequisite: z.string().min(1),
       }),
     )
     .query(async ({ input }) => {
