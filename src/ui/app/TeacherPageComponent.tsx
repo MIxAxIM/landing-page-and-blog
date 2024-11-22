@@ -16,7 +16,7 @@ export default function TeacherPageComponent() {
         {!!accessTokenAlias && (
           <>
             <h1>{accessTokenAlias}</h1>
-            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode="mesh-pbl" />
+            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode="ppbl2025" />
           </>
         )}
         <PlaceholderComponent name="view courses in my organization" />
