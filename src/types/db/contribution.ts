@@ -1,11 +1,14 @@
 import { type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
+export type TreasuryOwner = RouterOutputs["treasuryOwner"]["getTreasuryOwnerByUser"]
+
 // Contribution Features
 export type Treasury = RouterOutputs["treasury"]["getTreasuryById"] & {
   _count?: {
     escrows: number;
   };
+  escrow?: { id: string };
   totalAda?: number;
   totalTasks?: number;
 };

@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { type Treasury } from "~/types/db";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useRoles } from "../app/useRoles";
 
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
@@ -32,6 +33,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
   const ctx = api.useUtils();
   const [appError, setAppError] = useState<string | null>(null)
   const router = useRouter()
+  const { updateTreasuryManagerOnboardingStatus } = useRoles()
 
   // Query for getting treasury data
   const { data: treasury, isLoading } = api.treasury.getTreasuryById.useQuery(
@@ -68,6 +70,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       // Invalidate both the specific treasury and the full treasury list
       if (id) void ctx.treasury.getTreasuryById.invalidate(id);
       void ctx.treasury.getTreasuries.invalidate();
+      void updateTreasuryManagerOnboardingStatus(data.treasury.treasuryOwnerId, "PARTIAL")
       router.push(`/app/projects/${data.treasury.id}/${data.escrow.id}`)
     },
     onError: (e) => {

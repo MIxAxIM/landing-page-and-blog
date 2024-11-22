@@ -19,6 +19,7 @@ type TreasuryWithCount = Treasury & {
 type TreasuryWithTotals = TreasuryWithCount & {
   totalAda: number;
   totalTasks: number;
+  escrowIds: string[];
 };
 type TRPCContext = inferAsyncReturnType<typeof createTRPCContext>;
 
@@ -79,6 +80,7 @@ const transformTreasuryWithTotals = async (
     ...treasury,
     totalAda,
     totalTasks,
+    escrowIds: escrows.map(escrow => escrow.id)
   };
 };
 
@@ -90,6 +92,7 @@ export const treasuryRouter = createTRPCRouter({
         _count: {
           select: { escrows: true },
         },
+        escrows: { select: { id: true, tasks: true } }
       },
     });
 

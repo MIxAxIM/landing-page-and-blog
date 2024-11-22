@@ -56,8 +56,8 @@ export default function DialogInitializeProject({
             openButtonIntent="default"
             openButtonSize={openButtonSize ?? undefined}
             icon={"plus"}
-            title={`Create New ${translateCaps('treasury')}`}
-            description={`Create a new ${translate('treasury')} by providing a title and NFT policy ID.`}
+            title={`Create a new ${translateCaps('treasury')}`}
+            description={`Give your project a name. You can change this any time.`}
             buttonLabel={`Create ${translateCaps('treasury')}`}
             buttonLoading={false}
             buttonDisabled={false}
@@ -70,7 +70,6 @@ export default function DialogInitializeProject({
                 name="title"
                 label="Project Name"
                 form={form}
-                info="You can change this later"
                 placeholder={`What should we call your new ${translate('treasury')}?`}
               />
             </div>
@@ -80,6 +79,7 @@ export default function DialogInitializeProject({
       ) : (
         <Card>
           <h1>You cannot have more {translateCapsPlural('treasury')}</h1>
+          <Button>View Current Projects</Button>
           <Button>Upgrade Andamio Subscription to Create Additional {translateCapsPlural('treasury')}</Button>
         </Card>
 

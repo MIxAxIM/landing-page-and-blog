@@ -54,7 +54,7 @@ export default function OnboardRole({
           },
         },
       }}
-      className="flex flex-row justify-between items-center w-full min-w-7xl h-full bg-background border border-primary p-5 rounded-sm gap-x-10"
+      className="flex flex-row justify-between items-center w-full min-w-7xl h-full bg-background border border-primary p-5 pb-10 rounded-sm gap-x-10 mb-24"
     >
       <motion.div
         variants={{
@@ -79,14 +79,6 @@ export default function OnboardRole({
 
         <p>{cta}</p>
 
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, scale: 0.8 },
-            visible: { opacity: 1, scale: 1 }
-          }}
-        >
-          <Badge className="w-48 py-1">{roleStatus?.onboardingStatus}</Badge>
-        </motion.div>
 
         <motion.div
           variants={{
@@ -99,18 +91,17 @@ export default function OnboardRole({
           }}
         >
           {roleStatus?.onboardingStatus === "NOT_STARTED" && (
-            <Card>
-              <h2>Onboarding not started</h2>
-              <Button onClick={() => updateRoleStatus(roleStatus.id, "PARTIAL")}>
-                Start now!
-              </Button>
-            </Card>
+            <div>
+              <div className="my-5 text-lg font-semibold">Try it:</div>
+              {FirstStepContent && <FirstStepContent />}
+            </div>
           )}
 
           {roleStatus?.onboardingStatus === "PARTIAL" && (
             <div className="space-y-2">
-              <h2>How to start:</h2>
-              {FirstStepContent && <FirstStepContent />}
+              <h2>In Progress</h2>
+              {NextStepContent && <NextStepContent />}
+              <Button onClick={() => updateRoleStatus(roleStatus.id, "COMPLETE")}>Thanks! I&apos;ve got this on my own now.</Button>
             </div>
           )}
 
@@ -118,9 +109,9 @@ export default function OnboardRole({
             roleStatus?.onboardingStatus === "COMPLETE") && (
               <div className="space-y-2">
                 <h2>
-                  Keep going - here is your next step
+                  You completed this onboarding journey, nice work!
                 </h2>
-                {NextStepContent && <NextStepContent />}
+                <Button onClick={() => updateRoleStatus(roleStatus.id, "NOT_STARTED")}>Try the interactive tutorial again</Button>
               </div>
             )}
 
@@ -130,23 +121,6 @@ export default function OnboardRole({
         </motion.div>
       </motion.div>
 
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, x: 20 },
-          visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: duration }
-          }
-        }}
-      >
-        {!!roleStatus?.id && (
-          <OnboardingStatusButtons
-            roleId={roleStatus.id}
-            onStatusChange={updateRoleStatus}
-          />
-        )}
-      </motion.div>
     </motion.div>
   );
 }
