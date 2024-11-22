@@ -58,7 +58,7 @@ export default function ManageTreasuryComponent({
             userStory="CONTRIBUTION-007"
           >
             <>
-              {!!treasuryInfo?.treasuryNftPolicyId && (
+              {!!treasuryInfo?.id && (
                 <>
                   <EscrowListComponent
                     treasuryId={
@@ -66,8 +66,8 @@ export default function ManageTreasuryComponent({
                     }
                   />
                   <DialogEscrow
-                    treasuryId={treasuryInfo.treasuryNftPolicyId}
-                    key={treasuryInfo?.treasuryNftPolicyId}
+                    treasuryId={treasuryInfo.id}
+                    key={treasuryInfo?.id}
                   />
                 </>
               )}

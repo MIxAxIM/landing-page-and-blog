@@ -141,7 +141,7 @@ export const escrowRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       // Verify treasury exists first
       const treasury = await ctx.db.treasury.findUnique({
-        where: { treasuryNftPolicyId: input.treasuryId },
+        where: { id: input.treasuryId },
       });
 
       if (!treasury) {

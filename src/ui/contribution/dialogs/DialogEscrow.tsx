@@ -150,11 +150,11 @@ export default function DialogEscrow({
               form={form}
               options={
                 treasuries?.map((t) => ({
-                  value: t.treasuryNftPolicyId,
+                  value: t.id,
                   label: t.title,
                 })) ?? []
               }
-              placeholder={`Select a ${translate('task')}`}
+              placeholder={`Select a ${translate('treasury')}`}
               disabled={!!defaultTreasuryId}
             />
           )}
