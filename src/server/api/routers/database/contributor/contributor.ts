@@ -4,6 +4,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { calculateTotalTreasuryAda } from "./treasuryOwner";
 
 export const contributorRouter = createTRPCRouter({
   getContributorByUser: publicProcedure
@@ -37,14 +38,22 @@ export const contributorRouter = createTRPCRouter({
   getContributorTreasuries: publicProcedure
     .input(z.object({ contributorId: z.string().min(1) }))
     .query(async ({ ctx, input }) => {
-      const contributor = await ctx.db.contributor.findUnique({
+      const treasuries = await ctx.db.treasury.findMany({
         where: { id: input.contributorId },
-        select: { Treasury: true },
+        include: {
+          _count: {
+            select: { escrows: true }
+          },
+          escrows: { include: { tasks: true } },
+        }
       });
-      if (!contributor) {
-        throw new Error("Contributor not found");
-      }
-      return contributor.Treasury;
+
+      return treasuries.map(treasury => ({
+        ...treasury,
+        totalAda: calculateTotalTreasuryAda(treasury.escrows),
+        totalTasks: treasury.escrows.reduce((sum, e) => sum + e.tasks.length, 0),
+        escrowIds: treasury.escrows.map(e => e.id)
+      }));
     }),
 
   updateOnboardingStatus: protectedProcedure

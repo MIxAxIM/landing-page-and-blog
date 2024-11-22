@@ -2,7 +2,6 @@ import { api } from "~/utils/api";
 import { useToast } from "~/components/ui/use-toast";
 
 export const useUserOrganizations = () => {
-  const { data: organizations, isLoading } = api.organization.getUserOrganizations.useQuery();
   const { toast } = useToast();
   const utils = api.useUtils();
 
@@ -23,6 +22,8 @@ export const useUserOrganizations = () => {
     },
   });
 
+  // TODO: Implement invite member
+
   const leaveOrganization = api.organizationMember.leaveOrganization.useMutation({
     onSuccess: () => {
       toast({
@@ -41,8 +42,6 @@ export const useUserOrganizations = () => {
   });
 
   return {
-    organizations,
-    isLoading,
     createOrganization,
     leaveOrganization,
   };

@@ -2,10 +2,11 @@ import { type OrganizationRole } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 
-export type Organization = RouterOutputs["organization"]["getAll"][number]
+export type Organization = RouterOutputs["organization"]["getById"]
 export type OrganizationMember = RouterOutputs["organizationMember"]["getMembers"][number]
 export type OrganizationTreasury = RouterOutputs["organizationTreasury"]["getTreasuries"][number]
 export type OrganizationCourse = RouterOutputs["organizationCourse"]["getCourses"][number]
+export type OrganizationRelationship = RouterOutputs["organization"]["getUserOrganizations"][number]
 
 
 // Enhanced types with nested data

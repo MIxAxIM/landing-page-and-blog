@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { Button } from "~/components/ui/button";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useSubscriptionAccess } from "~/hooks/app/useSubscriptionAccess";
+import useUserRelationships from "~/hooks/app/useUserRelationships";
 import ProfileLayout from "~/ui/dashboard/layout/ProfileLayout";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
@@ -18,10 +19,14 @@ export default function ProfilePage() {
   const { data: contributorStatus } = getContributor()
   const { data: contributionManagerStatus } = getContributionManager()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
+
+  const relationships = useUserRelationships()
   return (
     <ProfileLayout>
 
       <PlaceholderComponent name="Here is your profile">
+
+
         <div>
           <h1>Your Profile</h1>
           <Button>Disconnect Discord Account?</Button>
@@ -31,6 +36,7 @@ export default function ProfilePage() {
 
         </div>
       </PlaceholderComponent>
+      <h3>Use for diagnostics while testing interactions. When ready, format this data</h3>
       <div className="my-12 p-2 text-xs bg-primary text-primary-foreground">
         <h2>Teacher Status</h2>
         <pre>{JSON.stringify(creatorStatus, null, 2)}</pre>
@@ -47,6 +53,10 @@ export default function ProfilePage() {
         <pre>Can create course: {JSON.stringify(canCreateCourse.data, null, 2)}</pre>
         <pre>Can create treasury: {JSON.stringify(canCreateTreasury.data, null, 2)}</pre>
         <pre>Can publish content: {JSON.stringify(canPublishContent.data, null, 2)}</pre>
+      </div>
+      <div className="my-12 p-2 text-xs bg-secondary text-secondary-foreground">
+        <h3>This needs to be summary data - refactor so we're just getting lists of relationships without details</h3>
+        <pre>{JSON.stringify(relationships, null, 2)}</pre>
       </div>
 
     </ProfileLayout>

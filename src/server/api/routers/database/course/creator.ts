@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -19,6 +20,58 @@ export const creatorRouter = createTRPCRouter({
       });
 
       return user;
+    }),
+
+  getCreatedCourses: publicProcedure
+    .input(z.object({ creatorId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const creator = await ctx.db.creator.findUnique({
+        where: { id: input.creatorId },
+        include: {
+          courses: {
+            include: {
+              modules: true,
+              variants: true,
+              onchainInstance: true,
+            },
+          },
+        },
+      });
+
+      if (!creator) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Creator not found",
+        });
+      }
+
+      return creator.courses;
+    }),
+
+  getContributedCourses: publicProcedure
+    .input(z.object({ creatorId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const creator = await ctx.db.creator.findUnique({
+        where: { id: input.creatorId },
+        include: {
+          contributorCourses: {
+            include: {
+              modules: true,
+              variants: true,
+              onchainInstance: true,
+            },
+          },
+        },
+      });
+
+      if (!creator) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Creator not found",
+        });
+      }
+
+      return creator.contributorCourses;
     }),
 
   create: protectedProcedure

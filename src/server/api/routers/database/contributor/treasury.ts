@@ -120,7 +120,6 @@ export const treasuryRouter = createTRPCRouter({
       return transformTreasuryWithTotals(treasury, ctx);
     }),
 
-  // TODO: Implement create Treasury with Escrow
   // TODO: Implement adding policy ids at time of Admin Transactions
 
   // Protected procedures

@@ -46,6 +46,35 @@ export const organizationMemberRouter = createTRPCRouter({
 			});
 		}),
 
+	getMemberOrganizations: publicProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(async ({ ctx, input }) => {
+			const memberOrgs = await ctx.db.organizationMember.findMany({
+				where: { userId: input.userId },
+				include: {
+					organization: {
+						include: {
+							courses: {
+								include: {
+									course: true,
+								},
+							},
+							treasuries: {
+								include: {
+									treasury: true,
+								},
+							},
+						},
+					},
+				},
+			});
+
+			return memberOrgs.map((member) => ({
+				...member.organization,
+				role: member.role,
+			}));
+		}),
+
 	// Protected procedures
 	addMember: protectedProcedure
 		.input(addMemberSchema)

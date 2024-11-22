@@ -5,6 +5,14 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
+export const calculateTotalTreasuryAda = (escrows: { tasks: { lovelace: string }[] }[]) => {
+  return escrows.reduce((sum, escrow) => {
+    return sum + escrow.tasks.reduce((taskSum, task) => {
+      return taskSum + parseInt(task.lovelace) / 1_000_000;
+    }, 0);
+  }, 0);
+};
+
 export const treasuryOwnerRouter = createTRPCRouter({
   getTreasuryOwnerByUser: publicProcedure
     .input(z.object({ userId: z.string().min(3) }))
@@ -34,17 +42,26 @@ export const treasuryOwnerRouter = createTRPCRouter({
       });
     }),
 
+
   getTreasuryOwnerTreasuries: publicProcedure
     .input(z.object({ treasuryOwnerId: z.string().min(1) }))
     .query(async ({ ctx, input }) => {
-      const treasuryOwner = await ctx.db.treasuryOwner.findUnique({
-        where: { id: input.treasuryOwnerId },
-        select: { treasuries: true },
+      const treasuries = await ctx.db.treasury.findMany({
+        where: { treasuryOwnerId: input.treasuryOwnerId },
+        include: {
+          _count: {
+            select: { escrows: true }
+          },
+          escrows: { include: { tasks: true } },
+        }
       });
-      if (!treasuryOwner) {
-        throw new Error("Treasury Owner not found");
-      }
-      return treasuryOwner.treasuries;
+
+      return treasuries.map(treasury => ({
+        ...treasury,
+        totalAda: calculateTotalTreasuryAda(treasury.escrows),
+        totalTasks: treasury.escrows.reduce((sum, e) => sum + e.tasks.length, 0),
+        escrowIds: treasury.escrows.map(e => e.id)
+      }));
     }),
 
   updateOnboardingStatus: protectedProcedure

@@ -193,41 +193,16 @@ export const organizationRouter = createTRPCRouter({
 		}),
 
 	// User-specific queries
-	getUserOrganizations: protectedProcedure.query(({ ctx }) => {
-		return ctx.db.organizationMember.findMany({
-			where: {
-				userId: ctx.session.user.id,
-			},
-			include: {
-				organization: {
-					include: {
-						members: {
-							include: {
-								user: {
-									select: {
-										id: true,
-										name: true,
-										email: true,
-										image: true,
-									},
-								},
-							},
-						},
-						courses: {
-							include: {
-								course: true,
-							},
-						},
-						treasuries: {
-							include: {
-								treasury: true,
-							},
-						},
-					},
-				},
-			},
-		});
-	}),
+
+	getUserOrganizations: publicProcedure
+		.input(z.object({ id: z.string() }))
+		.query(async ({ ctx, input }) => {
+			const organizations = await ctx.db.organizationMember.findMany({
+				where: { userId: input.id },
+			});
+
+			return organizations
+		}),
 
 	getOwnedOrganizations: protectedProcedure.query(({ ctx }) => {
 		return ctx.db.organizationMember.findMany({

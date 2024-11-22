@@ -10,3 +10,4 @@ export type User = RouterOutputs["user"]["getUserByName"][number] & {
   isAdmin: boolean;
 };
 
+

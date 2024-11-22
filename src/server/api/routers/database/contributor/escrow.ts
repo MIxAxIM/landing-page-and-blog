@@ -28,7 +28,7 @@ const updateEscrowSyncStatusSchema = z.object({
 });
 
 // Helper function to calculate total ADA from tasks
-const calculateTotalAda = (tasks: { lovelace: string }[]) => {
+export const calculateTotalAda = (tasks: { lovelace: string }[]) => {
   return tasks.reduce((sum, task) => {
     const lovelaceAmount = parseInt(task.lovelace);
     return sum + lovelaceAmount / 1_000_000; // Convert lovelace to ADA

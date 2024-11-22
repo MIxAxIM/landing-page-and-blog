@@ -1,9 +1,11 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { calculateTotalTreasuryAda } from "./treasuryOwner";
 
 export const contributionManagerRouter = createTRPCRouter({
   getContributionManagerByUser: publicProcedure
@@ -35,17 +37,26 @@ export const contributionManagerRouter = createTRPCRouter({
     }),
 
   getContributionManagerTreasuries: publicProcedure
-    .input(z.object({ contributionManagerId: z.string().min(1) }))
+    .input(z.object({ contributionManagerId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const contributionManager = await ctx.db.contributionManager.findUnique({
+      const treasuries = await ctx.db.treasury.findMany({
         where: { id: input.contributionManagerId },
-        select: { treasuries: true },
+        include: {
+          _count: {
+            select: { escrows: true }
+          },
+          escrows: { include: { tasks: true } },
+        }
       });
-      if (!contributionManager) {
-        throw new Error("Contribution Manager not found");
-      }
-      return contributionManager.treasuries;
+
+      return treasuries.map(treasury => ({
+        ...treasury,
+        totalAda: calculateTotalTreasuryAda(treasury.escrows),
+        totalTasks: treasury.escrows.reduce((sum, e) => sum + e.tasks.length, 0),
+        escrowIds: treasury.escrows.map(e => e.id)
+      }));
     }),
+
 
   updateOnboardingStatus: protectedProcedure
     .input(
