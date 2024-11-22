@@ -622,7 +622,7 @@ model Treasury {
 model Escrow {
   id                  String  @id @default(cuid())
   title               String?
-  escrowNftPolicyId   String  @unique
+  escrowNftPolicyId   String? @unique
   isSyncedWithNetwork Boolean @default(false)
 
   savedAcceptanceCriteria String[]
