@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
@@ -15,7 +16,7 @@ type AssignmentAcceptanceParams = {
   policy: string;
 };
 
-export const creatorCourseTxRouter = createTRPCRouter({
+export const courseCreatorTxRouter = createTRPCRouter({
   mintCourseModule: publicProcedure
     .input(
       z.object({

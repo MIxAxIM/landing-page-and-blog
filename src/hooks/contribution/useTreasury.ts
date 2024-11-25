@@ -21,6 +21,8 @@ interface UseTreasuryReturn {
   updateTreasury: (data: {
     id: string;
     title?: string;
+    treasuryNftPolicyId?: string;
+    live?: boolean;
   }) => void;
   deleteTreasury: (id: string) => void;
   isCreating: boolean;

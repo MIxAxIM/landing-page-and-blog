@@ -26,7 +26,6 @@ import { courseGovernanceValidatorRouter } from "./routers/contracts/course/cour
 import { clientDomainsRouter } from "./routers/premium/clients-domain";
 
 import { learnerCourseTxRouter } from "./routers/transactions/learner-course-tx-router";
-import { creatorCourseTxRouter } from "./routers/transactions/creator-course-tx-router";
 import { accessTokenTxRouter } from "./routers/transactions/access-token-router";
 import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-router";
 import { treasuryRouter } from "./routers/database/contributor/treasury";
@@ -42,6 +41,8 @@ import { organizationRouter } from "./routers/database/organization/organization
 import { organizationMemberRouter } from "./routers/database/organization/member";
 import { organizationTreasuryRouter } from "./routers/database/organization/organization-treasury";
 import { organizationCourseRouter } from "./routers/database/organization/organization-course";
+import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
+import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
 /**
  * This is the primary router for your server.
  *
@@ -100,8 +101,9 @@ export const appRouter = createTRPCRouter({
 
   // experimental - transactions
   learnerCourseTransactions: learnerCourseTxRouter,
-  creatorCourseTransactions: creatorCourseTxRouter,
+  creatorCourseTransactions: courseCreatorTxRouter,
   accessTokenTransactions: accessTokenTxRouter,
+  projectManagerTransactions: projectManagerTxRouter,
 });
 
 // export type definition of API

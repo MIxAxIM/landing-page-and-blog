@@ -30,7 +30,6 @@ const createTreasurySchema = z.object({
 });
 
 const initializeTreasuryWithEscrowSchema = z.object({
-
   treasuryNftPolicyId: z.string().optional(),
   title: z.string().min(1),
   treasuryOwnerId: z.string().min(1),
@@ -46,6 +45,7 @@ const updateTreasurySchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1).optional(),
   treasuryNftPolicyId: z.string().optional(),
+  live: z.boolean().optional(),
 });
 
 // Helper function to calculate total ADA from tasks
