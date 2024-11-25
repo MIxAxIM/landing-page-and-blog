@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { CourseStudioLinkItem, DashboardLinkItem } from "./link-items";
-import { type Course } from "~/types/db";
+import { type CoursePublic } from "~/types/db";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -15,7 +15,7 @@ function classNames(...classes: string[]) {
 export default function MobileSideMenu({
   ownerCourses,
 }: {
-  ownerCourses: Course[];
+  ownerCourses: CoursePublic[];
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: sessionData } = useSession();

@@ -3,22 +3,22 @@ import CourseButtonCard from "./course/CourseButtonCard";
 import { Card } from "~/components/ui/card";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
+import useUserRelationships from "~/hooks/app/useUserRelationships";
 
 export default function ListCourses() {
-  const { ownerCourses, isLoadingCourses } = useCoursesByOwner();
+  const { courses, isLoading } = useUserRelationships()
   return (
     <>
-      {ownerCourses === undefined && isLoadingCourses && (
+      {courses.asCreator === undefined && isLoading && (
         <div className="flex min-h-[90vh] items-center">
           <Loading />
         </div>
       )}
-      {ownerCourses && (
+      {courses.asCreator && (
         <>
-          {ownerCourses.length > 0 ? (
+          {courses.asCreator.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              {ownerCourses.map((course) => {
+              {courses.asCreator.map((course) => {
                 return (
                   <CourseButtonCard
                     key={course.id}

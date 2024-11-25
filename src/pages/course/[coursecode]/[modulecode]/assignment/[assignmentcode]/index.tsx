@@ -1,7 +1,12 @@
 import { type NextPageContext } from "next";
+import { Button } from "~/components/ui/button";
+import useCourse from "~/hooks/course/useCourse";
 import useModuleByCourse from "~/hooks/course/useModuleByCourse";
 import PageCourseAssignmentContent from "~/ui/course/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
+import CourseLayout from "~/ui/course/components/layout/CourseLayout";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+
+// TODO: Point the Course Creator CTA to on-chain course minting
 
 export default function Page({
   courseCode,
@@ -15,15 +20,38 @@ export default function Page({
     moduleCode,
   );
 
+  const { course } = useCourse(courseCode)
+
   if (isLoadingModule) {
     <LoadingCircle />;
   }
 
-  if (courseModule) {
+  if (!course?.onchainInstance[0]?.CourseCreatorNFTPolicyID) {
+    return (
+
+      <CourseLayout>
+        <div className="flex flex-col w-1/2 mx-auto my-24 space-y-24 ">
+          <h2>
+
+            This course does not have a courseNftPolicyId, so this assignment cannot be displayed to the public.
+          </h2>
+          <Button>
+            CTA: Learn more
+
+          </Button>
+
+
+        </div>
+      </CourseLayout>
+    )
+  }
+
+  if (courseModule && !!course?.onchainInstance[0]?.CourseCreatorNFTPolicyID) {
     return (
       <PageCourseAssignmentContent
         courseCode={courseCode}
         courseModule={courseModule}
+        courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID}
       />
     );
   }

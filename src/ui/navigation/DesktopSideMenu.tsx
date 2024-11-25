@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useCourse from "~/hooks/course/useCourse";
 import useValidateCreator from "~/hooks/course/useValidateCreator";
-import { type Course } from "~/types/db";
+import { type CoursePublic } from "~/types/db";
 import SideMenuSessionProfile from "~/ui/auth/SideMenuSessionProfile";
 import CourseOutline from "../course/components/layout/SideMenu/CourseOutline";
 import StudioOutline from "../studio/components/layout/SideMenu/StudioOutline";
@@ -22,7 +22,7 @@ export default function DesktopSideMenu({
   ownerCourses,
   currentCourseCode,
 }: {
-  ownerCourses?: Course[];
+  ownerCourses?: CoursePublic[];
   currentCourseCode: string | undefined;
 }) {
   const { data: sessionData } = useSession();

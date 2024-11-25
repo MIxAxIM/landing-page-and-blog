@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
 import DesktopSideMenu from "./DesktopSideMenu";
 import MobileSideMenu from "./MobileSideMenu";
 import { useEffect, useState } from "react";
+import useUserRelationships from "~/hooks/app/useUserRelationships";
 
 export default function SideMenu() {
-  const { ownerCourses } = useCoursesByOwner();
+  const { courses } = useUserRelationships()
   const [currentCourseCode, setCurrentCourseCode] = useState<
     string | undefined
   >(undefined);
@@ -22,10 +22,10 @@ export default function SideMenu() {
   return (
     <div>
       <DesktopSideMenu
-        ownerCourses={ownerCourses}
+        ownerCourses={courses.asCreator}
         currentCourseCode={currentCourseCode}
       />
-      {ownerCourses && <MobileSideMenu ownerCourses={ownerCourses} />}
+      {courses.asCreator && <MobileSideMenu ownerCourses={courses.asCreator} />}
     </div>
   );
 }

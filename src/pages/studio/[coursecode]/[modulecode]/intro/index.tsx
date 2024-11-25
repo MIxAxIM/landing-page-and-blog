@@ -1,6 +1,6 @@
 import { type NextPageContext } from "next";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
+import useCourseByOwner from "~/hooks/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/course/useModuleByCourse";
 import SideMenu from "~/ui/navigation/SideMenu";
 import PageModuleIntroContent from "~/ui/studio/[coursecode]/[modulecode]/intro/PageModuleIntroContent";
@@ -19,9 +19,9 @@ const IntroductionStudioPage = ({
     courseCode,
     moduleCode,
   );
-  const { course, isLoadingCourses } = useCoursesByOwner(courseCode);
+  const { course, isLoadingCourse } = useCourseByOwner(courseCode);
 
-  if (isLoadingCourses || isLoadingModule) {
+  if (isLoadingCourse || isLoadingModule) {
     return (
       <div className="flex min-h-screen w-full content-center items-center justify-center">
         <LoadingContentEditor>Loading Module Introduction</LoadingContentEditor>

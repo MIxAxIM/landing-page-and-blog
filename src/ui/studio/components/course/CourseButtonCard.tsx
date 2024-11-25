@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { Card } from "~/components/ui/card";
-import type { Course } from "~/types/db";
+import type { CoursePublic } from "~/types/db";
 
 export default function CourseButtonCard({
   course,
   link,
 }: {
-  course: Course;
+  course: CoursePublic;
   link: string;
 }) {
   return (

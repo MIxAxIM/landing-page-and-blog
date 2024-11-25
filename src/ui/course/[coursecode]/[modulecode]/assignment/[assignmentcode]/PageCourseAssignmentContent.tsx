@@ -27,9 +27,11 @@ import ConnectWalletCard from "~/ui/course/components/assignments/cards/ConnectW
 export default function PageCourseAssignmentContent({
   courseCode,
   courseModule,
+  courseNftPolicyId,
 }: {
   courseCode: string;
   courseModule: CourseModuleOverview;
+  courseNftPolicyId: string
 }) {
   const { data: sessionData } = useSession();
 
@@ -46,7 +48,7 @@ export default function PageCourseAssignmentContent({
         <Metatags title={assignment?.title ?? undefined} />
         {assignment && assignment.live ? (
           <div className="mx-auto flex min-h-[85vh] w-11/12 max-w-5xl flex-col gap-4 text-base leading-7 text-foreground">
-            <Page courseModule={courseModule} courseCode={courseCode} />
+            <Page courseModule={courseModule} courseCode={courseCode} courseNftPolicyId={courseNftPolicyId} />
             <CourseNavigation
               courseCode={courseCode}
               courseModule={courseModule}
@@ -63,7 +65,7 @@ export default function PageCourseAssignmentContent({
               </AlertDescription>
             </Alert>
             {isCreator && (
-              <Page courseModule={courseModule} courseCode={courseCode} />
+              <Page courseModule={courseModule} courseCode={courseCode} courseNftPolicyId={courseNftPolicyId} />
             )}
           </div>
         ) : isLoadingAssignment ? (
@@ -77,9 +79,11 @@ export default function PageCourseAssignmentContent({
 function Page({
   courseModule,
   courseCode,
+  courseNftPolicyId,
 }: {
   courseModule: CourseModuleOverview;
   courseCode: string;
+  courseNftPolicyId: string;
 }) {
   const { data: sessionData } = useSession();
   const { connected } = useWallet();
@@ -137,6 +141,7 @@ function Page({
                 <NetworkCommitmentCard
                   moduleCode={courseModule.moduleCode}
                   courseCode={courseCode}
+                  courseNftPolicyId={courseNftPolicyId}
                 />
               ) : (
                 <ConnectWalletCard message="Connect a wallet to commit to this assignment" />

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { type Course } from "~/types/db";
+import { type CoursePublic } from "~/types/db";
 import CreatorCourseListMenu from "../menu-sections/CreatorCourseListMenu";
 
 function classNames(...classes: string[]) {
@@ -12,7 +12,7 @@ export function CourseStudioLinkItem({
   ownerCourses,
 }: {
   current: boolean;
-  ownerCourses: Course[];
+  ownerCourses: CoursePublic[];
 }) {
   return (
     <li

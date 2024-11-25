@@ -1,7 +1,7 @@
 import { type NextPageContext } from "next";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
 import useAssignment from "~/hooks/course/useAssignment";
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
+import useCourseByOwner from "~/hooks/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/course/useModuleByCourse";
 import SideMenu from "~/ui/navigation/SideMenu";
 import PageCourseAssignmentContent from "~/ui/studio/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
@@ -19,13 +19,13 @@ export default function AssignmentStudioPage({
     courseCode,
     moduleCode,
   );
-  const { course, isLoadingCourses } = useCoursesByOwner(courseCode);
+  const { course, isLoadingCourse } = useCourseByOwner(courseCode);
   const { courseModule, isLoadingModule } = useModuleByCourse(
     courseCode,
     moduleCode,
   );
 
-  if (isLoadingAssignment || isLoadingCourses || isLoadingModule) {
+  if (isLoadingAssignment || isLoadingCourse || isLoadingModule) {
     return (
       <div className="flex min-h-screen w-full content-center items-center justify-center">
         <LoadingContentEditor>Loading Assignment Editor</LoadingContentEditor>

@@ -1,6 +1,6 @@
 import { type NextPageContext } from "next";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
+import useCourseByOwner from "~/hooks/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/course/useModuleByCourse";
 import useSLTs from "~/hooks/course/useSLTs";
 import SideMenu from "~/ui/navigation/SideMenu";
@@ -19,13 +19,13 @@ export default function LessonStudioPage({
 }) {
   const sltIndex = parseInt(moduleIndex);
   const { slt, isLoadingSLT } = useSLTs(courseCode, moduleCode, sltIndex);
-  const { course, isLoadingCourses } = useCoursesByOwner(courseCode);
+  const { course, isLoadingCourse } = useCourseByOwner(courseCode);
   const { courseModule, isLoadingModule } = useModuleByCourse(
     courseCode,
     moduleCode,
   );
 
-  if (isLoadingSLT || isLoadingCourses || isLoadingModule) {
+  if (isLoadingSLT || isLoadingCourse || isLoadingModule) {
     return (
       <div className="flex min-h-screen w-full content-center items-center justify-center">
         <LoadingContentEditor>Loading Lesson</LoadingContentEditor>

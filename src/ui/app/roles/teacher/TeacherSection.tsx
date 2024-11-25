@@ -4,6 +4,7 @@ import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading
 import NetworkModuleManagement from "./NetworkModuleManagement";
 import { useState, useEffect } from "react";
 import useCourse from "~/hooks/course/useCourse";
+import useUserRelationships from "~/hooks/app/useUserRelationships";
 
 export default function TeacherSection({
   accessTokenAlias,
@@ -12,6 +13,7 @@ export default function TeacherSection({
   accessTokenAlias: string;
   courseCode: string;
 }) {
+  const { courses } = useUserRelationships()
   const { course } = useCourse(courseCode);
   const { creatorCoursePolicies, isLoadingCreatorCoursePolicies } =
     useCreatorsCoursesPolicies(accessTokenAlias);

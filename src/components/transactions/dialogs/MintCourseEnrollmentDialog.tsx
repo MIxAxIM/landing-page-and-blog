@@ -19,8 +19,11 @@ import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import MintLocalState from "~/components/transactions/course/learner/mintLocalState/MintLocalState";
 import Loading from "~/components/loading";
-import checkIfEnrolled from "~/ui/courses/utils/checkIfEnrolled";
 import SuccessTxModalContent from "../SuccessTxComponent";
+import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+
+// TODO: Check if this access token is enrolled (via Global State query)
+// Delete checkIfEnrolled
 
 export default function MintCourseEnrollmentDialog({
   course,
@@ -28,12 +31,14 @@ export default function MintCourseEnrollmentDialog({
   course: CoursePublic;
 }) {
   const { connected, wallet } = useWallet();
-  const { accessTokenAsset } = useAccessToken();
+  const { accessTokenAsset, accessTokenAlias } = useAccessToken();
   const [isOpen, setIsOpen] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
     undefined,
   );
+
+  const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "")
 
   const nextSteps = [
     {
@@ -44,18 +49,14 @@ export default function MintCourseEnrollmentDialog({
     { text: "Go to Dashboard", url: "/dashboard/learner" },
   ];
 
+
   useEffect(() => {
-    const check = async () => {
-      if (connected && course.onchainInstance[0]) {
-        const isEnrolled = await checkIfEnrolled(
-          course.onchainInstance[0].CourseCreatorNFTPolicyID,
-          wallet,
-        );
-        setIsEnrolled(isEnrolled);
-      }
-    };
-    void check();
-  }, [wallet, connected, course.onchainInstance]);
+    if (!!globalStateDatum && !!course.onchainInstance[0]) {
+      const _check = globalStateDatum.TokenInfos.some(ti => ti.LsCs === course.onchainInstance[0]?.CourseCreatorNFTPolicyID)
+      setIsEnrolled(!!_check)
+    }
+
+  }, [globalStateDatum, course.onchainInstance]);
 
   return (
     <>
@@ -114,7 +115,7 @@ export default function MintCourseEnrollmentDialog({
                             ) : (
                               <>
                                 {accessTokenAsset &&
-                                course.onchainInstance[0] ? (
+                                  course.onchainInstance[0] ? (
                                   <MintLocalState
                                     userAccessTokenUnit={accessTokenAsset.unit}
                                     courseNftPolicyId={

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { type Course } from "~/types/db";
+import { type CoursePublic } from "~/types/db";
 import { useRouter } from "next/router";
 
 function classNames(...classes: string[]) {
@@ -9,7 +9,7 @@ function classNames(...classes: string[]) {
 export default function CreatorCourseListMenu({
   ownerCourses,
 }: {
-  ownerCourses: Course[];
+  ownerCourses: CoursePublic[];
 }) {
   const router = useRouter();
   return (

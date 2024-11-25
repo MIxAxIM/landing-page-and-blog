@@ -5,7 +5,7 @@ import CourseTitle from "~/ui/studio/components/CourseTitle";
 import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
 import ListCourseVariants from "../components/ListCourseVariants";
 
-import useCoursesByOwner from "~/hooks/course/useCoursesByOwner";
+import useCourseByOwner from "~/hooks/course/useCourseByOwner";
 import ShowCourseOnchain from "../components/ShowCourseOnchain";
 import { Network } from "@prisma/client";
 import FormFieldset from "~/components/form/form-fieldset";
@@ -17,7 +17,7 @@ import Metatags from "~/components/site/metatags";
 import ModuleImportComponent from "../components/ModuleImportComponent";
 
 export default function PageCourse({ courseCode }: { courseCode: string }) {
-  const { course, isLoadingCourses } = useCoursesByOwner(courseCode);
+  const { course, isLoadingCourse } = useCourseByOwner(courseCode);
   const [selectedNetwork, setSelectedNetwork] = useState<Network>("PREPROD");
   //  const [selectedVariant, setSelectedVariant] = useState<
   //  CourseVariant | undefined
@@ -91,7 +91,7 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
             </div>
           </>
         ) : (
-          isLoadingCourses && (
+          isLoadingCourse && (
             <div className="flex min-h-[90vh] items-center">
               <Loading size={50} />
             </div>
