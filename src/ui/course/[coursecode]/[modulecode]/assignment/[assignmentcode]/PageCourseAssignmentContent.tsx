@@ -139,7 +139,7 @@ function Page({
                   courseCode={courseCode}
                 />
               ) : (
-                <ConnectWalletCard />
+                <ConnectWalletCard message="Connect a wallet to commit to this assignment" />
               )}
             </>
           )}

@@ -30,6 +30,8 @@ import {
 import Metatags from "~/components/site/metatags";
 import Markdown from "react-markdown";
 import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import { useState } from "react";
+import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
 
 export default function PageCourse({
   courseCode,
@@ -197,6 +199,11 @@ function ModuleContainer({
   _courseVariant: CourseVariant | undefined;
   learnerLessons: string[];
 }) {
+  const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false);
+  const { isAssignmentOnchain } = useAssignmentNetworkStatus({
+    courseCode: courseCode,
+    moduleCode: module.moduleCode,
+  });
   // Todo: When ready to implement variants, we can change this to a useModuleVariants hook:
   const { data: moduleVariants } = api.moduleVariant.getModuleVariants.useQuery(
     {
@@ -220,43 +227,52 @@ function ModuleContainer({
 
     return _module;
   }
-  const _module = getModule();
+  const currentModule = getModule();
 
   return (
     <Accordion type="single" collapsible>
       <AccordionItem
-        value="item-1"
-        className="mb-5 rounded-md border border-primary"
+        value={currentModule.moduleCode}
+        className="my-3 w-full sm:mx-auto sm:w-[630px] md:w-[750px] lg:w-[800px] xl:w-[950px] 2xl:w-[1100px] bg-primary rounded-md"
+        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
-        <AccordionTrigger className="flex w-full items-center justify-between gap-4 rounded-md bg-accent px-5 py-3 text-left hover:bg-card hover:no-underline">
-          <span className="text-base font-semibold leading-7">
-            {_module.moduleCode}
-          </span>
-          <span className="grow">
-            <div>
-              <p className="text-[1.1rem] font-semibold leading-7">
-                {_module.title}
-              </p>
-              <div className="flex items-center gap-x-2 leading-5 text-accent-foreground">
-                <p>{_module.description}</p>
+        <AccordionTrigger
+          className={`flex w-full flex-row justify-between mb-0 ${isAccordionOpen ? "rounded-t-md" : "rounded-md"} h-full min-h-[75px] items-center bg-primary px-3 text-primary-foreground`}
+        >
+          <div className="grid w-full grid-cols-12 py-1">
+            <div className="col-span-1 flex h-full items-center">
+              {currentModule.moduleCode}
+            </div>
+            <div className="col-span-3 flex h-full items-center">
+              <div className="flex h-full  items-center gap-2 text-left">
+                <span>{currentModule.title}</span>
               </div>
             </div>
-          </span>
-          {_module.releaseDate && (
-            <Badge>Release Date: {format(_module.releaseDate, "P")}</Badge>
+            <div className="col-span-3 flex h-full items-center">{`${currentModule.slts.length} SLTs + ${currentModule.lessons.length} Lessons`}</div>
+            <div className="col-start-12 flex h-full items-center justify-center">
+              <div
+                className="flex content-end items-center justify-end gap-2 px-5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {isAssignmentOnchain && "credential available"}
+              </div>
+            </div>
+          </div>
+          {currentModule.releaseDate && (
+            <Badge>Release Date: {format(currentModule.releaseDate, "P")}</Badge>
           )}
         </AccordionTrigger>
-        <AccordionContent className="flex flex-col flex-wrap items-center justify-between py-5 sm:flex-nowrap">
+        <AccordionContent className="flex flex-col flex-wrap items-center justify-between py-5 sm:flex-nowrap bg-background border-x border-b border-primary rounded-b-md">
           <div className="grid w-full grid-cols-4 gap-5 px-5">
             <div className="mx-auto flex w-5/6 flex-col">
-              <Link href={`/course/${courseCode}/${_module.moduleCode}`}>
+              <Link href={`/course/${courseCode}/${currentModule.moduleCode}`}>
                 <Button intent="courseOutlineAction" size="md">
                   Start this Module <DocumentTextIcon width={25} height={25} />
                 </Button>
               </Link>
-              {_module.assignments[0] && (
+              {currentModule.assignments[0] && (
                 <Link
-                  href={`/course/${courseCode}/${_module.moduleCode}/assignment/${_module.assignments[0]?.assignmentCode}`}
+                  href={`/course/${courseCode}/${currentModule.moduleCode}/assignment/${currentModule.assignments[0]?.assignmentCode}`}
                 >
                   <Button intent="courseOutlineAction" size="md">
                     View Assignment <DocumentCheckIcon width={25} height={25} />
@@ -268,28 +284,28 @@ function ModuleContainer({
               <h2>
                 Student Learning Targets
               </h2>
-              {_module.slts.map((slt, i) => (
+              {currentModule.slts.map((slt, i) => (
                 <div
                   key={`slt${i}`}
-                  className="py-1 hover:text-accent-foreground"
+                  className="py-1"
                 >
                   <Link
-                    href={`/course/${courseCode}/${_module.moduleCode}/lesson/${slt.moduleIndex}`}
+                    href={`/course/${courseCode}/${currentModule.moduleCode}/lesson/${slt.moduleIndex}`}
                   >
                     <div className="flex w-full flex-row items-center gap-6 font-semibold leading-6">
                       {checkLearnerLesson(
                         slt,
-                        _module.lessons,
+                        currentModule.lessons,
                         learnerLessons,
                       ) ? (
-                        <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                        <div className="h-2 w-2 rounded-full bg-green-500 hover:bg-primary"></div>
                       ) : (
-                        <div className="h-2 w-2 rounded-full bg-orange-500"></div>
+                        <div className="h-2 w-2 rounded-full bg-orange-500 hover:bg-primary"></div>
                       )}
-                      <div className="max-w-[400px] text-left">
+                      <div className="max-w-[400px] text-left hover:text-primary">
                         <p className="">
                           <span className="text-md font-bold">
-                            {_module.moduleCode}.{slt.moduleIndex}
+                            {currentModule.moduleCode}.{slt.moduleIndex}
                           </span>
                           {": "}
                           <span className="text-md">{slt.sltText}</span>

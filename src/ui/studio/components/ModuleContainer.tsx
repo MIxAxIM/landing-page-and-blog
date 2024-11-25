@@ -287,10 +287,10 @@ export default function ModuleContainer({
                 This Module is published on the Andamio Network. You cannot
                 change the title of the Module or the Student Learning Targets.
                 You can still update the introduction, lesson, and assignment
-                content. To manage this module, navigate to your{" "}
-                <Link href="/dashboard">
-                  <span className="font-semibold text-primary hover:text-success">
-                    Andamio Dashboard
+                content. To manage this module, navigate to the{" "}
+                <Link href="/app/teach">
+                  <span className="font-semibold text-primary over:text-success">
+                    Andamio App
                   </span>
                 </Link>
                 .
