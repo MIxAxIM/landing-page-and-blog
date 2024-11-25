@@ -5,17 +5,21 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
+import { useTreasury } from "~/hooks/contribution/useTreasury";
 
 export default function ProjectStepOne({
   alias,
   setSuccessTxHash,
+  treasuryId,
 }: {
   alias: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
+  treasuryId: string;
 }) {
   const { toast } = useToast();
 
   const { wallet } = useWallet();
+  const { updateTreasury, isUpdating } = useTreasury();
   // TODO: Implement multi alias - just needs to be sent from Parent + changed here
   const { data: builtTxResponse } =
     api.andamioAdminTransactions.initProjectStepOne.useQuery({
@@ -37,10 +41,12 @@ export default function ProjectStepOne({
           description: `${txId}`,
         });
         setSuccessTxHash(txId);
+        updateTreasury({ id: treasuryId, treasuryNftPolicyId: builtTxResponse.projectNftPolicyId })
       }
     }
   }
 
+  if (isUpdating) return "Updating Treasury in DB"
 
   return (
     <TransactionPlaceholderComponent name="StepOneMintCourseNft">

@@ -6,19 +6,23 @@ import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
 import { ContributorPrerequisite } from "~/types/db";
+import { useTreasury } from "~/hooks/contribution/useTreasury";
 
 export default function ProjectStepFour({
   projectNftPolicyId,
   prerequisites,
   setSuccessTxHash,
+  treasuryId
 }: {
   projectNftPolicyId: string;
   prerequisites: ContributorPrerequisite;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
+  treasuryId: string;
 }) {
   const { toast } = useToast();
 
   const { wallet } = useWallet();
+  const { updateTreasury, isUpdating } = useTreasury();
 
   const formattedPrereqs = prerequisites.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
 
@@ -43,6 +47,7 @@ export default function ProjectStepFour({
           description: `${txId}`,
         });
         setSuccessTxHash(txId);
+        updateTreasury({ id: treasuryId, live: true })
       }
     }
   }

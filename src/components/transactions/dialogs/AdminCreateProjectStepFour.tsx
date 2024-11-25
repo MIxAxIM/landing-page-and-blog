@@ -1,4 +1,3 @@
-
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,13 +5,14 @@ import { useAddress } from "@meshsdk/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FormInput from "~/components/form/form-input";
-import { Form } from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepFour from "../admin/ProjectStepFour";
 import PrerequisiteFormSelect from "~/ui/contribution/selection/PrerequisiteFormSelect";
 import { ContributorPrerequisite } from "~/types/db";
+import useTreasuries from "~/hooks/contribution/useTreasuries";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
 // TODO: Write notes on how prerequisites work
 // NOTE: About Prerequisites
@@ -20,15 +20,13 @@ import { ContributorPrerequisite } from "~/types/db";
 // What do they mean for users?
 // How to build an onboarding pathway?
 
+// WARN: ON SUCCESS, this tx must trigger the Treasury to be live in DB
+// TODO: Confirm that Treasury with treasuryId is now live
 
-
-// TODO: In this form, select from a menu of prerequisites
-// 1. Load prepreqs from built components
-// 2. Parse data into correct format - Following MintCourseModule as an example
-// 3. Test the transaction
-// 4. Allow multiple prereqs?
 export default function AdminCreateProjectInstanceStepFour() {
   const address = useAddress();
+  const { treasuriesWithPolicyId } = useTreasuries()
+  const [treasuryId, setTreasuryId] = useState<string | undefined>(undefined)
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<
     string | undefined
   >(undefined);
@@ -56,7 +54,7 @@ export default function AdminCreateProjectInstanceStepFour() {
     },
   });
 
-  const { register, watch } = form;
+  const { watch } = form;
 
   const projectNft = watch("projectNftPolicyId");
 
@@ -86,12 +84,31 @@ export default function AdminCreateProjectInstanceStepFour() {
             <p className="mb-5">December: How to automate this step for self-service</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormLabel>Enter the policy id (for now)</FormLabel>
-                <FormInput
-                  {...register("projectNftPolicyId")}
+                <FormField
+                  control={form.control}
                   name="projectNftPolicyId"
-                  placeholder="56 character policy id"
-                  form={form}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Treasury to Publish On-Chain</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select treasury" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {treasuriesWithPolicyId?.map(t => (
+                            <>
+                              {!!t.treasuryNftPolicyId && <SelectItem value={t.treasuryNftPolicyId} key={t.id} onSelect={() => setTreasuryId(t.id)}>{t.title}</SelectItem>}
+                            </>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
                 />
                 <PrerequisiteFormSelect form={form} name="prerequisiteId" prerequisite={prerequisite} setPrerequisite={setPrerequisite} />
                 <Button className="mt-8">Submit</Button>
@@ -107,12 +124,13 @@ export default function AdminCreateProjectInstanceStepFour() {
 
               </div>
             )}
-            {address && projectNftPolicyId && prerequisite && (
+            {address && projectNftPolicyId && prerequisite && treasuryId && (
               <>
                 <ProjectStepFour
                   projectNftPolicyId={projectNftPolicyId}
                   prerequisites={prerequisite}
                   setSuccessTxHash={setSuccessTxHash}
+                  treasuryId={treasuryId ?? ""}
                 />
               </>
             )}

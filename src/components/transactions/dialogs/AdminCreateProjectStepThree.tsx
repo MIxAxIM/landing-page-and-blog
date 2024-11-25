@@ -6,16 +6,17 @@ import { useAddress } from "@meshsdk/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import FormInput from "~/components/form/form-input";
-import { Form } from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepThree from "../admin/ProjectStepThree";
+import useTreasuries from "~/hooks/contribution/useTreasuries";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
-// TODO: Pull PolicyId from ... where?
 
 export default function AdminCreateProjectInstanceStepThree() {
   const address = useAddress();
+  const { treasuriesWithPolicyId } = useTreasuries()
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<
     string | undefined
   >(undefined);
@@ -37,7 +38,7 @@ export default function AdminCreateProjectInstanceStepThree() {
     },
   });
 
-  const { register, watch } = form;
+  const { watch } = form;
 
   const projectNft = watch("projectNftPolicyId");
 
@@ -67,12 +68,31 @@ export default function AdminCreateProjectInstanceStepThree() {
             <p className="mb-5">December: How to automate this step for self-service</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormLabel>Enter the policy id (for now)</FormLabel>
-                <FormInput
-                  {...register("projectNftPolicyId")}
+                <FormField
+                  control={form.control}
                   name="projectNftPolicyId"
-                  placeholder="56 character policy id"
-                  form={form}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Treasury to Publish On-Chain</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select treasury" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {treasuriesWithPolicyId?.map(t => (
+                            <>
+                              {!!t.treasuryNftPolicyId && <SelectItem value={t.treasuryNftPolicyId} key={t.id}>{t.title}</SelectItem>}
+                            </>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
                 />
                 <Button>Submit</Button>
               </form>

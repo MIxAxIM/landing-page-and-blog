@@ -7,15 +7,18 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormInput from "~/components/form/form-input";
-import { Form } from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepOne from "../admin/ProjectStepOne";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import useTreasuries from "~/hooks/contribution/useTreasuries";
 
 // TODO: Add multiple aliases in one transaction - 
 
 export default function AdminCreateProjectInstanceStepOne() {
   const address = useAddress();
+  const { treasuries } = useTreasuries()
   const [andamioAliasToAdd, setAndamioAliasToAdd] = useState<
     string | undefined
   >(undefined);
@@ -28,24 +31,29 @@ export default function AdminCreateProjectInstanceStepOne() {
     andamioAlias: z.string().min(2, {
       message: "Token name must be at least 2 characters.",
     }),
+    treasuryId: z.string().min(1),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       andamioAlias: "",
+      treasuryId: "",
     },
   });
 
   const { register, watch } = form;
 
   const tokenAlias = watch("andamioAlias");
+  const treasuryId = watch("treasuryId")
 
   function onSubmit() {
     if (tokenAlias.length > 1) {
       setAndamioAliasToAdd(tokenAlias);
     }
   }
+
+
 
   return (
     <Dialog>
@@ -74,6 +82,34 @@ export default function AdminCreateProjectInstanceStepOne() {
                   placeholder="Choose your token name"
                   form={form}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="treasuryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Treasury to Publish On-Chain</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select treasury" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {treasuries?.map(t => (
+                            <SelectItem value={t.id} key={t.id}>{t.title}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+
+
                 <Button>Submit</Button>
               </form>
             </Form>
@@ -82,6 +118,7 @@ export default function AdminCreateProjectInstanceStepOne() {
                 <ProjectStepOne
                   alias={andamioAliasToAdd}
                   setSuccessTxHash={setSuccessTxHash}
+                  treasuryId={treasuryId}
                 />
               </>
             )}
