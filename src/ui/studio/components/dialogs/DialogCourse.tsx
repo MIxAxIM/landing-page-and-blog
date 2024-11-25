@@ -23,6 +23,8 @@ export default function DialogCourse({ course }: { course?: Course }) {
         setIsOpen(false);
         toast.success("Course created!"); // trigger notification in top right
         void ctx.course.getCoursesByOwner.invalidate(); // make the new course appear on the page
+        void ctx.creator.getCreatedCourses.invalidate();
+        void ctx.creator.getContributedCourses.invalidate();
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors;
@@ -42,6 +44,8 @@ export default function DialogCourse({ course }: { course?: Course }) {
         setIsOpen(false);
         toast.success("Course updated!");
         void ctx.course.getCoursesByOwner.invalidate();
+        void ctx.creator.getCreatedCourses.invalidate();
+        void ctx.creator.getContributedCourses.invalidate();
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors;
