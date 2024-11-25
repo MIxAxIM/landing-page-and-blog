@@ -2,7 +2,6 @@ import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import DashboardDataComponent from "./DashboardDataComponent";
 import AccessTokenComponent from "./AccessTokenComponent";
 import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
-import useCreatorsCoursesPolicies from "~/hooks/onchain/useCreatorsCoursesPolicies";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
@@ -14,9 +13,7 @@ export default function DashboardNetworkStatusComponent() {
   const { connected } = useWallet();
   const { accessTokenAlias } = useAccessToken();
   const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "");
-  //const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
-  //  accessTokenAlias ?? "",
-  //);
+
   return (
     <div className="mx-auto my-24 w-2/3 space-y-5">
       {!connected && (

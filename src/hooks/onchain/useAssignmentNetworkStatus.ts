@@ -44,7 +44,7 @@ export default function useAssignmentNetworkStatus({
         assignmentCode: moduleCode ?? "",
         alias: accessTokenAlias ?? "",
       },
-      { enabled: !!accessTokenAlias },
+      { enabled: !!accessTokenAlias && !!courseOnchain?.CourseCreatorNFTPolicyID },
     );
 
   return {

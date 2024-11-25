@@ -15,10 +15,7 @@ export default function TeacherSection({
 }) {
   const { courses } = useUserRelationships()
   const { course } = useCourse(courseCode);
-  const { creatorCoursePolicies, isLoadingCreatorCoursePolicies } =
-    useCreatorsCoursesPolicies(accessTokenAlias);
 
-  const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const [selectedCoursePolicyId, setSelectedCoursePolicyId] = useState<
     string | undefined
   >(undefined);
@@ -31,15 +28,7 @@ export default function TeacherSection({
     }
   }, [course]);
 
-  useEffect(() => {
-    if (!!creatorCoursePolicies && !!selectedCoursePolicyId) {
-      if (creatorCoursePolicies.includes(selectedCoursePolicyId)) {
-        setIsTeacher(true);
-      }
-    }
-  }, [creatorCoursePolicies, selectedCoursePolicyId]);
 
-  if (isLoadingCreatorCoursePolicies) return <LoadingCircle />;
 
   //if (!isTeacher) return null;
 
@@ -52,7 +41,6 @@ export default function TeacherSection({
       <pre>{JSON.stringify(course, null, 2)}</pre>
       <NetworkModuleManagement
         courseNftPolicyId={selectedCoursePolicyId ?? ""}
-        key={selectedCoursePolicyId ?? 0}
       />
 
       <CommittedAssignments

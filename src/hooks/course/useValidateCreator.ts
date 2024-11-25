@@ -9,7 +9,7 @@ export default function useValidateCreator(
     const userId = sessionData?.user.id;
 
     const { data: user, isLoading: isValidatingCreator } =
-      api.user.getUserById.useQuery({ id: userId ? userId : "" });
+      api.user.getUserById.useQuery({ id: userId ? userId : "" }, { enabled: !!userId });
 
     if (user?.creator) {
       return { isCreator: true, isValidatingCreator: isValidatingCreator };

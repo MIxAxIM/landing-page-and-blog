@@ -16,12 +16,10 @@ export default function CourseModuleAccordionItem({
   courseCode,
   courseNftPolicyId,
   cm,
-  key,
 }: {
   courseCode: string;
   courseNftPolicyId: string;
   cm: CourseModuleOverview;
-  key: number;
 }) {
   const { isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: courseCode,
@@ -37,7 +35,7 @@ export default function CourseModuleAccordionItem({
   });
 
   return (
-    <AccordionItem key={key} value={cm.moduleCode}>
+    <AccordionItem key={courseNftPolicyId + cm.moduleCode} value={cm.moduleCode}>
       <AccordionTrigger
         className={`items-center border-b border-primary p-2 ${isAccordionOpen ? "bg-primary text-primary-foreground" : "bg-background text-foreground"}`}
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
@@ -72,19 +70,17 @@ export default function CourseModuleAccordionItem({
         </div>
       </AccordionTrigger>
       <AccordionContent className="mb-5 grid grid-cols-1 border-x border-b border-primary px-2 py-2 md:grid-cols-3">
-        <div className="col-span-2 flex h-full flex-col">
+        <div className="col-span-2 flex h-full flex-col" key={courseNftPolicyId + cm.moduleCode}>
           <h3>
             Student Learning Targets (SLTs)
           </h3>
-          {slts.map((slt, j) => (
-            <>
-              <p key={j}>
-                <span className="font-mono font-semibold text-primary">
-                  {cm.moduleCode}.{slt.moduleIndex}:
-                </span>{" "}
-                {slt.sltText}
-              </p>
-            </>
+          {slts.map((slt) => (
+            <p key={slt.id}>
+              <span className="font-mono font-semibold text-primary">
+                {cm.moduleCode}.{slt.moduleIndex}:
+              </span>{" "}
+              {slt.sltText}
+            </p>
           ))}
           {cm.assignments?.length > 0 && (
             <>

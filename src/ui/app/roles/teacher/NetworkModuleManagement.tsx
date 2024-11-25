@@ -10,10 +10,8 @@ import CourseModuleAccordionItem from "./CourseModuleAccordionItem";
 
 export default function NetworkModuleManagement({
   courseNftPolicyId,
-  key,
 }: {
   courseNftPolicyId: string;
-  key: number | string;
 }) {
   const { courseInfo, assignmentStats } =
     useCourseByPolicyId(courseNftPolicyId);
@@ -22,7 +20,7 @@ export default function NetworkModuleManagement({
   );
 
   return (
-    <div key={key} className="mx-auto w-full">
+    <div className="mx-auto w-full">
       <h2>{courseInfo?.title}</h2>
       <div className="mb-5 flex w-full flex-row items-center justify-between border-b border-accent pb-5">
         <p>{assignmentStats?.courseModules} modules</p>
@@ -37,12 +35,12 @@ export default function NetworkModuleManagement({
       <h3>Manage Course Modules</h3>
       {courseInfo?.courseCode && (
         <Accordion type="multiple">
-          {courseModuleOverviews?.map((cm, i) => (
+          {courseModuleOverviews?.map((cm) => (
             <CourseModuleAccordionItem
               courseCode={courseInfo.courseCode}
               courseNftPolicyId={courseNftPolicyId}
               cm={cm}
-              key={i}
+              key={courseNftPolicyId + cm.id}
             />
           ))}
         </Accordion>

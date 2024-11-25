@@ -8,7 +8,7 @@ export default function useCreatorsCoursesPolicies(alias: string) {
     error: errorCreatorCoursePolicies,
   } = api.courseGovernanceValidator.getCreatorCoursePoliciesByAlias.useQuery({
     alias,
-  });
+  }, { enabled: !!alias });
 
   return {
     creatorCoursePolicies,

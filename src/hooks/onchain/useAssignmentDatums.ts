@@ -14,7 +14,7 @@ export default function useAssignmentDatums(
     {
       courseNftPolicy: courseNftPolicy,
     },
-    { enabled: !alias },
+    { enabled: !alias && !!courseNftPolicy },
   );
 
   const {
@@ -28,7 +28,7 @@ export default function useAssignmentDatums(
       alias: alias!,
     },
     {
-      enabled: !!alias,
+      enabled: !!alias && !!courseNftPolicy,
     },
   );
 
