@@ -52,7 +52,7 @@ export default function CommittedAssignments({
             {listCourseAssignmentDatums.map((assignment, i) => (
               <TableRow key={i}>
                 <TableCell className="font-medium">
-                  {assignment.CourseState.CsdUserName}
+                  {assignment.CourseUserName}
                 </TableCell>
                 <TableCell>{assignment.CommittedAssignmentId}</TableCell>
                 <TableCell>{assignment.StudentAssignmentInfo}</TableCell>
@@ -62,7 +62,7 @@ export default function CommittedAssignments({
                       key={i}
                       courseNftPolicy={courseNftPolicy}
                       userAccessTokenUnit={accessTokenAsset!.unit}
-                      studentAlias={assignment.CourseState.CsdUserName}
+                      studentAlias={assignment.CourseUserName}
                       decision="accept"
                     />
                   ) : (
@@ -75,7 +75,7 @@ export default function CommittedAssignments({
                       key={i}
                       courseNftPolicy={courseNftPolicy}
                       userAccessTokenUnit={accessTokenAsset!.unit}
-                      studentAlias={assignment.CourseState.CsdUserName}
+                      studentAlias={assignment.CourseUserName}
                       decision="deny"
                     />
                   ) : (

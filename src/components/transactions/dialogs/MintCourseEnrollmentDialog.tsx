@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { type CoursePublic } from "~/types/db";
 import {
   Dialog,
   DialogContent,
@@ -26,11 +25,15 @@ import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
 // Delete checkIfEnrolled
 
 export default function MintCourseEnrollmentDialog({
-  course,
+  courseTitle,
+  courseCode,
+  courseNftPolicyId,
 }: {
-  course: CoursePublic;
+  courseTitle: string;
+  courseCode: string;
+  courseNftPolicyId: string;
 }) {
-  const { connected, wallet } = useWallet();
+  const { connected } = useWallet();
   const { accessTokenAsset, accessTokenAlias } = useAccessToken();
   const [isOpen, setIsOpen] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
@@ -42,8 +45,8 @@ export default function MintCourseEnrollmentDialog({
 
   const nextSteps = [
     {
-      text: `View ${course.title} Course`,
-      url: `/course/${course.courseCode}`,
+      text: `View ${courseTitle} Course`,
+      url: `/course/${courseCode}`,
     },
     { text: "Browse More Courses", url: "/courses" },
     { text: "Go to Dashboard", url: "/dashboard/learner" },
@@ -51,17 +54,17 @@ export default function MintCourseEnrollmentDialog({
 
 
   useEffect(() => {
-    if (!!globalStateDatum && !!course.onchainInstance[0]) {
-      const _check = globalStateDatum.TokenInfos.some(ti => ti.LsCs === course.onchainInstance[0]?.CourseCreatorNFTPolicyID)
+    if (!!globalStateDatum && !! !!courseNftPolicyId) {
+      const _check = globalStateDatum.TokenInfos.some(ti => ti.LsCs === courseNftPolicyId)
       setIsEnrolled(!!_check)
     }
 
-  }, [globalStateDatum, course.onchainInstance]);
+  }, [globalStateDatum, courseNftPolicyId]);
 
   return (
     <>
       {isEnrolled ? (
-        <Link href={`/course/${course.courseCode}`}>
+        <Link href={`/course/${courseCode}`}>
           <Button className="bg-success text-success-foreground hover:bg-green-400">
             Currently Enrolled
           </Button>
@@ -86,7 +89,7 @@ export default function MintCourseEnrollmentDialog({
                 <DialogDescription>
                   {!isOpen && (
                     <div className="py-4 text-xs text-black hover:font-semibold hover:text-primary sm:justify-start">
-                      <Link href={`/course/${course.courseCode}`}>
+                      <Link href={`/course/${courseCode}`}>
                         I&apos;ll do it after taking a look inside first
                       </Link>
                     </div>
@@ -115,12 +118,11 @@ export default function MintCourseEnrollmentDialog({
                             ) : (
                               <>
                                 {accessTokenAsset &&
-                                  course.onchainInstance[0] ? (
+                                  !!courseNftPolicyId ? (
                                   <MintLocalState
                                     userAccessTokenUnit={accessTokenAsset.unit}
                                     courseNftPolicyId={
-                                      course.onchainInstance[0]
-                                        .CourseCreatorNFTPolicyID
+                                      courseNftPolicyId
                                     }
                                     setSuccessTxHash={setSuccessTxHash}
                                   />

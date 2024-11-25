@@ -12,9 +12,10 @@ interface ImageBlockViewProps extends NodeViewProps {
   editor: Editor;
   getPos: () => number;
   node: Node & {
-    attrs: {
+    attrs: Partial<{
       src: string;
-    };
+    }>
+
   };
   updateAttributes: (attrs: Record<string, string>) => void;
 }
@@ -22,7 +23,7 @@ interface ImageBlockViewProps extends NodeViewProps {
 export const ImageBlockView = (props: ImageBlockViewProps) => {
   const { editor, getPos, node } = props;
   const imageWrapperRef = useRef<HTMLDivElement>(null);
-  const { src } = node.attrs;
+  const src = node.attrs.src ?? '';
 
   const wrapperClassName = cn(
     node.attrs.align === "left" ? "ml-0" : "ml-auto",

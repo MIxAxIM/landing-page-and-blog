@@ -6,20 +6,33 @@ import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import TeacherSection from "./roles/teacher/TeacherSection";
 import { CardanoWallet } from "@meshsdk/react";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
+import { Card } from "~/components/ui/card";
+import { useState } from "react";
+import { Button } from "~/components/ui/button";
+
 
 export default function TeacherPageComponent() {
   const { accessTokenAlias } = useAccessToken()
   const { courses } = useUserRelationships()
+  const [currentCourseCode, setCurrentCourseCode] = useState<string | undefined>(undefined)
+
+
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
         <h2>Teacher Page</h2>
-        <pre>{JSON.stringify(courses, null, 2)}</pre>
+        {courses.asCreator.map((course, i) => (
+          <Card key={i}>
+            <h2>{course.title}</h2>
+            <pre>Course NFT Policy Id: {course.onchainInstance[0]?.CourseCreatorNFTPolicyID}</pre>
+            <Button onClick={() => setCurrentCourseCode(course.courseCode)}>View</Button>
+          </Card>
+        ))}
         <CardanoWallet />
-        {!!accessTokenAlias && (
+        {!!accessTokenAlias && !!currentCourseCode && (
           <>
             <h1>{accessTokenAlias}</h1>
-            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode="ppbl2025" />
+            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={currentCourseCode} />
           </>
         )}
         <PlaceholderComponent name="view courses in my organization" />

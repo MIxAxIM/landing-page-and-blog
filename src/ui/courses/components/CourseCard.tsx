@@ -89,7 +89,7 @@ export default function CourseCard({
           <Button onClick={handleSaveCourse}>Save</Button>
         )}
         {!!course.onchainInstance[0] && (
-          <MintCourseEnrollmentDialog course={course} />
+          <MintCourseEnrollmentDialog courseTitle={course.title} courseCode={course.courseCode} courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID} />
         )}
       </CardFooter>
     </Card>

@@ -7,6 +7,7 @@ import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading
 import useNetworkLearner from "~/hooks/onchain/roles/useNetworkLearner";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import MintAccessTokenDialog from "~/components/transactions/dialogs/MintAccessTokenDialog";
+import MintCourseEnrollmentDialog from "~/components/transactions/dialogs/MintCourseEnrollmentDialog";
 
 export default function NetworkCommitmentCard({
   courseCode,
@@ -29,6 +30,7 @@ export default function NetworkCommitmentCard({
   // here we assume that assignment code matches module code
   const { isEnrolled } = useNetworkLearner({ courseNftPolicyId: courseNftPolicyId })
   const { accessTokenAlias } = useAccessToken()
+
 
   if (!isAssignmentOnchain) {
     return null;
@@ -79,6 +81,7 @@ export default function NetworkCommitmentCard({
                 <>
                   <p>Your access token: {accessTokenAlias}</p>
                   <p>Enroll now</p>
+                  <MintCourseEnrollmentDialog courseNftPolicyId={courseNftPolicyId} courseTitle={"Course"} courseCode={courseCode} />
                 </>
 
               ) : (
