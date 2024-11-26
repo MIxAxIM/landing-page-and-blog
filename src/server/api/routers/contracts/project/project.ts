@@ -1,3 +1,4 @@
+import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import UTxOi from "~/components/transactions/model";
@@ -18,7 +19,7 @@ export const projectValidatorsRouter = createTRPCRouter({
         const response = await indexerGet<UTxOi>(
           `/contributor-state/decoded-datum?policy=${input.treasuryNftPolicyId}`,
         );
-        return response
+        return response;
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -39,7 +40,7 @@ export const projectValidatorsRouter = createTRPCRouter({
         const response = await indexerGet<UTxOi>(
           `/contributor-state/decoded-datum?policy=${input.treasuryNftPolicyId}&alias=${input.alias}`,
         );
-        return response
+        return response;
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -56,10 +57,13 @@ export const projectValidatorsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
-          `/contributor-state/policies?policy=${input.treasuryNftPolicyId}`,
-        );
-        return response
+        const response = await indexerGet<
+          {
+            contributorPolicy: string;
+            projectNFTPolicy: string;
+          }[]
+        >(`/contributor-state/policies?policy=${input.treasuryNftPolicyId}`);
+        return response;
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -77,10 +81,10 @@ export const projectValidatorsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
+        const response = await indexerGet<UtxoWithSlot[]>(
           `/escrow/utxos?policy=${input.treasuryNftPolicyId}`,
         );
-        return response
+        return response;
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -100,10 +104,10 @@ export const projectValidatorsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
+        const response = await indexerGet<UtxoWithSlot[]>(
           `/treasury/utxos?policy=${input.treasuryNftPolicyId}`,
         );
-        return response
+        return response;
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -121,7 +125,10 @@ export const projectValidatorsRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const info = await indexerGetWithParams<any, any>("/treasury/info", {
+        const info = await indexerGetWithParams<
+          UtxoWithSlot[],
+          { policy: string }
+        >("/treasury/info", {
           policy: input.treasuryNftPolicyId,
         });
         return {
