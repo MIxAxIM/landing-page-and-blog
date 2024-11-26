@@ -19,7 +19,7 @@ type ProjectAcceptDenyParams = {
 type TreasuryAddFundsParams = {
   policy: string;
   user_address: string;
-  amount: number;
+  amount: string;
 };
 
 // NOTE:
@@ -135,7 +135,7 @@ export const projectManagerTxRouter = createTRPCRouter({
       const treasuryAddFundsParams: TreasuryAddFundsParams = {
         policy: input.treasuryNftPolicyId,
         user_address: input.dipositorsAddress,
-        amount: input.adaAmount,
+        amount: input.adaAmount.toString(),
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
