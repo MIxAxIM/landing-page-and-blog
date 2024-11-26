@@ -2,25 +2,12 @@ import { api } from "~/utils/api";
 
 export default function useProjectByTreasury(
   { treasuryNftPolicyId, alias }:
-    { treasuryNftPolicyId: string, alias?: string }
+    { treasuryNftPolicyId?: string, alias?: string }
 ) {
 
-  // given a Treasury NFT Policy Id,
-  // this hook returns
-  // A list of Contributor State UTxOs
-  // Valid Policies for new Contributors
-  // Escrow UTxOs
-  // Treasury UTxOs - with room to implement new features on /treasury/utxos
-  // Treasury Info
-  //
-  // Then we can use all of that data throughout the app
-  //
-  //
   // TODO: 
-  // 1. Add queries
   // 2. Add necessary data processing
   // 3. Use these hooks to implement tx4 in Task List View
-
 
   const {
     data: contributorStateUtxos,
@@ -28,7 +15,7 @@ export default function useProjectByTreasury(
     isError: isErrorContributorStateUtxos,
     error: errorContributorStateUtxos,
   } = api.projectValidators.getAllContributorStateUtxos.useQuery(
-    { treasuryNftPolicyId },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 
@@ -38,7 +25,7 @@ export default function useProjectByTreasury(
     isError: isErrorContributorStateUtxo,
     error: errorContributorStateUtxo,
   } = api.projectValidators.getContributorStateUtxoByAlias.useQuery(
-    { treasuryNftPolicyId, alias: alias ?? "" },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "", alias: alias ?? "" },
     { enabled: !!treasuryNftPolicyId && !!alias }
   );
 
@@ -48,7 +35,7 @@ export default function useProjectByTreasury(
     isError: isErrorContributorPolicies,
     error: errorContributorPolicies,
   } = api.projectValidators.getContributorPolicies.useQuery(
-    { treasuryNftPolicyId },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 
@@ -58,7 +45,7 @@ export default function useProjectByTreasury(
     isError: isErrorEscrowUtxos,
     error: errorEscrowUtxos,
   } = api.projectValidators.getEscrowUtxosByTreasury.useQuery(
-    { treasuryNftPolicyId },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 
@@ -68,7 +55,7 @@ export default function useProjectByTreasury(
     isError: isErrorTreasuryUtxos,
     error: errorTreasuryUtxos,
   } = api.projectValidators.getAllUtxosByTreasury.useQuery(
-    { treasuryNftPolicyId },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 
@@ -78,7 +65,7 @@ export default function useProjectByTreasury(
     isError: isErrorTreasuryInfo,
     error: errorTreasuryInfo,
   } = api.projectValidators.getAllUtxosByTreasury.useQuery(
-    { treasuryNftPolicyId },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 

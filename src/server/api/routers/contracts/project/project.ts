@@ -3,11 +3,11 @@ import { z } from "zod";
 import UTxOi from "~/components/transactions/model";
 import { indexerGet, indexerGetWithParams } from "~/lib/axios/indexer";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 // Contributor State
 export const projectValidatorsRouter = createTRPCRouter({
-  getAllContributorStateUtxos: protectedProcedure
+  getAllContributorStateUtxos: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
@@ -27,7 +27,7 @@ export const projectValidatorsRouter = createTRPCRouter({
       }
     }),
 
-  getContributorStateUtxoByAlias: protectedProcedure
+  getContributorStateUtxoByAlias: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
@@ -48,7 +48,7 @@ export const projectValidatorsRouter = createTRPCRouter({
       }
     }),
 
-  getContributorPolicies: protectedProcedure
+  getContributorPolicies: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
@@ -69,7 +69,7 @@ export const projectValidatorsRouter = createTRPCRouter({
     }),
 
   // Escrow
-  getEscrowUtxosByTreasury: protectedProcedure
+  getEscrowUtxosByTreasury: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
@@ -92,7 +92,7 @@ export const projectValidatorsRouter = createTRPCRouter({
   // Treasury
   //
   // TODO: Create routers that use /treasury/utxos with optional params in helpful ways - as needed in UX
-  getAllUtxosByTreasury: protectedProcedure
+  getAllUtxosByTreasury: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
@@ -113,7 +113,7 @@ export const projectValidatorsRouter = createTRPCRouter({
     }),
 
   // NOTE: Duplicated in projectGeneralRouter
-  getTreasuryInfo: protectedProcedure
+  getTreasuryInfo: publicProcedure
     .input(
       z.object({
         treasuryNftPolicyId: z.string().length(56),
