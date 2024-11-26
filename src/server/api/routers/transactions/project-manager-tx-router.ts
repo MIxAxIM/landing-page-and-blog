@@ -16,6 +16,10 @@ type ProjectAcceptanceParams = {
   policy: string;
 };
 
+// NOTE:
+// projects is a stringified object
+// https://github.com/Andamio-Platform/andamio-dev/blob/preprod/apps/express_api/test/mint_project_token.md
+
 export const projectManagerTxRouter = createTRPCRouter({
   mintProjectToken: publicProcedure
     .input(
@@ -23,7 +27,7 @@ export const projectManagerTxRouter = createTRPCRouter({
         userAccessTokenUnit: z.string().min(62),
         treasuryNftPolicyId: z.string().length(56),
         allowedContributors: z.array(z.string().min(1)),
-        projects: z.string(),
+        projects: z.string().min(1),
       }),
     )
     .query(async ({ input }) => {
