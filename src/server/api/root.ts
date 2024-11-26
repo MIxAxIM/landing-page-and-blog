@@ -43,6 +43,7 @@ import { organizationTreasuryRouter } from "./routers/database/organization/orga
 import { organizationCourseRouter } from "./routers/database/organization/organization-course";
 import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
 import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
+import { contributorTxRouter } from "./routers/transactions/contributor-tx-router";
 /**
  * This is the primary router for your server.
  *
@@ -104,6 +105,7 @@ export const appRouter = createTRPCRouter({
   creatorCourseTransactions: courseCreatorTxRouter,
   accessTokenTransactions: accessTokenTxRouter,
   projectManagerTransactions: projectManagerTxRouter,
+  contributorTransactions: contributorTxRouter,
 });
 
 // export type definition of API
