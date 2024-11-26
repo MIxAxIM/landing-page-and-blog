@@ -12,11 +12,11 @@ import useLearnerSavedCourses from "~/hooks/course/useLearnerSavedCourses";
 import LearnerCourseModuleDetailsComponent from "./LearnerCourseModuleDetailsComponent";
 import useCourseModuleWithAssignmentSummary from "~/hooks/course/useCourseModuleWithAssignmentSummary";
 import { Skeleton } from "~/components/ui/skeleton";
-import BurnLocalStateMeshDialog from "~/components/transactions/dialogs/BurnLocalStateMeshDialog";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import useCourseStateDatum from "~/hooks/onchain/useCourseStateDatum";
+import BurnCourseEnrollmentDialog from "~/components/transactions/dialogs/BurnCourseEnrollmentDialog";
 
 export default function CourseDetails({
   currentCourseCode,
@@ -125,7 +125,7 @@ export default function CourseDetails({
     );
 
   return (
-    <div className="mx-auto w-11/12 px-5" key={course?.id}>
+    <div className="mx-auto w-full" key={course?.id}>
       <div className=" flex min-h-[150px] w-full flex-col">
         <div className="mb-12 flex w-full flex-row items-center justify-between">
           <h1>{course?.title}</h1>
@@ -146,7 +146,7 @@ export default function CourseDetails({
               <>
                 {accessTokenAsset &&
                   course?.onchainInstance[0]?.CourseCreatorNFTPolicyID && (
-                    <BurnLocalStateMeshDialog
+                    <BurnCourseEnrollmentDialog
                       accessTokenAssetId={accessTokenAsset.unit}
                       courseNftPolicyId={
                         course?.onchainInstance[0]?.CourseCreatorNFTPolicyID
@@ -195,9 +195,9 @@ export default function CourseDetails({
         </div>
       </div>
 
-      <div className="">
-        <h2>{course?.description}</h2>
+      <div className="flex min-w-full flex-col">
         <h2>{course?.title} Outline</h2>
+        <h2>{course?.description}</h2>
         {courseModuleOverviews
           ?.sort((a, b) => {
             return a.moduleCode.localeCompare(b.moduleCode);

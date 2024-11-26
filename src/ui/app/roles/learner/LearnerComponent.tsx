@@ -21,7 +21,7 @@ export default function LearnerComponent() {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="mx-auto mt-12 flex w-11/12 flex-col lg:w-5/6">
+      <div className="mx-auto flex flex-col">
         {/* If a course is selected, show COURSE DETAILS. Otherwise, show LEARNER OVERVIEW */}
         {!!coursecode && typeof coursecode === "string" ? (
           <CourseDetails
@@ -45,7 +45,7 @@ export default function LearnerComponent() {
             )}
             {connected && accessTokenAlias && (
               <>
-                <div className="col-span-4 mt-5 flex min-h-[60vh] w-full flex-col items-center">
+                <div className="col-span-4 flex min-h-[60vh] w-full flex-col items-center">
                   {accessTokenAlias && (
                     <LearnerCourses
                       alias={accessTokenAlias}

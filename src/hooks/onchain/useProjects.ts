@@ -49,22 +49,23 @@ export default function useProjectByTreasury(
     { enabled: !!treasuryNftPolicyId }
   );
 
-  const {
-    data: treasuryUtxos,
-    isLoading: isLoadingTreasuryUtxos,
-    isError: isErrorTreasuryUtxos,
-    error: errorTreasuryUtxos,
-  } = api.projectValidators.getAllUtxosByTreasury.useQuery(
-    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    { enabled: !!treasuryNftPolicyId }
-  );
+  // NOTE: See comment in projectValidatorRouter
+  //const {
+  //  data: treasuryUtxos,
+  //  isLoading: isLoadingTreasuryUtxos,
+  //  isError: isErrorTreasuryUtxos,
+  //  error: errorTreasuryUtxos,
+  //} = api.projectValidators.getAllUtxosByTreasury.useQuery(
+  //  { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
+  //  { enabled: !!treasuryNftPolicyId }
+  //);
 
   const {
     data: treasuryInfo,
     isLoading: isLoadingTreasuryInfo,
     isError: isErrorTreasuryInfo,
     error: errorTreasuryInfo,
-  } = api.projectValidators.getAllUtxosByTreasury.useQuery(
+  } = api.projectValidators.getTreasuryInfo.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
@@ -90,10 +91,10 @@ export default function useProjectByTreasury(
     isErrorEscrowUtxos,
     errorEscrowUtxos,
 
-    treasuryUtxos,
-    isLoadingTreasuryUtxos,
-    isErrorTreasuryUtxos,
-    errorTreasuryUtxos,
+    //treasuryUtxos,
+    //isLoadingTreasuryUtxos,
+    //isErrorTreasuryUtxos,
+    //errorTreasuryUtxos,
 
     treasuryInfo,
     isLoadingTreasuryInfo,

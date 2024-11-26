@@ -3,7 +3,7 @@ import TransactionContainer from "~/components/transactions/TransactionContainer
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 
-export default function BurnLocalStateMeshNative({
+export default function BurnLocalState({
   accessTokenAssetId,
   courseNftPolicyId,
   setSuccessTxHash,

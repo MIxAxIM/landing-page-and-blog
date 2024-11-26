@@ -24,7 +24,6 @@ export default function DebugProjectsPage() {
     contributorStateUtxos,
     contributorPolicies,
     escrowUtxos,
-    treasuryUtxos,
     treasuryInfo,
   } = useProjects({ treasuryNftPolicyId: currentTreasury?.treasuryNftPolicyId ?? undefined })
 
@@ -63,8 +62,6 @@ export default function DebugProjectsPage() {
       <pre>{JSON.stringify(contributorPolicies, null, 2)}</pre>
       <h2>Escrow Utxos</h2>
       <pre>{JSON.stringify(escrowUtxos, null, 2)}</pre>
-      <h2>Treasury Utxos</h2>
-      <pre>{JSON.stringify(treasuryUtxos, null, 2)}</pre>
       <h2>Treasury Info</h2>
       <pre>{JSON.stringify(treasuryInfo, null, 2)}</pre>
     </div>

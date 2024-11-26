@@ -136,7 +136,7 @@ export default function LearnerCourseModuleDetailsComponent({
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
         <AccordionTrigger
-          className={`px-5 py-3 ${isAccordionOpen ? "bg-card" : "border-none hover:bg-card"}`}
+          className={`w-full px-5 py-3 ${isAccordionOpen ? "bg-card" : "border-none hover:bg-card"}`}
         >
           <div className="grid w-11/12 grid-cols-3 items-center">
             <p className="text-left font-bold">

@@ -4,7 +4,19 @@ import { z } from "zod";
 import UTxOi from "~/components/transactions/model";
 import { indexerGet, indexerGetWithParams } from "~/lib/axios/indexer";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+
+type Project = {
+  project_hash: string;
+  escrow_hash: string;
+  commitment_allowed: number;
+  allowed_contributors: string[];
+}
+
+type TreasuryInfo = {
+  funds: never[] // temporary while we build the rest 
+  projects: Project[]
+}
 
 // Contributor State
 export const projectValidatorsRouter = createTRPCRouter({
@@ -94,27 +106,22 @@ export const projectValidatorsRouter = createTRPCRouter({
     }),
 
   // Treasury
-  //
-  // TODO: Create routers that use /treasury/utxos with optional params in helpful ways - as needed in UX
-  getAllUtxosByTreasury: publicProcedure
-    .input(
-      z.object({
-        treasuryNftPolicyId: z.string().length(56),
-      }),
-    )
-    .query(async ({ input }) => {
-      try {
-        const response = await indexerGet<UtxoWithSlot[]>(
-          `/treasury/utxos?policy=${input.treasuryNftPolicyId}`,
-        );
-        return response;
-      } catch {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Cannot get Treasury UTxOs",
-        });
-      }
-    }),
+  // The constructors returned in Treasury UTxO Datum cause TRPC to fail
+  // Decide whether we need this query before implementing a fix
+  // NOTE: This is a flexible and potentially helpful query
+  //getAllUtxosByTreasury: protectedProcedure
+  //  .input(
+  //    z.object({
+  //      treasuryNftPolicyId: z.string().length(56),
+  //    }),
+  //  )
+  //  .query(async ({ input }) => {
+  //    const response = indexerGetWithParams<UtxoWithSlot[], { policy: string }>(
+  //      `/treasury/utxos`,
+  //      { policy: input.treasuryNftPolicyId }
+  //    );
+  //    return response;
+  //  }),
 
   // NOTE: Duplicated in projectGeneralRouter
   getTreasuryInfo: publicProcedure
@@ -126,7 +133,7 @@ export const projectValidatorsRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         const info = await indexerGetWithParams<
-          UtxoWithSlot[],
+          TreasuryInfo,
           { policy: string }
         >("/treasury/info", {
           policy: input.treasuryNftPolicyId,
