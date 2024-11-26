@@ -46,7 +46,7 @@ export const projectManagerTxRouter = createTRPCRouter({
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
         ProjectMintingParams
-      >(`/tx/project-manager/mint-project-tokens`, projectMintingParams);
+      >(`/tx/project-manager/mint-project-token`, projectMintingParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
       else throw new Error("Could not build minting transaction");

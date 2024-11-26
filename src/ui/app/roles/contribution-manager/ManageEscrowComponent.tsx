@@ -53,9 +53,6 @@ export default function ManageEscrowComponent({
     }
   }, [escrow])
 
-  const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
-    undefined,
-  );
 
   return (
     <div>

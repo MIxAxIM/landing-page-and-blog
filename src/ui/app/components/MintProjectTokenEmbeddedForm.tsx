@@ -1,5 +1,13 @@
-import UTxOi from "~/components/transactions/model"
+import { useState } from "react";
+import MintProjectToken from "~/components/transactions/project-manager/mintProjectToken/MintProjectToken";
 import { Task } from "~/types/db"
+
+
+type ContributorPolicies = {
+  contributorPolicy: string;
+  projectNFTPolicy: string;
+}[]
+
 
 export default function MintProjectTokenEmbeddedForm(
   {
@@ -9,8 +17,28 @@ export default function MintProjectTokenEmbeddedForm(
   }: {
     treasuryNftPolicyId: string,
     tasksToPublish: Task[],
-    contributorPolicies: UTxOi
+    contributorPolicies: ContributorPolicies
   }) {
+  const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
+    undefined,
+  );
+
+  const datumReadyTasks = tasksToPublish.map(t => {
+    return (
+      [
+        {
+          pdProjectContent_: t.hash,
+          pdExpirationTime_: parseInt(t.expirationTime),
+          pdLovelaceAmount_: parseInt(t.lovelace),
+          pdTokens_: [],
+        },
+        t.numAllowedCommitments,
+      ]
+    )
+  }
+  )
+
+
   return (
 
     <div>
@@ -20,7 +48,7 @@ export default function MintProjectTokenEmbeddedForm(
         {" " + treasuryNftPolicyId}
       </p>
       <h3>Contributor Policy Ids:</h3>
-      <p>Will be a select menu</p>
+      <p>Start with no options - just apply this Contrib to its own Treasury</p>
       <pre>{JSON.stringify(contributorPolicies, null, 2)}</pre>
       <h3>Projects</h3>
       <p>Start by getting 1-of tasks working, then finish implementation of multi-commitments</p>
@@ -35,15 +63,16 @@ export default function MintProjectTokenEmbeddedForm(
         </div>
       ))}
       <h3>Success Tx Hash?</h3>
-      {/** 
-            Add a Dialog Button and a modal that pops up populating and confirming:
-          <MintProjectToken
-            treasuryNftPolicyId=""
-            contributorsToAdd={[]}
-            projects=""
-            setSuccessTxHash={setSuccessTxHash}
-          />
-          **/}
+      Add a Dialog Button and a modal that pops up populating and confirming:
+      {!!contributorPolicies[0] && !!datumReadyTasks && (
+
+        <MintProjectToken
+          treasuryNftPolicyId={treasuryNftPolicyId}
+          contributorsToAdd={[contributorPolicies[0]?.contributorPolicy]}
+          projects={JSON.stringify(datumReadyTasks)}
+          setSuccessTxHash={setSuccessTxHash}
+        />
+      )}
 
     </div>
   )

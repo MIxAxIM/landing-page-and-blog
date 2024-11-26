@@ -37,7 +37,6 @@ export default function MintProjectToken({
       // Don't attempt the query if we don't have an alias
       enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
       // Don't retry on error since we expect some queries to fail
-      retry: false,
     }
   );
 

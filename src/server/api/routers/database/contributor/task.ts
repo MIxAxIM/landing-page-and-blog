@@ -254,6 +254,7 @@ export const taskRouter = createTRPCRouter({
         task.status === TaskStatus.DRAFT &&
         input.status === TaskStatus.APPROVED
       ) {
+        // NOTE: We can customize the hash generation here
         const hash = generateTaskHash({
           title: task.title,
           description: task.description,

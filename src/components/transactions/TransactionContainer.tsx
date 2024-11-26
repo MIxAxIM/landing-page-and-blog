@@ -3,6 +3,7 @@ import { Button } from "~/components/ui/button";
 import TransactionLoading from "./TransactionLoading";
 import { useToast } from "~/components/ui/use-toast";
 import { type Dispatch, type SetStateAction } from "react";
+import { CardanoWallet, useWallet } from "@meshsdk/react";
 
 export default function TransactionContainer({
   buttonText,
@@ -16,6 +17,7 @@ export default function TransactionContainer({
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { toast } = useToast();
+  const { connected } = useWallet()
 
   async function onSubmit() {
     if (unsignedTxCBOR) {
@@ -29,6 +31,10 @@ export default function TransactionContainer({
       });
       setSuccessTxHash(txId);
     }
+  }
+
+  if (!connected) {
+    return <CardanoWallet />
   }
 
   return (
