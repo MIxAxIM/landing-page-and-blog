@@ -16,6 +16,12 @@ type ProjectAcceptanceParams = {
   policy: string;
 };
 
+type TreasuryAddFundsParams = {
+  policy: string;
+  user_address: string;
+  amount: number;
+};
+
 // NOTE:
 // projects is a stringified object
 // https://github.com/Andamio-Platform/andamio-dev/blob/preprod/apps/express_api/test/mint_project_token.md
@@ -46,4 +52,26 @@ export const projectManagerTxRouter = createTRPCRouter({
       else throw new Error("Could not build minting transaction");
     }),
 
+    addFunds: publicProcedure
+    .input(
+      z.object({
+        treasuryNftPolicyId: z.string().length(56),
+        dipositorsAddress: z.string(),
+        adaAmount: z.number(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const treasuryAddFundsParams: TreasuryAddFundsParams = {
+        policy: input.treasuryNftPolicyId,
+        user_address : input.dipositorsAddress,
+        amount : input.adaAmount,
+      };
+      const unsignedTxCBOR = await indexerGetWithParams<
+        { unsignedTxCBOR: string },
+        TreasuryAddFundsParams
+      >(`/tx/treasury/add-funds`, treasuryAddFundsParams);
+
+      if (unsignedTxCBOR) return unsignedTxCBOR;
+      else throw new Error("Could not build transaction");
+    }),
 });
