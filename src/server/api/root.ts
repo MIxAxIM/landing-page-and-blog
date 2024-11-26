@@ -44,6 +44,7 @@ import { organizationCourseRouter } from "./routers/database/organization/organi
 import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
 import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
 import { contributorTxRouter } from "./routers/transactions/contributor-tx-router";
+import { projectValidatorsRouter } from "./routers/contracts/project/project";
 /**
  * This is the primary router for your server.
  *
@@ -93,6 +94,7 @@ export const appRouter = createTRPCRouter({
 
   // contribution onchain
   projectGeneral: projectGeneralRouter,
+  projectValidators: projectValidatorsRouter,
 
   // admin
   andamioAdminTransactions: andamioAdminTxRouter,

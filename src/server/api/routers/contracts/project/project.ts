@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import UTxOi from "~/components/transactions/model";
-import { indexerGet } from "~/lib/axios/indexer";
+import { indexerGet, indexerGetWithParams } from "~/lib/axios/indexer";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 // Contributor State
-export const projectValidatorRouter = createTRPCRouter({
+export const projectValidatorsRouter = createTRPCRouter({
   getAllContributorStateUtxos: protectedProcedure
     .input(
       z.object({
@@ -112,6 +112,7 @@ export const projectValidatorRouter = createTRPCRouter({
       }
     }),
 
+  // NOTE: Duplicated in projectGeneralRouter
   getTreasuryInfo: protectedProcedure
     .input(
       z.object({
@@ -120,10 +121,12 @@ export const projectValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
-          `/treasury/info?policy=${input.treasuryNftPolicyId}`,
-        );
-        return response
+        const info = await indexerGetWithParams<any, any>("/treasury/info", {
+          policy: input.treasuryNftPolicyId,
+        });
+        return {
+          info: info,
+        };
       } catch {
         throw new TRPCError({
           code: "BAD_REQUEST",
