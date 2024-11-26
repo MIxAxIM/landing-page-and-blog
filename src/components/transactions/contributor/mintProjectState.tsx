@@ -4,11 +4,11 @@ import TransactionContainer from "~/components/transactions/TransactionContainer
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 
-export default async function MintProjectState({
+export default function MintProjectState({
   treasuryNftPolicyId,
   setSuccessTxHash,
 }: {
-  treasuryNftPolicyId: string;
+  treasuryNftPolicyId?: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { accessTokenAsset } = useAccessToken();
@@ -16,18 +16,15 @@ export default async function MintProjectState({
 
   const {
     data: unsignedTxCBOR,
-    isLoading,
     error: txError,
   } = api.contributorTransactions.mintProjectState.useQuery(
     {
-      treasuryNftPolicyId: treasuryNftPolicyId,
+      treasuryNftPolicyId: treasuryNftPolicyId ?? "",
       userAccessTokenUnit: accessTokenAsset?.unit ?? "",
     },
     {
       // Don't attempt the query if we don't have an alias
       enabled: !!treasuryNftPolicyId && !!accessTokenAsset,
-      // Don't retry on error since we expect some queries to fail
-      retry: false,
     },
   );
 
@@ -35,7 +32,7 @@ export default async function MintProjectState({
     return (
       <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
         <h2>Transaction Error</h2>
-        <p>{txError.message}</p>
+        <p>{JSON.stringify(txError.message)}</p>
       </div>
     );
   }
