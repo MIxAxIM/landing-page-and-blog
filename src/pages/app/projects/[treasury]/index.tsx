@@ -20,7 +20,7 @@ export default function TreasuryPage() {
 
   return (
     <DesktopOnlyLayout>
-      <ContributionManagerPage selectedTreasuryCode={treasuryCode} />
+      <ContributionManagerPage selectedTreasuryCode={treasuryCode ?? ""} />
     </DesktopOnlyLayout>
   );
 }

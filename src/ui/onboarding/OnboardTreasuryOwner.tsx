@@ -1,8 +1,8 @@
 import { useRoles } from "~/hooks/app/useRoles";
 import OnboardRole from "./components/OnboardingComponent";
 import { useTerminology } from "~/contexts/terminology-context";
-import DialogInitializeProject from "./components/Dialogs/DialogInitializeProject";
 import Link from "next/link";
+import DialogInitializeProject from "./components/dialogs/DialogInitializeProject";
 
 export default function OnboardTreasuryOwner() {
 
@@ -23,7 +23,6 @@ export default function OnboardTreasuryOwner() {
     />
   );
 }
-
 
 function FirstStep() {
   return (

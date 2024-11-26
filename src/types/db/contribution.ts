@@ -31,6 +31,7 @@ export type Task = {
   lovelace: string;
   expirationTime: string;
   escrowId: string;
+  numAllowedCommitments: number;
   escrow?: {
     id: string;
     title: string | null;

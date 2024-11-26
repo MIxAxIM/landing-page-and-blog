@@ -8,7 +8,7 @@ export default function ContributionManagerPage({
   selectedTreasuryCode,
   selectedEscrowId,
 }: {
-  selectedTreasuryCode?: string;
+  selectedTreasuryCode: string;
   selectedEscrowId?: string;
 }) {
   const { treasuries } = useTreasuries();
@@ -19,11 +19,8 @@ export default function ContributionManagerPage({
 
   return (
     <AppLayout>
-      {currentTreasury && (
-        <ManageTreasuryComponent treasuryInfo={currentTreasury} />
-      )}
       {selectedEscrowId && (
-        <ManageEscrowComponent escrowId={selectedEscrowId} />
+        <ManageEscrowComponent escrowId={selectedEscrowId} treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId} />
       )}
       {!currentTreasury && !selectedEscrowId && (
         <ContributionManagerComponent />
@@ -31,3 +28,9 @@ export default function ContributionManagerPage({
     </AppLayout>
   );
 }
+
+// Future features:
+//
+//{currentTreasury && (
+//  <ManageTreasuryComponent treasuryInfo={currentTreasury} />
+//)}

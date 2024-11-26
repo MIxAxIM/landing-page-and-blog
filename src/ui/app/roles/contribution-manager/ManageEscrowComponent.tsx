@@ -14,55 +14,18 @@ import {
 import { useTerminology } from "~/contexts/terminology-context";
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
 import { useRoles } from "~/hooks/app/useRoles";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-
-
-
-function OnboardingStatusModal({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const { translate, translateCaps } = useTerminology();
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-center mt-5">Welcome to your first {translateCaps('escrow')}</DialogTitle>
-          <DialogDescription className="space-y-3">
-            <Image src="/andamio.png" width={150} height={150} alt="andamio" className="mx-auto" />
-            <p>
-              On this page, you can add tasks to your new project.
-            </p>
-            <p>
-              When you are ready, continue the tutorial to learn how to:
-            </p>
-            <ul className="list-disc pl-6 pt-2">
-              <li>Sett up Contributor Prerequisites</li>
-              <li>Create standardized Acceptance Criteria</li>
-              <li>Connect your project to the Andamio Network</li>
-            </ul>
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex justify-center mt-8">
-          <Button onClick={onClose}>Got it</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
+import useProjectByTreasury from "~/hooks/onchain/useProjects";
+import { Task } from "~/types/db";
+import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
+import MintProjectTokenEmbeddedForm from "../../components/MintProjectTokenEmbeddedForm";
 
 export default function ManageEscrowComponent({
   escrowId,
+  treasuryNftPolicyId,
 }: {
   escrowId: string;
+  treasuryNftPolicyId?: string | null;
 }) {
 
   const [showOnboardingModal, setShowOnboardingModal] = useState(false);
@@ -71,6 +34,9 @@ export default function ManageEscrowComponent({
   const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
+  const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+
+  const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
 
   useEffect(() => {
     if (treasuryOwnerStatus?.onboardingStatus === "PARTIAL" ||
@@ -79,9 +45,21 @@ export default function ManageEscrowComponent({
     }
   }, [treasuryOwnerStatus?.onboardingStatus]);
 
+  useEffect(() => {
+
+    if (!!escrow?.tasks) {
+      const _tasks = escrow.tasks.filter(t => t.status === "APPROVED")
+      setTasksToPublish(_tasks)
+    }
+  }, [escrow])
+
+  const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
+    undefined,
+  );
+
   return (
     <div>
-      <OnboardingStatusModal
+      <ProjectManagerOnboardingModal
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
@@ -114,6 +92,15 @@ export default function ManageEscrowComponent({
               />
             )}
           </div>
+        </div>
+        <div className="col-span-6 flex flex-col space-y-5 w-full">
+          {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
+            <MintProjectTokenEmbeddedForm
+              treasuryNftPolicyId={treasuryNftPolicyId}
+              tasksToPublish={tasksToPublish}
+              contributorPolicies={contributorPolicies}
+            />
+          )}
         </div>
         {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
           <>

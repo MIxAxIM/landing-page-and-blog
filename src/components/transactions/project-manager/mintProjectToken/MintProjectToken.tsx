@@ -6,6 +6,8 @@ import { useWallet } from "@meshsdk/react";
 
 // TODO: Next step 2024-11-26 - complete this transaction with correct `projects` data being passed from parent form
 
+// TODO: Use this Tx from app/projects/[treasury]/[escrow]
+
 export default function MintProjectToken({
   treasuryNftPolicyId,
   contributorsToAdd,
