@@ -10,7 +10,7 @@ type ProjectMintingParams = {
   projects: string;
 };
 
-type ProjectAcceptanceParams = {
+type ProjectAcceptDenyParams = {
   user_access_token: string;
   contributor_alias: string;
   policy: string;
@@ -46,4 +46,74 @@ export const projectManagerTxRouter = createTRPCRouter({
       else throw new Error("Could not build minting transaction");
     }),
 
+  manageTreasuryToken: publicProcedure
+    .input(
+      z.object({
+        userAccessTokenUnit: z.string().min(62),
+        treasuryNftPolicyId: z.string().length(56),
+        allowedContributors: z.array(z.string().min(1)),
+        projects: z.string().min(1),
+      }),
+    )
+    .query(async ({ input }) => {
+      const manageTreasuryTokenParams: ProjectMintingParams = {
+        user_access_token: input.userAccessTokenUnit,
+        policy: input.treasuryNftPolicyId,
+        allowed_contributors: input.allowedContributors,
+        projects: input.projects,
+      };
+      const unsignedTxCBOR = await indexerGetWithParams<
+        { unsignedTxCBOR: string },
+        ProjectMintingParams
+      >(`/tx/project-manager/manage-treasury-tokens`, manageTreasuryTokenParams);
+
+      if (unsignedTxCBOR) return unsignedTxCBOR;
+      else throw new Error("Could not build minting transaction");
+    }),
+
+  acceptProject: publicProcedure
+    .input(
+      z.object({
+        userAccessTokenUnit: z.string().min(62),
+        contributorAlias: z.string().min(1),
+        treasuryNftPolicyId: z.string().length(56),
+      }),
+    )
+    .query(async ({ input }) => {
+      const projectAcceptParams: ProjectAcceptDenyParams = {
+        user_access_token: input.userAccessTokenUnit,
+        contributor_alias: input.contributorAlias,
+        policy: input.treasuryNftPolicyId,
+      };
+      const unsignedTxCBOR = await indexerGetWithParams<
+        { unsignedTxCBOR: string },
+        ProjectAcceptDenyParams
+      >(`/tx/project-manager/accept-project`, projectAcceptParams);
+
+      if (unsignedTxCBOR) return unsignedTxCBOR;
+      else throw new Error("Could not build minting transaction");
+    }),
+
+  denyProject: publicProcedure
+    .input(
+      z.object({
+        userAccessTokenUnit: z.string().min(62),
+        contributorAlias: z.string().min(1),
+        treasuryNftPolicyId: z.string().length(56),
+      }),
+    )
+    .query(async ({ input }) => {
+      const projectDenyParams: ProjectAcceptDenyParams = {
+        user_access_token: input.userAccessTokenUnit,
+        contributor_alias: input.contributorAlias,
+        policy: input.treasuryNftPolicyId,
+      };
+      const unsignedTxCBOR = await indexerGetWithParams<
+        { unsignedTxCBOR: string },
+        ProjectAcceptDenyParams
+      >(`/tx/project-manager/deny-project`, projectDenyParams);
+
+      if (unsignedTxCBOR) return unsignedTxCBOR;
+      else throw new Error("Could not build minting transaction");
+    }),
 });
