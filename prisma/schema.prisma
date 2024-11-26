@@ -673,16 +673,28 @@ enum TaskStatus {
   ARCHIVED
 }
 
-model Task {
-  id                 String     @id @default(cuid())
-  index              Int
-  title              String
-  description        String     @db.Text
-  acceptanceCriteria String[]
-  status             TaskStatus @default(DRAFT)
-  hash               String?
+model Token {
+  assetId  String  @id @unique
+  quantity Int
+  Task     Task?   @relation(fields: [taskId], references: [id])
+  taskId   String?
 
-  lovelace       String
+  @@index([taskId])
+}
+
+model Task {
+  id                    String     @id @default(cuid())
+  index                 Int
+  title                 String
+  description           String     @db.Text
+  acceptanceCriteria    String[]
+  numAllowedCommitments Int        @default(1)
+  status                TaskStatus @default(DRAFT)
+  hash                  String?
+
+  lovelace String
+  tokens   Token[]
+
   expirationTime String
 
   escrowId String
