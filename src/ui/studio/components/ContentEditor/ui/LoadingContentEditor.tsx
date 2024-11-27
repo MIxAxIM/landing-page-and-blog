@@ -4,8 +4,8 @@ export default function LoadingContentEditor({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto flex min-h-[100vh] items-center justify-center">
-      <div className="flex min-h-[300px] w-full max-w-2xl animate-pulse items-center justify-center rounded-xl bg-secondary text-secondary-foreground opacity-50">
+    <div className="mx-auto flex min-h-[50vh] items-center justify-center">
+      <div className="flex w-full max-w-2xl animate-pulse items-center justify-center">
         {children}
       </div>
     </div>

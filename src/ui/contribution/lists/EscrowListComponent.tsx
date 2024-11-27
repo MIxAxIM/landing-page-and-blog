@@ -3,7 +3,6 @@ import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { useEscrow } from "~/hooks/contribution/useEscrow";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
-import DialogPublishEscrow from "~/ui/contribution/dialogs/DialogPublishEscrowTx";
 
 export default function EscrowListComponent({
   treasuryId,
@@ -62,7 +61,6 @@ export default function EscrowListComponent({
                       <Button size="dialog">View</Button>
                     </Link>
                     <DialogEscrow id={escrow?.id} openButtonSize="sm" />
-                    {!!escrow?.id && <DialogPublishEscrow id={escrow.id} />}
                   </div>
                 </TableCell>
               </TableRow>

@@ -1,18 +1,32 @@
 import { api } from "~/utils/api";
-import { type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/transactions/TransactionContainer";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
+import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 
 export default function MintProjectState({
   treasuryNftPolicyId,
+  contributorPolicyId,
   setSuccessTxHash,
 }: {
-  treasuryNftPolicyId?: string;
+  treasuryNftPolicyId: string;
+  contributorPolicyId: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
+  const { prerequisiteByPolicyId } = useContributorPrerequisite({ contributorPolicyId: contributorPolicyId })
+
+  const [formattedPrereqs, setFormattedPrereqs] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    if (prerequisiteByPolicyId) {
+      const _formattedPrereqs = prerequisiteByPolicyId.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
+      setFormattedPrereqs(JSON.stringify(_formattedPrereqs))
+
+    }
+  }, [prerequisiteByPolicyId])
 
   const {
     data: unsignedTxCBOR,
@@ -21,10 +35,11 @@ export default function MintProjectState({
     {
       treasuryNftPolicyId: treasuryNftPolicyId ?? "",
       userAccessTokenUnit: accessTokenAsset?.unit ?? "",
+      prerequisite: formattedPrereqs ?? "",
     },
     {
       // Don't attempt the query if we don't have an alias
-      enabled: !!treasuryNftPolicyId && !!accessTokenAsset,
+      enabled: !!treasuryNftPolicyId && !!accessTokenAsset && !!formattedPrereqs
     },
   );
 
@@ -38,11 +53,17 @@ export default function MintProjectState({
   }
 
   return (
-    <TransactionContainer
-      buttonText={`Mint Project State`}
-      unsignedTxCBOR={unsignedTxCBOR}
-      wallet={wallet}
-      setSuccessTxHash={setSuccessTxHash}
-    />
+    <div>
+      <pre className="text-xs">
+        {JSON.stringify(prerequisiteByPolicyId, null, 2)}
+      </pre>
+
+      <TransactionContainer
+        buttonText={`Mint Project State`}
+        unsignedTxCBOR={unsignedTxCBOR}
+        wallet={wallet}
+        setSuccessTxHash={setSuccessTxHash}
+      />
+    </div>
   );
 }

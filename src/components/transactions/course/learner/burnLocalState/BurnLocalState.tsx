@@ -22,7 +22,7 @@ export default function BurnLocalState({
 
   return (
     <TransactionContainer
-      buttonText={`Un-Enroll in Course (Mesh Version of Tx)`}
+      buttonText={`Un-Enroll in Course`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}

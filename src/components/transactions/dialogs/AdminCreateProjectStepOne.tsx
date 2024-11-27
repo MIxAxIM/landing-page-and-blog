@@ -110,7 +110,7 @@ export default function AdminCreateProjectInstanceStepOne() {
 
 
 
-                <Button>Submit</Button>
+                <Button className="mt-8">Submit</Button>
               </form>
             </Form>
             {address && andamioAliasToAdd && (

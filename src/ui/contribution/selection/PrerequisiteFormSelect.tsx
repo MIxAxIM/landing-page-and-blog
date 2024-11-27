@@ -3,12 +3,11 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/comp
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import { type ContributorPrerequisite } from "~/types/db";
 import Fuse from 'fuse.js';
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 
 const fuseOptions = {
   keys: [
     { name: 'title', weight: 0.7 },
-    { name: 'contributorPolicyId', weight: 0.3 },
     { name: 'courseRequirements.courseCode', weight: 0.5 },
     { name: 'courseRequirements.course.title', weight: 0.6 },
     { name: 'courseRequirements.requiredModules', weight: 0.4 }
@@ -37,7 +36,6 @@ function PrerequisiteItem({ prerequisite }: PrerequisiteItemProps) {
 export default function PrerequisiteFormSelect({
   form,
   name,
-  prerequisite,
   setPrerequisite,
   label = "Prerequisite",
   placeholder = "Search prerequisites...",
@@ -53,11 +51,11 @@ export default function PrerequisiteFormSelect({
     disabled?: boolean;
     excludeIds?: string[];
   }) {
-  const { prerequisites, isLoading } = useContributorPrerequisite();
+  const { prerequisites } = useContributorPrerequisite({});
 
   const availablePrerequisites = useMemo(() => {
     return prerequisites.filter(
-      prereq => !excludeIds.includes(prereq.contributorPolicyId)
+      prereq => !excludeIds.includes(prereq.id)
     );
   }, [prerequisites, excludeIds]);
 
@@ -65,15 +63,18 @@ export default function PrerequisiteFormSelect({
     return new Fuse(availablePrerequisites, fuseOptions);
   }, [availablePrerequisites]);
 
+
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => {
         const selectedPrerequisite = availablePrerequisites.find(
-          p => p.contributorPolicyId === field.value
+          p => p.id === field.value
         );
-        if (selectedPrerequisite) setPrerequisite(selectedPrerequisite)
+        useEffect(() => {
+          if (selectedPrerequisite) setPrerequisite(selectedPrerequisite)
+        }, [selectedPrerequisite, setPrerequisite])
         return (
 
           <FormItem>
@@ -86,11 +87,11 @@ export default function PrerequisiteFormSelect({
                   items.filter(({ value }) => {
                     if (!inputValue) return true;
 
-                    const prereq = availablePrerequisites.find(p => p.contributorPolicyId === value);
+                    const prereq = availablePrerequisites.find(p => p.id === value);
                     if (!prereq) return false;
 
                     const results = fuse.search(inputValue);
-                    return results.some(result => result.item.contributorPolicyId === prereq.contributorPolicyId);
+                    return results.some(result => result.item.id === prereq.id);
                   })
                 }
               >
@@ -101,14 +102,16 @@ export default function PrerequisiteFormSelect({
                 <ComboboxContent>
                   {availablePrerequisites.map((prereq) => (
                     <ComboboxItem
-                      key={prereq.contributorPolicyId}
-                      value={prereq.contributorPolicyId}
+                      key={prereq.id}
+                      value={prereq.id}
                       label={prereq.title ?? "Untitled Prerequisite"}
                     >
                       <PrerequisiteItem prerequisite={prereq} />
                     </ComboboxItem>
                   ))}
-                  <ComboboxEmpty>No matching prerequisites found.</ComboboxEmpty>
+                  <ComboboxEmpty>
+                    No matching prerequisites found.
+                  </ComboboxEmpty>
                 </ComboboxContent>
               </ComboBox>
             </FormControl>

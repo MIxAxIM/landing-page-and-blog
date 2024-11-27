@@ -10,7 +10,6 @@ import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading
 const fuseOptions = {
   keys: [
     { name: 'title', weight: 0.7 },
-    { name: 'contributorPolicyId', weight: 0.3 },
     { name: 'courseRequirements.courseCode', weight: 0.5 },
     { name: 'courseRequirements.course.title', weight: 0.6 },
     { name: 'courseRequirements.requiredModules', weight: 0.4 }
@@ -30,7 +29,7 @@ export default function PrerequisiteManager({
   className = "",
 }: PrerequisiteManagerProps) {
   const { prerequisites, isLoading: isLoadingPrerequisites } =
-    useContributorPrerequisite();
+    useContributorPrerequisite({});
   const {
     escrowPrerequisites,
     addPrerequisiteToEscrow,
@@ -63,7 +62,7 @@ export default function PrerequisiteManager({
     if (prerequisiteByValue) {
       void addPrerequisiteToEscrow({
         escrowId: escrowId,
-        prerequisiteId: prerequisiteByValue.contributorPolicyId
+        prerequisiteId: prerequisiteByValue.id
       });
       setValue(null);
     }

@@ -23,5 +23,5 @@ export const formatPosixTime = (posixTimeStr: string): string => {
   const hours = pad(date.getUTCHours());
   const minutes = pad(date.getUTCMinutes());
 
-  return `${year}-${month}-${day} ${hours}${minutes} UTC`;
+  return `${year}-${month}-${day}`;
 };
