@@ -13,8 +13,13 @@ type Project = {
   allowed_contributors: string[];
 }
 
+type Funds = {
+  unit: string;
+  amount: number;
+}
+
 type TreasuryInfo = {
-  funds: never[] // temporary while we build the rest 
+  funds: Funds[] // temporary while we build the rest 
   projects: Project[]
 }
 

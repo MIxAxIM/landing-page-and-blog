@@ -19,6 +19,7 @@ import useProjectByTreasury from "~/hooks/onchain/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
 import MintProjectTokenDialog from "~/components/transactions/dialogs/MintProjectTokenDialog";
+import AddFundsDialog from "~/components/transactions/dialogs/AddFundsDialog";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -98,6 +99,9 @@ export default function ManageEscrowComponent({
               contributorPolicies={contributorPolicies}
             />
           )}
+          {!!treasuryNftPolicyId &&
+            <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
+          }
         </div>
         {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
           <>
