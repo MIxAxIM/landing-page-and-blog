@@ -15,14 +15,12 @@ type ProjectStateBurningParams = {
   policy: string;
 };
 
-
 type GetRewardsParams = {
   user_access_token: string;
   policy: string;
 };
 
-
-type ProjectCommitmentParams = {
+export type ProjectCommitmentParams = {
   user_access_token: string;
   policy: string;
   project: string;

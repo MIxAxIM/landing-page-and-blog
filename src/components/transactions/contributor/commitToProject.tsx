@@ -4,7 +4,7 @@ import TransactionContainer from "~/components/transactions/TransactionContainer
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 
-export default async function CommitToProject({
+export default function CommitToProject({
   treasuryNftPolicyId,
   project,
   info,

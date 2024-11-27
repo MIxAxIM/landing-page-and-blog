@@ -20,6 +20,7 @@ import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
 import MintProjectTokenDialog from "~/components/transactions/dialogs/MintProjectTokenDialog";
 import AddFundsDialog from "~/components/transactions/dialogs/AddFundsDialog";
+import DebugProjects from "../../DebugProjects";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -153,6 +154,7 @@ export default function ManageEscrowComponent({
           </>
         )}
       </div>
+      <DebugProjects />
     </div>
   );
 }
