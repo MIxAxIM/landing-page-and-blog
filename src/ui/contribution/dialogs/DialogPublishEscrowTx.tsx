@@ -25,20 +25,6 @@ export default function DialogPublishEscrow({ id }: { id: string }) {
     new Set(),
   );
 
-  // Reset state when dialog opens/closes
-  const handleOpenChange = (open: boolean) => {
-    if (open) {
-      setCheckedTasks(new Set(filteredTasks.map((task) => task.id)));
-      setCheckedPrerequisites(
-        new Set(
-          escrow?.contributorPrerequisites?.map(
-            (prereq) => prereq.contributorPolicyId,
-          ) ?? [],
-        ),
-      );
-    }
-    setIsOpen(open);
-  };
 
   // Handle checkbox changes
   const toggleTask = (taskId: string) => {

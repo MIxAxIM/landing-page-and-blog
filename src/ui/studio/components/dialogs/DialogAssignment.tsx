@@ -109,7 +109,7 @@ export default function DialogAssignment({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      assignmentCode: `assignment${courseModule.moduleCode}`,
+      assignmentCode: `${courseModule.moduleCode}`,
       assignmentTitle: "",
       sltIds: [],
     },

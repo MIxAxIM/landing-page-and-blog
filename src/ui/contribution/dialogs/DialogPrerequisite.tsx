@@ -15,11 +15,9 @@ import useCourseModuleList, {
 import { Checkbox } from "~/components/ui/checkbox";
 import { type CoursePublic } from "~/types/db";
 import toast from "react-hot-toast";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 
 const FormSchema = z.object({
   title: z.string().optional(),
-  contributorPolicyId: z.string().min(1, "Policy ID is required"),
   courseRequirements: z
     .array(
       z.object({
@@ -64,7 +62,6 @@ export default function DialogPrerequisite({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
-      contributorPolicyId: "",
       courseRequirements: defaultCourseCode
         ? [{ courseCode: defaultCourseCode, requiredModules: [] }]
         : [],
@@ -85,7 +82,6 @@ export default function DialogPrerequisite({
     if (prerequisite && isEditMode) {
       form.reset({
         title: prerequisite.title ?? "",
-        contributorPolicyId: prerequisite.contributorPolicyId,
         courseRequirements: prerequisite.courseRequirements.map((req) => ({
           id: req.id,
           courseCode: req.courseCode,
@@ -123,13 +119,11 @@ export default function DialogPrerequisite({
       if (isEditMode) {
         void updatePrerequisite({
           id,
-          contributorPolicyId: data.contributorPolicyId,
           title: data.title,
           courseRequirements: data.courseRequirements,
         });
       } else {
         void createPrerequisite({
-          contributorPolicyId: data.contributorPolicyId,
           title: data.title,
           courseRequirements: data.courseRequirements,
         });

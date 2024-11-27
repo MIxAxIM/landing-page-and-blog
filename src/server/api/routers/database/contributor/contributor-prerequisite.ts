@@ -7,7 +7,6 @@ import {
 } from "~/server/api/trpc";
 
 const createPrerequisiteSchema = z.object({
-  contributorPolicyId: z.string().min(1),
   title: z.string().optional(),
   courseRequirements: z
     .array(
@@ -24,7 +23,7 @@ const createPrerequisiteSchema = z.object({
 const updatePrerequisiteSchema = z.object({
   id: z.string().min(1),
 
-  contributorPolicyId: z.string().min(1),
+  contributorPolicyId: z.string().optional(),
   title: z.string().optional(),
   courseRequirements: z
     .array(
@@ -182,7 +181,6 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
 
       return ctx.db.contributorPrerequisite.create({
         data: {
-          contributorPolicyId: input.contributorPolicyId,
           title: input.title,
           courseRequirements: {
             create: input.courseRequirements.map((req) => ({

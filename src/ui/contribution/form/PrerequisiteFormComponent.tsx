@@ -13,7 +13,6 @@ import { useTerminology } from "~/contexts/terminology-context";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  contributorPolicyId: z.string().min(1, "Policy ID is required"),
   courseRequirements: z
     .array(
       z.object({
@@ -38,7 +37,6 @@ export default function PrerequisiteForm() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
-      contributorPolicyId: "",
       courseRequirements: [{ courseCode: "", requiredModules: [] }],
     },
   });
@@ -70,7 +68,6 @@ export default function PrerequisiteForm() {
   const onSubmit = async (data: FormValues) => {
     try {
       createPrerequisite({
-        contributorPolicyId: data.contributorPolicyId,
         title: data.title,
         courseRequirements: data.courseRequirements,
       });
@@ -89,12 +86,6 @@ export default function PrerequisiteForm() {
             label="Title"
             form={form}
             placeholder={`Enter a title for this ${translateCaps('prerequisite')}`}
-          />
-          <FormInput
-            name="contributorPolicyId"
-            label={`${translateCaps('contributor')} Policy ID`}
-            form={form}
-            placeholder={`Enter ${translateCaps('contributor')} policy ID`}
           />
 
           {/* Course Requirements Section */}

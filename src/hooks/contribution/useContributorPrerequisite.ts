@@ -8,14 +8,13 @@ type CourseRequirementInput = {
 };
 
 type CreatePrerequisiteInput = {
-  contributorPolicyId: string;
   title?: string;
   courseRequirements: CourseRequirementInput[];
 };
 
 type UpdatePrerequisiteInput = {
   id: string;
-  contributorPolicyId: string;
+  contributorPolicyId?: string;
   title?: string;
   courseRequirements: (CourseRequirementInput & { id?: string })[];
 };

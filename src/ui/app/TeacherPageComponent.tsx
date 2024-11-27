@@ -21,7 +21,7 @@ export default function TeacherPageComponent() {
     <AppLayout>
       <div className="mx-auto my-24 w-2/3 space-y-5">
         <h2>Teacher Page</h2>
-        {courses.asCreator.map((course, i) => (
+        {!currentCourseCode && courses.asCreator.map((course, i) => (
           <Card key={i}>
             <h2>{course.title}</h2>
             <pre>Course NFT Policy Id: {course.onchainInstance[0]?.CourseCreatorNFTPolicyID}</pre>
@@ -31,7 +31,6 @@ export default function TeacherPageComponent() {
         <CardanoWallet />
         {!!accessTokenAlias && !!currentCourseCode && (
           <>
-            <h1>{accessTokenAlias}</h1>
             <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={currentCourseCode} />
           </>
         )}
