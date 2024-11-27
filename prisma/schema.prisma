@@ -641,7 +641,7 @@ model Escrow {
 
 model ContributorPrerequisite {
   id                  String  @id @default(cuid())
-  contributorPolicyId String  @unique
+  contributorPolicyId String? @unique
   title               String?
 
   courseRequirements CourseRequirement[]
