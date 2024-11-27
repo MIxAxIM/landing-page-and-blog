@@ -35,7 +35,7 @@ const updatePrerequisiteSchema = z.object({
           .min(1, "At least one module is required"),
       }),
     )
-    .min(1, "At least one course requirement is needed"),
+    .optional(),
 });
 
 export const contributorPrerequisiteRouter = createTRPCRouter({
@@ -209,71 +209,76 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
     .input(updatePrerequisiteSchema)
     .mutation(async ({ ctx, input }) => {
       // Verify all courses exist
-      for (const req of input.courseRequirements) {
-        const course = await ctx.db.course.findFirst({
-          where: { courseCode: req.courseCode },
-        });
-
-        if (!course) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: `Course ${req.courseCode} not found`,
+      if (!!input.courseRequirements) {
+        for (const req of input.courseRequirements) {
+          const course = await ctx.db.course.findFirst({
+            where: { courseCode: req.courseCode },
           });
+
+          if (!course) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: `Course ${req.courseCode} not found`,
+            });
+          }
         }
-      }
 
-      // Start a transaction to handle the update
-      return ctx.db.$transaction(async (tx) => {
-        // Delete any requirements that aren't in the new list
-        await tx.courseRequirement.deleteMany({
-          where: {
-            prerequisiteId: input.id,
-            id: {
-              notIn: input.courseRequirements
-                .map((req) => req.id)
-                .filter((id): id is string => id !== undefined),
-            },
-          },
-        });
+        // Start a transaction to handle the update
+        return ctx.db.$transaction(async (tx) => {
+          // Delete any requirements that aren't in the new list
+          if (!!input.courseRequirements) {
+            await tx.courseRequirement.deleteMany({
+              where: {
+                prerequisiteId: input.id,
+                id: {
+                  notIn: input.courseRequirements
+                    .map((req) => req.id)
+                    .filter((id): id is string => id !== undefined),
+                },
+              },
+            });
 
-        // Update existing requirements and create new ones
-        const prerequisite = await tx.contributorPrerequisite.update({
-          where: { id: input.id },
-          data: {
-            title: input.title,
-            courseRequirements: {
-              upsert: input.courseRequirements.map((req) => ({
-                where: {
-                  id: req.id ?? "",
+            // Update existing requirements and create new ones
+            const prerequisite = await tx.contributorPrerequisite.update({
+              where: { id: input.id },
+              data: {
+                title: input.title,
+                courseRequirements: {
+                  upsert: input.courseRequirements.map((req) => ({
+                    where: {
+                      id: req.id ?? "",
+                    },
+                    create: {
+                      courseCode: req.courseCode,
+                      requiredModules: req.requiredModules,
+                    },
+                    update: {
+                      courseCode: req.courseCode,
+                      requiredModules: req.requiredModules,
+                    },
+                  })),
                 },
-                create: {
-                  courseCode: req.courseCode,
-                  requiredModules: req.requiredModules,
-                },
-                update: {
-                  courseCode: req.courseCode,
-                  requiredModules: req.requiredModules,
-                },
-              })),
-            },
-          },
-          include: {
-            courseRequirements: {
+              },
               include: {
-                course: {
-                  select: {
-                    id: true,
-                    courseCode: true,
-                    title: true,
+                courseRequirements: {
+                  include: {
+                    course: {
+                      select: {
+                        id: true,
+                        courseCode: true,
+                        title: true,
+                      },
+                    },
                   },
                 },
               },
-            },
-          },
+            });
+            return prerequisite;
+          }
+
         });
 
-        return prerequisite;
-      });
+      }
     }),
 
   deletePrerequisite: protectedProcedure

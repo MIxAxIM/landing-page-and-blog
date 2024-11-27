@@ -16,7 +16,7 @@ type UpdatePrerequisiteInput = {
   id: string;
   contributorPolicyId?: string;
   title?: string;
-  courseRequirements: (CourseRequirementInput & { id?: string })[];
+  courseRequirements?: (CourseRequirementInput & { id?: string })[];
 };
 
 interface UseContributorPrerequisiteReturn {

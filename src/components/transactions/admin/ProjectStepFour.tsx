@@ -7,6 +7,7 @@ import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
 import { ContributorPrerequisite } from "~/types/db";
 import { useTreasury } from "~/hooks/contribution/useTreasury";
+import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 
 export default function ProjectStepFour({
   projectNftPolicyId,
@@ -23,6 +24,7 @@ export default function ProjectStepFour({
 
   const { wallet } = useWallet();
   const { updateTreasury, isUpdating } = useTreasury();
+  const { updatePrerequisite } = useContributorPrerequisite()
 
   const formattedPrereqs = prerequisites.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
 
@@ -31,6 +33,8 @@ export default function ProjectStepFour({
       policy: projectNftPolicyId,
       prerequisite: JSON.stringify(formattedPrereqs),
     });
+
+  // TODO: Get a contributorPolicyId from response of init-tx-4 (or elsewhere?), then fix updatePrerequiste with a custom method that just adds contributorPolicyId
 
   async function onSubmit() {
     if (projectNftPolicyId) {
@@ -48,6 +52,7 @@ export default function ProjectStepFour({
         });
         setSuccessTxHash(txId);
         updateTreasury({ id: treasuryId, live: true })
+        updatePrerequisite({ id: prerequisites.id, contributorPolicyId: "awaiting" })
       }
     }
   }

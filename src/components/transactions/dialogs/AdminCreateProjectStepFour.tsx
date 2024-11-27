@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAddress } from "@meshsdk/react";
+import { useAddress, useWallet } from "@meshsdk/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,10 +9,10 @@ import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepFour from "../admin/ProjectStepFour";
-import PrerequisiteFormSelect from "~/ui/contribution/selection/PrerequisiteFormSelect";
 import { ContributorPrerequisite } from "~/types/db";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
 
 // TODO: Write notes on how prerequisites work
 // NOTE: About Prerequisites
@@ -24,8 +24,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 // TODO: Confirm that Treasury with treasuryId is now live
 
 export default function AdminCreateProjectInstanceStepFour() {
-  const address = useAddress();
+  const { connected } = useWallet()
   const { treasuriesWithPolicyId } = useTreasuries()
+  const { prerequisites } = useContributorPrerequisite();
   const [treasuryId, setTreasuryId] = useState<string | undefined>(undefined)
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<
     string | undefined
@@ -57,10 +58,20 @@ export default function AdminCreateProjectInstanceStepFour() {
   const { watch } = form;
 
   const projectNft = watch("projectNftPolicyId");
+  const prerequisiteId = watch("prerequisiteId")
 
   function onSubmit() {
     if (projectNft.length === 56) {
       setProjectNftPolicyId(projectNft);
+      const t = treasuriesWithPolicyId?.find(t => t.treasuryNftPolicyId === projectNft)
+      if (!!t) {
+        setTreasuryId(t.id)
+
+      }
+    }
+    if (prerequisiteId.length > 0) {
+      const p = prerequisites.find(p => p.id === prerequisiteId)
+      setPrerequisite(p)
     }
   }
 
@@ -100,17 +111,54 @@ export default function AdminCreateProjectInstanceStepFour() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {treasuriesWithPolicyId?.map(t => (
-                            <>
-                              {!!t.treasuryNftPolicyId && <SelectItem value={t.treasuryNftPolicyId} key={t.id} onSelect={() => setTreasuryId(t.id)}>{t.title}</SelectItem>}
-                            </>
-                          ))}
+                          {treasuriesWithPolicyId
+                            ?.filter(t => !!t.treasuryNftPolicyId)
+                            .map(t => (
+                              <SelectItem
+                                value={t.treasuryNftPolicyId ?? ""}
+                                key={t.id}
+                              >
+                                {t.title}
+                              </SelectItem>
+                            ))
+                          }
                         </SelectContent>
                       </Select>
                     </FormItem>
                   )}
                 />
-                <PrerequisiteFormSelect form={form} name="prerequisiteId" prerequisite={prerequisite} setPrerequisite={setPrerequisite} />
+                <FormField
+                  control={form.control}
+                  name="prerequisiteId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Prerequisite to Publish On-Chain</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select prereq" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {
+                            prerequisites?.filter(p => !p.contributorPolicyId)
+                              .map(p => (
+                                <SelectItem
+                                  value={p.id ?? ""}
+                                  key={p.id}
+                                >
+                                  {p.title}
+                                </SelectItem>
+                              ))
+                          }
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
                 <Button className="mt-8">Submit</Button>
               </form>
             </Form>
@@ -124,7 +172,7 @@ export default function AdminCreateProjectInstanceStepFour() {
 
               </div>
             )}
-            {address && projectNftPolicyId && prerequisite && treasuryId && (
+            {connected && projectNftPolicyId && prerequisite && treasuryId && (
               <>
                 <ProjectStepFour
                   projectNftPolicyId={projectNftPolicyId}
