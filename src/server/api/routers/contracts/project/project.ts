@@ -4,19 +4,9 @@ import { z } from "zod";
 import UTxOi from "~/components/transactions/model";
 import { indexerGet, indexerGetWithParams } from "~/lib/axios/indexer";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { TreasuryInfo } from "~/types/db";
 
-type Project = {
-  project_hash: string;
-  escrow_hash: string;
-  commitment_allowed: number;
-  allowed_contributors: string[];
-}
-
-type TreasuryInfo = {
-  funds: never[] // temporary while we build the rest 
-  projects: Project[]
-}
 
 // Contributor State
 export const projectValidatorsRouter = createTRPCRouter({

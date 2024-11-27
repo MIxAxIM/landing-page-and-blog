@@ -35,7 +35,6 @@ interface UseContributorPrerequisiteReturn {
 
 export function useContributorPrerequisite(
   {
-
     id,
     courseCode,
     contributorPolicyId,

@@ -69,3 +69,21 @@ export type ContributorPrerequisite = {
   courseRequirements: CourseRequirement[];
   escrows?: Escrow[];
 };
+
+
+type Project = {
+  project_hash: string;
+  escrow_hash: string;
+  commitment_allowed: number;
+  allowed_contributors: string[];
+}
+
+type Funds = {
+  unit: string;
+  amount: number;
+}
+
+export type TreasuryInfo = {
+  funds: Funds[]
+  projects: Project[]
+}

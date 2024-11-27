@@ -1,10 +1,9 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/transactions/TransactionContainer";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import { useWallet } from "@meshsdk/react";
+import { useAddress, useWallet } from "@meshsdk/react";
 
-export default async function AddFunds({
+export default function AddFunds({
   treasuryNftPolicyId,
   adaAmount,
   setSuccessTxHash,
@@ -13,8 +12,8 @@ export default async function AddFunds({
   adaAmount: number;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
+  const address = useAddress();
   const { wallet } = useWallet();
-  const address = await wallet.getChangeAddress();
 
   const {
     data: unsignedTxCBOR,
@@ -23,7 +22,7 @@ export default async function AddFunds({
   } = api.projectManagerTransactions.addFunds.useQuery(
     {
       treasuryNftPolicyId: treasuryNftPolicyId,
-      dipositorsAddress: address,
+      dipositorsAddress: address ?? "",
       adaAmount: adaAmount,
     },
     {
@@ -45,7 +44,7 @@ export default async function AddFunds({
 
   return (
     <TransactionContainer
-      buttonText={`Mint Project Token`}
+      buttonText={`Add Ada to Treasury`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}

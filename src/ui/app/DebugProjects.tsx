@@ -13,7 +13,7 @@ import {
 } from "~/components/ui/select"
 import CommitToProject from "~/components/transactions/contributor/commitToProject";
 
-export default function DebugProjectsPage() {
+export default function DebugProjects() {
 
   const { treasuryInstances } = useTreasuryInstances()
   const { treasuries } = useTreasuries()
