@@ -5,36 +5,57 @@ import { useToast } from "~/components/ui/use-toast";
 import { type Dispatch, type SetStateAction } from "react";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 
-export default function TransactionContainer({
-  buttonText,
-  unsignedTxCBOR,
-  wallet,
-  setSuccessTxHash,
-}: {
+// Define a generic type for the callback parameters
+type TransactionCallback<T = void> = (txId: string, params: T) => Promise<void> | void;
+
+interface TransactionContainerProps<T = void> {
   buttonText: string;
   unsignedTxCBOR: { unsignedTxCBOR: string } | undefined;
   wallet: BrowserWallet;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
-}) {
+  onTransactionSuccess?: TransactionCallback<T>;
+  callbackParams?: T;
+}
+
+export default function TransactionContainer<T = void>({
+  buttonText,
+  unsignedTxCBOR,
+  wallet,
+  setSuccessTxHash,
+  onTransactionSuccess,
+  callbackParams,
+}: TransactionContainerProps<T>) {
   const { toast } = useToast();
-  const { connected } = useWallet()
+  const { connected } = useWallet();
 
   async function onSubmit() {
     if (unsignedTxCBOR) {
-      const signedTx = await wallet.signTx(unsignedTxCBOR.unsignedTxCBOR, true);
-      console.log(signedTx);
-      const txId = await wallet.submitTx(signedTx);
-      console.log(txId);
-      toast({
-        title: "Transaction submitted",
-        description: `${txId}`,
-      });
-      setSuccessTxHash(txId);
+      try {
+        const signedTx = await wallet.signTx(unsignedTxCBOR.unsignedTxCBOR, true);
+        const txId = await wallet.submitTx(signedTx);
+
+        setSuccessTxHash(txId);
+        toast({
+          title: "Transaction submitted",
+          description: `${txId}`,
+        });
+
+        // Call the callback with both txId and additional params if they exist
+        if (onTransactionSuccess && callbackParams !== undefined) {
+          await onTransactionSuccess(txId, callbackParams);
+        }
+      } catch (error) {
+        toast({
+          title: "Transaction failed",
+          description: error instanceof Error ? error.message : "Unknown error occurred",
+          variant: "destructive",
+        });
+      }
     }
   }
 
   if (!connected) {
-    return <CardanoWallet />
+    return <CardanoWallet />;
   }
 
   return (

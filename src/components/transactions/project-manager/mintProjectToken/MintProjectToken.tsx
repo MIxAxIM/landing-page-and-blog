@@ -3,24 +3,25 @@ import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/transactions/TransactionContainer";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
-
-// TODO: Next step 2024-11-26 - complete this transaction with correct `projects` data being passed from parent form
-
-// TODO: Use this Tx from app/projects/[treasury]/[escrow]
+import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import { useTask } from "~/hooks/contribution/useTask";
 
 export default function MintProjectToken({
   treasuryNftPolicyId,
   contributorsToAdd,
   projects,
+  taskIds,
   setSuccessTxHash
 }: {
-  treasuryNftPolicyId?: string,
-  contributorsToAdd?: string[],
-  projects: string
+  treasuryNftPolicyId?: string;
+  contributorsToAdd?: string[];
+  projects: string;
+  taskIds: string[];
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
-  const { accessTokenAlias, accessTokenAsset } = useAccessToken();
+  const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
+  const { updateTaskStatuses } = useTask({ treasuryNftPolicyId })
 
   const {
     data: unsignedTxCBOR,
@@ -34,11 +35,18 @@ export default function MintProjectToken({
       projects: projects
     },
     {
-      // Don't attempt the query if we don't have an alias
+      // Don't attempt the query without inputs 
       enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
-      // Don't retry on error since we expect some queries to fail
     }
+
   );
+
+  const handleStatusChange = () => {
+    updateTaskStatuses({
+      taskIds: taskIds,
+      status: "ON_CHAIN",
+    });
+  };
 
   if (txError) {
     return (
@@ -49,12 +57,14 @@ export default function MintProjectToken({
     );
   }
 
+
   return (
     <TransactionContainer
       buttonText={`Mint Project Token`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}
+      onTransactionSuccess={handleStatusChange}
     />
   );
 

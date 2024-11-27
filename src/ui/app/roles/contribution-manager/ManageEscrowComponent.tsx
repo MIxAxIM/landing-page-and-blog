@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import useProjectByTreasury from "~/hooks/onchain/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-import MintProjectTokenEmbeddedForm from "../../components/MintProjectTokenEmbeddedForm";
+import MintProjectTokenDialog from "~/components/transactions/dialogs/MintProjectTokenDialog";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -92,7 +92,7 @@ export default function ManageEscrowComponent({
         </div>
         <div className="col-span-6 flex flex-col space-y-5 w-full">
           {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
-            <MintProjectTokenEmbeddedForm
+            <MintProjectTokenDialog
               treasuryNftPolicyId={treasuryNftPolicyId}
               tasksToPublish={tasksToPublish}
               contributorPolicies={contributorPolicies}

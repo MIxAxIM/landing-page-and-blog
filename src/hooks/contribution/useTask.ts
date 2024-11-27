@@ -42,6 +42,7 @@ interface UseTaskReturn {
   createTask: (data: CreateTaskInput) => void;
   updateTask: (data: UpdateTaskInput) => void;
   updateTaskStatus: (data: { id: string; status: TaskStatus }) => void;
+  updateTaskStatuses: (data: { taskIds: string[]; status: TaskStatus }) => void;
   revertToDraftFromApproved: (id: string) => void;
   deleteTask: (id: string) => void;
   duplicateTask: (data: { taskId: string; targetEscrowId: string }) => void;
@@ -250,6 +251,20 @@ export function useTask({
     },
   });
 
+  const updateTaskStatusesMutation = api.task.updateTaskStatuses.useMutation({
+    onSuccess: async () => {
+      toast.success("Task statuses updated successfully");
+      await refreshQueries();
+    },
+    onError: (error) => {
+      if (error.message.includes("Invalid status transition")) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to update task status");
+      }
+    },
+  })
+
   const deleteTaskMutation = api.task.deleteTask.useMutation({
     onSuccess: async () => {
       toast.success("Task deleted successfully");
@@ -279,6 +294,7 @@ export function useTask({
     createTask: createTaskMutation.mutate,
     updateTask: updateTaskMutation.mutate,
     updateTaskStatus: updateTaskStatusMutation.mutate,
+    updateTaskStatuses: updateTaskStatusesMutation.mutate,
     revertToDraftFromApproved: revertToDraftFromApprovedMutation.mutate,
     deleteTask: deleteTaskMutation.mutate,
     duplicateTask: duplicateTaskMutation.mutate,

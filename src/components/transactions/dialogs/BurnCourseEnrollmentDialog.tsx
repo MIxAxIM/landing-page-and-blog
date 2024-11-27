@@ -3,13 +3,6 @@ import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { useState } from "react";
 import BurnLocalState from "../course/learner/burnLocalState/BurnLocalState";
 
-// TODO: 
-// 1. DONE - Change filename and component name
-// 2. Use Burn Tx Component
-// 3. That uses Burn router endpoint
-// 4. Then make sure this button works
-// 5. And confirm that it moves to Global State
-// 6. Then, see if I can commit to a task in Tx 9!
 export default function BurnCourseEnrollmentDialog({
   accessTokenAssetId,
   courseNftPolicyId,
@@ -27,11 +20,13 @@ export default function BurnCourseEnrollmentDialog({
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
-        <Button size="sm">BURN LOCAL STATE - FIX THIS</Button>
+        <Button size="sm">Leave Course + Receive Credential</Button>
       </DialogTrigger>
       <DialogContent>
-        <p>{accessTokenAssetId}</p>
-        <p>{courseNftPolicyId}</p>
+        <h3>Leave Course + Receive Credential</h3>
+        <p className="prose">
+          You can leave a course any time. When you do, you will earn an Andamio credential for the course modules you have completed. Then, you will be able to use this credential to join projects.
+        </p>
         <BurnLocalState
           accessTokenAssetId={accessTokenAssetId}
           courseNftPolicyId={courseNftPolicyId}

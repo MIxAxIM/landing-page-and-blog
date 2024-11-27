@@ -321,6 +321,59 @@ export const taskRouter = createTRPCRouter({
       });
     }),
 
+  updateTaskStatuses: protectedProcedure
+    .input(
+      z.object({
+        taskIds: z.array(z.string().min(1)),
+        status: z.nativeEnum(TaskStatus).refine(
+          status => status !== TaskStatus.DRAFT && status !== TaskStatus.APPROVED,
+          "Transitioning to DRAFT or APPROVED status must be done individually"
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.$transaction(async (tx) => {
+        // Fetch all tasks in one query
+        const tasks = await tx.task.findMany({
+          where: {
+            id: {
+              in: input.taskIds
+            }
+          },
+        });
+
+        // Validate all tasks exist
+        if (tasks.length !== input.taskIds.length) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "One or more tasks not found",
+          });
+        }
+
+        // Validate all status transitions
+        for (const task of tasks) {
+          if (!isValidStatusTransition(task.status, input.status)) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: `Invalid status transition from ${task.status} to ${input.status} for task ${task.id}`,
+            });
+          }
+        }
+
+        // Regular status update for all tasks
+        return tx.task.updateMany({
+          where: {
+            id: {
+              in: input.taskIds
+            }
+          },
+          data: {
+            status: input.status
+          },
+        });
+      });
+    }),
+
   deleteTask: protectedProcedure
     .input(z.string())
     .mutation(({ ctx, input }) => {
