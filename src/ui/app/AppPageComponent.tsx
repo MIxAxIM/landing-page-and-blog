@@ -4,6 +4,7 @@ import useCourses from "~/hooks/course/useCourses";
 import Loading from "~/components/loading";
 import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
+import Link from "next/link";
 
 export default function AppPageComponent() {
   return (
@@ -43,9 +44,11 @@ export function ExploreCoursesBar() {
             {isLoadingCourses && <Loading />}
             {courses &&
               courses.map((course) => (
-                <div
+                <Link
+                  href={`/app/course/${course.courseCode}`}
+                  passHref
                   key={course.id}
-                  className="item min-w-[180px] rounded-lg bg-gray-800 text-white shadow-md"
+                  className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
                 >
                   <img
                     src={
@@ -59,7 +62,7 @@ export function ExploreCoursesBar() {
                   <div className="p-2">
                     <p className="font-bold">{course.title}</p>
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
           <ScrollBar orientation="horizontal" />
@@ -82,10 +85,27 @@ export function ExploreProjectsBar() {
           {isLoadingTreasuries && <Loading />}
           {treasuries &&
             treasuries.map((treasury) => (
-              <div
+              <Link
+                href={`/app/project/${treasury.id}`}
+                passHref
                 key={treasury.id}
-                className="item min-w-[180px] rounded-lg bg-gray-800 text-white shadow-md"
+                className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
               >
+                {Math.random() > 0.5 ? (
+                  <span
+                    className={`absolute left-2 top-2 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white
+                  `}
+                  >
+                    prerequisite
+                  </span>
+                ) : (
+                  <span
+                    className={`absolute left-2 top-2 rounded bg-green-500 px-2 py-1 text-xs font-bold text-white
+                    `}
+                  >
+                    no prerequisite
+                  </span>
+                )}
                 <img
                   src={`images/sample-covers/2.jpg`}
                   alt={treasury.title}
@@ -94,7 +114,7 @@ export function ExploreProjectsBar() {
                 <div className="p-2">
                   <p className="font-bold">{treasury.title}</p>
                 </div>
-              </div>
+              </Link>
             ))}
         </div>
         <ScrollBar orientation="horizontal" />
