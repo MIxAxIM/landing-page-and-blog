@@ -33,7 +33,7 @@ export function PrerequisiteList({
       <div className="space-y-2">
         {prerequisites.map((prerequisite) => (
           <div
-            key={prerequisite.contributorPolicyId}
+            key={prerequisite.id}
             className="flex items-center justify-between gap-2 border-t border-primary py-2"
           >
             <PrerequisiteItem prerequisite={prerequisite} />
@@ -42,7 +42,7 @@ export function PrerequisiteList({
                 type="button"
                 intent="destructive"
                 size="sm"
-                onClick={() => onRemove(prerequisite.contributorPolicyId)}
+                onClick={() => onRemove(prerequisite.id)}
                 disabled={isRemoving}
               >
                 X
@@ -77,7 +77,7 @@ export function PrerequisiteItem({
           </div>
         ))}
       <p className="break-all text-xs text-muted-foreground">
-        {prerequisite.contributorPolicyId}
+        {prerequisite.id}
       </p>
     </div>
   );

@@ -166,13 +166,6 @@ export default function DialogPrerequisite({
             form={form}
             placeholder="Enter a title for this prerequisite"
           />
-          <FormInput
-            name="contributorPolicyId"
-            label="Contributor Policy ID"
-            form={form}
-            placeholder="Enter contributor policy ID"
-            disabled={!!isEditMode}
-          />
 
           {/* Course Requirements Section */}
           <div className="space-y-4">

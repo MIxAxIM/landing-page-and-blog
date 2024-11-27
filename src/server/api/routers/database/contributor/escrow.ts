@@ -207,7 +207,7 @@ export const escrowRouter = createTRPCRouter({
         where: { id: input.escrowId },
         data: {
           contributorPrerequisites: {
-            connect: { contributorPolicyId: input.prerequisiteId },
+            connect: { id: input.prerequisiteId },
           },
         },
       });
@@ -225,7 +225,7 @@ export const escrowRouter = createTRPCRouter({
         where: { id: input.escrowId },
         data: {
           contributorPrerequisites: {
-            disconnect: { contributorPolicyId: input.prerequisiteId },
+            disconnect: { id: input.prerequisiteId },
           },
         },
       });

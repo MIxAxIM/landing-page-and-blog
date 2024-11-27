@@ -78,7 +78,7 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
     .input(z.string())
     .query(({ ctx, input }) => {
       return ctx.db.contributorPrerequisite.findUnique({
-        where: { contributorPolicyId: input },
+        where: { id: input },
         include: {
           courseRequirements: {
             include: {

@@ -64,7 +64,7 @@ export type CourseRequirement = {
 
 export type ContributorPrerequisite = {
   id: string;
-  contributorPolicyId: string;
+  contributorPolicyId?: string;
   title?: string | null;
   courseRequirements: CourseRequirement[];
   escrows?: Escrow[];
