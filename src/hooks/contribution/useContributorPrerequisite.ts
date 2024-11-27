@@ -23,6 +23,7 @@ interface UseContributorPrerequisiteReturn {
   prerequisite: ContributorPrerequisite | null | undefined;
   prerequisites: ContributorPrerequisite[];
   prerequisitesByCourse: ContributorPrerequisite[];
+  prerequisiteByPolicyId: ContributorPrerequisite | null | undefined;
   isLoading: boolean;
   createPrerequisite: (data: CreatePrerequisiteInput) => void;
   updatePrerequisite: (data: UpdatePrerequisiteInput) => void;
@@ -33,15 +34,42 @@ interface UseContributorPrerequisiteReturn {
 }
 
 export function useContributorPrerequisite(
-  id?: string,
-  courseCode?: string,
-): UseContributorPrerequisiteReturn {
+  {
+
+    id,
+    courseCode,
+    contributorPolicyId,
+  }: {
+    id?: string,
+    courseCode?: string,
+    contributorPolicyId?: string,
+  }): UseContributorPrerequisiteReturn {
   const ctx = api.useUtils();
 
   // Queries
   const { data: prerequisite } =
     api.contributorPrerequisite.getPrerequisiteById.useQuery(id ?? "", {
       enabled: !!id,
+      select: (data) =>
+        data &&
+        ({
+          ...data,
+          courseRequirements: data.courseRequirements.map((req) => ({
+            ...req,
+            course: req.course && {
+              id: req.course.id,
+              courseCode: req.course.courseCode,
+              title: req.course.title,
+              courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
+            },
+          })),
+        } as ContributorPrerequisite),
+    });
+
+
+  const { data: prerequisiteByPolicyId } =
+    api.contributorPrerequisite.getPrerequisiteByContributorPolicyId.useQuery(contributorPolicyId ?? "", {
+      enabled: !!contributorPolicyId,
       select: (data) =>
         data &&
         ({
@@ -166,6 +194,7 @@ export function useContributorPrerequisite(
     prerequisite,
     prerequisites,
     prerequisitesByCourse,
+    prerequisiteByPolicyId,
     isLoading,
     createPrerequisite: createPrerequisiteMutation.mutate,
     updatePrerequisite: updatePrerequisiteMutation.mutate,

@@ -24,7 +24,7 @@ export default function ProjectStepFour({
 
   const { wallet } = useWallet();
   const { updateTreasury, isUpdating } = useTreasury();
-  const { updatePrerequisite } = useContributorPrerequisite()
+  const { updatePrerequisite } = useContributorPrerequisite({})
 
   const formattedPrereqs = prerequisites.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
 

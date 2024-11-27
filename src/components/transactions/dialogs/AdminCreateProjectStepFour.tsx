@@ -26,7 +26,7 @@ import { useContributorPrerequisite } from "~/hooks/contribution/useContributorP
 export default function AdminCreateProjectInstanceStepFour() {
   const { connected } = useWallet()
   const { treasuriesWithPolicyId } = useTreasuries()
-  const { prerequisites } = useContributorPrerequisite();
+  const { prerequisites } = useContributorPrerequisite({});
   const [treasuryId, setTreasuryId] = useState<string | undefined>(undefined)
   const [projectNftPolicyId, setProjectNftPolicyId] = useState<
     string | undefined

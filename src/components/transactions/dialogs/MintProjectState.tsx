@@ -14,6 +14,7 @@ import Loading from "~/components/loading";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
 import MintProjectState from "../contributor/mintProjectState";
+import useProjects from "~/hooks/onchain/useProjects";
 
 // TODO: Check if this access token is enrolled (via Global State query)
 // Delete checkIfEnrolled
@@ -32,6 +33,7 @@ export default function MintProjectStateDialog({
   );
 
   const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "")
+  const { contributorPolicies } = useProjects({ treasuryNftPolicyId: treasuryNftPolicyId })
 
   const nextSteps = [
     {
@@ -74,7 +76,8 @@ export default function MintProjectStateDialog({
                 <DialogTitle className="py-4">
                   Ready to join this Project?
                 </DialogTitle>
-                <pre>{treasuryNftPolicyId}</pre>
+                <pre className="text-[6pt]">{treasuryNftPolicyId}</pre>
+                <pre className="text-[6pt]">Contributor CS: {!!contributorPolicies && contributorPolicies[0]?.contributorPolicy}</pre>
                 <div className="space-y-2">
                   {!connected ? (
                     <CardanoWallet />
@@ -85,11 +88,13 @@ export default function MintProjectStateDialog({
                       ) : (
                         <>
                           {accessTokenAsset &&
-                            !!treasuryNftPolicyId ? (
-                            <MintProjectState treasuryNftPolicyId={treasuryNftPolicyId ?? ""} setSuccessTxHash={setSuccessTxHash} />
-                          ) : (
-                            <Loading />
-                          )}
+                            !!treasuryNftPolicyId && !!contributorPolicies && !!contributorPolicies[0]?.contributorPolicy && (
+                              <MintProjectState
+                                treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+                                contributorPolicyId={contributorPolicies[0]?.contributorPolicy}
+                                setSuccessTxHash={setSuccessTxHash}
+                              />
+                            )}
                         </>
                       )}
                     </>

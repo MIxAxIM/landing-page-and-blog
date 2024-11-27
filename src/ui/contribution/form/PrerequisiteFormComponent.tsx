@@ -30,7 +30,7 @@ type FormValues = z.infer<typeof FormSchema>;
 export default function PrerequisiteForm() {
   // Get course data
   const { data: courses } = api.course.getCourses.useQuery();
-  const { createPrerequisite, isCreating } = useContributorPrerequisite();
+  const { createPrerequisite, isCreating } = useContributorPrerequisite({});
   const { translateCaps } = useTerminology()
 
   const form = useForm<FormValues>({

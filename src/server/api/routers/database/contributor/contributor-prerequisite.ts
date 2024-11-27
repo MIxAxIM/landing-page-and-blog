@@ -111,6 +111,43 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
       });
     }),
 
+  getPrerequisiteByContributorPolicyId: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input }) => {
+      return ctx.db.contributorPrerequisite.findUnique({
+        where: { contributorPolicyId: input },
+        include: {
+          courseRequirements: {
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  courseCode: true,
+                  title: true,
+                  onchainInstance: {
+                    select: {
+                      CourseCreatorNFTPolicyID: true,
+                    },
+                    take: 1
+                  },
+                },
+              },
+            },
+          },
+          escrows: {
+            select: {
+              id: true,
+              title: true,
+              escrowNftPolicyId: true,
+              isSyncedWithNetwork: true,
+              savedAcceptanceCriteria: true,
+              treasuryId: true,
+            },
+          },
+        },
+      });
+    }),
+
   getPrerequisitesByCourse: publicProcedure
     .input(z.string())
     .query(({ ctx, input }) => {

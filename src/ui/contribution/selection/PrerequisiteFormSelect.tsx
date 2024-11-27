@@ -51,7 +51,7 @@ export default function PrerequisiteFormSelect({
     disabled?: boolean;
     excludeIds?: string[];
   }) {
-  const { prerequisites } = useContributorPrerequisite();
+  const { prerequisites } = useContributorPrerequisite({});
 
   const availablePrerequisites = useMemo(() => {
     return prerequisites.filter(

@@ -56,7 +56,7 @@ export default function DialogPrerequisite({
     updatePrerequisite,
     isCreating,
     isUpdating,
-  } = useContributorPrerequisite(id);
+  } = useContributorPrerequisite({ id: id });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),

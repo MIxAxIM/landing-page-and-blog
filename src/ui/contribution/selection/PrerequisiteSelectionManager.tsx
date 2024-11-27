@@ -29,7 +29,7 @@ export default function PrerequisiteManager({
   className = "",
 }: PrerequisiteManagerProps) {
   const { prerequisites, isLoading: isLoadingPrerequisites } =
-    useContributorPrerequisite();
+    useContributorPrerequisite({});
   const {
     escrowPrerequisites,
     addPrerequisiteToEscrow,

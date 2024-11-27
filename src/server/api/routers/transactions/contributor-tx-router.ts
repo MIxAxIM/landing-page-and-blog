@@ -7,7 +7,20 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 type ProjectStateMintingParams = {
   user_access_token: string;
   policy: string;
+  prerequisite: string;
 };
+
+type ProjectStateBurningParams = {
+  user_access_token: string;
+  policy: string;
+};
+
+
+type GetRewardsParams = {
+  user_access_token: string;
+  policy: string;
+};
+
 
 type ProjectCommitmentParams = {
   user_access_token: string;
@@ -28,12 +41,14 @@ export const contributorTxRouter = createTRPCRouter({
       z.object({
         userAccessTokenUnit: z.string().min(62),
         treasuryNftPolicyId: z.string().length(56),
+        prerequisite: z.string().min(1)
       }),
     )
     .query(async ({ input }) => {
       const projectStateMintingParams: ProjectStateMintingParams = {
         user_access_token: input.userAccessTokenUnit,
         policy: input.treasuryNftPolicyId,
+        prerequisite: input.prerequisite,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
@@ -100,13 +115,13 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const burnContributorStateParams: ProjectStateMintingParams = {
+      const burnContributorStateParams: ProjectStateBurningParams = {
         user_access_token: input.userAccessTokenUnit,
         policy: input.treasuryNftPolicyId,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
-        ProjectStateMintingParams
+        ProjectStateBurningParams
       >(`/tx/contributor/burn-contributor-state`, burnContributorStateParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
@@ -121,13 +136,13 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const getRewardsParams: ProjectStateMintingParams = {
+      const getRewardsParams: GetRewardsParams = {
         user_access_token: input.userAccessTokenUnit,
         policy: input.treasuryNftPolicyId,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
-        ProjectStateMintingParams
+        GetRewardsParams
       >(`/tx/contributor/get-rewards`, getRewardsParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
@@ -142,13 +157,13 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const unlockProjectParams: ProjectStateMintingParams = {
+      const unlockProjectParams: GetRewardsParams = {
         user_access_token: input.userAccessTokenUnit,
         policy: input.treasuryNftPolicyId,
       };
       const unsignedTxCBOR = await indexerGetWithParams<
         { unsignedTxCBOR: string },
-        ProjectStateMintingParams
+        GetRewardsParams
       >(`/tx/contributor/unlock-project`, unlockProjectParams);
 
       if (unsignedTxCBOR) return unsignedTxCBOR;
