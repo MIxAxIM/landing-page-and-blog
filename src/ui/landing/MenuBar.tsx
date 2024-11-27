@@ -11,11 +11,11 @@ import React from "react";
 import { useRouter } from "next/router";
 
 const navigation = [
-  { name: "Courses", href: "/courses" },
+  // { name: "Courses", href: "/courses" },
   { name: "About", href: "/about" },
   { name: "Blog", href: "https://blog.andamio.io" },
   { name: "Roadmap", href: "/roadmap" },
-  { name: "Open App", href: "/app" },
+  // { name: "Open App", href: "/app" },
   { name: "Pricing", href: "/pricing" },
 ];
 
@@ -70,7 +70,7 @@ function Desktop({
       <Link href="/">
         <Image
           width={200}
-          height={200}
+          height={37}
           src="/andamio-logo.svg"
           alt="Andamio"
           className="h-auto"
@@ -89,9 +89,9 @@ function Desktop({
           </Link>
         ))}
 
-        <Link href="/contact" legacyBehavior passHref>
+        <Link href="/app" legacyBehavior passHref>
           <Button className="font-montserrat cursor-pointer rounded text-white shadow-none hover:bg-white">
-            <span className="uppercase">Get in touch</span>
+            <span className="uppercase">Open App</span>
           </Button>
         </Link>
       </div>
@@ -102,7 +102,7 @@ function Desktop({
           <Button
             onClick={() => setRole("learner")}
             className={`cursor-pointer rounded px-4 py-2 ${role === "learner"
-              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              ? "cursor-auto border-4 border-primary bg-white text-primary hover:bg-primary hover:text-white"
               : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >
@@ -114,7 +114,7 @@ function Desktop({
           <Button
             onClick={() => setRole("organization")}
             className={`cursor-pointer rounded px-4 py-2 ${role === "organization"
-              ? "cursor-auto bg-primary text-white hover:bg-primary hover:text-white"
+              ? "cursor-auto border-4 border-primary bg-white text-primary hover:bg-primary hover:text-white"
               : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >

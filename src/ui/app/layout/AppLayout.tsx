@@ -4,6 +4,7 @@ import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
 import SideMenu from "~/ui/navigation/SideMenu";
 import AppButtons from "./AppButtons";
+import MenuBar from "~/ui/landing/MenuBar";
 
 export default function AppLayout({
   children,
@@ -19,8 +20,8 @@ export default function AppLayout({
 
   return (
     <div>
-      <SideMenu />
-      <main className="lg:pl-80">
+      <MenuBar />
+      <main className="mt-4">
         <div className="mx-auto flex w-full flex-col justify-center">
           {children}
         </div>
