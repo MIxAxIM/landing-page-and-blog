@@ -54,7 +54,7 @@ export default function CoursePage() {
             <button className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
               Enroll Now
             </button>
-            <Link href={`/course/${course}`} passHref>
+            <Link href={`/course/${courseCode}`} passHref>
               <button className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
                 Take a Peak
               </button>

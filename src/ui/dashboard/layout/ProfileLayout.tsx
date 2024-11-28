@@ -3,6 +3,7 @@ import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
 import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
 import SideMenu from "~/ui/navigation/SideMenu";
+import MenuBar from "~/ui/landing/MenuBar";
 
 export default function ProfileLayout({
   children,
@@ -18,14 +19,15 @@ export default function ProfileLayout({
 
   return (
     <div>
-      <SideMenu />
-      <main className="lg:pl-80">
+      <MenuBar />
+      {/* <SideMenu /> */}
+      <main className="">
 
-        <div className="mx-auto flex w-full flex-col justify-center max-w-5xl my-12 space-y-12 items-center">
+        <div className="">
           {children}
         </div>
       </main>
-      <LightDarkToggle />
+      {/* <LightDarkToggle /> */}
     </div>
   );
 }

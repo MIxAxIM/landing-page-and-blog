@@ -36,7 +36,7 @@ export function ExploreCoursesBar() {
     <div className="explore-courses-bar">
       <h2 className="mb-4 flex justify-between">
         <div className="text-4xl font-bold">Explore Courses</div>
-        <div className="text-base font-bold">See All</div>
+        <Link href="/courses" className="text-base font-bold">See All</Link>
       </h2>
       <div className="category">
         <ScrollArea className="w-full">
@@ -78,7 +78,7 @@ export function ExploreProjectsBar() {
     <div className="explore-projects-bar">
       <h2 className="mb-4 flex justify-between">
         <div className="text-4xl font-bold">Explore Projects</div>
-        <div className="text-base font-bold">See All</div>
+        <Link href="/projects" className="text-base font-bold">See All</Link>
       </h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">
