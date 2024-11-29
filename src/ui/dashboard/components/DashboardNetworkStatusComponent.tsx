@@ -131,20 +131,28 @@ export default function DashboardNetworkStatusComponent() {
 export function TabsDemo() {
   const [showOverlay, setShowOverlay] = useState(true);
   const { connected } = useWallet();
+  const [hasAccessToken, setHasAccessToken] = useState(false);
 
-  useEffect(() => {
-    if (connected) {
-      setShowOverlay(false);
-    }
-  }, [connected]);
-
+  
   const { data: sessionData } = useSession();
   const { isCreator } = useValidateCreator(sessionData);
-
+  
   const { accessTokenAlias } = useAccessToken();
   const { globalStateDatum, isLoadingGlobalStateDatum } = useGlobalStateDatum(
     accessTokenAlias ?? "",
   );
+  
+  useEffect(() => {
+    if (connected) {
+      if (accessTokenAlias) {
+        setHasAccessToken(true);
+        setShowOverlay(false);
+      }
+    } else {
+      setHasAccessToken(false);
+      setShowOverlay(true);
+    }
+  }, [connected, accessTokenAlias]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -184,7 +192,8 @@ export function TabsDemo() {
             <div className="relative space-y-4">
               {showOverlay && (
                 <div className="absolute inset-0 z-10 flex items-start justify-center rounded-lg bg-background/80 pt-4 backdrop-blur-sm">
-                  <CardanoWallet />
+                  {!connected && <CardanoWallet />}
+                  {connected && !hasAccessToken && <AccessTokenComponent />}
                 </div>
               )}
               <Card>

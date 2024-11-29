@@ -41,6 +41,10 @@ export const useAccessToken = () => {
   useEffect(() => {
     if (connected) {
       void getAssetTokenUtxo();
+    } else {
+      setAccessTokenUtxo(undefined);
+      setAccessTokenAsset(undefined);
+      setAccessTokenAlias(undefined);
     }
   }, [wallet, getAssetTokenUtxo, connected]);
 
