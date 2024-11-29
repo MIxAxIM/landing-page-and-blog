@@ -280,9 +280,6 @@ export function Overview({
   ).length;
   return (
     <div className="explore-courses-bar">
-      <h2 className="mb-4 flex justify-between">
-        <div className="text-4xl font-bold">Overview</div>
-      </h2>
       <div className="category">
         {isLoadingGlobalStateDatum && <Loading />}
         <h3>Andamio ID: {globalStateDatum?.UserName}</h3>
@@ -329,15 +326,15 @@ export function MyCoursesBar({
         <ScrollArea className="w-full">
           <div className="flex space-x-4 pb-4">
             {isLoadingCourses && <Loading />}
-            {courses && myCourses.length === 0 && (
+            {courses && myCourses.length === 0 ? (
               <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
                 <p>You have not enrolled in any courses yet.</p>
                 <Link href="/courses" passHref>
                   <Button className="ml-4">Explore Courses</Button>
                 </Link>
               </div>
-            )}
-            {courses &&
+            ) : (
+              myCourses.length !== 0 &&
               myCourses.map((course: any) => (
                 <Link
                   href={`/app/course/${course.courseCode}`}
@@ -358,7 +355,8 @@ export function MyCoursesBar({
                     <p className="font-bold">{course.title}</p>
                   </div>
                 </Link>
-              ))}
+              ))
+            )}
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
@@ -398,15 +396,15 @@ export function MyProjectsBar({
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">
           {isLoadingTreasuries && <Loading />}
-          {treasuries && myProjects.length === 0 && (
+          {treasuries && myProjects.length === 0 ? (
             <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
               <p>You have not joined any projects yet.</p>
               <Link href="/projects" passHref>
                 <Button className="ml-4">Explore Projects</Button>
               </Link>
             </div>
-          )}
-          {treasuries &&
+          ) : (
+            treasuries &&
             myProjects.map((treasury: any) => (
               <Link
                 href={`/app/project/${treasury.id}`}
@@ -423,7 +421,8 @@ export function MyProjectsBar({
                   <p className="font-bold">{treasury.title}</p>
                 </div>
               </Link>
-            ))}
+            ))
+          )}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
