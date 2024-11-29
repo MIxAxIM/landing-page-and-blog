@@ -307,10 +307,15 @@ export function MyCoursesBar({
 }) {
   const { courses, isLoadingCourses } = useCourses();
   const [myCourses, setMyCourses] = useState<any>([]);
+  const [myOnchainCourses, setMyOnchainCourses] = useState<string[] | undefined>([]);
 
-  const myOnchainCourses = globalStateDatum?.TokenInfos.map(
-    (tokenInfo) => tokenInfo.LsCs,
-  );
+  useEffect(() => {
+    if (globalStateDatum) {
+      setMyOnchainCourses(
+        globalStateDatum.TokenInfos.map((tokenInfo) => tokenInfo.LsCs),
+      );
+    }
+  }, [globalStateDatum]);
 
   useEffect(() => {
     if (courses && myOnchainCourses) {
@@ -381,10 +386,15 @@ export function MyProjectsBar({
 }) {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
   const [myProjects, setMyProjects] = useState<any>([]);
+  const [myOnchainCourses, setMyOnchainCourses] = useState<string[] | undefined>([]);
 
-  const myOnchainCourses = globalStateDatum?.TokenInfos.map(
-    (tokenInfo) => tokenInfo.LsCs,
-  );
+  useEffect(() => {
+    if (globalStateDatum) {
+      setMyOnchainCourses(
+        globalStateDatum.TokenInfos.map((tokenInfo) => tokenInfo.LsCs),
+      );
+    }
+  }, [globalStateDatum]);
 
   useEffect(() => {
     if (treasuries && myOnchainCourses) {
