@@ -27,6 +27,7 @@ import { use, useCallback, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import classNames from "~/utils/classnames";
+import { DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 
 // TODO: How to handle creator course policies?
 
@@ -140,6 +141,11 @@ export function TabsDemo() {
   const { data: sessionData } = useSession();
   const { isCreator } = useValidateCreator(sessionData);
 
+  const { accessTokenAlias } = useAccessToken();
+  const { globalStateDatum, isLoadingGlobalStateDatum } = useGlobalStateDatum(
+    accessTokenAlias ?? "",
+  );
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Tabs defaultValue="dashboard" className="w-full">
@@ -155,27 +161,51 @@ export function TabsDemo() {
           </TabsTrigger>
         </TabsList>
         <div className="mt-6">
-          <TabsContent value="dashboard" className="relative space-y-4">
-            {showOverlay && (
-              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-start justify-center z-10 rounded-lg pt-4">
-                <CardanoWallet />
-              </div>
-            )}
-            <Card>
-              <CardContent className="space-y-4">
-                <Overview />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="space-y-4">
-                <MyCoursesBar />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="space-y-4">
-                <MyProjectsBar />
-              </CardContent>
-            </Card>
+          <TabsContent value="dashboard" className="space-y-4">
+            <div>
+              <Card>
+                <div className="flex items-center justify-center text-4xl font-bold">
+                  Profile
+                </div>
+              </Card>
+            </div>
+            <div>
+              <Card>
+                <Profile />
+              </Card>
+            </div>
+            <div>
+              <Card>
+                <div className="flex items-center justify-center text-4xl font-bold">
+                  Network Status
+                </div>
+              </Card>
+            </div>
+            <div className="relative space-y-4">
+              {showOverlay && (
+                <div className="absolute inset-0 z-10 flex items-start justify-center rounded-lg bg-background/80 pt-4 backdrop-blur-sm">
+                  <CardanoWallet />
+                </div>
+              )}
+              <Card>
+                <CardContent className="space-y-4">
+                  <Overview
+                    globalStateDatum={globalStateDatum}
+                    isLoadingGlobalStateDatum={isLoadingGlobalStateDatum}
+                  />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="space-y-4">
+                  <MyCoursesBar globalStateDatum={globalStateDatum} />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="space-y-4">
+                  <MyProjectsBar globalStateDatum={globalStateDatum} />
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
           <TabsContent value="workspace" className="space-y-4">
             <Card>
@@ -194,7 +224,7 @@ export function TabsDemo() {
             </Card>
             <Card>
               <CardContent className="space-y-4">
-              <Link
+                <Link
                   href="/app/prequisite-minter"
                   className={classNames("flex flex-row items-center gap-x-3")}
                 >
@@ -213,11 +243,35 @@ export function TabsDemo() {
   );
 }
 
-export function Overview() {
-  const { accessTokenAlias } = useAccessToken();
-  const { globalStateDatum, isLoadingGlobalStateDatum } = useGlobalStateDatum(
-    accessTokenAlias ?? "",
+export function Profile() {
+  const { data: sessionData } = useSession();
+  return (
+    <div className="explore-courses-bar flex justify-start px-10">
+      <div className="category grid grid-cols-2 items-center gap-4">
+        <div className="flex max-w-fit justify-center">
+          <img
+            src={
+              sessionData?.user.image ?? `images/site/view-3d-businessman.png`
+            }
+            alt="Profile"
+            className="h-24 w-24 rounded-full object-cover"
+          />
+        </div>
+        <div>
+          <h3>{sessionData?.user.name}</h3>
+        </div>
+      </div>
+    </div>
   );
+}
+
+export function Overview({
+  globalStateDatum,
+  isLoadingGlobalStateDatum,
+}: {
+  globalStateDatum: DecodedGlobalStateDatum | undefined;
+  isLoadingGlobalStateDatum: boolean;
+}) {
   const completedCourses = globalStateDatum?.TokenInfos.filter(
     (tokenInfo: { Minted: boolean }) => !tokenInfo.Minted,
   ).length;
@@ -240,8 +294,31 @@ export function Overview() {
   );
 }
 
-export function MyCoursesBar() {
+export function MyCoursesBar({
+  globalStateDatum,
+}: {
+  globalStateDatum: DecodedGlobalStateDatum | undefined;
+}) {
   const { courses, isLoadingCourses } = useCourses();
+  const [myCourses, setMyCourses] = useState<any>([]);
+
+  const myOnchainCourses = globalStateDatum?.TokenInfos.map(
+    (tokenInfo) => tokenInfo.LsCs,
+  );
+
+  useEffect(() => {
+    if (courses && myOnchainCourses) {
+      const myCourses = courses.filter((course) =>
+        course.onchainInstance.some((instance) =>
+          myOnchainCourses.some(
+            (onchainCourse) =>
+              onchainCourse === instance.CourseCreatorNFTPolicyID,
+          ),
+        ),
+      );
+      setMyCourses(myCourses);
+    }
+  }, [courses]);
   return (
     <div className="explore-courses-bar">
       <h2 className="mb-4 flex justify-between">
@@ -252,8 +329,16 @@ export function MyCoursesBar() {
         <ScrollArea className="w-full">
           <div className="flex space-x-4 pb-4">
             {isLoadingCourses && <Loading />}
+            {courses && myCourses.length === 0 && (
+              <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
+                <p>You have not enrolled in any courses yet.</p>
+                <Link href="/courses" passHref>
+                  <Button className="ml-4">Explore Courses</Button>
+                </Link>
+              </div>
+            )}
             {courses &&
-              courses.map((course) => (
+              myCourses.map((course: any) => (
                 <Link
                   href={`/app/course/${course.courseCode}`}
                   passHref
@@ -282,8 +367,28 @@ export function MyCoursesBar() {
   );
 }
 
-export function MyProjectsBar() {
+export function MyProjectsBar({
+  globalStateDatum,
+}: {
+  globalStateDatum: DecodedGlobalStateDatum | undefined;
+}) {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
+  const [myProjects, setMyProjects] = useState<any>([]);
+
+  const myOnchainCourses = globalStateDatum?.TokenInfos.map(
+    (tokenInfo) => tokenInfo.LsCs,
+  );
+
+  useEffect(() => {
+    if (treasuries && myOnchainCourses) {
+      const myProjects = treasuries.filter((treasury) =>
+        myOnchainCourses.some(
+          (onchainCourse) => onchainCourse === treasury.treasuryNftPolicyId,
+        ),
+      );
+      setMyProjects(myProjects);
+    }
+  }, [treasuries]);
   return (
     <div className="explore-projects-bar">
       <h2 className="mb-4 flex justify-between">
@@ -293,8 +398,16 @@ export function MyProjectsBar() {
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">
           {isLoadingTreasuries && <Loading />}
+          {treasuries && myProjects.length === 0 && (
+            <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
+              <p>You have not joined any projects yet.</p>
+              <Link href="/projects" passHref>
+                <Button className="ml-4">Explore Projects</Button>
+              </Link>
+            </div>
+          )}
           {treasuries &&
-            treasuries.map((treasury) => (
+            myProjects.map((treasury: any) => (
               <Link
                 href={`/app/project/${treasury.id}`}
                 passHref
