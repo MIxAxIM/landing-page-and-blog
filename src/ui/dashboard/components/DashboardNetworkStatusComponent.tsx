@@ -133,15 +133,14 @@ export function TabsDemo() {
   const { connected } = useWallet();
   const [hasAccessToken, setHasAccessToken] = useState(false);
 
-  
   const { data: sessionData } = useSession();
   const { isCreator } = useValidateCreator(sessionData);
-  
+
   const { accessTokenAlias } = useAccessToken();
   const { globalStateDatum, isLoadingGlobalStateDatum } = useGlobalStateDatum(
     accessTokenAlias ?? "",
   );
-  
+
   useEffect(() => {
     if (connected) {
       if (accessTokenAlias) {
@@ -307,29 +306,26 @@ export function MyCoursesBar({
 }) {
   const { courses, isLoadingCourses } = useCourses();
   const [myCourses, setMyCourses] = useState<any>([]);
-  const [myOnchainCourses, setMyOnchainCourses] = useState<string[] | undefined>([]);
 
   useEffect(() => {
     if (globalStateDatum) {
-      setMyOnchainCourses(
-        globalStateDatum.TokenInfos.map((tokenInfo) => tokenInfo.LsCs),
+      const myOnchainCourses = globalStateDatum.TokenInfos.map(
+        (tokenInfo) => tokenInfo.LsCs,
       );
-    }
-  }, [globalStateDatum]);
-
-  useEffect(() => {
-    if (courses && myOnchainCourses) {
-      const myCourses = courses.filter((course) =>
-        course.onchainInstance.some((instance) =>
-          myOnchainCourses.some(
-            (onchainCourse) =>
-              onchainCourse === instance.CourseCreatorNFTPolicyID,
+      if (courses) {
+        const myCourses = courses.filter((course) =>
+          course.onchainInstance.some((instance) =>
+            myOnchainCourses.some(
+              (onchainCourse) =>
+                onchainCourse === instance.CourseCreatorNFTPolicyID,
+            ),
           ),
-        ),
-      );
-      setMyCourses(myCourses);
+        );
+        setMyCourses(myCourses);
+      }
     }
-  }, [courses]);
+  }, [globalStateDatum, isLoadingCourses, courses]);
+
   return (
     <div className="explore-courses-bar">
       <h2 className="mb-4 flex justify-between">
@@ -339,7 +335,7 @@ export function MyCoursesBar({
       <div className="category">
         <ScrollArea className="w-full">
           <div className="flex space-x-4 pb-4">
-            {isLoadingCourses && <Loading />}
+            {(isLoadingCourses || !globalStateDatum) && <Loading />}
             {courses && myCourses.length === 0 ? (
               <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
                 <p>You have not enrolled in any courses yet.</p>
@@ -386,26 +382,23 @@ export function MyProjectsBar({
 }) {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
   const [myProjects, setMyProjects] = useState<any>([]);
-  const [myOnchainCourses, setMyOnchainCourses] = useState<string[] | undefined>([]);
 
   useEffect(() => {
     if (globalStateDatum) {
-      setMyOnchainCourses(
-        globalStateDatum.TokenInfos.map((tokenInfo) => tokenInfo.LsCs),
+      const myOnchainCourses = globalStateDatum.TokenInfos.map(
+        (tokenInfo) => tokenInfo.LsCs,
       );
+      if (treasuries) {
+        const myProjects = treasuries.filter((treasury) =>
+          myOnchainCourses.some(
+            (onchainCourse) => onchainCourse === treasury.treasuryNftPolicyId,
+          ),
+        );
+        setMyProjects(myProjects);
+      }
     }
-  }, [globalStateDatum]);
+  }, [globalStateDatum, isLoadingTreasuries, treasuries]);
 
-  useEffect(() => {
-    if (treasuries && myOnchainCourses) {
-      const myProjects = treasuries.filter((treasury) =>
-        myOnchainCourses.some(
-          (onchainCourse) => onchainCourse === treasury.treasuryNftPolicyId,
-        ),
-      );
-      setMyProjects(myProjects);
-    }
-  }, [treasuries]);
   return (
     <div className="explore-projects-bar">
       <h2 className="mb-4 flex justify-between">
@@ -414,7 +407,7 @@ export function MyProjectsBar({
       </h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">
-          {isLoadingTreasuries && <Loading />}
+          {(isLoadingTreasuries || !globalStateDatum) && <Loading />}
           {treasuries && myProjects.length === 0 ? (
             <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
               <p>You have not joined any projects yet.</p>
