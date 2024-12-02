@@ -8,8 +8,8 @@ const PolicyPage: React.FC = () => {
   const router = useRouter();
   const { policy } = router.query;
 
-  const { data: treasuryInfo } = api.projectGeneral.getTreasuryInfo.useQuery({
-    policy: policy as string,
+  const { data: treasuryInfo } = api.treasuryValidator.getTreasuryInfo.useQuery({
+    treasuryNftPolicyId: policy as string,
   });
 
   return (

@@ -14,7 +14,7 @@ export default function useProjectByTreasury(
     isLoading: isLoadingContributorStateUtxos,
     isError: isErrorContributorStateUtxos,
     error: errorContributorStateUtxos,
-  } = api.projectValidators.getAllContributorStateUtxos.useQuery(
+  } = api.contributorState.getAllContributorStateUtxos.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
@@ -24,7 +24,7 @@ export default function useProjectByTreasury(
     isLoading: isLoadingContributorStateUtxo,
     isError: isErrorContributorStateUtxo,
     error: errorContributorStateUtxo,
-  } = api.projectValidators.getContributorStateUtxoByAlias.useQuery(
+  } = api.contributorState.getContributorStateUtxoByAlias.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "", alias: alias ?? "" },
     { enabled: !!treasuryNftPolicyId && !!alias }
   );
@@ -34,7 +34,7 @@ export default function useProjectByTreasury(
     isLoading: isLoadingContributorPolicies,
     isError: isErrorContributorPolicies,
     error: errorContributorPolicies,
-  } = api.projectValidators.getContributorPolicies.useQuery(
+  } = api.contributorState.getContributorPolicies.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
@@ -44,7 +44,7 @@ export default function useProjectByTreasury(
     isLoading: isLoadingEscrowUtxos,
     isError: isErrorEscrowUtxos,
     error: errorEscrowUtxos,
-  } = api.projectValidators.getEscrowUtxosByTreasury.useQuery(
+  } = api.escrowValidator.getAllEscrowUtxosByTreasury.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
@@ -65,7 +65,7 @@ export default function useProjectByTreasury(
     isLoading: isLoadingTreasuryInfo,
     isError: isErrorTreasuryInfo,
     error: errorTreasuryInfo,
-  } = api.projectValidators.getTreasuryInfo.useQuery(
+  } = api.treasuryValidator.getTreasuryInfo.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );

@@ -50,9 +50,9 @@ import { courseStateRouter } from "./routers/cardano-indexer/course/course-state
 import { moduleRefValidatorRouter } from "./routers/cardano-indexer/course/module-ref-validator";
 
 // -- Project --
-import { projectGeneralRouter } from "./routers/cardano-indexer/project/general";
-import { projectValidatorsRouter } from "./routers/cardano-indexer/project/project";
-
+import { treasuryValidatorRouter } from "./routers/cardano-indexer/project/treasury";
+import { contributorStateRouter } from "./routers/cardano-indexer/project/contributor-state";
+import { escrowValidatorRouter } from "./routers/cardano-indexer/project/escrow";
 
 // Transaction Routers
 import { studentTxRouter } from "./routers/transactions/student-tx-router";
@@ -115,9 +115,11 @@ export const appRouter = createTRPCRouter({
   task: taskRouter,
   contributorPrerequisite: contributorPrerequisiteRouter,
 
-  // contribution onchain
-  projectGeneral: projectGeneralRouter,
-  projectValidators: projectValidatorsRouter,
+  // project onchain
+  treasuryValidator: treasuryValidatorRouter,
+  contributorState: contributorStateRouter,
+  escrowValidator: escrowValidatorRouter,
+
 
   // admin
   andamioAdminTransactions: andamioAdminTxRouter,
