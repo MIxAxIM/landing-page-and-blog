@@ -6,7 +6,7 @@ import useSLTs from "~/hooks/db/course/useSLTs";
 import SideMenu from "~/components/navigation/SideMenu";
 import PageCourseLessonContent from "~/ui/studio/[coursecode]/[modulecode]/lesson/[moduleindex]/PageCourseLessonContent";
 import LoadingContentEditor from "~/ui/studio/components/ContentEditor/ui/LoadingContentEditor";
-import StudioLayout from "~/ui/studio/components/layout/StudioLayout";
+import StudioLayout from "~/components/layout/StudioLayout";
 
 export default function LessonStudioPage({
   courseCode,

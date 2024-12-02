@@ -6,7 +6,7 @@ import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import SideMenu from "~/components/navigation/SideMenu";
 import PageCourseAssignmentContent from "~/ui/studio/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 import LoadingContentEditor from "~/ui/studio/components/ContentEditor/ui/LoadingContentEditor";
-import StudioLayout from "~/ui/studio/components/layout/StudioLayout";
+import StudioLayout from "~/components/layout/StudioLayout";
 
 export default function AssignmentStudioPage({
   courseCode,

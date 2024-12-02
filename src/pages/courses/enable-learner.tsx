@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
-import StudioLayout from "~/ui/studio/components/layout/StudioLayout";
+import StudioLayout from "~/components/layout/StudioLayout";
 import { api } from "~/utils/api";
 
 // TODO: Build a process for User be enabled as Learner -- OR, finally make Learner a default upon first login.

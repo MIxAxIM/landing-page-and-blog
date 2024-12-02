@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Loading from "~/components/common/loading";
-import StudioLayout from "~/ui/studio/components/layout/StudioLayout";
+import StudioLayout from "~/components/layout/StudioLayout";
 import CourseTitle from "~/ui/studio/components/CourseTitle";
 import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
 import ListCourseVariants from "../components/ListCourseVariants";

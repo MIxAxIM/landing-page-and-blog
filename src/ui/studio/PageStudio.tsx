@@ -1,7 +1,7 @@
 import StudioHeader from "./components/StudioHeader";
 import ListCourses from "./components/ListCourses";
-import StudioLayout from "./components/layout/StudioLayout";
 import CourseLimitCTA from "./components/CourseLimitCTA";
+import StudioLayout from "~/components/layout/StudioLayout";
 
 export default function PageStudio() {
   return (
