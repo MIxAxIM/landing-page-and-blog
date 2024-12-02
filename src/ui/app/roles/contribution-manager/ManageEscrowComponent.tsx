@@ -2,7 +2,7 @@ import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
-import EscrowAcceptanceCriteriaForm from "~/ui/forms/EscrowAcceptanceCriteriaForm";
+import EscrowAcceptanceCriteriaForm from "./EscrowAcceptanceCriteriaForm";
 import EscrowTaskListComponent from "~/ui/contribution/lists/EscrowTaskListComponent";
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import {
