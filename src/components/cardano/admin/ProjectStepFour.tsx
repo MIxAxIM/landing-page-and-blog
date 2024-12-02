@@ -6,8 +6,8 @@ import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
 import { ContributorPrerequisite } from "~/types/db";
-import { useTreasury } from "~/hooks/contribution/useTreasury";
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 
 export default function ProjectStepFour({
   projectNftPolicyId,

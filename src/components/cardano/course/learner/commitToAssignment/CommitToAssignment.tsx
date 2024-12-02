@@ -1,7 +1,7 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import useNetworkCourseConfig from "~/hooks/onchain/useNetworkCourseConfig";
+import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/useNetworkCourseConfig";
 import { NETWORK } from "~/andamio.config";
 import { useToast } from "~/components/ui/use-toast";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/SuccessTxComponent";

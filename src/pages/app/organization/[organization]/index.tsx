@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import { useOrganization } from "~/hooks/organization/useOrganization";
+import { useOrganization } from "~/hooks/db/organization/useOrganization";
 import DialogOrganization from "~/ui/app/components/dialogs/DialogOrganization";
 import AppLayout from "~/ui/app/layout/AppLayout";
 import CoursesList from "~/ui/app/organization/CoursesList";

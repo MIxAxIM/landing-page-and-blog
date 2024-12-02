@@ -9,12 +9,12 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import Loading from "~/components/loading";
 import SuccessTxModalContent from "../SuccessTxComponent";
-import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 import MintProjectState from "../contributor/mintProjectState";
-import useProjects from "~/hooks/onchain/useProjects";
+import useProjects from "~/hooks/cardano-indexer-api/useProjects";
 
 // TODO: Check if this access token is enrolled (via Global State query)
 // Delete checkIfEnrolled

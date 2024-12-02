@@ -1,9 +1,9 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { useLearnerAssignmentStatuses } from "~/hooks/course/useLearnerAssignmentStatuses";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+import { useLearnerAssignmentStatuses } from "~/hooks/db/course/useLearnerAssignmentStatuses";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 import CourseDetails from "./CourseDetails";
 import LearnerCourses from "./LearnerCourses";
 import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";

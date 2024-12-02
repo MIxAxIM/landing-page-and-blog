@@ -2,15 +2,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { useTask } from "~/hooks/contribution/useTask";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useTask } from "~/hooks/db/contribution/useTask";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { Form } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
 import FormInput from "~/components/form/form-input";
 import FormTextArea from "~/components/form/form-textarea";
 import FormSelect from "~/components/form/form-select";
 import { TaskStatus } from "@prisma/client";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import {
   Popover,
   PopoverContent,

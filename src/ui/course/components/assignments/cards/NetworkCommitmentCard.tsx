@@ -2,10 +2,10 @@ import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 import AssignmentBadges from "~/components/ui/assignment-badges";
 import DialogAssignmentCommitmentOnNetwork from "../dialogs/DialogAssignmentCommitmentOnNetwork";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
-import useNetworkLearner from "~/hooks/onchain/roles/useNetworkLearner";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import useNetworkLearner from "~/hooks/cardano-indexer-api/roles/useNetworkLearner";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
 import MintCourseEnrollmentDialog from "~/components/cardano/dialogs/MintCourseEnrollmentDialog";
 

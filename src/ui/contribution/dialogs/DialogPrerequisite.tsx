@@ -2,7 +2,7 @@ import { type UseFormReturn, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 import { Form, FormLabel } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
 import FormInput from "~/components/form/form-input";
@@ -11,7 +11,7 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import useCourseModuleList, {
   type CourseModuleInfo,
-} from "~/hooks/course/useCourseModuleList";
+} from "~/hooks/db/course/useCourseModuleList";
 import { Checkbox } from "~/components/ui/checkbox";
 import { type CoursePublic } from "~/types/db";
 import toast from "react-hot-toast";

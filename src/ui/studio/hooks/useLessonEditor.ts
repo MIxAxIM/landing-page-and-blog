@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import useLesson from "~/hooks/course/useLesson";
+import useLesson from "~/hooks/db/course/useLesson";
 import { useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/Editor/extension-kit";
 import { useEffect } from "react";

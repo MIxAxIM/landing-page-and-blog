@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
 import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
-import { useTreasury } from "~/hooks/contribution/useTreasury";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 
 export default function ProjectStepOne({
   alias,

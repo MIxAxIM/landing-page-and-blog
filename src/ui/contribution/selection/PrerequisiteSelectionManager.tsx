@@ -1,5 +1,5 @@
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
-import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
+import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequisites";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { useEffect, useMemo, useState } from "react";
 import { PrerequisiteItem, PrerequisiteList } from "../lists/PrerequisiteList";

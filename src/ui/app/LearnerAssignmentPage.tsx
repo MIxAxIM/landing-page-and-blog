@@ -1,4 +1,4 @@
-import { useLearnerAssignmentStatuses } from "~/hooks/course/useLearnerAssignmentStatuses";
+import { useLearnerAssignmentStatuses } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 import AssignmentsSection from "./roles/learner/AssignmentSection";
 import AppLayout from "./layout/AppLayout";
 

@@ -10,7 +10,7 @@ import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { type Escrow } from "~/types/db";
-import { getNestedValue } from "~/hooks/useSort";
+import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
 
 export default function EscrowTaskListComponent({

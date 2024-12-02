@@ -7,7 +7,7 @@ import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
 import { useCallback, useEffect, useState } from "react";
 import DialogForm from "~/components/form/dialog-form";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 
 export default function DialogImportModule({
   courseCode,

@@ -4,8 +4,8 @@ import { type Task } from "~/types/db";
 import { TaskStatus } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
 import { type SortConfig } from "~/types/sorting";
-import { getNestedValue } from "../useSort";
-import { useDebounce } from "../useDebounce";
+import { getNestedValue } from "~/hooks/app/useSort";
+import { useDebounce } from "~/hooks/app/useDebounce";
 
 const isTaskEditable = (status: TaskStatus) => status === TaskStatus.DRAFT;
 

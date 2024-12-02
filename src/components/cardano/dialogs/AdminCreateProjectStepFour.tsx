@@ -10,9 +10,9 @@ import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepFour from "../admin/ProjectStepFour";
 import { ContributorPrerequisite } from "~/types/db";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 
 // TODO: Write notes on how prerequisites work
 // NOTE: About Prerequisites

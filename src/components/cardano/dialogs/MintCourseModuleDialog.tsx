@@ -2,7 +2,7 @@ import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { type CourseModuleOverview } from "~/types/db";
 import MintCourseModule from "../course/creator/mintCourseModule/MintCourseModule";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import SuccessTxModalContent from "../SuccessTxComponent";

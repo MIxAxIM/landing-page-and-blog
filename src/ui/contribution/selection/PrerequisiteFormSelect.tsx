@@ -1,4 +1,4 @@
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import { type ContributorPrerequisite } from "~/types/db";

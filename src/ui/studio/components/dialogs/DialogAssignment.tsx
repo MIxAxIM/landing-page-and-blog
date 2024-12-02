@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
 import { useCallback, useEffect } from "react";
-import useCourseModules from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModules from "~/hooks/db/course/useCourseModuleOverviews";
 import Loading from "~/components/loading";
 import { FormCheckboxes } from "~/components/form/form-checkboxes";
 import DialogForm from "~/components/form/dialog-form";

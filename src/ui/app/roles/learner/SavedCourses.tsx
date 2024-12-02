@@ -1,4 +1,4 @@
-import useLearnerSavedCourses from "~/hooks/course/useLearnerSavedCourses";
+import useLearnerSavedCourses from "~/hooks/db/course/useLearnerSavedCourses";
 import { useRouter } from "next/router";
 import DashboardSelectMenu from "~/ui/dashboard/components/DashboardSelectMenu";
 

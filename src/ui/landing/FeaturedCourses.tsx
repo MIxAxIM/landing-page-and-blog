@@ -1,5 +1,5 @@
 import Loading from "~/components/loading";
-import useCourses from "~/hooks/course/useCourses";
+import useCourses from "~/hooks/db/course/useCourses";
 import CourseCard from "../courses/components/CourseCard";
 
 // are there any metrics we can use to decide which courses are featured?

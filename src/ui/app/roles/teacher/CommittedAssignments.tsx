@@ -1,4 +1,4 @@
-import useAssignmentDatums from "~/hooks/onchain/useAssignmentDatums";
+import useAssignmentDatums from "~/hooks/cardano-indexer-api/useAssignmentDatums";
 import {
   Table,
   TableBody,
@@ -8,8 +8,8 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
-import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import AcceptDenyAssignmentDialog from "~/components/cardano/dialogs/AcceptDenyAssignmentDialog";
 
 export default function CommittedAssignments({

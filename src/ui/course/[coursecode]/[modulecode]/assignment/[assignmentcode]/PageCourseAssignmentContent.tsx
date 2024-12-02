@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import Loading from "~/components/loading";
 import VideoPlayer from "~/components/media/VideoPlayer";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import useValidateCreator from "~/hooks/course/useValidateCreator";
+import useValidateCreator from "~/hooks/db/course/useValidateCreator";
 import {
   type AssignmentCommitment,
   type CourseModuleOverview,
@@ -21,7 +21,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import NetworkCommitmentCard from "~/ui/course/components/assignments/cards/NetworkCommitmentCard";
 import PersonalNotesCard from "~/ui/course/components/assignments/cards/PersonalNotesCard";
 import { useWallet } from "@meshsdk/react";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import ConnectWalletCard from "~/ui/course/components/assignments/cards/ConnectWalletCard";
 
 export default function PageCourseAssignmentContent({

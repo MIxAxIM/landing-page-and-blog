@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/TransactionContainer";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 
 export default function CommitToProject({

@@ -1,5 +1,5 @@
 import { Button } from "~/components/ui/button";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 
 export default function SyncEscrowButton({ id }: { id: string }) {
   const { updateEscrowSyncStatus } = useEscrow({ id: id });

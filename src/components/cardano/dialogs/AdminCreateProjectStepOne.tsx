@@ -12,7 +12,7 @@ import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepOne from "../admin/ProjectStepOne";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 
 // TODO: Add multiple aliases in one transaction - 
 

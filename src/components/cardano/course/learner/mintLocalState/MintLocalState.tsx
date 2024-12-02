@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/TransactionContainer";
-import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
 import { api } from "~/utils/api";
 
 export default function MintLocalState({

@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import DialogForm from "~/components/form/dialog-form"
-import { useUserOrganizations } from "~/hooks/organization/useUserOrganizations";
+import { useUserOrganizations } from "~/hooks/db/organization/useUserOrganizations";
 import { Form } from "~/components/ui/form";
 import { useTerminology } from "~/contexts/terminology-context";
 import FormInput from "~/components/form/form-input";

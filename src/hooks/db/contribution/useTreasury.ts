@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { type Treasury } from "~/types/db";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useRoles } from "../app/useRoles";
+import { useRoles } from "~/hooks/app/useRoles";
 
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { useState } from "react";
 import { useTerminology } from "~/contexts/terminology-context";
 

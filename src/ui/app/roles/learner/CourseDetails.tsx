@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "~/components/ui/button";
-import useCourse from "~/hooks/course/useCourse";
-import { type LearnerAssignment } from "~/hooks/course/useLearnerAssignmentStatuses";
+import useCourse from "~/hooks/db/course/useCourse";
+import { type LearnerAssignment } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 import AssignmentsSection from "./AssignmentSection";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import useLearnerSavedCourses from "~/hooks/course/useLearnerSavedCourses";
+import useLearnerSavedCourses from "~/hooks/db/course/useLearnerSavedCourses";
 import LearnerCourseModuleDetailsComponent from "./LearnerCourseModuleDetailsComponent";
-import useCourseModuleWithAssignmentSummary from "~/hooks/course/useCourseModuleWithAssignmentSummary";
+import useCourseModuleWithAssignmentSummary from "~/hooks/db/course/useCourseModuleWithAssignmentSummary";
 import { Skeleton } from "~/components/ui/skeleton";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import useCourseStateDatum from "~/hooks/onchain/useCourseStateDatum";
+import useCourseStateDatum from "~/hooks/cardano-indexer-api/useCourseStateDatum";
 import BurnCourseEnrollmentDialog from "~/components/cardano/dialogs/BurnCourseEnrollmentDialog";
 
 export default function CourseDetails({

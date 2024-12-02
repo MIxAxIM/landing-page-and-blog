@@ -20,7 +20,7 @@ import {
 import {
   useLearnerAssignmentStatuses,
   type LearnerAssignment,
-} from "~/hooks/course/useLearnerAssignmentStatuses";
+} from "~/hooks/db/course/useLearnerAssignmentStatuses";
 
 export default function AssignmentsSection({
   learnerAssignments,

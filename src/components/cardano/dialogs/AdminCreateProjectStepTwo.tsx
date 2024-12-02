@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepTwo from "../admin/ProjectStepTwo";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
 export default function AdminCreateProjectInstanceStepTwo() {

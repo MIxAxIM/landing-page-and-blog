@@ -1,10 +1,10 @@
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
-import { useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/db/contribution/useTask";
 import { formatPosixTime } from "~/utils/time";
 import { TaskStatus } from "@prisma/client";
 import { useState, useCallback } from "react";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
 import DialogTask from "../dialogs/DialogTask";

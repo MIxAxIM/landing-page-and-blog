@@ -15,11 +15,11 @@ import {
 } from "~/components/ui/collapsible";
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import MintLocalState from "~/components/cardano/course/learner/mintLocalState/MintLocalState";
 import Loading from "~/components/loading";
 import SuccessTxModalContent from "../SuccessTxComponent";
-import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 
 // TODO: Check if this access token is enrolled (via Global State query)
 // Delete checkIfEnrolled

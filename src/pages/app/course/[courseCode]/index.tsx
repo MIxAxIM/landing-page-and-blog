@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Markdown from "react-markdown";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
 import Loading from "~/components/loading";
-import useCourse from "~/hooks/course/useCourse";
+import useCourse from "~/hooks/db/course/useCourse";
 
 export default function CoursePage() {
   const router = useRouter();

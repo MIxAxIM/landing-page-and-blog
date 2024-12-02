@@ -1,10 +1,10 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/TransactionContainer";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
-import { useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/db/contribution/useTask";
 
 export default function MintProjectToken({
   treasuryNftPolicyId,

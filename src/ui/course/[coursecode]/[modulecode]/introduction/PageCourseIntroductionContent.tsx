@@ -7,8 +7,8 @@ import VideoPlayer from "~/components/media/VideoPlayer";
 import Metatags from "~/components/site/metatags";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Card } from "~/components/ui/card";
-import useIntroduction from "~/hooks/course/useIntroduction";
-import useValidateCreator from "~/hooks/course/useValidateCreator";
+import useIntroduction from "~/hooks/db/course/useIntroduction";
+import useValidateCreator from "~/hooks/db/course/useValidateCreator";
 import {
   type Introduction,
   type CourseModuleOverview,

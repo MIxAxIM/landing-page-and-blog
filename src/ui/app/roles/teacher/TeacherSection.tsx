@@ -1,9 +1,9 @@
-import useCreatorsCoursesPolicies from "~/hooks/onchain/useCreatorsCoursesPolicies";
+import useCreatorsCoursesPolicies from "~/hooks/cardano-indexer-api/useCreatorsCoursesPolicies";
 import CommittedAssignments from "./CommittedAssignments";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import NetworkModuleManagement from "./NetworkModuleManagement";
 import { useState, useEffect } from "react";
-import useCourse from "~/hooks/course/useCourse";
+import useCourse from "~/hooks/db/course/useCourse";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 
 export default function TeacherSection({

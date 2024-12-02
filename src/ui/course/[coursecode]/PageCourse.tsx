@@ -12,15 +12,15 @@ import CourseLayout from "../components/layout/CourseLayout";
 import { signIn, useSession } from "next-auth/react";
 import { useCourseStore } from "~/lib/zustand/course";
 import mergeObjects from "~/utils/mergeObjects";
-import useCourseVariants from "~/hooks/course/useCourseVariants";
-import useCourse from "~/hooks/course/useCourse";
+import useCourseVariants from "~/hooks/db/course/useCourseVariants";
+import useCourse from "~/hooks/db/course/useCourse";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import useCourseById from "~/hooks/course/useCourseById";
+import useCourseById from "~/hooks/db/course/useCourseById";
 import { Badge } from "~/components/ui/badge";
 import { format } from "date-fns";
 import {
@@ -29,9 +29,9 @@ import {
 } from "@heroicons/react/24/outline";
 import Metatags from "~/components/site/metatags";
 import Markdown from "react-markdown";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { useState } from "react";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 
 export default function PageCourse({
   courseCode,
