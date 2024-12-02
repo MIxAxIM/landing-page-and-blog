@@ -1,6 +1,4 @@
-import useCreatorsCoursesPolicies from "~/hooks/cardano-indexer-api/useCreatorsCoursesPolicies";
 import CommittedAssignments from "./CommittedAssignments";
-import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import NetworkModuleManagement from "./NetworkModuleManagement";
 import { useState, useEffect } from "react";
 import useCourse from "~/hooks/db/course/useCourse";

@@ -40,11 +40,15 @@ import { organizationCourseRouter } from "./routers/database/organization/organi
 // Cardano Indexer API
 // -- Network --
 import { globalStateRouter } from "./routers/cardano-indexer/network/global-state";
+import { indexValidatorRouter } from "./routers/cardano-indexer/network/index-validator";
+import { instanceValidatorRouter } from "./routers/cardano-indexer/network/instance-validator";
+import { governanceValidatorRouter } from "./routers/cardano-indexer/network/governance-validator";
 
 // -- Course --
 import { assignmentValidatorRouter } from "./routers/cardano-indexer/course/assignment-validator";
 import { courseStateRouter } from "./routers/cardano-indexer/course/course-state";
-import { courseGovernanceValidatorRouter } from "./routers/cardano-indexer/course/course-governance-validator";
+import { moduleRefValidatorRouter } from "./routers/cardano-indexer/course/module-ref-validator";
+
 // -- Project --
 import { projectGeneralRouter } from "./routers/cardano-indexer/project/general";
 import { projectValidatorsRouter } from "./routers/cardano-indexer/project/project";
@@ -57,9 +61,6 @@ import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-ro
 import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
 import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
 import { contributorTxRouter } from "./routers/transactions/contributor-tx-router";
-import { indexValidatorRouter } from "./routers/cardano-indexer/network/index-validator";
-import { instanceValidatorRouter } from "./routers/cardano-indexer/network/instance-validator";
-import { governanceValidatorRouter } from "./routers/cardano-indexer/network/governance-validator";
 
 /**
  * This is the primary router for your server.
@@ -106,7 +107,7 @@ export const appRouter = createTRPCRouter({
   assignmentStatus: assignmentStatusRouter,
   assignmentValidator: assignmentValidatorRouter,
   courseState: courseStateRouter,
-  courseGovernanceValidator: courseGovernanceValidatorRouter,
+  moduleRefValidator: moduleRefValidatorRouter,
 
   // contribution features
   treasury: treasuryRouter,

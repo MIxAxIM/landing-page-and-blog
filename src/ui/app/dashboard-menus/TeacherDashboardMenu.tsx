@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
-import useCreatorsCoursesPolicies from "~/hooks/cardano-indexer-api/useCreatorsCoursesPolicies";
+//import useCreatorsCoursesPolicies from "~/hooks/cardano-indexer-api/useCreatorsCoursesPolicies";
 import { CardanoWallet } from "@meshsdk/react";
 import AndamioNetworkTeacherCourses from "~/ui/app/roles/teacher/AndamioNetworkTeacherCourses";
+
+
+// TODO: Implement 2024-12-03
 
 export default function TeacherDashboardMenu() {
   const { accessTokenAlias } = useAccessToken();
   const router = useRouter();
 
-  const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
-    accessTokenAlias ?? "",
-  );
+  //const { creatorCoursePolicies } = useCreatorsCoursesPolicies(
+  //  accessTokenAlias ?? "",
+  //);
 
   const isAssignmentRoute = router.asPath.includes(
     "dashboard/teacher/assignments",
@@ -29,13 +32,6 @@ export default function TeacherDashboardMenu() {
         </Link>
       </div>
       <div className="col-span-2 col-start-2">
-        {creatorCoursePolicies ? (
-          <AndamioNetworkTeacherCourses
-            creatorCoursePolicies={creatorCoursePolicies}
-          />
-        ) : (
-          <CardanoWallet />
-        )}
       </div>
       <div className="col-span-2 col-start-4 text-center">
         <Link href="/studio">View Course Studio</Link>
@@ -52,3 +48,13 @@ export default function TeacherDashboardMenu() {
     </div>
   );
 }
+
+
+
+//{creatorCoursePolicies ? (
+//  <AndamioNetworkTeacherCourses
+//    creatorCoursePolicies={creatorCoursePolicies}
+//  />
+//) : (
+//  <CardanoWallet />
+//)}
