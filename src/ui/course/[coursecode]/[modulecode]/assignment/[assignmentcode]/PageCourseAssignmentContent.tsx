@@ -22,7 +22,7 @@ import NetworkCommitmentCard from "~/ui/course/components/assignments/cards/Netw
 import PersonalNotesCard from "~/ui/course/components/assignments/cards/PersonalNotesCard";
 import { useWallet } from "@meshsdk/react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
-import ConnectWalletCard from "~/ui/course/components/assignments/cards/ConnectWalletCard";
+import ConnectWalletCard from "~/components/cardano/ConnectWalletCard";
 
 export default function PageCourseAssignmentContent({
   courseCode,

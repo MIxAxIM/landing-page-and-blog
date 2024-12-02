@@ -1,10 +1,9 @@
-import SearchAndamio from "./components/SearchAndamio";
-import QuickActionButtons from "./components/QuickActionButtons";
 import useCourses from "~/hooks/db/course/useCourses";
 import Loading from "~/components/common/loading";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Link from "next/link";
+import SearchAndamio from "~/components/search/SearchAndamio";
 
 export default function AppPageComponent() {
   return (

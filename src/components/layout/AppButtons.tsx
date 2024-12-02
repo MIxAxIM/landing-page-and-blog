@@ -2,7 +2,7 @@ import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { useSession } from "next-auth/react";
 import AndamioRoleStatusMenu from "~/components/navigation/menu-sections/AndamioRoleStatusMenu";
 import { TerminologyToggle } from "../common/TerminologyToggle";
-import FloatingStatusButton from "~/ui/app/components/FloatingStatusButton";
+import FloatingStatusButton from "../common/FloatingStatusButton";
 
 export default function AppButtons() {
 
