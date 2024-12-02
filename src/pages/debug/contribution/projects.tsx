@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
-import useProjects from "~/hooks/onchain/useProjects";
-import useTreasuryInstances from "~/hooks/onchain/useTreasuryInstances";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
+import useProjects from "~/hooks/cardano-indexer-api/useProjects";
+import useTreasuryInstances from "~/hooks/cardano-indexer-api/useTreasuryInstances";
 import { Treasury } from "~/types/db";
 import {
   Select,
@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
-import CommitToProject from "~/components/transactions/contributor/commitToProject";
+import CommitToProject from "~/components/cardano/contributor/commitToProject";
 
 export default function DebugProjectsPage() {
 

@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 
 export default function EscrowListComponent({

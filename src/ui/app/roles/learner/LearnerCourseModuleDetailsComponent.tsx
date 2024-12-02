@@ -20,8 +20,8 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "~/components/ui/tooltip";
-import useAssignmentDatums from "~/hooks/onchain/useAssignmentDatums";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
+import useAssignmentDatums from "~/hooks/cardano-indexer-api/useAssignmentDatums";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import {
   type CourseModuleWithAssignmentSummary,
   type AssignmentCommitment,

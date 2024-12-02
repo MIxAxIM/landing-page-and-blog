@@ -1,7 +1,7 @@
 import { type NextPageContext } from "next";
 import { Button } from "~/components/ui/button";
-import useCourse from "~/hooks/course/useCourse";
-import useModuleByCourse from "~/hooks/course/useModuleByCourse";
+import useCourse from "~/hooks/db/course/useCourse";
+import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import PageCourseAssignmentContent from "~/ui/course/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 import CourseLayout from "~/ui/course/components/layout/CourseLayout";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";

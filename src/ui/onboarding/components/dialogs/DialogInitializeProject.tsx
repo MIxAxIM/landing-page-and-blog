@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
 import { useEffect, useState } from "react";
-import { useTreasury } from "~/hooks/contribution/useTreasury";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import DialogForm from "~/components/form/dialog-form";
 import { useSession } from "next-auth/react";
 import { Card } from "~/components/ui/card";

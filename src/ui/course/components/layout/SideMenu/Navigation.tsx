@@ -3,8 +3,8 @@ import Link from "next/link";
 import classNames from "~/utils/classnames";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import useCourse from "~/hooks/course/useCourse";
-import useValidateCreator from "~/hooks/course/useValidateCreator";
+import useCourse from "~/hooks/db/course/useCourse";
+import useValidateCreator from "~/hooks/db/course/useValidateCreator";
 import { PenTool } from "lucide-react";
 import CourseOutline from "./CourseOutline";
 
@@ -23,7 +23,7 @@ export default function Navigation() {
   return (
     <>
       {typeof coursecode === "string" &&
-      router.pathname.includes("/course/[coursecode]") ? (
+        router.pathname.includes("/course/[coursecode]") ? (
         <>
           <NavigationItems isCreator={isCreator} />
           <CoursePage courseCode={coursecode} />

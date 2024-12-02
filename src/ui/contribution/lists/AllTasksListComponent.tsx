@@ -1,7 +1,7 @@
 
 import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
-import { useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/db/contribution/useTask";
 import { formatPosixTime } from "~/utils/time";
 import { TaskStatus } from "@prisma/client";
 import { useState, useCallback } from "react";

@@ -10,7 +10,7 @@ import classNames from "~/utils/classnames";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import { useRouter } from "next/router";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { type CourseModuleOverview } from "~/types/db";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { removeAssignment } from "~/utils/removeAssignment";
@@ -89,8 +89,8 @@ export default function CourseOutline({
                   key={courseModule.introduction?.id}
                   className={accordionContentClassNames(
                     courseModule.moduleCode === moduleCode &&
-                      !assignmentCode &&
-                      !moduleIndex,
+                    !assignmentCode &&
+                    !moduleIndex,
                   )}
                 >
                   <Link
@@ -124,7 +124,7 @@ export default function CourseOutline({
                       key={slt.id}
                       className={accordionContentClassNames(
                         courseModule.moduleCode === moduleCode &&
-                          slt.moduleIndex.toString() === moduleIndex,
+                        slt.moduleIndex.toString() === moduleIndex,
                       )}
                     >
                       <Link
@@ -156,7 +156,7 @@ export default function CourseOutline({
                   key={courseModule.assignments[0].assignmentCode}
                   className={accordionContentClassNames(
                     courseModule.assignments[0].assignmentCode ===
-                      assignmentCode,
+                    assignmentCode,
                   )}
                 >
                   <Link

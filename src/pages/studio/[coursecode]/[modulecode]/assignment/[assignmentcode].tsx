@@ -1,8 +1,8 @@
 import { type NextPageContext } from "next";
 import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import useAssignment from "~/hooks/course/useAssignment";
-import useCourseByOwner from "~/hooks/course/useCourseByOwner";
-import useModuleByCourse from "~/hooks/course/useModuleByCourse";
+import useAssignment from "~/hooks/db/course/useAssignment";
+import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
+import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import SideMenu from "~/ui/navigation/SideMenu";
 import PageCourseAssignmentContent from "~/ui/studio/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 import LoadingContentEditor from "~/ui/studio/components/ContentEditor/ui/LoadingContentEditor";

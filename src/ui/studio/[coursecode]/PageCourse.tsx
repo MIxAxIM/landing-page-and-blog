@@ -5,7 +5,7 @@ import CourseTitle from "~/ui/studio/components/CourseTitle";
 import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
 import ListCourseVariants from "../components/ListCourseVariants";
 
-import useCourseByOwner from "~/hooks/course/useCourseByOwner";
+import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import ShowCourseOnchain from "../components/ShowCourseOnchain";
 import { Network } from "@prisma/client";
 import FormFieldset from "~/components/form/form-fieldset";

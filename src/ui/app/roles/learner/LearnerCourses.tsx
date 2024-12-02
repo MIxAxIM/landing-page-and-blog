@@ -1,7 +1,7 @@
-import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import CurrentCourseListItem from "./CurrentCourseListItem";
-import { type LearnerAssignment } from "~/hooks/course/useLearnerAssignmentStatuses";
+import { type LearnerAssignment } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 
 // TODO: Rename
 

@@ -20,7 +20,7 @@ import {
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
 import { format } from "date-fns";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 
 type ModuleOption = {
   value: string;

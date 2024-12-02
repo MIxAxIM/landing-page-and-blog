@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useEnrolledCourseList from "~/hooks/onchain/useEnrolledCourseList";
+import useEnrolledCourseList from "~/hooks/cardano-indexer-api/useEnrolledCourseList";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import DashboardSelectMenu from "~/ui/dashboard/components/DashboardSelectMenu";
 

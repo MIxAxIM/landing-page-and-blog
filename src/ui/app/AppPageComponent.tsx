@@ -1,8 +1,8 @@
 import SearchAndamio from "./components/SearchAndamio";
 import QuickActionButtons from "./components/QuickActionButtons";
-import useCourses from "~/hooks/course/useCourses";
+import useCourses from "~/hooks/db/course/useCourses";
 import Loading from "~/components/loading";
-import useTreasuries from "~/hooks/contribution/useTreasuries";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Link from "next/link";
 

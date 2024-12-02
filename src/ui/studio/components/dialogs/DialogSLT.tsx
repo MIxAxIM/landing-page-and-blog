@@ -8,7 +8,7 @@ import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
 import { useCallback, useEffect } from "react";
 import FormSelect from "~/components/form/form-select";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import Loading from "~/components/loading";
 import DialogForm from "~/components/form/dialog-form";
 
@@ -116,9 +116,9 @@ export default function DialogSLT({
                 options={
                   courseModuleOverviews
                     ? courseModuleOverviews.map((module) => ({
-                        value: module.id,
-                        label: `${module.title} (${module.moduleCode})`,
-                      }))
+                      value: module.id,
+                      label: `${module.title} (${module.moduleCode})`,
+                    }))
                     : []
                 }
               />

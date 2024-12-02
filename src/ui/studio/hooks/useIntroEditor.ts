@@ -1,7 +1,7 @@
 import { api } from "~/utils/api";
 import { useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/Editor/extension-kit";
-import useIntroduction from "~/hooks/course/useIntroduction";
+import useIntroduction from "~/hooks/db/course/useIntroduction";
 import { useEffect } from "react";
 
 export default function useIntroEditor(courseModuleId: string) {

@@ -10,8 +10,8 @@ import {
 } from "~/components/ui/dialog";
 import { useWallet } from "@meshsdk/react";
 import Link from "next/link";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
-import CommitToAssignment from "~/components/transactions/course/learner/commitToAssignment/CommitToAssignment";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import CommitToAssignment from "~/components/cardano/course/learner/commitToAssignment/CommitToAssignment";
 
 export default function DialogAssignmentCommitmentOnNetwork({
   courseCode,

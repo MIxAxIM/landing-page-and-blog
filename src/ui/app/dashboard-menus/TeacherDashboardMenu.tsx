@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import useCreatorsCoursesPolicies from "~/hooks/onchain/useCreatorsCoursesPolicies";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import useCreatorsCoursesPolicies from "~/hooks/cardano-indexer-api/useCreatorsCoursesPolicies";
 import { CardanoWallet } from "@meshsdk/react";
 import AndamioNetworkTeacherCourses from "~/ui/app/roles/teacher/AndamioNetworkTeacherCourses";
 

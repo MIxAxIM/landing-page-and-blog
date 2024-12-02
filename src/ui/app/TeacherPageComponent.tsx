@@ -1,6 +1,6 @@
 
 
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import AppLayout from "../app/layout/AppLayout";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import TeacherSection from "./roles/teacher/TeacherSection";

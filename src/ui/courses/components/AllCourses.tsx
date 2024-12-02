@@ -1,9 +1,9 @@
 import Loading from "~/components/loading";
-import useCourses from "~/hooks/course/useCourses";
+import useCourses from "~/hooks/db/course/useCourses";
 import CourseCard from "./CourseCard";
 import { useEffect, useState } from "react";
 import { type CoursePublic } from "~/types/db";
-import useLearnerSavedCourses from "~/hooks/course/useLearnerSavedCourses";
+import useLearnerSavedCourses from "~/hooks/db/course/useLearnerSavedCourses";
 
 export default function AllCourses() {
   const { courses, isLoadingCourses } = useCourses();

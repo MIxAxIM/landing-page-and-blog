@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
-import useCourseStateDatum from "~/hooks/onchain/useCourseStateDatum";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
+import useCourseStateDatum from "~/hooks/cardano-indexer-api/useCourseStateDatum";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import Link from "next/link";
-import { type LearnerAssignment } from "~/hooks/course/useLearnerAssignmentStatuses";
+import { type LearnerAssignment } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import useAssignmentDatums from "~/hooks/onchain/useAssignmentDatums";
+import useAssignmentDatums from "~/hooks/cardano-indexer-api/useAssignmentDatums";
 
 export default function CurrentCourseListItem({
   lsCs,

@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { useOrganizationMembers } from "~/hooks/organization/useOrganizationMembers";
+import { useOrganizationMembers } from "~/hooks/db/organization/useOrganizationMembers";
 
 // TODO: Implement addMember
 

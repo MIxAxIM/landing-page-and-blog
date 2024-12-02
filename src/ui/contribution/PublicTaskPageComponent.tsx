@@ -1,5 +1,5 @@
-import { useEscrowPrerequisites } from "~/hooks/contribution/useEscrowPrerequisites";
-import { useTreasury } from "~/hooks/contribution/useTreasury";
+import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequisites";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { type Task } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
 import PlaceholderComponent from "../prototype/PlaceholderComponent";

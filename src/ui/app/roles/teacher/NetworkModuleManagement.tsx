@@ -1,5 +1,5 @@
-import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
-import useCourseModuleOverviews from "~/hooks/course/useCourseModuleOverviews";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
+import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { Button } from "~/components/ui/button";
 import { Accordion } from "~/components/ui/accordion";
 import CourseModuleAccordionItem from "./CourseModuleAccordionItem";

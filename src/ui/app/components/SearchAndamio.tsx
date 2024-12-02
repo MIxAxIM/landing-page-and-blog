@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/db/contribution/useTask";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import { formatPosixTime } from "~/utils/time";
 import { useTerminology } from "~/contexts/terminology-context";
@@ -10,8 +10,8 @@ import OnboardCreator from "~/ui/onboarding/OnboardCreator";
 import OnboardContributor from "~/ui/onboarding/OnboardContributor";
 import OnboardTreasuryOwner from "~/ui/onboarding/OnboardTreasuryOwner";
 import OnboardOrganizer from "~/ui/onboarding/OnboardOrganizer";
-import useCourses from "~/hooks/course/useCourses";
-import { useOnboardingTasks } from "~/hooks/useOnboardingTasks";
+import useCourses from "~/hooks/db/course/useCourses";
+import { useOnboardingTasks } from "~/hooks/app/useOnboardingTasks";
 
 // NOTE: There are currently two search patterns demonstrated here:
 // 1. Given data like `courses`, we can map over it on the client side
@@ -20,7 +20,7 @@ import { useOnboardingTasks } from "~/hooks/useOnboardingTasks";
 // TODO: Post MVP, continually refine search according to needs in futture user stories. 
 
 export default function SearchAndamio() {
-  const { translateCaps, translate, translateCapsPlural } = useTerminology()
+  const { translate, translateCapsPlural } = useTerminology()
   const { courses } = useCourses()
   const { onboardingTasks } = useOnboardingTasks()
   const [value, setValue] = useState<string | null>(null);

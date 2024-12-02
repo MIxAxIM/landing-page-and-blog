@@ -1,5 +1,5 @@
 
-import { useOrganizationTreasuries } from "~/hooks/organization/useOrganizationTreasuries";
+import { useOrganizationTreasuries } from "~/hooks/db/organization/useOrganizationTreasuries";
 
 export default function CoursesList({ organizationId }: { organizationId: string }) {
 

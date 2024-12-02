@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useTask } from "~/hooks/contribution/useTask";
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useTask } from "~/hooks/db/contribution/useTask";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Badge } from "~/components/ui/badge";
 import DialogForm from "~/components/form/dialog-form";

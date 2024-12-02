@@ -1,12 +1,12 @@
 import { Button } from "~/components/ui/button";
-import MintCourseModuleDialog from "~/components/transactions/dialogs/MintCourseModuleDialog";
+import MintCourseModuleDialog from "~/components/cardano/dialogs/MintCourseModuleDialog";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import { type CourseModuleOverview } from "~/types/db";
 import { Badge } from "~/components/ui/badge";
 import { useState } from "react";

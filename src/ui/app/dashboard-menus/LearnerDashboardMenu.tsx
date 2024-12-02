@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 import SavedCourses from "~/ui/app/roles/learner/SavedCourses";
 import AndamioNetworkCourses from "~/ui/app/roles/learner/AndamioNetworkCourses";
 import { CardanoWallet } from "@meshsdk/react";

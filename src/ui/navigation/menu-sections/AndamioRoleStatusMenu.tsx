@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useTerminology } from "~/contexts/terminology-context";
-import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import RoleStatus from "~/ui/dashboard/components/RoleStatus";
 
 export default function AndamioRoleStatusMenu({

@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 import { api } from "~/utils/api";
-import useCourseModuleList from "~/hooks/course/useCourseModuleList";
+import useCourseModuleList from "~/hooks/db/course/useCourseModuleList";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { Checkbox } from "~/components/ui/checkbox";

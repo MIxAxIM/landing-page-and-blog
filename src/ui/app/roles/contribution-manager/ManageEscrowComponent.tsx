@@ -1,4 +1,4 @@
-import { useEscrow } from "~/hooks/contribution/useEscrow";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
@@ -15,11 +15,11 @@ import { useTerminology } from "~/contexts/terminology-context";
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect, useState } from "react";
-import useProjectByTreasury from "~/hooks/onchain/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-import MintProjectTokenDialog from "~/components/transactions/dialogs/MintProjectTokenDialog";
-import AddFundsDialog from "~/components/transactions/dialogs/AddFundsDialog";
+import MintProjectTokenDialog from "~/components/cardano/dialogs/MintProjectTokenDialog";
+import AddFundsDialog from "~/components/cardano/dialogs/AddFundsDialog";
 import DebugProjects from "../../DebugProjects";
 
 export default function ManageEscrowComponent({

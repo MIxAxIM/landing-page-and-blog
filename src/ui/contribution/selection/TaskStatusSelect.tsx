@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { useTask } from "~/hooks/contribution/useTask";
+import { useTask } from "~/hooks/db/contribution/useTask";
 import { TaskStatus } from "@prisma/client";
 import { cn } from "~/utils/shadcn";
 
