@@ -12,7 +12,7 @@ import { CourseStudioLinkItem, DashboardLinkItem } from "./link-items";
 import { BrowseCoursesSideMenu } from "./link-items/BrowseCoursesSideMenu";
 import AndamioRoleStatusMenu from "./menu-sections/AndamioRoleStatusMenu";
 import StudioOutline from "~/ui/studio/components/layout/SideMenu/StudioOutline";
-import CourseOutline from "~/components/layout/SideMenu/CourseOutline";
+import CourseOutline from "./menu-sections/CourseOutline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
