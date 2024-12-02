@@ -1,5 +1,4 @@
 import { Button } from "~/components/ui/button";
-import MintCourseModuleDialog from "~/components/cardano/dialogs/MintCourseModuleDialog";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import {
   AccordionContent,
@@ -11,6 +10,7 @@ import { type CourseModuleOverview } from "~/types/db";
 import { Badge } from "~/components/ui/badge";
 import { useState } from "react";
 import Link from "next/link";
+import MintModuleTokensDialog from "~/components/cardano/tx/course-creator/mint-module-tokens/MintModuleTokensDialog";
 
 export default function CourseModuleAccordionItem({
   courseCode,
@@ -115,7 +115,7 @@ export default function CourseModuleAccordionItem({
                   <Button>View Assignment Commitments</Button>
                 </div>
               ) : (
-                <MintCourseModuleDialog
+                <MintModuleTokensDialog
                   courseModuleOverview={cm}
                   courseNftPolicyId={courseNftPolicyId}
                 />

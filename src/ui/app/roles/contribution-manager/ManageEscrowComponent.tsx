@@ -18,9 +18,9 @@ import { useEffect, useState } from "react";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-import MintProjectTokenDialog from "~/components/cardano/dialogs/MintProjectTokenDialog";
-import AddFundsDialog from "~/components/cardano/dialogs/AddFundsDialog";
 import DebugProjects from "../../DebugProjects";
+import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
+import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
 
 export default function ManageEscrowComponent({
   escrowId,

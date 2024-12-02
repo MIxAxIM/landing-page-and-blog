@@ -1,16 +1,16 @@
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import AdminCreateCourseInstanceStepOne from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepOne";
-import AdminCreateCourseInstanceStepTwo from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepTwo";
 import { CardanoWallet } from "@meshsdk/react";
-import AdminCreateCourseInstanceStepThree from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepThree";
-import AdminAddTeacherDialog from "~/components/cardano/dialogs/AdminAddTeacherDialog";
-import AdminRemoveTeacherDialog from "~/components/cardano/dialogs/AdminRemoveTeacherDialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
-import AdminCreateProjectInstanceStepOne from "~/components/cardano/dialogs/AdminCreateProjectStepOne";
-import AdminCreateProjectInstanceStepTwo from "~/components/cardano/dialogs/AdminCreateProjectStepTwo";
-import AdminCreateProjectInstanceStepThree from "~/components/cardano/dialogs/AdminCreateProjectStepThree";
-import AdminCreateProjectInstanceStepFour from "~/components/cardano/dialogs/AdminCreateProjectStepFour";
 import AppLayout from "~/components/layout/AppLayout";
+import InitCourseStep1Dialog from "~/components/cardano/tx/admin/init-course-step-1/InitCourseStep1Dialog";
+import InitCourseStep2Dialog from "~/components/cardano/tx/admin/init-course-step-2/InitCourseStep2Dialog";
+import InitCourseStep3Dialog from "~/components/cardano/tx/admin/init-course-step-3/InitCourseStep3Dialog";
+import AddCourseCreatorsDialog from "~/components/cardano/tx/admin/add-course-creators/AddCourseCreatorsDialog";
+import RmCourseCreatorsDialog from "~/components/cardano/tx/admin/rm-course-creators/RmCourseCreatorsDialog";
+import InitProjectStep1Dialog from "~/components/cardano/tx/admin/init-project-step-1/InitProjectStep1Dialog";
+import InitProjectStep2Dialog from "~/components/cardano/tx/admin/init-project-step-2/InitProjectStep2Dialog";
+import InitProjectStep3Dialog from "~/components/cardano/tx/admin/init-project-step-3/InitProjectStep3Dialog";
+import InitProjectStep4Dialog from "~/components/cardano/tx/admin/init-project-step-4/InitProjectStep4Dialog";
 
 export default function AdminPageComponent() {
   return (
@@ -25,31 +25,31 @@ export default function AdminPageComponent() {
               <Card>
                 <CardHeader>Mint Course NFT with list of Contributors</CardHeader>
                 <CardContent>
-                  <AdminCreateCourseInstanceStepOne />
+                  <InitCourseStep1Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Deploy Reference Scripts</CardHeader>
                 <CardContent>
-                  <AdminCreateCourseInstanceStepTwo />
+                  <InitCourseStep2Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Deploy Course</CardHeader>
                 <CardContent>
-                  <AdminCreateCourseInstanceStepThree />
+                  <InitCourseStep3Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Add Teacher to Course</CardHeader>
                 <CardContent>
-                  <AdminAddTeacherDialog />
+                  <AddCourseCreatorsDialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Remove Teacher from Course</CardHeader>
                 <CardContent>
-                  <AdminRemoveTeacherDialog />
+                  <RmCourseCreatorsDialog />
                 </CardContent>
               </Card>
 
@@ -64,25 +64,25 @@ export default function AdminPageComponent() {
               <Card>
                 <CardHeader>Step 1: Initialize Project with Access Token Aliases</CardHeader>
                 <CardContent>
-                  <AdminCreateProjectInstanceStepOne />
+                  <InitProjectStep1Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Step 2: Deploy Reference Scripts?</CardHeader>
                 <CardContent>
-                  <AdminCreateProjectInstanceStepTwo />
+                  <InitProjectStep2Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Step 3: Deploy Course</CardHeader>
                 <CardContent>
-                  <AdminCreateProjectInstanceStepThree />
+                  <InitProjectStep3Dialog />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader>Step 4: Add Prerequisites</CardHeader>
                 <CardContent>
-                  <AdminCreateProjectInstanceStepFour />
+                  <InitProjectStep4Dialog />
                 </CardContent>
               </Card>
 

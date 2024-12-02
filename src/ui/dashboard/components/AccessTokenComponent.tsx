@@ -9,7 +9,7 @@ import {
 } from "~/components/ui/collapsible";
 
 import { BookOpenText, GlobeLockIcon } from "lucide-react";
-import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
+import MintAccessTokenDialog from "~/components/cardano/tx/access-token/MintAccessTokenDialog";
 
 export default function AccessTokenComponent() {
   const [isOpen, setIsOpen] = useState(false);

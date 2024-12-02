@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
-import CommitToProject from "~/components/cardano/contributor/commitToProject";
+import CommitProject from "~/components/cardano/tx/contributor/commit-project/CommitProject";
 
 export default function DebugProjectsPage() {
 
@@ -72,7 +72,7 @@ export default function DebugProjectsPage() {
 
       {treasuryInfo?.info.projects.map((p) => (
         <div key={p.project_hash}>
-          <CommitToProject
+          <CommitProject
             treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId ?? ""}
             project={p.project_hash}
             info="Got it done!"

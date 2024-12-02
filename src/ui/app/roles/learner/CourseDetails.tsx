@@ -16,7 +16,7 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import useCourseStateDatum from "~/hooks/cardano-indexer-api/useCourseStateDatum";
-import BurnCourseEnrollmentDialog from "~/components/cardano/dialogs/BurnCourseEnrollmentDialog";
+import BurnLocalStateDialog from "~/components/cardano/tx/student/burn-local-state/BurnLocalStateDialog";
 
 export default function CourseDetails({
   currentCourseCode,
@@ -146,7 +146,7 @@ export default function CourseDetails({
               <>
                 {accessTokenAsset &&
                   course?.onchainInstance[0]?.CourseCreatorNFTPolicyID && (
-                    <BurnCourseEnrollmentDialog
+                    <BurnLocalStateDialog
                       accessTokenAssetId={accessTokenAsset.unit}
                       courseNftPolicyId={
                         course?.onchainInstance[0]?.CourseCreatorNFTPolicyID

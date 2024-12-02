@@ -6,9 +6,9 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 import CourseDetails from "./CourseDetails";
 import LearnerCourses from "./LearnerCourses";
-import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
 import { useRouter } from "next/router";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
+import MintAccessTokenDialog from "~/components/cardano/tx/access-token/MintAccessTokenDialog";
 
 export default function LearnerComponent() {
   const { connected } = useWallet();

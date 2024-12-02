@@ -1,7 +1,7 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { BadgeCheck, BadgeX } from "lucide-react";
 import { useRouter } from "next/router";
-import MintProjectStateDialog from "~/components/cardano/dialogs/MintProjectState";
+import MintProjectStateDialog from "~/components/cardano/tx/contributor/mint-project-state/MintProjectStateDialog";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,

@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 import AssignmentBadges from "~/components/ui/assignment-badges";
-import DialogAssignmentCommitmentOnNetwork from "../dialogs/DialogAssignmentCommitmentOnNetwork";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import useNetworkLearner from "~/hooks/cardano-indexer-api/roles/useNetworkLearner";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
-import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
-import MintCourseEnrollmentDialog from "~/components/cardano/dialogs/MintCourseEnrollmentDialog";
+import MintLocalStateDialog from "~/components/cardano/tx/student/mint-local-state/MintLocalStateDialog";
+import MintAccessTokenDialog from "~/components/cardano/tx/access-token/MintAccessTokenDialog";
+import CommitToAssignmentDialog from "~/components/cardano/tx/student/commit-to-assignment/CommitToAssignmentDialog";
 
 export default function NetworkCommitmentCard({
   courseCode,
@@ -65,7 +65,7 @@ export default function NetworkCommitmentCard({
                   {isLearnerCommitted ? (
                     "You are currently committed to this assignment"
                   ) : (
-                    <DialogAssignmentCommitmentOnNetwork
+                    <CommitToAssignmentDialog
                       courseCode={courseCode}
                       assignmentCode={moduleCode}
                     />
@@ -81,7 +81,7 @@ export default function NetworkCommitmentCard({
                 <>
                   <p>Your access token: {accessTokenAlias}</p>
                   <p>Enroll now</p>
-                  <MintCourseEnrollmentDialog courseNftPolicyId={courseNftPolicyId} courseTitle={"Course"} courseCode={courseCode} />
+                  <MintLocalStateDialog courseNftPolicyId={courseNftPolicyId} courseTitle={"Course"} courseCode={courseCode} />
                 </>
 
               ) : (

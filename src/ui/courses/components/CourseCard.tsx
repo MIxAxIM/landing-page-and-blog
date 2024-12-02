@@ -12,7 +12,7 @@ import Markdown from "react-markdown";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import MintCourseEnrollmentDialog from "~/components/cardano/dialogs/MintCourseEnrollmentDialog";
+import MintLocalStateDialog from "~/components/cardano/tx/student/mint-local-state/MintLocalStateDialog";
 
 export default function CourseCard({
   course,
@@ -89,7 +89,7 @@ export default function CourseCard({
           <Button onClick={handleSaveCourse}>Save</Button>
         )}
         {!!course.onchainInstance[0] && (
-          <MintCourseEnrollmentDialog courseTitle={course.title} courseCode={course.courseCode} courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID} />
+          <MintLocalStateDialog courseTitle={course.title} courseCode={course.courseCode} courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID} />
         )}
       </CardFooter>
     </Card>
