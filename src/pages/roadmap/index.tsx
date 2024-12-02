@@ -1,8 +1,10 @@
 import React from "react";
 import RoadmapEraComponent from "~/ui/roadmap/RoadmapEraComponent";
-import { roadmap } from "../../roadmap";
 import MenuBar from "../../ui/landing/MenuBar";
 import Footer from "~/ui/landing/Footer";
+import { roadmap } from "~/data/roadmap";
+
+
 const ProductRoadmap = () => {
   return (
     <>

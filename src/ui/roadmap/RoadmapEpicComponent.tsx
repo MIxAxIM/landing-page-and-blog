@@ -1,5 +1,5 @@
 import { Badge } from "~/components/ui/badge";
-import { type Epic } from "~/roadmap";
+import { type Roadmap, type Epic } from "~/data/roadmap"
 
 // TODO: Set color based on status
 // Represent the quarter or date in a helpful way

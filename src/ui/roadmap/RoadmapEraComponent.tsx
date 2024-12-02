@@ -1,6 +1,5 @@
-import type { Epic, Roadmap } from "~/roadmap";
 import RoadmapEpicComponent from "./RoadmapEpicComponent";
-
+import { type Roadmap, type Epic } from "~/data/roadmap"
 // replace green dot with some kind of icon
 export default function RoadmapEraComponent(roadmap: Roadmap) {
   return (
