@@ -4,13 +4,13 @@ export default function useCourseStateDatum(
   courseNftPolicy: string,
   alias: string,
 ) {
-  
+
   const {
     data: courseStateDatum,
     isLoading: isLoadingCourseStateDatum,
     isError: isErrorCourseStateDatum,
     error: errorCourseStateDatum,
-  } = api.localStateValidator.getCourseStateDatumByAlias.useQuery({
+  } = api.courseState.getCourseStateDatumByAlias.useQuery({
     courseNftPolicy: courseNftPolicy,
     alias: alias,
   });

@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { useAccessToken } from "../useAccessToken";
+import { useAccessToken } from "./useAccessToken";
 
 export default function useNetworkLearner({ courseNftPolicyId }: { courseNftPolicyId?: string }) {
   const { accessTokenAlias } = useAccessToken();
@@ -7,7 +7,7 @@ export default function useNetworkLearner({ courseNftPolicyId }: { courseNftPoli
   const {
     data: courseStateDatum,
     isLoading: isLoadingCourseStateDatum,
-  } = api.localStateValidator.getCourseStateDatumByAlias.useQuery(
+  } = api.courseState.getCourseStateDatumByAlias.useQuery(
     {
       courseNftPolicy: courseNftPolicyId ?? "",
       alias: accessTokenAlias ?? ""

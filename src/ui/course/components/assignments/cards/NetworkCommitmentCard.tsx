@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import AssignmentBadges from "~/components/ui/assignment-badges";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
-import useNetworkLearner from "~/hooks/cardano-indexer-api/roles/useNetworkLearner";
+import useNetworkLearner from "~/hooks/cardano-indexer-api/useNetworkLearner";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import MintLocalStateDialog from "~/components/cardano/tx/student/mint-local-state/MintLocalStateDialog";
 import MintAccessTokenDialog from "~/components/cardano/tx/access-token/MintAccessTokenDialog";

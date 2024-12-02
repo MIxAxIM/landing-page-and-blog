@@ -2,7 +2,7 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 
 export default function Components() {
-  const { data: policiesData } = api.projectGeneral.getInstancesInfo.useQuery();
+  const { data: policiesData } = api.instanceValidator.getInstancesInfo.useQuery();
   return (
     <div>
       List of Treasuries{" "}

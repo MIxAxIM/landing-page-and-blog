@@ -38,10 +38,14 @@ import { organizationTreasuryRouter } from "./routers/database/organization/orga
 import { organizationCourseRouter } from "./routers/database/organization/organization-course";
 
 // Cardano Indexer API
+// -- Network --
+import { globalStateRouter } from "./routers/cardano-indexer/network/global-state";
+
+// -- Course --
 import { assignmentValidatorRouter } from "./routers/cardano-indexer/course/assignment-validator";
-import { localStateValidatorRouter } from "./routers/cardano-indexer/course/local-state-validator";
-import { globalStateValidatorRouter } from "./routers/cardano-indexer/course/global-state-validator";
+import { courseStateRouter } from "./routers/cardano-indexer/course/course-state";
 import { courseGovernanceValidatorRouter } from "./routers/cardano-indexer/course/course-governance-validator";
+// -- Project --
 import { projectGeneralRouter } from "./routers/cardano-indexer/project/general";
 import { projectValidatorsRouter } from "./routers/cardano-indexer/project/project";
 
@@ -53,6 +57,9 @@ import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-ro
 import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
 import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
 import { contributorTxRouter } from "./routers/transactions/contributor-tx-router";
+import { indexValidatorRouter } from "./routers/cardano-indexer/network/index-validator";
+import { instanceValidatorRouter } from "./routers/cardano-indexer/network/instance-validator";
+import { governanceValidatorRouter } from "./routers/cardano-indexer/network/governance-validator";
 
 /**
  * This is the primary router for your server.
@@ -88,11 +95,17 @@ export const appRouter = createTRPCRouter({
   assignment: assignmentRouter,
   introduction: introductionRouter,
 
+
+  // cardano network
+  globalState: globalStateRouter,
+  governanceValidator: governanceValidatorRouter,
+  indexValidator: indexValidatorRouter,
+  instanceValidator: instanceValidatorRouter,
+
   // course on-chain
   assignmentStatus: assignmentStatusRouter,
   assignmentValidator: assignmentValidatorRouter,
-  localStateValidator: localStateValidatorRouter,
-  globalStateValidator: globalStateValidatorRouter,
+  courseState: courseStateRouter,
   courseGovernanceValidator: courseGovernanceValidatorRouter,
 
   // contribution features
@@ -111,7 +124,7 @@ export const appRouter = createTRPCRouter({
   // premium features
   clientDomains: clientDomainsRouter,
 
-  // experimental - transactions
+  // transactions
   studentTransactions: studentTxRouter,
   courseCreatorTransactions: courseCreatorTxRouter,
   accessTokenTransactions: accessTokenTxRouter,

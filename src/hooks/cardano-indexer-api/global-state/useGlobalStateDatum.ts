@@ -6,7 +6,7 @@ export default function useGlobalStateDatum(alias: string) {
     isLoading: isLoadingGlobalStateDatum,
     isError: isErrorGlobalStateDatum,
     error: errorGlobalStateDatum,
-  } = api.globalStateValidator.getGlobalStateDatumByAlias.useQuery({ alias }, { enabled: !!alias });
+  } = api.globalState.getDecodedDatum.useQuery({ alias }, { enabled: !!alias });
 
   return {
     globalStateDatum,

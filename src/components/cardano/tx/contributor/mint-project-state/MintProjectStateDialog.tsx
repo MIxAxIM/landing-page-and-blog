@@ -10,7 +10,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/global-state/useGlobalStateDatum";
 import useProjects from "~/hooks/cardano-indexer-api/useProjects";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import MintProjectState from "./MintProjectState";

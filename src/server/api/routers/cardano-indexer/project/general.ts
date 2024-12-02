@@ -8,21 +8,6 @@ import {
 } from "~/server/api/trpc";
 
 export const projectGeneralRouter = createTRPCRouter({
-  getInstancesInfo: publicProcedure.query(async () => {
-    const instances = await indexerGetWithParams<UtxoWithSlot[], any>(
-      "/instance-validator/utxos",
-      {
-        filter: "TreasuryScripts",
-      },
-    );
-    const policies = instances.map((utxo) => {
-      return JSON.parse(JSON.stringify(utxo.datum!.json)).bytes as string;
-    });
-    return {
-      policies: policies,
-    };
-  }),
-
   getTreasuryInfo: publicProcedure
     .input(
       z.object({
@@ -49,8 +34,8 @@ export const projectGeneralRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const txCbor = await indexerGetWithParams<any, any>("/tx/treasury/add-funds", {
         policy: input.policy,
-        user_address : input.dipositorsAddress,
-        amount : input.adaAmount,
+        user_address: input.dipositorsAddress,
+        amount: input.adaAmount,
       });
       return {
         txCbor: txCbor,

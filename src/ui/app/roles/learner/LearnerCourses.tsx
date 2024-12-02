@@ -1,4 +1,4 @@
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/global-state/useGlobalStateDatum";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import CurrentCourseListItem from "./CurrentCourseListItem";
 import { type LearnerAssignment } from "~/hooks/db/course/useLearnerAssignmentStatuses";

@@ -8,8 +8,8 @@ type GlobalStateQueryParams = {
   alias: string;
 };
 
-export const globalStateValidatorRouter = createTRPCRouter({
-  getGlobalStateDatumByAlias: protectedProcedure
+export const globalStateRouter = createTRPCRouter({
+  getDecodedDatum: protectedProcedure
     .input(
       z.object({
         alias: z.string().min(1),

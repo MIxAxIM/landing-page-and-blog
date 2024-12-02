@@ -6,7 +6,7 @@ export default function useTreasuryInstances() {
     isLoading: isLoadingTreasuryInstances,
     isError: isErrorTreasuryInstances,
     error: errorTreasuryInstances,
-  } = api.projectGeneral.getInstancesInfo.useQuery();
+  } = api.instanceValidator.getInstancesInfo.useQuery();
   return {
     treasuryInstances,
     isLoadingTreasuryInstances,

@@ -9,7 +9,7 @@ type CourseStateQueryParams = {
   alias: string;
 };
 
-export const localStateValidatorRouter = createTRPCRouter({
+export const courseStateRouter = createTRPCRouter({
   getCourseStateDatumByAlias: protectedProcedure
     .input(
       z.object({
