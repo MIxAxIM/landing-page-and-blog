@@ -14,8 +14,8 @@ import {
   type CourseModuleOverview,
   type ModuleSLT,
 } from "~/types/db";
-import CourseLayout from "~/ui/course/components/layout/CourseLayout";
-import ModuleLayout from "~/ui/course/components/layout/ModuleLayout";
+import CourseLayout from "~/components/layout/CourseLayout";
+import ModuleLayout from "~/components/layout/ModuleLayout";
 import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 

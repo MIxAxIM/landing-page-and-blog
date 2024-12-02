@@ -8,7 +8,6 @@ import {
   type CourseModuleOverview,
   type ModuleSLT,
 } from "~/types/db";
-import CourseLayout from "../components/layout/CourseLayout";
 import { signIn, useSession } from "next-auth/react";
 import { useCourseStore } from "~/lib/zustand/course";
 import mergeObjects from "~/utils/mergeObjects";
@@ -32,6 +31,7 @@ import Markdown from "react-markdown";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { useState } from "react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import CourseLayout from "~/components/layout/CourseLayout";
 
 export default function PageCourse({
   courseCode,

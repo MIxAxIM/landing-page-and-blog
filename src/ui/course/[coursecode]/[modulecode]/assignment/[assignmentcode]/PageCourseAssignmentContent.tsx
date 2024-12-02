@@ -8,8 +8,8 @@ import {
   type AssignmentCommitment,
   type CourseModuleOverview,
 } from "~/types/db";
-import CourseLayout from "~/ui/course/components/layout/CourseLayout";
-import ModuleLayout from "~/ui/course/components/layout/ModuleLayout";
+import CourseLayout from "~/components/layout/CourseLayout";
+import ModuleLayout from "~/components/layout/ModuleLayout";
 import SltList from "~/ui/studio/components/assignment-dashboard/slt-list";
 import { useEffect, useState } from "react";
 
