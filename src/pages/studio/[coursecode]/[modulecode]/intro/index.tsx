@@ -4,7 +4,7 @@ import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import SideMenu from "~/components/navigation/SideMenu";
 import PageModuleIntroContent from "~/ui/studio/[coursecode]/[modulecode]/intro/PageModuleIntroContent";
-import LoadingContentEditor from "~/ui/studio/components/ContentEditor/ui/LoadingContentEditor";
+import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 
 interface IntroductionStudioPageProps {
   courseCode: string;

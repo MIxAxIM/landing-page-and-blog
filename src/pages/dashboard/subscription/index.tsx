@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import ProfileLayout from "~/components/layout/ProfileLayout";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { api } from "~/utils/api";
 
 

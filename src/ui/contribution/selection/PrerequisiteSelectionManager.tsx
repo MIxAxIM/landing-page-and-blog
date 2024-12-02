@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { PrerequisiteItem, PrerequisiteList } from "../lists/PrerequisiteList";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import Fuse from 'fuse.js';
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 const fuseOptions = {
   keys: [

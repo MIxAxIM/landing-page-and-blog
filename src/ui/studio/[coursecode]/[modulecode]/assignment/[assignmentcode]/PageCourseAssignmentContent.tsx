@@ -15,7 +15,7 @@ import HeaderSection from "../../components/HeaderSection";
 import { useCourseStore } from "~/lib/zustand/course";
 import useAssignmentEditor from "~/ui/studio/hooks/useAssignmentEditor";
 import { LightDarkToggle } from "~/components/common/LightDarkToggle";
-import ContentEditor from "~/ui/studio/components/ContentEditor";
+import ContentEditor from "~/components/editor/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";

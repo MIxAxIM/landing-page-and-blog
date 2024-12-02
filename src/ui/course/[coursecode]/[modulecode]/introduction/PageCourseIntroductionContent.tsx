@@ -17,7 +17,7 @@ import {
 import CourseLayout from "~/components/layout/CourseLayout";
 import ModuleLayout from "~/components/layout/ModuleLayout";
 import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 import "highlight.js/styles/atom-one-dark.css";
 

@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import classNames from "~/utils/classnames";
 import { DocumentIcon } from "@heroicons/react/24/outline";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { useRouter } from "next/router";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { type CourseModuleOverview } from "~/types/db";

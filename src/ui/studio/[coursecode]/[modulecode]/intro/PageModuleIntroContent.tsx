@@ -6,14 +6,14 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import LoadingContentEditor from "~/ui/studio/components/ContentEditor/ui/LoadingContentEditor";
+import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 import { Form } from "~/components/ui/form";
 
 import HeaderSection from "../components/HeaderSection";
 
 import { useCourseStore } from "~/lib/zustand/course";
 import useIntroEditor from "~/ui/studio/hooks/useIntroEditor";
-import ContentEditor from "~/ui/studio/components/ContentEditor";
+import ContentEditor from "~/components/editor/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";

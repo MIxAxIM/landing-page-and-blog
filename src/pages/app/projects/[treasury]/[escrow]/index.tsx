@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import ContributionManagerPage from "~/ui/app/ContributionManagerPage";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 // TODO: If Escrow NFT exists, use that in route
 export default function DashboardContributionManagerEscrowPage() {
 	const [treasuryCode, setTreasuryCode] = useState<string | undefined>(undefined);

@@ -5,7 +5,7 @@ import { useTerminology } from "~/contexts/terminology-context";
 import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 export default function MyProjectsListComponent() {
   const { treasuries } = useUserRelationships()

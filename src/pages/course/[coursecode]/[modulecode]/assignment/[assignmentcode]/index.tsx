@@ -4,7 +4,7 @@ import useCourse from "~/hooks/db/course/useCourse";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import PageCourseAssignmentContent from "~/ui/course/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 import CourseLayout from "~/components/layout/CourseLayout";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 // TODO: Point the Course Creator CTA to on-chain course minting
 

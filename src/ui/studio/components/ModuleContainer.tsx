@@ -28,13 +28,13 @@ import DialogModule from "./dialogs/DialogModule";
 import IntroductionContainer from "./IntroductionContainer";
 import useSLTs from "~/hooks/db/course/useSLTs";
 import { format } from "date-fns";
-import LoadingCircle from "./ContentEditor/ui/icons/loading-circle";
 import useAssignment from "~/hooks/db/course/useAssignment";
 import { type Slt } from "@prisma/client";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { Button } from "~/components/ui/button";
 import LoadingCard from "~/components/common/LoadingCard";
+import Loading from "~/components/common/loading";
 
 type sltI = { slt: ModuleSLT; sltIndex: number; id: string };
 
@@ -268,7 +268,7 @@ export default function ModuleContainer({
             {/* todo implelment the rest of dnd-kit - look at codesandbox example - can imagine extracting this component and adding overlay */}
           </DndContext>
           {isLoadingAssignment ? (
-            <LoadingCircle />
+            <Loading />
           ) : (
             <>
               {assignment && (

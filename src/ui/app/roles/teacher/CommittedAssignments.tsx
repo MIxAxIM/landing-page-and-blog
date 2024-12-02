@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import AcceptDenyAssignmentDialog from "~/components/cardano/dialogs/AcceptDenyAssignmentDialog";
