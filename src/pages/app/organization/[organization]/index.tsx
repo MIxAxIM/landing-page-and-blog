@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useOrganization } from "~/hooks/db/organization/useOrganization";
 import DialogOrganization from "~/ui/app/components/dialogs/DialogOrganization";
-import AppLayout from "~/ui/app/layout/AppLayout";
+import AppLayout from "~/components/layout/AppLayout";
 import CoursesList from "~/ui/app/organization/CoursesList";
 import MembersList from "~/ui/app/organization/MembersList";
 import TreasuriesList from "~/ui/app/organization/TreasuriesList";

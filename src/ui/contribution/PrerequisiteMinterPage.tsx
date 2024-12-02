@@ -1,7 +1,7 @@
 import { useTerminology } from "~/contexts/terminology-context";
-import AppLayout from "../app/layout/AppLayout";
 import PrerequisiteForm from "./form/PrerequisiteFormComponent";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
+import AppLayout from "~/components/layout/AppLayout";
 
 export default function PrerequisiteMinterPage() {
   const { translateCaps } = useTerminology()

@@ -1,7 +1,6 @@
-
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
-import AppLayout from "../app/layout/AppLayout";
 import MyProjectsListComponent from "./roles/contribution-manager/MyProjectsListComponent";
+import AppLayout from "~/components/layout/AppLayout";
 
 export default function ProjectsPageComponent() {
   return (

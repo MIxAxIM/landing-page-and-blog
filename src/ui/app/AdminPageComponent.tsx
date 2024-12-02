@@ -5,12 +5,12 @@ import { CardanoWallet } from "@meshsdk/react";
 import AdminCreateCourseInstanceStepThree from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepThree";
 import AdminAddTeacherDialog from "~/components/cardano/dialogs/AdminAddTeacherDialog";
 import AdminRemoveTeacherDialog from "~/components/cardano/dialogs/AdminRemoveTeacherDialog";
-import AppLayout from "../app/layout/AppLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import AdminCreateProjectInstanceStepOne from "~/components/cardano/dialogs/AdminCreateProjectStepOne";
 import AdminCreateProjectInstanceStepTwo from "~/components/cardano/dialogs/AdminCreateProjectStepTwo";
 import AdminCreateProjectInstanceStepThree from "~/components/cardano/dialogs/AdminCreateProjectStepThree";
 import AdminCreateProjectInstanceStepFour from "~/components/cardano/dialogs/AdminCreateProjectStepFour";
+import AppLayout from "~/components/layout/AppLayout";
 
 export default function AdminPageComponent() {
   return (

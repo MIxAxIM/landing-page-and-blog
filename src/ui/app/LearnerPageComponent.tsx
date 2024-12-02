@@ -1,5 +1,5 @@
+import AppLayout from "~/components/layout/AppLayout";
 import LearnerComponent from "./roles/learner/LearnerComponent";
-import AppLayout from "../app/layout/AppLayout";
 
 export default function LearnerPageComponent() {
   return (

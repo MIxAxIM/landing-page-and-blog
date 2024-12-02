@@ -2,7 +2,7 @@ import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import ContributionManagerComponent from "./roles/contribution-manager/ContributionManagerComponent";
 import ManageTreasuryComponent from "./roles/contribution-manager/ManageTreasuryComponent";
 import ManageEscrowComponent from "./roles/contribution-manager/ManageEscrowComponent";
-import AppLayout from "./layout/AppLayout";
+import AppLayout from "~/components/layout/AppLayout";
 
 export default function ContributionManagerPage({
   selectedTreasuryCode,

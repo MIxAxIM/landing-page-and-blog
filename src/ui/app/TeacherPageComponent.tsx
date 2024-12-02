@@ -1,7 +1,6 @@
 
 
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
-import AppLayout from "../app/layout/AppLayout";
 import TeacherSection from "./roles/teacher/TeacherSection";
 import { CardanoWallet } from "@meshsdk/react";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
@@ -9,6 +8,7 @@ import { Card } from "~/components/ui/card";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
+import AppLayout from "~/components/layout/AppLayout";
 
 
 export default function TeacherPageComponent() {

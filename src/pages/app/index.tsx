@@ -1,5 +1,5 @@
 import AppPageComponent from "~/ui/app/AppPageComponent";
-import AppLayout from "~/ui/app/layout/AppLayout";
+import AppLayout from "~/components/layout/AppLayout";
 
 export default function AndamioAppPage() {
   return (

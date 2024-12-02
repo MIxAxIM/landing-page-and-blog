@@ -1,5 +1,5 @@
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import AppButtons from "~/ui/app/layout/AppButtons";
+import AppButtons from "~/components/layout/AppButtons";
 import SideMenu from "~/components/navigation/SideMenu";
 
 export default function CourseLayout({

@@ -1,4 +1,4 @@
-import AppLayout from "../app/layout/AppLayout";
+import AppLayout from "~/components/layout/AppLayout";
 import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
 import PublicTreasuryListComponent from "../contribution/lists/PublicTreasuryListComponent";
 
