@@ -8,11 +8,11 @@ import useCourse from "~/hooks/db/course/useCourse";
 import useValidateCreator from "~/hooks/db/course/useValidateCreator";
 import { type CoursePublic } from "~/types/db";
 import SideMenuSessionProfile from "~/ui/auth/SideMenuSessionProfile";
-import CourseOutline from "../course/components/layout/SideMenu/CourseOutline";
-import StudioOutline from "../studio/components/layout/SideMenu/StudioOutline";
 import { CourseStudioLinkItem, DashboardLinkItem } from "./link-items";
 import { BrowseCoursesSideMenu } from "./link-items/BrowseCoursesSideMenu";
 import AndamioRoleStatusMenu from "./menu-sections/AndamioRoleStatusMenu";
+import StudioOutline from "~/ui/studio/components/layout/SideMenu/StudioOutline";
+import CourseOutline from "~/ui/course/components/layout/SideMenu/CourseOutline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
