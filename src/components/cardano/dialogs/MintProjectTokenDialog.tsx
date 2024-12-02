@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MintProjectToken from "~/components/transactions/project-manager/mintProjectToken/MintProjectToken";
+import MintProjectToken from "~/components/cardano/project-manager/mintProjectToken/MintProjectToken";
 import {
   Table,
   TableBody,

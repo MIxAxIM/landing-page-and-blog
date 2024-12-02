@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
-import CommitToProject from "~/components/transactions/contributor/commitToProject";
+import CommitToProject from "~/components/cardano/contributor/commitToProject";
 
 export default function DebugProjectsPage() {
 

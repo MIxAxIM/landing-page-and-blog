@@ -16,7 +16,7 @@ import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import useCourseStateDatum from "~/hooks/onchain/useCourseStateDatum";
-import BurnCourseEnrollmentDialog from "~/components/transactions/dialogs/BurnCourseEnrollmentDialog";
+import BurnCourseEnrollmentDialog from "~/components/cardano/dialogs/BurnCourseEnrollmentDialog";
 
 export default function CourseDetails({
   currentCourseCode,

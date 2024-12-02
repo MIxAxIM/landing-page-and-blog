@@ -1,5 +1,5 @@
 import { Button } from "~/components/ui/button";
-import MintCourseModuleDialog from "~/components/transactions/dialogs/MintCourseModuleDialog";
+import MintCourseModuleDialog from "~/components/cardano/dialogs/MintCourseModuleDialog";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import {
   AccordionContent,

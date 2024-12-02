@@ -16,7 +16,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import MintLocalState from "~/components/transactions/course/learner/mintLocalState/MintLocalState";
+import MintLocalState from "~/components/cardano/course/learner/mintLocalState/MintLocalState";
 import Loading from "~/components/loading";
 import SuccessTxModalContent from "../SuccessTxComponent";
 import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";

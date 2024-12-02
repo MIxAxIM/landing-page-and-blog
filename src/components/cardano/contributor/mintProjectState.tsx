@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useContributorPrerequisite } from "~/hooks/contribution/useContributorPrerequisite";

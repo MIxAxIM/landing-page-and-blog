@@ -2,7 +2,7 @@ import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { type CourseModuleOverview } from "~/types/db";
 import { api } from "~/utils/api";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
 
 export default function MintCourseModule({
   accessTokenAssetId,

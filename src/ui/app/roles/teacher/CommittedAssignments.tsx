@@ -10,7 +10,7 @@ import {
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import AcceptDenyAssignmentDialog from "~/components/transactions/dialogs/AcceptDenyAssignmentDialog";
+import AcceptDenyAssignmentDialog from "~/components/cardano/dialogs/AcceptDenyAssignmentDialog";
 
 export default function CommittedAssignments({
   courseNftPolicy,

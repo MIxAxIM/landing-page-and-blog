@@ -1,33 +1,37 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
-import { useAddress, useWallet } from "@meshsdk/react";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
+import { useAccessToken } from "~/hooks/onchain/useAccessToken";
+import { useWallet } from "@meshsdk/react";
 
-export default function AddFunds({
+export default function CommitToProject({
   treasuryNftPolicyId,
-  adaAmount,
+  project,
+  info,
   setSuccessTxHash,
 }: {
   treasuryNftPolicyId: string;
-  adaAmount: number;
+  project: string;
+  info?: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
-  const address = useAddress();
+  const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
 
   const {
     data: unsignedTxCBOR,
     isLoading,
     error: txError,
-  } = api.projectManagerTransactions.addFunds.useQuery(
+  } = api.contributorTransactions.commitProject.useQuery(
     {
       treasuryNftPolicyId: treasuryNftPolicyId,
-      dipositorsAddress: address ?? "",
-      adaAmount: adaAmount,
+      info: info ?? "",
+      userAccessTokenUnit: accessTokenAsset?.unit ?? "",
+      project: project,
     },
     {
       // Don't attempt the query if we don't have an alias
-      enabled: !!treasuryNftPolicyId && !!address,
+      enabled: !!treasuryNftPolicyId && !!accessTokenAsset && !!project,
       // Don't retry on error since we expect some queries to fail
       retry: false,
     },
@@ -44,7 +48,7 @@ export default function AddFunds({
 
   return (
     <TransactionContainer
-      buttonText={`Add Ada to Treasury`}
+      buttonText={`Commit To Project`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}

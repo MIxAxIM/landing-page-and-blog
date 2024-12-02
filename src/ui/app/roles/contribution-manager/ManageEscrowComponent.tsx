@@ -18,8 +18,8 @@ import { useEffect, useState } from "react";
 import useProjectByTreasury from "~/hooks/onchain/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-import MintProjectTokenDialog from "~/components/transactions/dialogs/MintProjectTokenDialog";
-import AddFundsDialog from "~/components/transactions/dialogs/AddFundsDialog";
+import MintProjectTokenDialog from "~/components/cardano/dialogs/MintProjectTokenDialog";
+import AddFundsDialog from "~/components/cardano/dialogs/AddFundsDialog";
 import DebugProjects from "../../DebugProjects";
 
 export default function ManageEscrowComponent({

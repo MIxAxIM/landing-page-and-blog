@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
 
 export default function AcceptDenyAssignment({
   courseNftPolicy,
@@ -21,15 +21,15 @@ export default function AcceptDenyAssignment({
   const { data: unsignedTxCBOR, error: txError } =
     decision === "accept"
       ? api.creatorCourseTransactions.acceptAssignment.useQuery({
-          userAccessTokenUnit: userAccessTokenUnit,
-          courseNftPolicyId: courseNftPolicy,
-          studentAlias: studentAlias,
-        })
+        userAccessTokenUnit: userAccessTokenUnit,
+        courseNftPolicyId: courseNftPolicy,
+        studentAlias: studentAlias,
+      })
       : api.creatorCourseTransactions.denyAssignment.useQuery({
-          userAccessTokenUnit: userAccessTokenUnit,
-          courseNftPolicyId: courseNftPolicy,
-          studentAlias: studentAlias,
-        });
+        userAccessTokenUnit: userAccessTokenUnit,
+        courseNftPolicyId: courseNftPolicy,
+        studentAlias: studentAlias,
+      });
 
   if (txError) {
     return (

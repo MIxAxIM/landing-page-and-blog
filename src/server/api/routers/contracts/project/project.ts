@@ -1,7 +1,7 @@
 import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import UTxOi from "~/components/transactions/model";
+import UTxOi from "~/components/cardano/model";
 import { indexerGet, indexerGetWithParams } from "~/lib/axios/indexer";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";

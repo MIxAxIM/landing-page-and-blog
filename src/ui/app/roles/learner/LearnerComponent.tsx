@@ -6,7 +6,7 @@ import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import useGlobalStateDatum from "~/hooks/onchain/useGlobalStateDatum";
 import CourseDetails from "./CourseDetails";
 import LearnerCourses from "./LearnerCourses";
-import MintAccessTokenDialog from "~/components/transactions/dialogs/MintAccessTokenDialog";
+import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
 import { useRouter } from "next/router";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
 

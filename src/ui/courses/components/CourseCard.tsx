@@ -12,7 +12,7 @@ import Markdown from "react-markdown";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import MintCourseEnrollmentDialog from "~/components/transactions/dialogs/MintCourseEnrollmentDialog";
+import MintCourseEnrollmentDialog from "~/components/cardano/dialogs/MintCourseEnrollmentDialog";
 
 export default function CourseCard({
   course,

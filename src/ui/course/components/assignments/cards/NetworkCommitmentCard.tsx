@@ -6,8 +6,8 @@ import useAssignmentNetworkStatus from "~/hooks/onchain/useAssignmentNetworkStat
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";
 import useNetworkLearner from "~/hooks/onchain/roles/useNetworkLearner";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
-import MintAccessTokenDialog from "~/components/transactions/dialogs/MintAccessTokenDialog";
-import MintCourseEnrollmentDialog from "~/components/transactions/dialogs/MintCourseEnrollmentDialog";
+import MintAccessTokenDialog from "~/components/cardano/dialogs/MintAccessTokenDialog";
+import MintCourseEnrollmentDialog from "~/components/cardano/dialogs/MintCourseEnrollmentDialog";
 
 export default function NetworkCommitmentCard({
   courseCode,

@@ -18,8 +18,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { api } from "~/utils/api";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
-import SuccessTxModalContent from "~/components/transactions/SuccessTxComponent";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
+import SuccessTxModalContent from "~/components/cardano/SuccessTxComponent";
 
 const FormSchema = z.object({
   assignmentInfo: z.string().min(2, {

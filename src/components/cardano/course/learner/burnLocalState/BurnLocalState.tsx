@@ -1,31 +1,28 @@
 import { useWallet } from "@meshsdk/react";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
 import { type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
-import useCourseByPolicyId from "~/hooks/onchain/useCourseByPolicyId";
 import { api } from "~/utils/api";
 
-export default function MintLocalState({
-  userAccessTokenUnit,
+export default function BurnLocalState({
+  accessTokenAssetId,
   courseNftPolicyId,
   setSuccessTxHash,
 }: {
-  userAccessTokenUnit: string;
+  accessTokenAssetId: string;
   courseNftPolicyId: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
-  const { courseInfo } = useCourseByPolicyId(courseNftPolicyId);
-
   const { wallet } = useWallet();
 
   const { data: unsignedTxCBOR } =
-    api.learnerCourseTransactions.mintLocalState.useQuery({
-      userAccessTokenUnit: userAccessTokenUnit,
+    api.learnerCourseTransactions.burnLocalState.useQuery({
+      userAccessTokenUnit: accessTokenAssetId,
       courseNftPolicyId: courseNftPolicyId,
     });
 
   return (
     <TransactionContainer
-      buttonText={`Enroll In ${courseInfo?.title}`}
+      buttonText={`Un-Enroll in Course`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}

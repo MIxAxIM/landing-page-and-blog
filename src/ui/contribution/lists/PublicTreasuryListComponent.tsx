@@ -3,7 +3,7 @@ import useTreasuries from "~/hooks/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
 import { useTerminology } from "~/contexts/terminology-context";
-import MintProjectStateDialog from "~/components/transactions/dialogs/MintProjectState";
+import MintProjectStateDialog from "~/components/cardano/dialogs/MintProjectState";
 
 export default function PublicTreasuryListComponent() {
   const { publishedTreasuries, isLoadingTreasuries } = useTreasuries();

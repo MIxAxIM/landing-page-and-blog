@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/transactions/TransactionContainer";
+import TransactionContainer from "~/components/cardano/TransactionContainer";
 import { useAccessToken } from "~/hooks/onchain/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import LoadingCircle from "~/ui/studio/components/ContentEditor/ui/icons/loading-circle";

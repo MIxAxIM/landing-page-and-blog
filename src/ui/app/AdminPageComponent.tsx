@@ -1,16 +1,16 @@
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import AdminCreateCourseInstanceStepOne from "~/components/transactions/dialogs/AdminCreateCourseInstanceStepOne";
-import AdminCreateCourseInstanceStepTwo from "~/components/transactions/dialogs/AdminCreateCourseInstanceStepTwo";
+import AdminCreateCourseInstanceStepOne from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepOne";
+import AdminCreateCourseInstanceStepTwo from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepTwo";
 import { CardanoWallet } from "@meshsdk/react";
-import AdminCreateCourseInstanceStepThree from "~/components/transactions/dialogs/AdminCreateCourseInstanceStepThree";
-import AdminAddTeacherDialog from "~/components/transactions/dialogs/AdminAddTeacherDialog";
-import AdminRemoveTeacherDialog from "~/components/transactions/dialogs/AdminRemoveTeacherDialog";
+import AdminCreateCourseInstanceStepThree from "~/components/cardano/dialogs/AdminCreateCourseInstanceStepThree";
+import AdminAddTeacherDialog from "~/components/cardano/dialogs/AdminAddTeacherDialog";
+import AdminRemoveTeacherDialog from "~/components/cardano/dialogs/AdminRemoveTeacherDialog";
 import AppLayout from "../app/layout/AppLayout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
-import AdminCreateProjectInstanceStepOne from "~/components/transactions/dialogs/AdminCreateProjectStepOne";
-import AdminCreateProjectInstanceStepTwo from "~/components/transactions/dialogs/AdminCreateProjectStepTwo";
-import AdminCreateProjectInstanceStepThree from "~/components/transactions/dialogs/AdminCreateProjectStepThree";
-import AdminCreateProjectInstanceStepFour from "~/components/transactions/dialogs/AdminCreateProjectStepFour";
+import AdminCreateProjectInstanceStepOne from "~/components/cardano/dialogs/AdminCreateProjectStepOne";
+import AdminCreateProjectInstanceStepTwo from "~/components/cardano/dialogs/AdminCreateProjectStepTwo";
+import AdminCreateProjectInstanceStepThree from "~/components/cardano/dialogs/AdminCreateProjectStepThree";
+import AdminCreateProjectInstanceStepFour from "~/components/cardano/dialogs/AdminCreateProjectStepFour";
 
 export default function AdminPageComponent() {
   return (
