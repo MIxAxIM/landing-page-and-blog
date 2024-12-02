@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import TeacherSection from "./TeacherSection";
-import ConnectWalletCard from "~/components/cardano/ConnectWalletCard";
+import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 
 export default function TeacherCoursePageComponent({
   courseCode,

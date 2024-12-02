@@ -1,6 +1,6 @@
 import { type BrowserWallet } from "@meshsdk/wallet";
 import { useEffect, useState } from "react";
-import { Progress } from "../ui/progress";
+import { Progress } from "~/components/ui/progress";
 
 export default function TransactionLoading({
   wallet,

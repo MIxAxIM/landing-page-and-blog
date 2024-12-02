@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
-import TransactionLoading from "../TransactionLoading";
+import TransactionLoading from "../common/TransactionLoading";
 
 export default function RemoveCourseTeacherTx({
   alias,

@@ -18,8 +18,8 @@ import {
 import { Input } from "~/components/ui/input";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { api } from "~/utils/api";
-import TransactionContainer from "~/components/cardano/TransactionContainer";
-import SuccessTxModalContent from "~/components/cardano/SuccessTxComponent";
+import TransactionContainer from "~/components/cardano/common/TransactionContainer";
+import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 
 const FormSchema = z.object({
   assignmentInfo: z.string().min(2, {

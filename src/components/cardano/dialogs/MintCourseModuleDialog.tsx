@@ -5,7 +5,7 @@ import MintCourseModule from "../course/creator/mintCourseModule/MintCourseModul
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 
 export default function MintCourseModuleDialog({
   courseModuleOverview,

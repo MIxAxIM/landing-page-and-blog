@@ -2,7 +2,7 @@ import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import AcceptDenyAssignment from "../course/creator/acceptDenyAssignment/AcceptDenyAssignment";
 import { useState } from "react";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 
 export default function AcceptDenyAssignmentDialog({
   courseNftPolicy,

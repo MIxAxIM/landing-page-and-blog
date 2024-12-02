@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormInput from "~/components/form/form-input";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepOne from "../admin/ProjectStepOne";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";

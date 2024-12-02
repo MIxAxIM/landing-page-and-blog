@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 import ProjectStepTwo from "../admin/ProjectStepTwo";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";

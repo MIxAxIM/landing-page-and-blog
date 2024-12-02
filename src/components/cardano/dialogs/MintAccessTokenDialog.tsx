@@ -11,7 +11,7 @@ import FormInput from "~/components/form/form-input";
 import { Form } from "~/components/ui/form";
 import { env } from "~/env";
 import MintAccessToken from "../accessToken/MintAccessToken";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 import FormLabel from "~/components/form/form-label";
 
 export default function MintAccessTokenDialog() {

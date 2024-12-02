@@ -1,5 +1,5 @@
 import { useWallet } from "@meshsdk/react";
-import TransactionContainer from "~/components/cardano/TransactionContainer";
+import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 

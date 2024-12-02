@@ -18,7 +18,7 @@ import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
 import MintLocalState from "~/components/cardano/course/learner/mintLocalState/MintLocalState";
 import Loading from "~/components/common/loading";
-import SuccessTxModalContent from "../SuccessTxComponent";
+import SuccessTxModalContent from "../common/SuccessTxComponent";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/useGlobalStateDatum";
 
 // TODO: Check if this access token is enrolled (via Global State query)

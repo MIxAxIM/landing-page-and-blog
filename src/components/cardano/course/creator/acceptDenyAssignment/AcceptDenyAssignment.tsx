@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
-import TransactionContainer from "~/components/cardano/TransactionContainer";
+import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 
 export default function AcceptDenyAssignment({
   courseNftPolicy,

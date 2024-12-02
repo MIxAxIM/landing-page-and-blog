@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
-import TransactionContainer from "../TransactionContainer";
+import TransactionContainer from "../common/TransactionContainer";
 
 export default function MintAccessToken({
   userAddress,

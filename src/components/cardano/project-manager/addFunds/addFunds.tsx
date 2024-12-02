@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/cardano/TransactionContainer";
+import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useAddress, useWallet } from "@meshsdk/react";
 
 export default function AddFunds({
