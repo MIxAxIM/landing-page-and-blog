@@ -1,4 +1,4 @@
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import CourseButtonCard from "./course/CourseButtonCard";
 import { Card } from "~/components/ui/card";
 import Link from "next/link";

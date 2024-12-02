@@ -6,11 +6,12 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import { Toaster } from "react-hot-toast";
 import { Toaster as UiToaster } from "~/components/ui/toaster";
-import { ThemeProvider } from "~/components/theme-provider";
 import { MeshProvider } from "@meshsdk/react";
 import { DialogReportSupport } from "~/ui/site/DialogReportSupport";
 import TncDialog from "~/ui/site/TncDialog";
 import Metatags from "~/components/site/metatags";
+
+import { ThemeProvider } from "~/contexts/theme-provider";
 import { TerminologyProvider } from "~/contexts/terminology-context";
 
 const MyApp: AppType<{ session: Session | null }> = ({

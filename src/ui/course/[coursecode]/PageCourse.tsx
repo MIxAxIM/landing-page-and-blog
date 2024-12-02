@@ -1,8 +1,8 @@
 import { api } from "~/utils/api";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import VideoPlayer from "~/components/media/VideoPlayer";
 import { Button } from "~/components/ui/button";
-import Link from "~/components/link";
+import Link from "next/link";
 import {
   type CourseVariant,
   type CourseModuleOverview,

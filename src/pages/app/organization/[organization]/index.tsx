@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useOrganization } from "~/hooks/db/organization/useOrganization";
 import DialogOrganization from "~/ui/app/components/dialogs/DialogOrganization";
 import AppLayout from "~/ui/app/layout/AppLayout";

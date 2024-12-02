@@ -7,7 +7,7 @@ import { api } from "~/utils/api";
 import ViewCoursesButton from "../landing/ViewCoursesButton";
 import { BoxIcon, CheckCircledIcon } from "@radix-ui/react-icons";
 import { Suspense } from "react";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 
 export default function GetStartedSteps() {
   const { data: sessionData } = useSession();

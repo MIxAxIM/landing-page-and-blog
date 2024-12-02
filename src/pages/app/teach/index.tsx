@@ -1,4 +1,4 @@
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import TeacherPageComponent from "~/ui/app/TeacherPageComponent";
 
 export default function TeachPage() {

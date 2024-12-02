@@ -1,6 +1,6 @@
 import { AlertTriangle } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import VideoPlayer from "~/components/media/VideoPlayer";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import useValidateCreator from "~/hooks/db/course/useValidateCreator";
@@ -13,7 +13,7 @@ import ModuleLayout from "~/ui/course/components/layout/ModuleLayout";
 import SltList from "~/ui/studio/components/assignment-dashboard/slt-list";
 import { useEffect, useState } from "react";
 
-import RenderEditor from "~/components/Editor/components/render/RenderEditor";
+import RenderEditor from "~/components/editor/components/render/RenderEditor";
 import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
 import Metatags from "~/components/site/metatags";
 

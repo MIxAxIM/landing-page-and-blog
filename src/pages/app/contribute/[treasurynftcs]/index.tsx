@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
 
 export default function ContributeTreasuryPage() {

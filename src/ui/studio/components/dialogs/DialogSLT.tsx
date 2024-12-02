@@ -9,7 +9,7 @@ import FormInput from "~/components/form/form-input";
 import { useCallback, useEffect } from "react";
 import FormSelect from "~/components/form/form-select";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import DialogForm from "~/components/form/dialog-form";
 
 export default function DialogSLT({

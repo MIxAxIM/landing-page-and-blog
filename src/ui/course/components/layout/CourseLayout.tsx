@@ -1,4 +1,4 @@
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import AppButtons from "~/ui/app/layout/AppButtons";
 import SideMenu from "~/ui/navigation/SideMenu";
 

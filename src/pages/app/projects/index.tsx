@@ -1,4 +1,4 @@
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import ProjectsPageComponent from "~/ui/app/ProjectsPageComponent";
 
 export default function ProjectsPage() {

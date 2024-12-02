@@ -1,9 +1,9 @@
 import { useSession } from "next-auth/react";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import PageStudio from "~/ui/studio/PageStudio";
 import ContactSales from "~/ui/studio/ContactSales";
 import Metatags from "~/components/site/metatags";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 
 export default function Page() {
   const { data: sessionData, status } = useSession();

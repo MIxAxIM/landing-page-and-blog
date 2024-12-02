@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import Loading from "~/components/loading";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
+import Loading from "~/components/common/loading";
 import DashboardPageComponent from "~/ui/dashboard/DashboardPageComponent";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

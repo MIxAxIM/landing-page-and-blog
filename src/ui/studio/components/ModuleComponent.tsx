@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import { type Course, type CourseModuleOverview } from "~/types/db";
 import DialogModule from "~/ui/studio/components/dialogs/DialogModule";
 // import useCourseModulesAndVariants from "~/hooks/useCourseModulesAndVariants";

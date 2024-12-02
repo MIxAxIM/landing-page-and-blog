@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { useEditor } from "@tiptap/react";
-import { ExtensionKit } from "~/components/Editor/extension-kit";
+import { ExtensionKit } from "~/components/editor/extension-kit";
 import useIntroduction from "~/hooks/db/course/useIntroduction";
 import { useEffect } from "react";
 

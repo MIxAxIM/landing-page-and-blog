@@ -3,7 +3,7 @@ import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
 import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
 import SideMenu from "~/ui/navigation/SideMenu";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 
 export default function StudioLayout({
   children,

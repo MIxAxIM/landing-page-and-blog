@@ -19,7 +19,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import useCourses from "~/hooks/db/course/useCourses";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import useValidateCreator from "~/hooks/db/course/useValidateCreator";
 import { useSession } from "next-auth/react";

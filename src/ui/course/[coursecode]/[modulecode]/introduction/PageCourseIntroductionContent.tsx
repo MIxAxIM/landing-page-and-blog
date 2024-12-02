@@ -1,8 +1,8 @@
 import { AlertTriangle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import RenderEditor from "~/components/Editor/components/render/RenderEditor";
-import Loading from "~/components/loading";
+import RenderEditor from "~/components/editor/components/render/RenderEditor";
+import Loading from "~/components/common/loading";
 import VideoPlayer from "~/components/media/VideoPlayer";
 import Metatags from "~/components/site/metatags";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";

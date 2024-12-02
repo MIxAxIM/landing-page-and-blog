@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 
 export default function ProjectPage() {
   const router = useRouter();

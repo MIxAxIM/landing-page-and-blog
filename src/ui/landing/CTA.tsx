@@ -1,4 +1,4 @@
-import Link from "~/components/link";
+import Link from "next/link";
 
 export default function CTA() {
   return (

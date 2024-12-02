@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Markdown from "react-markdown";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
-import Loading from "~/components/loading";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
+import Loading from "~/components/common/loading";
 import useCourse from "~/hooks/db/course/useCourse";
 
 export default function CoursePage() {

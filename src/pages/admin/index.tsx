@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react"
-import { AddPriceForm, AddProductForm, PriceList, ProductList } from "~/components/admin/AdminProductManagement"
+import { AddPriceForm, AddProductForm, PriceList, ProductList } from "~/components/stripe/AdminProductManagement"
 
 export default function AdminPage() {
 

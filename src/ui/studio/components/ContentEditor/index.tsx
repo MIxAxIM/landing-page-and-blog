@@ -1,7 +1,7 @@
 import { type Editor, EditorContent } from "@tiptap/react";
 import { useEffect } from "react";
-import { AndamioBubbleMenu } from "~/components/Editor/components/menus/AndamioBubbleMenus";
-import { usePaste } from "~/components/Editor/extensions/ImageUpload/view/hooks";
+import { AndamioBubbleMenu } from "~/components/editor/components/menus/AndamioBubbleMenus";
+import { usePaste } from "~/components/editor/extensions/ImageUpload/view/hooks";
 
 export default function ContentEditor({ editor }: { editor: Editor }) {
   const handleClick = () => {

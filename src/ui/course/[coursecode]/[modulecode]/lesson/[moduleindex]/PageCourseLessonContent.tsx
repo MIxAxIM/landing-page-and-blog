@@ -2,7 +2,7 @@ import { type Lesson, type Slt } from "@prisma/client";
 import { AlertTriangle, Leaf } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import RenderEditor from "~/components/Editor/components/render/RenderEditor";
+import RenderEditor from "~/components/editor/components/render/RenderEditor";
 import { ChatContainer } from "~/components/chat/chat-container";
 import VideoPlayer from "~/components/media/VideoPlayer";
 import Metatags from "~/components/site/metatags";

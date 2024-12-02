@@ -1,11 +1,11 @@
 import { api } from "~/utils/api";
 import useLesson from "~/hooks/db/course/useLesson";
 import { useEditor } from "@tiptap/react";
-import { ExtensionKit } from "~/components/Editor/extension-kit";
+import { ExtensionKit } from "~/components/editor/extension-kit";
 import { useEffect } from "react";
 // import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
-import { EditableCodeBlock } from "~/components/Editor/extensions/CodeBlock";
+import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock";
 
 export default function useLessonEditor(
   courseCode: string,

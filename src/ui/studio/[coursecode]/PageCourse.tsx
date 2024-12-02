@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import StudioLayout from "~/ui/studio/components/layout/StudioLayout";
 import CourseTitle from "~/ui/studio/components/CourseTitle";
 import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
@@ -9,7 +9,7 @@ import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import ShowCourseOnchain from "../components/ShowCourseOnchain";
 import { Network } from "@prisma/client";
 import FormFieldset from "~/components/form/form-fieldset";
-import SelectNetwork from "~/components/select-network";
+import SelectNetwork from "~/components/cardano/select-network";
 // import { type CourseVariant } from "~/types/db";
 import ModuleComponent from "../components/ModuleComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";

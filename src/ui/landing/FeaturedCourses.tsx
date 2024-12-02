@@ -1,4 +1,4 @@
-import Loading from "~/components/loading";
+import Loading from "~/components/common/loading";
 import useCourses from "~/hooks/db/course/useCourses";
 import CourseCard from "../courses/components/CourseCard";
 

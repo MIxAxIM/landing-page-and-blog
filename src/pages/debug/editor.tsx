@@ -1,5 +1,5 @@
 import { useEditor } from "@tiptap/react";
-import { ExtensionKit } from "~/components/Editor/extension-kit";
+import { ExtensionKit } from "~/components/editor/extension-kit";
 import ContentEditor from "~/ui/studio/components/ContentEditor";
 
 export default function ChatPage() {

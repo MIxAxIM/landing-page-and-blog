@@ -2,7 +2,7 @@ import MenuBar from "~/ui/landing/MenuBar";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import Link from "~/components/link";
+import Link from "next/link";
 
 const AndamioComponent = () => {
   useEffect(() => {

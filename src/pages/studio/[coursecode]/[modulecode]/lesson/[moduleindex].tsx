@@ -1,5 +1,5 @@
 import { type NextPageContext } from "next";
-import DesktopOnlyLayout from "~/components/DesktopOnlyLayout";
+import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import useSLTs from "~/hooks/db/course/useSLTs";

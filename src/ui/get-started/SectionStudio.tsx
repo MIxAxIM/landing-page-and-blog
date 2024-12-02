@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import Link from "~/components/link";
+import Link from "next/link";
 
 const pageCopy = [
   "With Andamio Course Studio, you can create courses, write modules, and deploy lesson content that grows your community and engages contributors.",
