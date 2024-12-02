@@ -2,7 +2,7 @@ import MenuBar from "~/ui/landing/MenuBar";
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import Link from "next/link";
 
 export default function NetworkLayout({

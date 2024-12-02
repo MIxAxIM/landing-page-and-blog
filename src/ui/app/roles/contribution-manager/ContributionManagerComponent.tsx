@@ -1,7 +1,7 @@
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 export default function ContributionManagerComponent({ }: {}) {
   return (

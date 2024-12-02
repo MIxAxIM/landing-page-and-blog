@@ -4,7 +4,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
-import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
+import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
 import { ContributorPrerequisite } from "~/types/db";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";

@@ -1,4 +1,4 @@
-import PlaceholderComponent from "../prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import AppLayout from "./layout/AppLayout";
 import CreatorComponent from "./roles/teacher/TeacherCoursePageComponent";
 

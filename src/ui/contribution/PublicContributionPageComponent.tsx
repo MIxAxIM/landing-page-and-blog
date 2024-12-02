@@ -1,4 +1,4 @@
-import PlaceholderComponent from "../prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import AllTasksListComponent from "./lists/AllTasksListComponent";
 
 export default function PublicContributionPageComponent() {

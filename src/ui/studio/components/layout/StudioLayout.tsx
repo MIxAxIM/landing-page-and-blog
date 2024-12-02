@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import SideMenu from "~/ui/navigation/SideMenu";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 

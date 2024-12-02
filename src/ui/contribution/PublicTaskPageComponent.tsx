@@ -2,10 +2,10 @@ import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequ
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { type Task } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
-import PlaceholderComponent from "../prototype/PlaceholderComponent";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { PrerequisiteItem } from "./lists/PrerequisiteList";
 import { useTerminology } from "~/contexts/terminology-context";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
   const { translateCaps, translateCapsPlural } = useTerminology()

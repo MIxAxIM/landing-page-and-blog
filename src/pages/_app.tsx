@@ -7,12 +7,12 @@ import { api } from "~/utils/api";
 import { Toaster } from "react-hot-toast";
 import { Toaster as UiToaster } from "~/components/ui/toaster";
 import { MeshProvider } from "@meshsdk/react";
-import { DialogReportSupport } from "~/ui/site/DialogReportSupport";
-import TncDialog from "~/ui/site/TncDialog";
 import Metatags from "~/components/common/metatags";
 
 import { ThemeProvider } from "~/contexts/theme-provider";
 import { TerminologyProvider } from "~/contexts/terminology-context";
+import TncDialog from "~/components/common/TncDialog";
+import { DialogReportSupport } from "~/components/common/DialogReportSupport";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

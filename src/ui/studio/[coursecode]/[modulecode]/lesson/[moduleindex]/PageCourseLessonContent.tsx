@@ -1,5 +1,5 @@
 import type { Course, CourseModuleOverview, ModuleSLT } from "~/types/db";
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { api } from "~/utils/api";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";

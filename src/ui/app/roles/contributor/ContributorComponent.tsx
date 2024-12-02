@@ -1,5 +1,5 @@
 import AllTasksListComponent from "~/ui/contribution/lists/AllTasksListComponent";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 export default function ContributorComponent() {
   return (

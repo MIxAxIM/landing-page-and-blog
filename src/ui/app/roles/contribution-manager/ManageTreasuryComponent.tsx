@@ -1,5 +1,5 @@
 import { type Treasury } from "~/types/db";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import { Button } from "~/components/ui/button";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPublishTreasuryTx from "~/ui/contribution/dialogs/DialogPublishTreasuryTx";

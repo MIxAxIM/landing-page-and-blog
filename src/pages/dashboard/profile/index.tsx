@@ -5,7 +5,7 @@ import { useRoles } from "~/hooks/app/useRoles";
 import { useSubscriptionAccess } from "~/hooks/app/useSubscriptionAccess";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import ProfileLayout from "~/ui/dashboard/layout/ProfileLayout";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 
 export default function ProfilePage() {

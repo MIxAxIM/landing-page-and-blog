@@ -1,7 +1,7 @@
 import AllCourses from "../courses/components/AllCourses";
 import { useRoles } from "~/hooks/app/useRoles";
 import OnboardRole from "./components/OnboardingComponent";
-import PlaceholderComponent from "../prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 export default function OnboardLearner() {
   const { enableLearner, getLearner, updateLearnerOnboardingStatus } = useRoles();

@@ -4,7 +4,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionLoading from "../TransactionLoading";
-import TransactionPlaceholderComponent from "~/ui/prototype/TransactionPlaceholderComponent";
+import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
 
 export default function StepTwoDeployReferenceScripts({
   policy,

@@ -1,4 +1,4 @@
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { TerminologyToggle } from "../TerminologyToggle";
 import FloatingStatusButton from "../components/FloatingStatusButton";
 import AndamioRoleStatusMenu from "~/ui/navigation/menu-sections/AndamioRoleStatusMenu";

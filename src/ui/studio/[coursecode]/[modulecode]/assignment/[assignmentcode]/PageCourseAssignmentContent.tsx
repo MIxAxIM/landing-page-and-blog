@@ -14,7 +14,7 @@ import { Form } from "~/components/ui/form";
 import HeaderSection from "../../components/HeaderSection";
 import { useCourseStore } from "~/lib/zustand/course";
 import useAssignmentEditor from "~/ui/studio/hooks/useAssignmentEditor";
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import ContentEditor from "~/ui/studio/components/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";

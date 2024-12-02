@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import PlaceholderComponent from "~/ui/prototype/PlaceholderComponent";
+import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 
 export default function ContributeEscrowPage() {
   const [escrowCode, setEscrowCode] = useState<string | undefined>(undefined);

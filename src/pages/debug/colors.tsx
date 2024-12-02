@@ -1,4 +1,4 @@
-import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 
 export default function ColorsPage() {
   return (
