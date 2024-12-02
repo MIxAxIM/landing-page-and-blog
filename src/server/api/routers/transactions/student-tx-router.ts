@@ -26,7 +26,7 @@ type AssignmentLeaveParams = {
   policy: string;
 };
 
-export const learnerCourseTxRouter = createTRPCRouter({
+export const studentTxRouter = createTRPCRouter({
   mintLocalState: publicProcedure
     .input(
       z.object({

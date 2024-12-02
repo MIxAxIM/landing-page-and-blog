@@ -25,7 +25,7 @@ import { courseGovernanceValidatorRouter } from "./routers/contracts/course/cour
 
 import { clientDomainsRouter } from "./routers/premium/clients-domain";
 
-import { learnerCourseTxRouter } from "./routers/transactions/learner-course-tx-router";
+import { studentTxRouter } from "./routers/transactions/student-tx-router";
 import { accessTokenTxRouter } from "./routers/transactions/access-token-router";
 import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-router";
 import { treasuryRouter } from "./routers/database/contributor/treasury";
@@ -103,8 +103,8 @@ export const appRouter = createTRPCRouter({
   clientDomains: clientDomainsRouter,
 
   // experimental - transactions
-  learnerCourseTransactions: learnerCourseTxRouter,
-  creatorCourseTransactions: courseCreatorTxRouter,
+  studentTransactions: studentTxRouter,
+  courseCreatorTransactions: courseCreatorTxRouter,
   accessTokenTransactions: accessTokenTxRouter,
   projectManagerTransactions: projectManagerTxRouter,
   contributorTransactions: contributorTxRouter,

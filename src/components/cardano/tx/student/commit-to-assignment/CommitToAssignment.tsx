@@ -129,7 +129,7 @@ export function CommitToAssignmentButton({
   );
 
   const { data: unsignedTxCBOR } =
-    api.learnerCourseTransactions.commitToAssignment.useQuery({
+    api.studentTransactions.commitToAssignment.useQuery({
       userAccessTokenUnit: userAccessTokenUnit,
       courseNftPolicyId: courseNftPolicyId,
       assignmentCode: assignmentCode,

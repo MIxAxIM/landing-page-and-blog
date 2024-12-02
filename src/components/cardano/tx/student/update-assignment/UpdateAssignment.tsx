@@ -125,7 +125,7 @@ export function UpdateAssignmentButton({
 	);
 
 	const { data: unsignedTxCBOR } =
-		api.learnerCourseTransactions.updateAssignment.useQuery({
+		api.studentTransactions.updateAssignment.useQuery({
 			userAccessTokenUnit: userAccessTokenUnit,
 			courseNftPolicyId: courseNftPolicyId,
 			assignmentInfo: assignmentInfo,

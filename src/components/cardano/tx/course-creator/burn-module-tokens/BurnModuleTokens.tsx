@@ -35,7 +35,7 @@ export default function BurnModuleTokens({
   ];
 
   const { data: unsignedTxCBOR } =
-    api.creatorCourseTransactions.mintCourseModule.useQuery({
+    api.courseCreatorTransactions.mintCourseModule.useQuery({
       userAccessTokenUnit: accessTokenAssetId,
       courseNftPolicyId: courseNftPolicyId,
       moduleInfos: JSON.stringify(courseModuleDetails),

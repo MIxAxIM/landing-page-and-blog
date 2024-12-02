@@ -20,12 +20,12 @@ export default function AcceptDenyAssignment({
 
   const { data: unsignedTxCBOR, error: txError } =
     decision === "accept"
-      ? api.creatorCourseTransactions.acceptAssignment.useQuery({
+      ? api.courseCreatorTransactions.acceptAssignment.useQuery({
         userAccessTokenUnit: userAccessTokenUnit,
         courseNftPolicyId: courseNftPolicy,
         studentAlias: studentAlias,
       })
-      : api.creatorCourseTransactions.denyAssignment.useQuery({
+      : api.courseCreatorTransactions.denyAssignment.useQuery({
         userAccessTokenUnit: userAccessTokenUnit,
         courseNftPolicyId: courseNftPolicy,
         studentAlias: studentAlias,

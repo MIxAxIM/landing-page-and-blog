@@ -15,7 +15,7 @@ export default function BurnLocalState({
   const { wallet } = useWallet();
 
   const { data: unsignedTxCBOR } =
-    api.learnerCourseTransactions.burnLocalState.useQuery({
+    api.studentTransactions.burnLocalState.useQuery({
       userAccessTokenUnit: accessTokenAssetId,
       courseNftPolicyId: courseNftPolicyId,
     });

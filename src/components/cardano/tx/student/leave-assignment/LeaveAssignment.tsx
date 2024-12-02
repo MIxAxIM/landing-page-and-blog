@@ -17,7 +17,7 @@ export default function LeaveAssignment({
 	const {
 		data: unsignedTxCBOR,
 		error: txError,
-	} = api.learnerCourseTransactions.leaveAssignment.useQuery(
+	} = api.studentTransactions.leaveAssignment.useQuery(
 		{
 			courseNftPolicyId: courseNftPolicyId ?? "",
 			userAccessTokenUnit: accessTokenAsset?.unit ?? "",

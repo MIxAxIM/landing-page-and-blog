@@ -18,7 +18,7 @@ export default function MintLocalState({
   const { wallet } = useWallet();
 
   const { data: unsignedTxCBOR } =
-    api.learnerCourseTransactions.mintLocalState.useQuery({
+    api.studentTransactions.mintLocalState.useQuery({
       userAccessTokenUnit: userAccessTokenUnit,
       courseNftPolicyId: courseNftPolicyId,
     });
