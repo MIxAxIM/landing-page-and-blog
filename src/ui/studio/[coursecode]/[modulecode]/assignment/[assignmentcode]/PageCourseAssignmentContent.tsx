@@ -17,7 +17,7 @@ import useAssignmentEditor from "~/ui/studio/hooks/useAssignmentEditor";
 import { LightDarkToggle } from "~/ui/site/LightDarkToggle";
 import ContentEditor from "~/ui/studio/components/ContentEditor";
 import { useRouter } from "next/router";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";
 
 // V2 - current

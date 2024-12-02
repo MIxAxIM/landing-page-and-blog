@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import RenderEditor from "~/components/editor/components/render/RenderEditor";
 import { ChatContainer } from "~/components/chat/chat-container";
 import VideoPlayer from "~/components/media/VideoPlayer";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import useLesson from "~/hooks/db/course/useLesson";
 import useSLTs from "~/hooks/db/course/useSLTs";
@@ -15,7 +15,7 @@ import CourseLayout from "~/ui/course/components/layout/CourseLayout";
 import ModuleLayout from "~/ui/course/components/layout/ModuleLayout";
 import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
 import { api } from "~/utils/api";
-import SkeletonParagraph from "~/components/site/skeleton-paragraph";
+import SkeletonParagraph from "~/components/common/skeleton-paragraph";
 
 import "highlight.js/styles/atom-one-dark.css";
 

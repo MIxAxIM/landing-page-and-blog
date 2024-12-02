@@ -1,4 +1,4 @@
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import PageHome from "~/ui/get-started/PageHome";
 import Footer from "~/ui/landing/Footer";
 

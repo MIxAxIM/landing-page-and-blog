@@ -15,7 +15,7 @@ import { useCourseStore } from "~/lib/zustand/course";
 import useLessonEditor from "~/ui/studio/hooks/useLessonEditor";
 import ContentEditor from "~/ui/studio/components/ContentEditor";
 import { useRouter } from "next/router";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";
 import VideoPlayer from "~/components/media/VideoPlayer";
 

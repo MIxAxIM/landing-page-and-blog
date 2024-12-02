@@ -9,7 +9,7 @@ import { Toaster as UiToaster } from "~/components/ui/toaster";
 import { MeshProvider } from "@meshsdk/react";
 import { DialogReportSupport } from "~/ui/site/DialogReportSupport";
 import TncDialog from "~/ui/site/TncDialog";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 
 import { ThemeProvider } from "~/contexts/theme-provider";
 import { TerminologyProvider } from "~/contexts/terminology-context";

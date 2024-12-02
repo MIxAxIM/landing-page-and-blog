@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import PageCourse from "~/ui/course/[coursecode]/PageCourse";
 import Footer from "~/ui/landing/Footer";
 import SB7PageLanding from "~/ui/landing/SB7PageLanding";

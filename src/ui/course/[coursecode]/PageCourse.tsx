@@ -27,7 +27,7 @@ import {
   DocumentTextIcon,
   DocumentCheckIcon,
 } from "@heroicons/react/24/outline";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import Markdown from "react-markdown";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { useState } from "react";

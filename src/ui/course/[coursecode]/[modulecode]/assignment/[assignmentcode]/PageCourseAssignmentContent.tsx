@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 import RenderEditor from "~/components/editor/components/render/RenderEditor";
 import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 
 import "highlight.js/styles/atom-one-dark.css";
 import NetworkCommitmentCard from "~/ui/course/components/assignments/cards/NetworkCommitmentCard";

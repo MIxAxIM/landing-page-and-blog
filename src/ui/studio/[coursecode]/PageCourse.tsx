@@ -13,7 +13,7 @@ import SelectNetwork from "~/components/cardano/select-network";
 // import { type CourseVariant } from "~/types/db";
 import ModuleComponent from "../components/ModuleComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import Metatags from "~/components/site/metatags";
+import Metatags from "~/components/common/metatags";
 import ModuleImportComponent from "../components/ModuleImportComponent";
 
 export default function PageCourse({ courseCode }: { courseCode: string }) {
