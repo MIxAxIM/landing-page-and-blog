@@ -27,7 +27,6 @@ import Link from "next/link";
 import DialogModule from "./dialogs/DialogModule";
 import IntroductionContainer from "./IntroductionContainer";
 import useSLTs from "~/hooks/db/course/useSLTs";
-import LoadingCard from "./LoadingCard";
 import { format } from "date-fns";
 import LoadingCircle from "./ContentEditor/ui/icons/loading-circle";
 import useAssignment from "~/hooks/db/course/useAssignment";
@@ -35,7 +34,7 @@ import { type Slt } from "@prisma/client";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
+import LoadingCard from "~/components/common/LoadingCard";
 
 type sltI = { slt: ModuleSLT; sltIndex: number; id: string };
 
