@@ -21,7 +21,7 @@ import "highlight.js/styles/atom-one-dark.css";
 import NetworkCommitmentCard from "~/ui/course/components/assignments/cards/NetworkCommitmentCard";
 import PersonalNotesCard from "~/ui/course/components/assignments/cards/PersonalNotesCard";
 import { useWallet } from "@meshsdk/react";
-import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 
 export default function PageCourseAssignmentContent({

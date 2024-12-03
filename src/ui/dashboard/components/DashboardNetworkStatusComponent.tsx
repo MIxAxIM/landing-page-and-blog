@@ -1,6 +1,6 @@
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import AccessTokenComponent from "./AccessTokenComponent";
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/global-state/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";

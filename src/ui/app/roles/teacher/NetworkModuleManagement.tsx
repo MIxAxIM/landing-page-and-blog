@@ -1,4 +1,4 @@
-import useCourseByPolicyId from "~/hooks/cardano-indexer-api/useCourseByPolicyId";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/course/useCourseByPolicyId";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { Button } from "~/components/ui/button";
 import { Accordion } from "~/components/ui/accordion";

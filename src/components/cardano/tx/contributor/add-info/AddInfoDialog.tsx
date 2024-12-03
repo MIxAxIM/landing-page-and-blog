@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { useWallet } from "@meshsdk/react";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import AddInfo from "./AddInfo";
 import { z } from "zod";

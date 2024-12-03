@@ -30,7 +30,7 @@ import Metatags from "~/components/common/metatags";
 import Markdown from "react-markdown";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
 import { useState } from "react";
-import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import CourseLayout from "~/components/layout/CourseLayout";
 
 export default function PageCourse({

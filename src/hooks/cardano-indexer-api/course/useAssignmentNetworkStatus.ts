@@ -1,8 +1,8 @@
 import { NETWORK } from "~/andamio.config";
 import useNetworkCourseConfig from "./useNetworkCourseConfig";
 import { api } from "~/utils/api";
-import { useAccessToken } from "./useAccessToken";
-import useAssignment from "../db/course/useAssignment";
+import useAssignment from "~/hooks/db/course/useAssignment";
+import { useAccessToken } from "../network/useAccessToken";
 
 // In each hook, use a dictionary as params
 

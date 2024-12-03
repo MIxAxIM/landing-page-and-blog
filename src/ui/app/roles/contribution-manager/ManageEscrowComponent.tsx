@@ -15,7 +15,7 @@ import { useTerminology } from "~/contexts/terminology-context";
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect, useState } from "react";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
 import { Task } from "~/types/db";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
 import DebugProjects from "../../DebugProjects";

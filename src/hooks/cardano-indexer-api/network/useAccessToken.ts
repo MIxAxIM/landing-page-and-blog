@@ -1,7 +1,7 @@
-import { ACCESS_TOKEN_POLICY_ID } from "../../andamio.config";
 import { type UTxO, type Asset, hexToString } from "@meshsdk/core";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "@meshsdk/react";
+import { ACCESS_TOKEN_POLICY_ID } from "~/andamio.config";
 
 export const useAccessToken = () => {
   const { connected, wallet } = useWallet();

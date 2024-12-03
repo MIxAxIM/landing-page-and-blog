@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { type CourseModuleOverview } from "~/types/db";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
-import useProjects from "~/hooks/cardano-indexer-api/useProjects";
-import useTreasuryInstances from "~/hooks/cardano-indexer-api/useTreasuryInstances";
+import useProjects from "~/hooks/cardano-indexer-api/project/useProjects";
+import useTreasuryInstances from "~/hooks/cardano-indexer-api/project/useTreasuryInstances";
 import { Treasury } from "~/types/db";
 import {
   Select,

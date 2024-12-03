@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import AccessTokenComponent from "~/ui/dashboard/components/AccessTokenComponent";
 
 export default function ProjectPage() {

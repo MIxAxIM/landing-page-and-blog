@@ -4,7 +4,7 @@ import { type Course, type CourseOnChainInstance } from "~/types/db";
 import { useSession } from "next-auth/react";
 import DialogCourseOnChain from "./dialogs/DialogCourseOnChain";
 import { type Network } from "@prisma/client";
-import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/useNetworkCourseConfig";
+import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 export default function ShowCourseOnchain({

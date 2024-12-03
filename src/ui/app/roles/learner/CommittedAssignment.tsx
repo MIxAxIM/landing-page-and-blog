@@ -1,4 +1,4 @@
-import useAssignmentDatums from "~/hooks/cardano-indexer-api/useAssignmentDatums";
+import useAssignmentDatums from "~/hooks/cardano-indexer-api/course/useAssignmentDatums";
 
 export default function CommittedAssignment({
   courseNftPolicy,

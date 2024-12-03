@@ -30,7 +30,7 @@ import useSLTs from "~/hooks/db/course/useSLTs";
 import { format } from "date-fns";
 import useAssignment from "~/hooks/db/course/useAssignment";
 import { type Slt } from "@prisma/client";
-import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { Button } from "~/components/ui/button";
 import LoadingCard from "~/components/common/LoadingCard";

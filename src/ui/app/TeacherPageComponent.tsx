@@ -1,6 +1,6 @@
 
 
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import TeacherSection from "./roles/teacher/TeacherSection";
 import { CardanoWallet } from "@meshsdk/react";
 import useUserRelationships from "~/hooks/app/useUserRelationships";

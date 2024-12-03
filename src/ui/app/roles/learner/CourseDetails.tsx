@@ -12,10 +12,10 @@ import useLearnerSavedCourses from "~/hooks/db/course/useLearnerSavedCourses";
 import LearnerCourseModuleDetailsComponent from "./LearnerCourseModuleDetailsComponent";
 import useCourseModuleWithAssignmentSummary from "~/hooks/db/course/useCourseModuleWithAssignmentSummary";
 import { Skeleton } from "~/components/ui/skeleton";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { type DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import useCourseStateDatum from "~/hooks/cardano-indexer-api/useCourseStateDatum";
+import useCourseStateDatum from "~/hooks/cardano-indexer-api/course/useCourseStateDatum";
 import BurnLocalStateDialog from "~/components/cardano/tx/student/burn-local-state/BurnLocalStateDialog";
 
 export default function CourseDetails({

@@ -15,9 +15,9 @@ import {
 } from "~/components/ui/collapsible";
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import Loading from "~/components/common/loading";
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/global-state/useGlobalStateDatum";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import MintLocalState from "./MintLocalState";
 

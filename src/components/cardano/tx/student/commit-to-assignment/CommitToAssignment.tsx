@@ -1,7 +1,6 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/useNetworkCourseConfig";
 import { NETWORK } from "~/andamio.config";
 import { useToast } from "~/components/ui/use-toast";
 import { useForm } from "react-hook-form";
@@ -16,10 +15,11 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/useAccessToken";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
+import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
 
 const FormSchema = z.object({
   assignmentInfo: z.string().min(2, {

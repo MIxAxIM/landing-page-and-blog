@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useEnrolledCourseList from "~/hooks/cardano-indexer-api/useEnrolledCourseList";
+import useEnrolledCourseList from "~/hooks/cardano-indexer-api/course/useEnrolledCourseList";
 import DashboardSelectMenu from "~/ui/dashboard/components/DashboardSelectMenu";
 
 export default function AndamioNetworkTeacherCourses({

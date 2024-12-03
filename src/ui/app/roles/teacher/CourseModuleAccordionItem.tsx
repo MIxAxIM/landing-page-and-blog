@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/useAssignmentNetworkStatus";
+import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import { type CourseModuleOverview } from "~/types/db";
 import { Badge } from "~/components/ui/badge";
 import { useState } from "react";

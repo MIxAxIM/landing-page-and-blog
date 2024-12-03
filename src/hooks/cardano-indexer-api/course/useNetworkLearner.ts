@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { useAccessToken } from "./useAccessToken";
+import { useAccessToken } from "../network/useAccessToken";
 
 export default function useNetworkLearner({ courseNftPolicyId }: { courseNftPolicyId?: string }) {
   const { accessTokenAlias } = useAccessToken();
