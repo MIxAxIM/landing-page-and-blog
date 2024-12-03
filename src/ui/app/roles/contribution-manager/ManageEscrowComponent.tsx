@@ -4,7 +4,6 @@ import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
 import EscrowAcceptanceCriteriaForm from "./EscrowAcceptanceCriteriaForm";
 import EscrowTaskListComponent from "~/ui/contribution/lists/EscrowTaskListComponent";
-import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import {
   Accordion,
   AccordionContent,
@@ -21,6 +20,7 @@ import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-m
 import DebugProjects from "../../DebugProjects";
 import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
 import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
+import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -62,20 +62,16 @@ export default function ManageEscrowComponent({
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
-      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-11/12 grid-cols-6 gap-10">
+      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-11/12 grid-cols-6 gap-24">
         <div className="col-span-6 mb-12 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
-          {treasuryOwnerStatus && (
-            <OnboardingStatusButtons
-              roleId={treasuryOwnerStatus.id}
-              onStatusChange={updateTreasuryManagerOnboardingStatus}
-            />
-
-          )}
           <div className="space-x-2">
+            {/**
             <DialogEscrow id={escrow?.id} treasuryId={escrow?.treasuryId} />
+
+            **/}
             {!!escrow && (
-              <DialogTask escrow={escrow} treasuryId={escrow.treasuryId} />
+              <DialogTaskSimple escrow={escrow} treasuryId={escrow.treasuryId} />
             )}
           </div>
         </div>
@@ -109,16 +105,16 @@ export default function ManageEscrowComponent({
             <div className="col-span-3">
               <Accordion type="single" collapsible>
                 <AccordionItem value="contrib-prereqs">
-                  <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
+                  <AccordionTrigger className="flex min-h-32 w-full flex-col p-3 py-2 border border-primary rounded-md">
                     <h2>
                       Contributor Prerequisites
                     </h2>
-                    <p className="w-2/3 mx-auto mb-5">
+                    <p className="prose text-lg w-3/5 mx-auto my-5">
                       To commit to a task in this {translateCaps('escrow')}, a Contributor must
                       complete the following Course {translateCapsPlural('prerequisite')}
                     </p>
                   </AccordionTrigger>
-                  <AccordionContent className="border border-primary">
+                  <AccordionContent className="border border-primary rounded-md min-h-[300px] p-3">
                     <div className="p-3">
                       {!!escrow?.id && (
                         <PrerequisiteSelectionManager escrowId={escrow.id} />
@@ -132,16 +128,16 @@ export default function ManageEscrowComponent({
             <div className="col-span-3">
               <Accordion type="single" collapsible>
                 <AccordionItem value="acceptance-criteria">
-                  <AccordionTrigger className="flex min-h-32 w-full flex-col bg-primary p-3 py-2 text-primary-foreground">
+                  <AccordionTrigger className="flex min-h-32 w-full flex-col p-3 py-2 border border-primary rounded-md">
                     <h2>
                       {translateCaps('escrow')} {translateCaps('acceptanceCriteria')}
                     </h2>
-                    <p className="w-2/3 mx-auto mb-5">
+                    <p className="prose text-lg w-2/3 mx-auto my-5">
                       For any {translate('escrow')}, you can create a list of pre-defined
                       {translateCaps('acceptanceCriteria')} that will be preloaded into new {translateCapsPlural("task")}.
                     </p>
                   </AccordionTrigger>
-                  <AccordionContent className="border border-primary">
+                  <AccordionContent className="border border-primary rounded-md min-h-[300px] p-3">
                     <div className="p-3">
                       {!!escrow?.id && (
                         <EscrowAcceptanceCriteriaForm escrowId={escrow.id} />
@@ -153,8 +149,19 @@ export default function ManageEscrowComponent({
             </div>
           </>
         )}
+        <div className="col-span-4">
+          {treasuryOwnerStatus && (
+            <OnboardingStatusButtons
+              roleId={treasuryOwnerStatus.id}
+              onStatusChange={updateTreasuryManagerOnboardingStatus}
+            />
+          )}
+        </div>
       </div>
+      {/** 
       <DebugProjects />
+      **/}
+
     </div>
   );
 }

@@ -48,7 +48,6 @@ export default function DialogForm({
     <Dialog
       open={isOpen}
       onOpenChange={(open: boolean) => setIsOpen(open)}
-      modal={false}
     >
       <DialogTrigger asChild>
         {/* PICK UP HERE */}

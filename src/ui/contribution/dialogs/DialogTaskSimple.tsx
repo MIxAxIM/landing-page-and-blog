@@ -25,8 +25,8 @@ import { type Escrow, type Task } from "~/types/db";
 import { useTerminology } from "~/contexts/terminology-context";
 
 // Validation constants
-const MIN_ADA = 2;
-const MIN_HOURS_FUTURE = 48;
+const MIN_ADA = 10;
+const MIN_HOURS_FUTURE = 168;
 
 // Get minimum valid date
 const getMinDate = () => {
@@ -114,7 +114,7 @@ interface TaskDialogProps {
   openButtonSize?: "sm" | "lg";
 }
 
-export default function DialogTask({
+export default function DialogTaskSimple({
   id,
   escrowId: defaultEscrowId,
   treasuryId: defaultTreasuryId,
@@ -389,34 +389,10 @@ export default function DialogTask({
       >
         <div className="grid gap-4 py-4">
           {!task || task.status === TaskStatus.DRAFT ? (
-            <div className="grid grid-cols-2 gap-5">
-              <FormSelect
-                name="treasuryId"
-                label={`${translateCaps('treasury')}`}
-                form={form}
-                options={
-                  treasuries?.map((t) => ({
-                    value: t.id,
-                    label: t.title,
-                  })) ?? []
-                }
-                placeholder={`Select a ${translateCaps('treasury')}`}
-                disabled={!!defaultTreasuryId || !!escrow || isLoading}
-              />
+            <div className="grid grid-cols-4 gap-5">
               {!!filteredEscrows ? (
                 <>
-                  <FormSelect
-                    name="escrowId"
-                    label={`${translateCaps('escrow')}`}
-                    form={form}
-                    options={filteredEscrows.map((e) => ({
-                      value: e.id,
-                      label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
-                    }))}
-                    placeholder={`Select ${translateCaps('escrow')}`}
-                    disabled={!selectedTreasuryId || isLoading}
-                  />
-                  <div>
+                  <div className="col-span-3">
                     <FormInput
                       name="title"
                       label={`${translateCaps('task')} Title`}
@@ -433,6 +409,9 @@ export default function DialogTask({
                       height={150}
                       disabled={isLoading}
                     />
+                  </div>
+
+                  <div className="flex w-full flex-col space-y-2">
                     <FormInput
                       name="ada"
                       label="Ada Reward"
@@ -442,9 +421,68 @@ export default function DialogTask({
                       form={form}
                       disabled={isLoading}
                     />
-                  </div>
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Expiration Date
+                      </label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button intent="outline" disabled={isLoading}>
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {form.watch("expirationTime") ? (
+                              format(form.watch("expirationTime"), "PPP")
+                            ) : (
+                              <span>Select Expiration Date</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="z-50 w-auto p-0"
+                          align="start"
+                          onOpenAutoFocus={(e) => e.preventDefault()}
+                        >
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <Calendar
+                              mode="single"
+                              selected={form.watch("expirationTime")}
+                              onSelect={(date) => {
+                                if (date) {
+                                  form.setValue("expirationTime", date, {
+                                    shouldValidate: true,
+                                  });
+                                }
+                              }}
+                              disabled={(date) => date < getMinDate()}
+                              initialFocus
+                            />
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      {form.formState.errors.expirationTime && (
+                        <p className="text-sm text-red-500">
+                          {form.formState.errors.expirationTime.message}
+                        </p>
+                      )}
+                    </div>
 
-                  <div className="mt-3 flex w-full flex-col space-y-2 border-t border-primary pt-3">
+
+                    {form.watch("escrowId") &&
+                      filteredEscrows &&
+                      (filteredEscrows.find(
+                        (e) => e?.id === form.watch("escrowId"),
+                      )?.savedAcceptanceCriteria?.length ?? 0) > 0 && (
+                        <Alert>
+                          <AlertTitle>Saved Criteria Loaded</AlertTitle>
+                          <AlertDescription>
+                            {translateCaps('acceptanceCriteria')} have been pre-loaded from the
+                            selected {translate('escrow')}. You can modify or remove them as
+                            needed.
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                  </div>
+                  <div className="col-span-4 mt-5 pt-5 border-t border-primary">
+
                     <label className="block text-sm font-medium text-gray-700">
                       Acceptance Criteria
                     </label>
@@ -482,66 +520,10 @@ export default function DialogTask({
                       size="sm"
                       onClick={handleAddCriterion}
                       disabled={isLoading}
+                      className="my-3"
                     >
                       Add Acceptance Criterion
                     </Button>
-                    {form.watch("escrowId") &&
-                      filteredEscrows &&
-                      (filteredEscrows.find(
-                        (e) => e?.id === form.watch("escrowId"),
-                      )?.savedAcceptanceCriteria?.length ?? 0) > 0 && (
-                        <Alert>
-                          <AlertTitle>Saved Criteria Loaded</AlertTitle>
-                          <AlertDescription>
-                            {translateCaps('acceptanceCriteria')} have been pre-loaded from the
-                            selected {translate('escrow')}. You can modify or remove them as
-                            needed.
-                          </AlertDescription>
-                        </Alert>
-                      )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Expiration Date
-                    </label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button intent="outline" disabled={isLoading}>
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {form.watch("expirationTime") ? (
-                            format(form.watch("expirationTime"), "PPP")
-                          ) : (
-                            <span>Select Expiration Date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="z-50 w-auto p-0"
-                        align="start"
-                        onOpenAutoFocus={(e) => e.preventDefault()}
-                      >
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <Calendar
-                            mode="single"
-                            selected={form.watch("expirationTime")}
-                            onSelect={(date) => {
-                              if (date) {
-                                form.setValue("expirationTime", date, {
-                                  shouldValidate: true,
-                                });
-                              }
-                            }}
-                            disabled={(date) => date < getMinDate()}
-                            initialFocus
-                          />
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                    {form.formState.errors.expirationTime && (
-                      <p className="text-sm text-red-500">
-                        {form.formState.errors.expirationTime.message}
-                      </p>
-                    )}
                   </div>
                 </>
               ) : (

@@ -12,6 +12,7 @@ import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
+import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 
 export default function EscrowTaskListComponent({
   escrow,
@@ -165,7 +166,7 @@ export default function EscrowTaskListComponent({
                     <p className="">
                       No tasks found. Get started by drafting one:
                     </p>
-                    <DialogTask treasuryId={treasuryId} escrow={escrow} />
+                    <DialogTaskSimple treasuryId={treasuryId} escrow={escrow} />
                   </div>
                 </TableCell>
               </TableRow>

@@ -17,8 +17,17 @@ export default function useCourseModuleList(
     { enabled: enabledCourseCodes.length > 0 },
   );
 
+  const sortedData = data
+    ? Object.fromEntries(
+      Object.entries(data).map(([courseCode, modules]) => [
+        courseCode,
+        [...modules].sort((a, b) => a.moduleCode.localeCompare(b.moduleCode)),
+      ]),
+    )
+    : {};
+
   return {
-    courseModuleLists: data ?? {},
+    courseModuleLists: sortedData,
     isLoadingCourseModuleLists: isLoading,
   };
 }

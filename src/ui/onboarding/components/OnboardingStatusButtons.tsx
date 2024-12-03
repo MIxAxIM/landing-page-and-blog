@@ -9,9 +9,11 @@ export default function OnboardingStatusButtons({
   onStatusChange: (roldId: string, status: "NOT_STARTED" | "SKIPPED" | "PARTIAL" | "COMPLETE", completedAt?: Date) => void;
 }) {
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-row gap-x-4 p-2 items-center">
+
+      <p>Set onboarding status:</p>
       <Button
-        intent="ghost"
+        intent="outline"
         size="sm"
         onClick={() => onStatusChange(roleId, "NOT_STARTED")}
       >

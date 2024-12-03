@@ -23,7 +23,7 @@ export default function EscrowAcceptanceCriteriaForm({
 }: EscrowAcceptanceCriteriaFormProps) {
   // Get escrow data and mutation
   const { escrow, updateEscrow, isUpdating } = useEscrow({ id: escrowId });
-  const { translateCaps } = useTerminology()
+  const { translateCaps, translate } = useTerminology()
 
   // Track which criterion is being edited
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -86,9 +86,9 @@ export default function EscrowAcceptanceCriteriaForm({
     <div className="space-y-6">
       {/* Existing Criteria */}
       <div className="space-y-2">
-        <h3>Saved {translateCaps('acceptanceCriteria')}</h3>
+        <h3>Saved Acceptance Criteria</h3>
         <p className="text-sm text-muted-foreground">
-          You can still customize ${translateCaps('acceptanceCriteria')} in each individual task
+          You can still customize {translate('acceptanceCriteria')} in each individual task
         </p>
 
         <div className="space-y-2">
@@ -131,7 +131,7 @@ export default function EscrowAcceptanceCriteriaForm({
 
           {savedCriteria.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              No saved ${translateCaps('acceptanceCriteria')} yet. Add some below.
+              No saved {translate('acceptanceCriteria')} yet. Add some below.
             </p>
           )}
         </div>
