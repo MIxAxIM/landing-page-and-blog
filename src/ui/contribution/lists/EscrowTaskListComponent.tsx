@@ -13,6 +13,7 @@ import { type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
 import DialogTaskSimple from "../dialogs/DialogTaskSimple";
+import DialogDeleteTask from "../dialogs/DialogDeleteTask";
 
 export default function EscrowTaskListComponent({
   escrow,
@@ -207,10 +208,13 @@ export default function EscrowTaskListComponent({
                       currentStatus={task.status}
                     />
                   </TableCell>
-                  <TableCell className="items-center justify-center gap-x-2">
-                    {treasuryId && escrow &&
-                      <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
-                    }
+                  <TableCell className="">
+                    <div className="flex h-fit items-center justify-center gap-x-2">
+                      {treasuryId && escrow &&
+                        <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
+                      }
+                      <DialogDeleteTask id={task.id} />
+                    </div>
                   </TableCell>
                   {!!escrow?.escrowNftPolicyId && (
 

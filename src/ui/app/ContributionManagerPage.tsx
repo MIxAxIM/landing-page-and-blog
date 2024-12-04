@@ -19,12 +19,14 @@ export default function ContributionManagerPage({
 
   return (
     <AppLayout>
-      {selectedEscrowId && (
-        <ManageEscrowComponent escrowId={selectedEscrowId} treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId} />
-      )}
-      {!currentTreasury && !selectedEscrowId && (
-        <ContributionManagerComponent />
-      )}
+      <div className="w-5/6 mx-auto">
+        {selectedEscrowId && (
+          <ManageEscrowComponent escrowId={selectedEscrowId} treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId} />
+        )}
+        {!currentTreasury && !selectedEscrowId && (
+          <ContributionManagerComponent />
+        )}
+      </div>
     </AppLayout>
   );
 }

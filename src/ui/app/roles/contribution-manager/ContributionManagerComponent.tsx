@@ -29,14 +29,14 @@ export default function ContributionManagerComponent() {
 
   return (
     <div>
-      <div className="mx-auto my-6 w-full">
+      <div className="mx-auto my-2 w-full">
         {!singletonProject && (
           <>
-            <div className="min-h-[60px]">
+            <div className="min-h-[40px]">
               {!!currentProjectId && <Button onClick={() => setCurrentProjectId(undefined)}>Back</Button>}
             </div>
             <h3>As {translateCaps('treasury')} Owner</h3>
-            <div className="grid grid-cols-5 gap-3 my-5">
+            <div className="grid grid-cols-5 gap-3 my-2">
               {treasuries.asOwner.map((treasury) => (
                 <Card key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
                   <p>{treasury.title}</p>
@@ -81,18 +81,12 @@ export default function ContributionManagerComponent() {
         )}
       </div>
       <div className="mx-auto mt-12 grid w-full grid-cols-3 gap-5">
-        <PlaceholderComponent name="When Yoram has one Project, the app/project route shows only that project. When Yoram has Organization access OR memebership in other Projects, this page shows a list of Projects." />
-        <PlaceholderComponent name="Task Creation: Yoram can create new tasks within his workspace with essential details such as title, description, skill requirements, due date" />
 
-        <PlaceholderComponent name="Task Editing: Yoram can edit task details anytime (before the task is approved to be published on-chain), including changing due dates and reward amounts." />
-
-        <PlaceholderComponent name="Task Deletion: Yoram can delete draft tasks (before publishing on-chain)." />
 
         <PlaceholderComponent name="Status Updates: Yoram and Contribution managers can update the status of tasks (e.g., Draft, Approved --> other changes are in respone to on-chain events)." />
 
         <PlaceholderComponent name="Progress Tracking Dashboard: A dashboard is available where Yoram can view all tasks with their current statuses, committed contributors, and deadlines." />
 
-        <PlaceholderComponent name="Filtering and Sorting: Yoram can filter and sort tasks based on criteria like status, due date, priority, or Contributor to track progress easily." />
 
         <PlaceholderComponent name="Notifications: Yoram receives notifications for key events such as task completions, upcoming due dates." />
 
