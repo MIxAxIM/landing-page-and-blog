@@ -16,7 +16,10 @@ export default function useProjectByTreasury(
     error: errorContributorStateUtxos,
   } = api.contributorState.getAllContributorStateUtxos.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    { enabled: !!treasuryNftPolicyId }
+    {
+      enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56,
+      retry: false,
+    }
   );
 
   const {
@@ -26,7 +29,10 @@ export default function useProjectByTreasury(
     error: errorContributorStateUtxo,
   } = api.contributorState.getContributorStateUtxoByAlias.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "", alias: alias ?? "" },
-    { enabled: !!treasuryNftPolicyId && !!alias }
+    {
+      enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 && !!alias,
+      retry: false,
+    }
   );
 
   const {
@@ -36,7 +42,7 @@ export default function useProjectByTreasury(
     error: errorContributorPolicies,
   } = api.contributorState.getContributorPolicies.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    { enabled: !!treasuryNftPolicyId }
+    { enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 }
   );
 
   const {
@@ -46,7 +52,10 @@ export default function useProjectByTreasury(
     error: errorEscrowUtxos,
   } = api.escrowValidator.getAllEscrowUtxosByTreasury.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    { enabled: !!treasuryNftPolicyId }
+    {
+      enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56,
+      retry: false,
+    }
   );
 
   // NOTE: See comment in projectValidatorRouter
@@ -67,7 +76,7 @@ export default function useProjectByTreasury(
     error: errorTreasuryInfo,
   } = api.treasuryValidator.getTreasuryInfo.useQuery(
     { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-    { enabled: !!treasuryNftPolicyId }
+    { enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 }
   );
 
   return {

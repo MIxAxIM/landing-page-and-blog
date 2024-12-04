@@ -16,9 +16,9 @@ export const escrowValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGetWithParams<UtxoWithSlot[], { treasuryNftPolicyId: string }>(
+        const response = await indexerGetWithParams<UtxoWithSlot[], { policy: string }>(
           `/escrow/utxos`,
-          { treasuryNftPolicyId: input.treasuryNftPolicyId },
+          { policy: input.treasuryNftPolicyId },
         );
         return response;
       } catch {

@@ -1,26 +1,30 @@
+import { useEffect, useState } from "react";
+import { Task } from "~/types/db";
+import { useTerminology } from "~/contexts/terminology-context";
+
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
-import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
+import { useRoles } from "~/hooks/app/useRoles";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+
+import EscrowAcceptanceCriteriaForm from "./EscrowAcceptanceCriteriaForm";
 import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
-import EscrowAcceptanceCriteriaForm from "./EscrowAcceptanceCriteriaForm";
+import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import EscrowTaskListComponent from "~/ui/contribution/lists/EscrowTaskListComponent";
+import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
+import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
+
+import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
+import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import { useTerminology } from "~/contexts/terminology-context";
-import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
-import { useRoles } from "~/hooks/app/useRoles";
-import { useEffect, useState } from "react";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
-import { Task } from "~/types/db";
-import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-import DebugProjects from "../../DebugProjects";
-import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
-import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
-import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
+import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+import { hexToString } from "@meshsdk/common";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -36,7 +40,8 @@ export default function ManageEscrowComponent({
   const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
-  const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+  //const { contributorPolicies, contributorStateUtxos, treasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+  //const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
 
@@ -62,8 +67,8 @@ export default function ManageEscrowComponent({
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
-      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-6 gap-24">
-        <div className="col-span-6 mb-12 flex flex-row items-center justify-between">
+      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-6 gap-12">
+        <div className="col-span-6 mb-6 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
           <div className="space-x-2">
             {/**
@@ -74,6 +79,22 @@ export default function ManageEscrowComponent({
               <DialogTaskSimple escrow={escrow} treasuryId={escrow.treasuryId} />
             )}
           </div>
+        </div>
+        <div className="col-span-6 flex flex-col items-center justify-between">
+          <h3>Cardano Network Status</h3>
+          {/**
+          <pre>{JSON.stringify(contributorPolicies, null, 2)}</pre>
+          <pre>{JSON.stringify(treasuryInfo, null, 2)}</pre>
+          <p>List</p>
+          <ul>
+            {contributorStateUtxos?.map((utxo: UtxoWithSlot) => (
+              <li key={utxo.tx_hash}>
+                EX: {hexToString(utxo?.assets[1]?.unit.substring(56) ?? "")}
+              </li>
+
+            ))}
+          </ul>
+          **/}
         </div>
         <div className="col-span-6 flex w-full">
           <div>
@@ -89,6 +110,7 @@ export default function ManageEscrowComponent({
           </div>
         </div>
         <div className="col-span-6 flex flex-col space-y-5 w-full">
+          {/** 
           {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
             <MintProjectTokenDialog
               treasuryNftPolicyId={treasuryNftPolicyId}
@@ -96,6 +118,7 @@ export default function ManageEscrowComponent({
               contributorPolicies={contributorPolicies}
             />
           )}
+          **/}
           {!!treasuryNftPolicyId &&
             <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
           }

@@ -97,7 +97,7 @@ export function useTask({
     api.task.getTreasuryTasks.useQuery(
       { treasuryNftPolicyId: treasuryNftPolicyId ?? "", status: selectedStatuses },
       {
-        enabled: !!treasuryNftPolicyId,
+        enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56,
         select: (data) =>
           data.map((task) => ({
             ...task,

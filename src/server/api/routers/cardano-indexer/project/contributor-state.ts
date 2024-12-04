@@ -1,8 +1,11 @@
+import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import UTxOi from "~/components/cardano/model";
 import { indexerGet } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+
+// TODO: get correct type of contributor-state/decoded-datum
 
 // Contributor State
 export const contributorStateRouter = createTRPCRouter({
@@ -14,8 +17,8 @@ export const contributorStateRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
-          `/contributor-state/decoded-datum?policy=${input.treasuryNftPolicyId}`,
+        const response = await indexerGet<UtxoWithSlot[]>(
+          `/contributor-state/utxos?policy=${input.treasuryNftPolicyId}`,
         );
         return response;
       } catch {
@@ -35,8 +38,8 @@ export const contributorStateRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGet<UTxOi>(
-          `/contributor-state/decoded-datum?policy=${input.treasuryNftPolicyId}&alias=${input.alias}`,
+        const response = await indexerGet<UtxoWithSlot>(
+          `/contributor-state/utxos?policy=${input.treasuryNftPolicyId}&alias=${input.alias}`,
         );
         return response;
       } catch {

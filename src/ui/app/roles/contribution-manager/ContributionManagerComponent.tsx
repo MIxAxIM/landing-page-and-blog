@@ -14,7 +14,7 @@ export default function ContributionManagerComponent() {
   // db hooks
   const { treasuries } = useUserRelationships()
   const [singletonProject, setSingletonProject] = useState<boolean>(true)
-  const [currentProjectId, setCurrentProjectId] = useState<{ treasuryId: string, escrowId: string } | undefined>(undefined)
+  const [currentProjectId, setCurrentProjectId] = useState<{ treasuryNftPolicyId: string, treasuryId: string, escrowId: string } | undefined>(undefined)
   // cardano hooks
 
 
@@ -23,7 +23,7 @@ export default function ContributionManagerComponent() {
       setSingletonProject(false)
     }
     if (!!treasuries.asOwner[0] && treasuries.asOwner.length === 1) {
-      setCurrentProjectId({ treasuryId: treasuries.asOwner[0].id, escrowId: treasuries.asOwner[0].escrowIds[0] ?? "" })
+      setCurrentProjectId({ treasuryNftPolicyId: treasuries.asOwner[0].treasuryNftPolicyId ?? "", treasuryId: treasuries.asOwner[0].id, escrowId: treasuries.asOwner[0].escrowIds[0] ?? "" })
     }
   }, [treasuries])
 
@@ -40,7 +40,7 @@ export default function ContributionManagerComponent() {
               {treasuries.asOwner.map((treasury) => (
                 <Card key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
                   <p>{treasury.title}</p>
-                  <Button onClick={() => setCurrentProjectId({ treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
+                  <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
                 </Card>
               ))}
             </div>
@@ -49,7 +49,7 @@ export default function ContributionManagerComponent() {
               {treasuries.asManager.map((treasury) => (
                 <Card key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
                   <p>{treasury.title}</p>
-                  <Button onClick={() => setCurrentProjectId({ treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
+                  <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
                 </Card>
               ))}
             </div>
@@ -76,7 +76,7 @@ export default function ContributionManagerComponent() {
 
         {!!currentProjectId && (
           <>
-            <ManageEscrowComponent escrowId={currentProjectId.escrowId} treasuryNftPolicyId={currentProjectId.treasuryId} />
+            <ManageEscrowComponent escrowId={currentProjectId.escrowId} treasuryNftPolicyId={currentProjectId.treasuryNftPolicyId} />
           </>
         )}
       </div>
