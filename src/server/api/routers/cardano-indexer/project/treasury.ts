@@ -28,7 +28,7 @@ export const treasuryValidatorRouter = createTRPCRouter({
   //    return response;
   //  }),
 
-  // NOTE: Duplicated in projectGeneralRouter
+
   getTreasuryInfo: publicProcedure
     .input(
       z.object({
@@ -43,14 +43,31 @@ export const treasuryValidatorRouter = createTRPCRouter({
         >("/treasury/info", {
           policy: input.treasuryNftPolicyId,
         });
-        return {
-          info: info,
+
+        // Validate the shape matches our type
+        const treasuryInfo: TreasuryInfo = {
+          funds: Array.isArray(info.funds) ? info.funds.map(fund => ({
+            unit: String(fund.unit),
+            amount: Number(fund.amount)
+          })) : [],
+          projects: Array.isArray(info.projects) ? info.projects.map(project => ({
+            project_hash: String(project.project_hash),
+            escrow_hash: String(project.escrow_hash),
+            commitment_allowed: Number(project.commitment_allowed),
+            allowed_contributors: Array.isArray(project.allowed_contributors)
+              ? project.allowed_contributors.map(String)
+              : []
+          })) : []
         };
-      } catch {
+
+        return treasuryInfo;
+      } catch (error) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Cannot get Treasury Info",
+          message: error instanceof Error ? error.message : "Cannot get Treasury Info",
         });
       }
     }),
+
 });
+

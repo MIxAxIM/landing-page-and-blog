@@ -24,13 +24,13 @@ const PolicyPage: React.FC = () => {
       <Link href={`./${policy as string}/add-funds`}>
         <Button>Add Funds</Button>
       </Link>
-      <pre>{JSON.stringify(treasuryInfo?.info.funds, null, 2)}</pre>
+      <pre>{JSON.stringify(treasuryInfo?.funds, null, 2)}</pre>
       <br />
       <h1>Projects</h1>
       <Button>Create Project</Button>
       <div>
         <br />
-        {treasuryInfo?.info.projects.map((project: any) => {
+        {treasuryInfo?.projects.map((project: any) => {
           return (
             <div key={project.id}>
               <pre>{JSON.stringify(project, null, 2)}</pre>

@@ -70,7 +70,7 @@ export default function DebugProjects() {
       <h2>Treasury Info</h2>
       <pre>{JSON.stringify(treasuryInfo, null, 2)}</pre>
 
-      {treasuryInfo?.info.projects.map((p) => (
+      {treasuryInfo?.projects.map((p) => (
         <div key={p.project_hash}>
           <CommitProject
             treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId ?? ""}

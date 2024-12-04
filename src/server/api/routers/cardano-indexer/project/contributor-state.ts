@@ -1,11 +1,9 @@
 import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import UTxOi from "~/components/cardano/model";
 import { indexerGet } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-// TODO: get correct type of contributor-state/decoded-datum
 
 // Contributor State
 export const contributorStateRouter = createTRPCRouter({

@@ -40,8 +40,7 @@ export default function ManageEscrowComponent({
   const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
-  //const { contributorPolicies, contributorStateUtxos, treasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
-  //const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+  const { contributorPolicies, treasuryInfo, contributorStateUtxos, escrowUtxos } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
 
@@ -82,19 +81,18 @@ export default function ManageEscrowComponent({
         </div>
         <div className="col-span-6 flex flex-col items-center justify-between">
           <h3>Cardano Network Status</h3>
-          {/**
+          <pre>{JSON.stringify(escrowUtxos, null, 2)}</pre>
           <pre>{JSON.stringify(contributorPolicies, null, 2)}</pre>
           <pre>{JSON.stringify(treasuryInfo, null, 2)}</pre>
           <p>List</p>
           <ul>
             {contributorStateUtxos?.map((utxo: UtxoWithSlot) => (
               <li key={utxo.tx_hash}>
-                EX: {hexToString(utxo?.assets[1]?.unit.substring(56) ?? "")}
+                {hexToString(utxo?.assets[1]?.unit.substring(56) ?? "")}
               </li>
 
             ))}
           </ul>
-          **/}
         </div>
         <div className="col-span-6 flex w-full">
           <div>
