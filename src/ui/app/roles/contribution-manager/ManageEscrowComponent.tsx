@@ -57,12 +57,12 @@ export default function ManageEscrowComponent({
 
 
   return (
-    <div>
+    <div key={escrowId}>
       <ProjectManagerOnboardingModal
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
-      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-11/12 grid-cols-6 gap-24">
+      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-6 gap-24">
         <div className="col-span-6 mb-12 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
           <div className="space-x-2">

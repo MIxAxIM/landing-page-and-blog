@@ -85,7 +85,7 @@ export default function DialogTreasury({
             description={
               isEditMode
                 ? `Update the ${translatePlural('treasury')} title.`
-                : `Create a new ${translate('treasury')} by providing a title and NFT policy ID.`
+                : `What should we call your new ${translate('treasury')}? (You can change this later.)`
             }
             buttonLabel={isEditMode ? "Save Changes" : `Create ${translateCaps('treasury')}`}
             buttonLoading={isLoading}

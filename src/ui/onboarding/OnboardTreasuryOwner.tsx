@@ -3,6 +3,7 @@ import OnboardRole from "./components/OnboardingComponent";
 import { useTerminology } from "~/contexts/terminology-context";
 import Link from "next/link";
 import DialogInitializeProject from "./components/dialogs/DialogInitializeProject";
+import { Button } from "~/components/ui/button";
 
 export default function OnboardTreasuryOwner() {
 
@@ -19,6 +20,7 @@ export default function OnboardTreasuryOwner() {
       updateRoleStatus={updateTreasuryManagerOnboardingStatus}
       FirstStepContent={FirstStep}
       NextStepContent={NextStep}
+      CompletedContent={Completed}
 
     />
   );
@@ -41,5 +43,17 @@ function NextStep() {
       <p>create a {translateCaps('task')} the network</p>
     </div>
 
+  )
+}
+
+function Completed() {
+  const { translateCapsPlural } = useTerminology()
+  return (
+    <div className="flex flex-col space-y-4 my-4">
+      <p>Great work! You have completed the tutorial.</p>
+      <Link href={`/app/projects/`}>
+        <Button>View my {translateCapsPlural('treasury')}</Button>
+      </Link>
+    </div>
   )
 }

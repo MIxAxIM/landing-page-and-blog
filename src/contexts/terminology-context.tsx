@@ -56,9 +56,12 @@ export function TerminologyProvider({
 	const translateCaps = useCallback((key: TerminologyKeys): string => {
 		if (currentSkin && terminologySkins.default) {
 			const term = currentSkin[key] ?? terminologySkins.default[key];
-			return term.charAt(0).toUpperCase() + term.slice(1);
+			return term
+				.split(' ')
+				.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+				.join(' ');
 		}
-		return ""
+		return "";
 	}, [currentSkin]);
 
 	const translateCapsPlural = useCallback((key: TerminologyKeys): string => {

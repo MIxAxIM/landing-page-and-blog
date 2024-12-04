@@ -166,7 +166,7 @@ export default function EscrowTaskListComponent({
                     <p className="">
                       No tasks found. Get started by drafting one:
                     </p>
-                    <DialogTaskSimple treasuryId={treasuryId} escrow={escrow} />
+                    {treasuryId && escrow && <DialogTaskSimple treasuryId={treasuryId} escrow={escrow} />}
                   </div>
                 </TableCell>
               </TableRow>
@@ -208,7 +208,9 @@ export default function EscrowTaskListComponent({
                     />
                   </TableCell>
                   <TableCell className="items-center justify-center gap-x-2">
-                    <DialogTask openButtonSize="sm" id={task.id} />
+                    {treasuryId && escrow &&
+                      <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
+                    }
                   </TableCell>
                   {!!escrow?.escrowNftPolicyId && (
 

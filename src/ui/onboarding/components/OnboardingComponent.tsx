@@ -20,6 +20,7 @@ interface OnboardRoleProps {
   updateRoleStatus: (id: string, status: OnboardingStatus) => void;
   FirstStepContent?: React.ComponentType;
   NextStepContent?: React.ComponentType;
+  CompletedContent?: React.ComponentType;
 }
 
 export default function OnboardRole({
@@ -30,6 +31,7 @@ export default function OnboardRole({
   updateRoleStatus,
   FirstStepContent,
   NextStepContent,
+  CompletedContent
 }: OnboardRoleProps) {
   const duration = 0.4
   return (
@@ -74,7 +76,10 @@ export default function OnboardRole({
           {title}
         </motion.h1>
 
-        <p>{cta}</p>
+        {(roleStatus?.onboardingStatus === "NOT_STARTED" || roleStatus?.onboardingStatus === "PARTIAL") && (
+          <p>{cta}</p>
+
+        )}
 
 
         <motion.div
@@ -105,9 +110,7 @@ export default function OnboardRole({
           {(roleStatus?.onboardingStatus === "SKIPPED" ||
             roleStatus?.onboardingStatus === "COMPLETE") && (
               <div className="space-y-2">
-                <h2>
-                  You completed this onboarding journey, nice work!
-                </h2>
+                {CompletedContent && <CompletedContent />}
                 <Button onClick={() => updateRoleStatus(roleStatus.id, "NOT_STARTED")}>Try the interactive tutorial again</Button>
               </div>
             )}
