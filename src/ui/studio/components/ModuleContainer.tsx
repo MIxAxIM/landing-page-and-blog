@@ -35,6 +35,7 @@ import { LockClosedIcon } from "@radix-ui/react-icons";
 import { Button } from "~/components/ui/button";
 import LoadingCard from "~/components/common/LoadingCard";
 import Loading from "~/components/common/loading";
+import SelectCourseModuleStatus from "./SelectCourseModuleStatus";
 
 type sltI = { slt: ModuleSLT; sltIndex: number; id: string };
 
@@ -357,6 +358,9 @@ export default function ModuleContainer({
           {(activeSLT ?? isLoadingIndexUpdate) && (
             <div className="flex h-8 w-full rounded-b-md bg-amber-500" />
           )}
+          <div>
+            <SelectCourseModuleStatus moduleId={currentModule.id} currentStatus={currentModule.status} />
+          </div>
         </AccordionContent>
       </AccordionItem>
     </div>

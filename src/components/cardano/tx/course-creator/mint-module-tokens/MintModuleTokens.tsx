@@ -3,6 +3,8 @@ import { type Dispatch, type SetStateAction } from "react";
 import { type CourseModuleOverview } from "~/types/db";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
+import { ModuleStatus } from "@prisma/client";
+import useCourseModule from "~/hooks/db/course/useCourseModule";
 
 export default function MintModuleTokens({
   accessTokenAssetId,
@@ -16,6 +18,7 @@ export default function MintModuleTokens({
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { wallet } = useWallet();
+  const { updateModuleStatus } = useCourseModule(courseModuleOverview.id);
 
   const slts = courseModuleOverview.slts.map((slt) => ({
     sltId: slt.moduleIndex.toString(),
@@ -37,12 +40,22 @@ export default function MintModuleTokens({
       moduleInfos: JSON.stringify(courseModuleDetails),
     });
 
+  const updateModuleStatusCallback = async (txId: string) => {
+    if (!courseModuleOverview.id || !txId) return;
+
+    updateModuleStatus({
+      id: courseModuleOverview.id,
+      status: ModuleStatus.PENDING_TX
+    });
+  };
+
   return (
     <TransactionContainer
       buttonText={`Publish Credential Criteria for module`}
       unsignedTxCBOR={unsignedTxCBOR}
       wallet={wallet}
       setSuccessTxHash={setSuccessTxHash}
+      onTransactionSuccess={updateModuleStatusCallback}
     />
   );
 }
