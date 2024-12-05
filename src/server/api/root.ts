@@ -43,6 +43,7 @@ import { globalStateRouter } from "./routers/cardano-indexer/network/global-stat
 import { indexValidatorRouter } from "./routers/cardano-indexer/network/index-validator";
 import { instanceValidatorRouter } from "./routers/cardano-indexer/network/instance-validator";
 import { governanceValidatorRouter } from "./routers/cardano-indexer/network/governance-validator";
+import { aggregateRouter } from "./routers/cardano-indexer/network/aggregate";
 
 // -- Course --
 import { assignmentValidatorRouter } from "./routers/cardano-indexer/course/assignment-validator";
@@ -102,6 +103,7 @@ export const appRouter = createTRPCRouter({
   governanceValidator: governanceValidatorRouter,
   indexValidator: indexValidatorRouter,
   instanceValidator: instanceValidatorRouter,
+  aggregate: aggregateRouter,
 
   // course on-chain
   assignmentStatus: assignmentStatusRouter,
