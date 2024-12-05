@@ -1,29 +1,7 @@
+import { AggregateUserInfoResponse } from "@andamiojs/datum-utils";
 import { z } from "zod";
-
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-
-
-// TODO:
-// Add return type from datum-utils
-
-interface Course {
-  completed: string[];
-  ongoing: string[];
-}
-
-interface Projects {
-  completed: string[];
-  ongoing: string[];
-}
-
-interface TempUserInfoResponse {
-  alias: string;
-  userInfo: string;
-  courses: Course;
-  projects: Projects;
-}
-
 
 type UserInfoQueryParams = {
   alias: string;
@@ -41,7 +19,7 @@ export const aggregateRouter = createTRPCRouter({
         alias: input.alias,
       };
       const response = indexerGetWithParams<
-        TempUserInfoResponse,
+        AggregateUserInfoResponse,
         UserInfoQueryParams
       >(`/aggregate/user-info`, userInfoQueryParams);
       return response;
