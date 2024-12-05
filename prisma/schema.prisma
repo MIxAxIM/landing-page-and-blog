@@ -650,10 +650,17 @@ model Escrow {
   @@index([escrowNftPolicyId])
 }
 
+enum PrerequisiteStatus {
+  DRAFT
+  PENDING_TX
+  ON_CHAIN
+}
+
 model ContributorPrerequisite {
-  id                  String  @id @default(cuid())
-  contributorPolicyId String? @unique
+  id                  String             @id @default(cuid())
+  contributorPolicyId String?            @unique
   title               String?
+  status              PrerequisiteStatus @default(DRAFT)
 
   courseRequirements CourseRequirement[]
   escrows            Escrow[]            @relation("EscrowPrerequisites")
@@ -676,6 +683,7 @@ model CourseRequirement {
 enum TaskStatus {
   DRAFT
   APPROVED
+  PENDING_TX
   ON_CHAIN
   COMMITMENT_MADE
   COMMITMENT_DENIED
