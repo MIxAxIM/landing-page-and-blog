@@ -1,3 +1,4 @@
+import { ModuleStatus } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -6,6 +7,31 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+
+
+
+// Helper function to validate status transitions
+const isValidStatusTransition = (
+  currentStatus: ModuleStatus,
+  newStatus: ModuleStatus,
+) => {
+  const allowedTransitions: Record<ModuleStatus, ModuleStatus[]> = {
+    DRAFT: [ModuleStatus.APPROVED, ModuleStatus.BACKLOG, ModuleStatus.ARCHIVED],
+    APPROVED: [
+      ModuleStatus.DRAFT,
+      ModuleStatus.PENDING_TX,
+      ModuleStatus.BACKLOG,
+      ModuleStatus.ARCHIVED,
+    ],
+    PENDING_TX: [ModuleStatus.ON_CHAIN],
+    ON_CHAIN: [ModuleStatus.DEPRECATED],
+    DEPRECATED: [],
+    BACKLOG: [ModuleStatus.DRAFT, ModuleStatus.ARCHIVED],
+    ARCHIVED: [ModuleStatus.BACKLOG, ModuleStatus.DRAFT],
+  };
+
+  return allowedTransitions[currentStatus].includes(newStatus);
+};
 
 export const moduleRouter = createTRPCRouter({
   getModule: publicProcedure
@@ -164,6 +190,7 @@ export const moduleRouter = createTRPCRouter({
         select: {
           moduleCode: true,
           title: true,
+          status: true,
           originalCourse: {
             select: {
               courseCode: true,
@@ -235,6 +262,58 @@ export const moduleRouter = createTRPCRouter({
           moduleCode: input.moduleCode,
           releaseDate: input.releaseDate,
         },
+      });
+    }),
+
+  updateModuleStatus: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        status: z.nativeEnum(ModuleStatus),
+        moduleHash: z.string().optional() // Required only for PENDING_TX -> ON_CHAIN
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const courseModule = await ctx.db.module.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!courseModule) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Module not found",
+        });
+      }
+
+      if (!isValidStatusTransition(courseModule.status, input.status)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Invalid status transition from ${courseModule.status} to ${input.status}`,
+        });
+      }
+
+      // Special handling for PENDING_TX -> ON_CHAIN transition
+      if (courseModule.status === ModuleStatus.PENDING_TX &&
+        input.status === ModuleStatus.ON_CHAIN) {
+        if (!input.moduleHash) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "moduleHash is required for ON_CHAIN transition",
+          });
+        }
+        return ctx.db.module.update({
+          where: { id: input.id },
+          data: {
+            status: input.status,
+            moduleHash: input.moduleHash
+          },
+        });
+      }
+
+      // Regular status update
+      return ctx.db.module.update({
+        where: { id: input.id },
+        data: { status: input.status },
       });
     }),
 
