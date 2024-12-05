@@ -690,6 +690,7 @@ model Task {
   acceptanceCriteria    String[]
   numAllowedCommitments Int        @default(1)
   status                TaskStatus @default(DRAFT)
+  taskHash              String?
   hash                  String?
 
   lovelace String
