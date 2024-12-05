@@ -4,10 +4,7 @@ import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalSt
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-} from "~/components/ui/card";
+import { Card, CardContent } from "~/components/ui/card";
 import { Lock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import useCourses from "~/hooks/db/course/useCourses";
@@ -19,7 +16,11 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import classNames from "~/utils/classnames";
-import { DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
+import {
+  AggregateUserInfoResponse,
+  DecodedGlobalStateDatum,
+} from "@andamiojs/datum-utils";
+import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 
 // TODO: How to handle creator course policies?
 
@@ -129,9 +130,9 @@ export function TabsDemo() {
   const { isCreator } = useValidateCreator(sessionData);
 
   const { accessTokenAlias } = useAccessToken();
-  const { globalStateDatum, isLoadingGlobalStateDatum } = useGlobalStateDatum(
-    accessTokenAlias ?? "",
-  );
+
+  const { aggregateUserInfo, isLoadingAggregateUserInfo } =
+    useAggregateUserInfo(accessTokenAlias ?? "");
 
   useEffect(() => {
     if (connected) {
@@ -190,19 +191,19 @@ export function TabsDemo() {
               <Card>
                 <CardContent className="space-y-4">
                   <Overview
-                    globalStateDatum={globalStateDatum}
-                    isLoadingGlobalStateDatum={isLoadingGlobalStateDatum}
+                    aggregateUserInfo={aggregateUserInfo}
+                    isLoadingAggregateUserInfo={isLoadingAggregateUserInfo}
                   />
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="space-y-4">
-                  <MyCoursesBar globalStateDatum={globalStateDatum} />
+                  <MyCoursesBar aggregateUserInfo={aggregateUserInfo} />
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="space-y-4">
-                  <MyProjectsBar globalStateDatum={globalStateDatum} />
+                  <MyProjectsBar aggregateUserInfo={aggregateUserInfo} />
                 </CardContent>
               </Card>
             </div>
@@ -266,43 +267,62 @@ export function Profile() {
 }
 
 export function Overview({
-  globalStateDatum,
-  isLoadingGlobalStateDatum,
+  aggregateUserInfo,
+  isLoadingAggregateUserInfo,
 }: {
-  globalStateDatum: DecodedGlobalStateDatum | undefined;
-  isLoadingGlobalStateDatum: boolean;
+  aggregateUserInfo: AggregateUserInfoResponse | undefined;
+  isLoadingAggregateUserInfo: boolean;
 }) {
-  const completedCourses = globalStateDatum?.TokenInfos.filter(
-    (tokenInfo: { Minted: boolean }) => !tokenInfo.Minted,
-  ).length;
-  const enrolledCourses = globalStateDatum?.TokenInfos.filter(
-    (tokenInfo: { Minted: boolean }) => tokenInfo.Minted,
-  ).length;
   return (
     <div className="explore-courses-bar">
       <div className="category">
-        {isLoadingGlobalStateDatum && <Loading />}
-        <h3>Andamio ID: {globalStateDatum?.UserName}</h3>
-        <h3>Bio: {globalStateDatum?.UserInfo}</h3>
-        <h3>Courses Completed: {completedCourses}</h3>
-        <h3>Courses Enrolled: {enrolledCourses}</h3>
+        {isLoadingAggregateUserInfo ? (
+          <Loading />
+        ) : (
+          <div className="flex gap-x-40 max-w-full">
+            <div>
+              <h3>Andamio ID: {aggregateUserInfo?.alias}</h3>
+              <h3>Bio: {aggregateUserInfo?.userInfo}</h3>
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <div>
+                <h3>
+                  Courses Enrolled: {aggregateUserInfo?.courses.ongoing.length}
+                </h3>
+                <h3>
+                  Courses Completed:{" "}
+                  {aggregateUserInfo?.courses.completed.length}
+                </h3>
+              </div>
+              <div>
+                <h3>
+                  Projects Joined: {aggregateUserInfo?.projects.ongoing.length}
+                </h3>
+                <h3>
+                  Projects Closed:{" "}
+                  {aggregateUserInfo?.projects.completed.length}
+                </h3>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export function MyCoursesBar({
-  globalStateDatum,
+  aggregateUserInfo,
 }: {
-  globalStateDatum: DecodedGlobalStateDatum | undefined;
+  aggregateUserInfo: AggregateUserInfoResponse | undefined;
 }) {
   const { courses, isLoadingCourses } = useCourses();
   const [myCourses, setMyCourses] = useState<any>([]);
 
   useEffect(() => {
-    if (globalStateDatum) {
-      const myOnchainCourses = globalStateDatum.TokenInfos.map(
-        (tokenInfo) => tokenInfo.LsCs,
+    if (aggregateUserInfo) {
+      const myOnchainCourses = aggregateUserInfo.courses.ongoing.map(
+        (course) => course.policy,
       );
       if (courses) {
         const myCourses = courses.filter((course) =>
@@ -316,7 +336,7 @@ export function MyCoursesBar({
         setMyCourses(myCourses);
       }
     }
-  }, [globalStateDatum, isLoadingCourses, courses]);
+  }, [aggregateUserInfo, isLoadingCourses, courses]);
 
   return (
     <div className="explore-courses-bar">
@@ -327,8 +347,11 @@ export function MyCoursesBar({
       <div className="category">
         <ScrollArea className="w-full">
           <div className="flex space-x-4 pb-4">
-            {(isLoadingCourses || !globalStateDatum) && <Loading />}
-            {courses && myCourses.length === 0 ? (
+            {(isLoadingCourses || !aggregateUserInfo) && <Loading />}
+            {!isLoadingCourses &&
+            aggregateUserInfo &&
+            courses &&
+            myCourses.length === 0 ? (
               <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
                 <p>You have not enrolled in any courses yet.</p>
                 <Link href="/courses" passHref>
@@ -368,17 +391,17 @@ export function MyCoursesBar({
 }
 
 export function MyProjectsBar({
-  globalStateDatum,
+  aggregateUserInfo,
 }: {
-  globalStateDatum: DecodedGlobalStateDatum | undefined;
+  aggregateUserInfo: AggregateUserInfoResponse | undefined;
 }) {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
   const [myProjects, setMyProjects] = useState<any>([]);
 
   useEffect(() => {
-    if (globalStateDatum) {
-      const myOnchainCourses = globalStateDatum.TokenInfos.map(
-        (tokenInfo) => tokenInfo.LsCs,
+    if (aggregateUserInfo) {
+      const myOnchainCourses = aggregateUserInfo.projects.ongoing.map(
+        (project) => project.policy,
       );
       if (treasuries) {
         const myProjects = treasuries.filter((treasury) =>
@@ -389,7 +412,7 @@ export function MyProjectsBar({
         setMyProjects(myProjects);
       }
     }
-  }, [globalStateDatum, isLoadingTreasuries, treasuries]);
+  }, [aggregateUserInfo, isLoadingTreasuries, treasuries]);
 
   return (
     <div className="explore-projects-bar">
@@ -399,8 +422,11 @@ export function MyProjectsBar({
       </h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">
-          {(isLoadingTreasuries || !globalStateDatum) && <Loading />}
-          {treasuries && myProjects.length === 0 ? (
+          {(isLoadingTreasuries || !aggregateUserInfo) && <Loading />}
+          {!isLoadingTreasuries &&
+          aggregateUserInfo &&
+          treasuries &&
+          myProjects.length === 0 ? (
             <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
               <p>You have not joined any projects yet.</p>
               <Link href="/projects" passHref>
