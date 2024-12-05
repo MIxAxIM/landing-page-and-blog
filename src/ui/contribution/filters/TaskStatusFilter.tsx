@@ -13,6 +13,7 @@ import { cn } from "~/utils/shadcn";
 const statusLabels: Record<TaskStatus, string> = {
   DRAFT: "Draft",
   APPROVED: "Approved",
+  PENDING_TX: "Pending TX",
   ON_CHAIN: "On Chain",
   COMMITMENT_MADE: "Committed",
   COMMITMENT_DENIED: "Denied",
@@ -24,6 +25,7 @@ const statusLabels: Record<TaskStatus, string> = {
 const statusStyles: Record<TaskStatus, string> = {
   DRAFT: "bg-gray-100 text-gray-800",
   APPROVED: "bg-blue-100 text-blue-800",
+  PENDING_TX: "bg-yellow-100 text-yellow-800",
   ON_CHAIN: "bg-purple-100 text-purple-800",
   COMMITMENT_MADE: "bg-orange-100 text-orange-800",
   COMMITMENT_DENIED: "bg-orange-100 text-orange-800",
@@ -58,7 +60,7 @@ export default function TaskStatusFilter({
           className={cn(
             "h-8",
             selectedStatuses.length < Object.keys(TaskStatus).length &&
-              "border-dashed",
+            "border-dashed",
           )}
         >
           <span>Filter by Status</span>

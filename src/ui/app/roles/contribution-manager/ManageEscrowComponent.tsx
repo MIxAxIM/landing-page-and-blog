@@ -22,6 +22,7 @@ import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint
 import { Button } from "~/components/ui/button";
 import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-manager/manage-treasury-token/ManageTreasuryTokenDialog";
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
+import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskStatusCheck";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -39,6 +40,8 @@ export default function ManageEscrowComponent({
   const { treasuryInfo, escrowUtxos, contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
+
+  useTaskStatusCheck(treasuryNftPolicyId ?? "")
 
   useEffect(() => {
     if (treasuryOwnerStatus?.onboardingStatus === "PARTIAL" ||

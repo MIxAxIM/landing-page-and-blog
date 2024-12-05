@@ -315,6 +315,7 @@ export default function DialogTask({
     const statusTitles = {
       [TaskStatus.DRAFT]: "Edit Task",
       [TaskStatus.APPROVED]: "View Approved Task",
+      [TaskStatus.PENDING_TX]: "Task is Awaiting On-Chain Confirmation",
       [TaskStatus.ON_CHAIN]: "View On-Chain Task",
       [TaskStatus.COMMITMENT_MADE]: "View Task Commitment",
       [TaskStatus.COMMITMENT_DENIED]: "Task has been denied",

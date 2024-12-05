@@ -8,6 +8,7 @@ import DialogTaskToProject from "~/ui/contribution/dialogs/DialogTaskToProject";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import ManageEscrowComponent from "./ManageEscrowComponent";
+import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
@@ -64,7 +65,7 @@ export default function ContributionManagerComponent() {
               <h1>{translateCaps('treasuryOwner')} Page</h1>
               <div className="flex flex-row items-center space-x-5">
                 <DialogTaskToProject />
-                <DialogTreasury />
+                <DialogInitializeProject />
               </div>
             </div>
             <h2>

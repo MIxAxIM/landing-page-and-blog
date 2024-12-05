@@ -162,6 +162,7 @@ export function useTask({
       ctx.escrow.getEscrowById.invalidate(),
       ctx.treasuryOwner.getTreasuryOwnerTreasuries.invalidate(),
       ctx.contributionManager.getContributionManagerTreasuries.invalidate(),
+      ctx.treasury.getTreasuryAmountsByStatus.invalidate(),
       treasuryNftPolicyId &&
       ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
       // If we have a specific task ID, invalidate that too

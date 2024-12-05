@@ -1,4 +1,4 @@
-import { type TaskStatus } from "@prisma/client";
+import { PrerequisiteStatus, type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 export type TreasuryOwner = RouterOutputs["treasuryOwner"]["getTreasuryOwnerByUser"]
@@ -69,6 +69,7 @@ export type ContributorPrerequisite = {
   id: string;
   contributorPolicyId?: string;
   title?: string | null;
+  status: PrerequisiteStatus;
   courseRequirements: CourseRequirement[];
   escrows?: Escrow[];
 };

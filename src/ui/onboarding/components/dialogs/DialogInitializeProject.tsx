@@ -72,6 +72,7 @@ export default function DialogInitializeProject({
                 form={form}
                 placeholder={`What should we call your new ${translate('treasury')}?`}
               />
+              <p>{sessionData?.user.treasuryOwnerId}</p>
             </div>
           </DialogForm>
         </Form>

@@ -43,7 +43,7 @@ export default function MintProjectToken({
   const handleStatusChange = async () => {
     updateTaskStatuses({
       taskIds: taskIds,
-      status: "ON_CHAIN",
+      status: "PENDING_TX",
     });
   };
 

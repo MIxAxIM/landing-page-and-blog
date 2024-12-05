@@ -14,6 +14,7 @@ import { cn } from "~/utils/shadcn";
 const statusStyles = {
   [TaskStatus.DRAFT]: "bg-gray-100 text-gray-800",
   [TaskStatus.APPROVED]: "bg-blue-100 text-blue-800",
+  [TaskStatus.PENDING_TX]: "bg-yellow-100 text-yellow-800",
   [TaskStatus.ON_CHAIN]: "bg-purple-100 text-purple-800",
   [TaskStatus.COMMITMENT_MADE]: "bg-orange-100 text-orange-800",
   [TaskStatus.COMMITMENT_DENIED]: "bg-orange-100 text-orange-800",
@@ -24,7 +25,8 @@ const statusStyles = {
 
 const validTransitions: Record<TaskStatus, TaskStatus[]> = {
   DRAFT: [TaskStatus.APPROVED, TaskStatus.ARCHIVED, TaskStatus.BACKLOG],
-  APPROVED: [TaskStatus.ON_CHAIN, TaskStatus.DRAFT],
+  APPROVED: [TaskStatus.PENDING_TX, TaskStatus.DRAFT],
+  PENDING_TX: [TaskStatus.ON_CHAIN, TaskStatus.APPROVED],
   ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
   COMMITMENT_MADE: [
     TaskStatus.COMMITMENT_DENIED,
@@ -39,6 +41,7 @@ const validTransitions: Record<TaskStatus, TaskStatus[]> = {
 const statusLabels = {
   [TaskStatus.DRAFT]: "Draft",
   [TaskStatus.APPROVED]: "Approved",
+  [TaskStatus.PENDING_TX]: "Pending TX",
   [TaskStatus.ON_CHAIN]: "On Chain",
   [TaskStatus.COMMITMENT_MADE]: "Contributor Committed",
   [TaskStatus.COMMITMENT_DENIED]: "Contribution Denied",

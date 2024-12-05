@@ -82,9 +82,9 @@ export default function DialogPublishTreasuryTx({
     e.preventDefault();
 
     try {
-      // Update all checked tasks to ON_CHAIN status
+      // Update all checked tasks to PENDING_TX status
       const updatePromises = Array.from(checkedTasks).map((taskId) =>
-        updateTaskStatus({ id: taskId, status: TaskStatus.ON_CHAIN }),
+        updateTaskStatus({ id: taskId, status: TaskStatus.PENDING_TX }),
       );
 
       await Promise.all(updatePromises);
