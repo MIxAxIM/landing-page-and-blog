@@ -41,16 +41,24 @@ export default function ProjectPage() {
   const { aggregateUserInfo, isLoadingAggregateUserInfo } =
     useAggregateUserInfo(accessTokenAlias ?? "");
 
+  const [currentProject, setCurrentProject] = useState<string | undefined>(undefined);
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-        project_content: string;
-        status: "PENDING_APPROVAL" | "IN_COMMITMENT";
-        submitted_info?: string;
-      }
+      project_content: string;
+      status: "PENDING_APPROVAL" | "IN_COMMITMENT";
+      submitted_info?: string;
+    }
     | undefined
   >(undefined);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+
+  useEffect(() => {
+
+    if (project) {
+      setCurrentProject(project as string);
+    }
+  }, [project])
 
   useEffect(() => {
     if (aggregateUserInfo && treasury && treasury.treasuryNftPolicyId) {
@@ -104,24 +112,24 @@ export default function ProjectPage() {
                 <div className="flex justify-between gap-x-40">
                   <div className="mt-8">
                     <h2 className="mb-4 text-2xl font-bold">My Commitment</h2>
-                    
-                      {!commitment ? (
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+
+                    {!commitment ? (
+                      <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
                         "No commitment found."
-                        </div>
-                      ) : (
-                        <Link
-                          href={`/app/project/${project}/${commitment.project_content}`}
-                          passHref
-                          key={project as string}
-                          className="transform flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
-                        >
-                          <h6 className="text-xl font-bold">
-                            {commitment.project_content}
-                          </h6>
-                        </Link>
-                      )}
-                    
+                      </div>
+                    ) : (
+                      <Link
+                        href={`/app/project/${currentProject}/${commitment.project_content}`}
+                        passHref
+                        key={project as string}
+                        className="transform flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+                      >
+                        <h6 className="text-xl font-bold">
+                          {commitment.project_content}
+                        </h6>
+                      </Link>
+                    )}
+
                   </div>
 
                   <div className="mt-8">
