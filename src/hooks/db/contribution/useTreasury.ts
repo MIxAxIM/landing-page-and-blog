@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { type Treasury } from "~/types/db";
+import { type TreasuryAmountsByStatus, type Treasury } from "~/types/db";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useRoles } from "~/hooks/app/useRoles";
@@ -8,6 +8,8 @@ import { useRoles } from "~/hooks/app/useRoles";
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
   isLoading: boolean;
+  treasuryAmountsByStatus: TreasuryAmountsByStatus | null | undefined;
+  isLoadingTreasuryAmountsByStatus: boolean;
   createTreasury: (data: {
     treasuryNftPolicyId?: string;
     title: string;
@@ -42,6 +44,11 @@ export function useTreasury(id?: string): UseTreasuryReturn {
     id ?? "",
     { enabled: !!id },
   );
+
+  const { data: treasuryAmountsByStatus, isLoading: isLoadingTreasuryAmountsByStatus } = api.treasury.getTreasuryAmountsByStatus.useQuery(
+    { id: id ?? "" },
+    { enabled: !!id }
+  )
 
   // Mutation for creating a new treasury
   const createTreasuryMutation = api.treasury.createTreasury.useMutation({
@@ -121,6 +128,8 @@ export function useTreasury(id?: string): UseTreasuryReturn {
   return {
     treasury,
     isLoading,
+    treasuryAmountsByStatus,
+    isLoadingTreasuryAmountsByStatus,
     createTreasury: createTreasuryMutation.mutate,
     initializeTreasuryWithEscrow: initializeTreasuryWithEscrowMutation.mutate,
     updateTreasury: updateTreasuryMutation.mutate,

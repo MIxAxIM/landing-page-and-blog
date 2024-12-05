@@ -13,6 +13,8 @@ export type Treasury = RouterOutputs["treasury"]["getTreasuryById"] & {
   totalTasks?: number;
 };
 
+export type TreasuryAmountsByStatus = RouterOutputs["treasury"]["getTreasuryAmountsByStatus"];
+
 export type Escrow = RouterOutputs["escrow"]["getEscrowById"] & {
   treasury?: Treasury;
   tasks?: Task[];

@@ -1,4 +1,4 @@
-import { type Treasury } from "@prisma/client";
+import { TaskStatus, type Treasury } from "@prisma/client";
 import { TRPCError, type inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
 
@@ -118,6 +118,65 @@ export const treasuryRouter = createTRPCRouter({
       if (!treasury) return null;
 
       return transformTreasuryWithTotals(treasury, ctx);
+    }),
+
+  getTreasuryAmountsByStatus: publicProcedure
+    .input(z.object({
+      id: z.string()
+    }))
+    .query(async ({ ctx, input }) => {
+      // Get all tasks for all escrows in this treasury
+      const escrows = await ctx.db.escrow.findMany({
+        where: { treasuryId: input.id },
+        include: {
+          tasks: {
+            select: {
+              status: true,
+              lovelace: true
+            }
+          }
+        }
+      });
+
+      // Initialize amounts object with all possible statuses set to 0
+      const amounts: Record<TaskStatus, {
+        totalLovelace: string,
+        totalAda: number,
+        count: number
+      }> = Object.values(TaskStatus).reduce((acc, status) => ({
+        ...acc,
+        [status]: {
+          totalLovelace: "0",
+          totalAda: 0,
+          count: 0
+        }
+      }), {} as Record<TaskStatus, { totalLovelace: string, totalAda: number, count: number }>);
+
+      // Aggregate amounts by status
+      escrows.forEach(escrow => {
+        escrow.tasks.forEach(task => {
+          const lovelace = BigInt(task.lovelace);
+          const currentTotalLovelace = BigInt(amounts[task.status].totalLovelace);
+          const newTotalLovelace = currentTotalLovelace + lovelace;
+
+          amounts[task.status].totalLovelace = newTotalLovelace.toString();
+          amounts[task.status].totalAda = Number(newTotalLovelace) / 1_000_000;
+          amounts[task.status].count++;
+        });
+      });
+
+      const totalLovelace = Object.values(amounts)
+        .reduce((sum, { totalLovelace }) => sum + BigInt(totalLovelace), BigInt(0));
+
+      return {
+        amounts,
+        summary: {
+          totalLovelace: totalLovelace.toString(),
+          totalAda: Number(totalLovelace) / 1_000_000,
+          totalTasks: Object.values(amounts)
+            .reduce((sum, { count }) => sum + count, 0)
+        }
+      };
     }),
 
   // TODO: Implement adding policy ids at time of Admin Transactions

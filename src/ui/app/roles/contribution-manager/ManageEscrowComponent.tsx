@@ -21,6 +21,7 @@ import ProjectTreasuryBalance from "./ProjectTreasuryBalance";
 import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
 import { Button } from "~/components/ui/button";
 import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-manager/manage-treasury-token/ManageTreasuryTokenDialog";
+import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -71,9 +72,13 @@ export default function ManageEscrowComponent({
           </div>
         </div>
         <div className="col-span-2 flex flex-col">
-          <ProjectTreasuryBalance treasuryInfo={treasuryInfo} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
+          <ProjectTreasuryBalance
+            treasuryInfo={treasuryInfo}
+            treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+          />
+          <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
         </div>
-        <div className="col-span-8 row-span-2 flex w-full">
+        <div className="col-span-8 row-span-3 flex w-full">
           <div className="px-8">
             <h2>
               {escrow?.title} Task List
