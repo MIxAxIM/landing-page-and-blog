@@ -6,7 +6,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 
 // Define a generic type for the callback parameters
-type TransactionCallback<T = void> = (txId: string, params: T) => Promise<void> | void;
+type TransactionCallback<T = void> = (txId: string, params?: T) => Promise<void> | void;
 
 interface TransactionContainerProps<T = void> {
   buttonText: string;
@@ -41,8 +41,12 @@ export default function TransactionContainer<T = void>({
         });
 
         // Call the callback with both txId and additional params if they exist
-        if (onTransactionSuccess && callbackParams !== undefined) {
-          await onTransactionSuccess(txId, callbackParams);
+        if (onTransactionSuccess) {
+          if (callbackParams !== undefined) {
+            await onTransactionSuccess(txId, callbackParams);
+          } else {
+            await onTransactionSuccess(txId);
+          }
         }
       } catch (error) {
         toast({

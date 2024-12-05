@@ -19,6 +19,8 @@ import ContributorPrerequisites from "./ContributorPrerequisites";
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
 import ProjectTreasuryBalance from "./ProjectTreasuryBalance";
 import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
+import { Button } from "~/components/ui/button";
+import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-manager/manage-treasury-token/ManageTreasuryTokenDialog";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -59,8 +61,8 @@ export default function ManageEscrowComponent({
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
-      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-6 gap-3">
-        <div className="col-span-6 mb-6 flex flex-row items-center justify-between">
+      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-10 gap-8">
+        <div className="col-span-10 mb-6 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
           <div className="space-x-2">
             {!!escrow && (
@@ -68,20 +70,11 @@ export default function ManageEscrowComponent({
             )}
           </div>
         </div>
-        <div className="col-span-3 flex flex-col">
+        <div className="col-span-2 flex flex-col">
           <ProjectTreasuryBalance treasuryInfo={treasuryInfo} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
         </div>
-        <div className="col-span-3 flex flex-col">
-          <EnrolledContributors treasuryNftPolicyId={treasuryNftPolicyId} />
-        </div>
-        <div className="col-span-3 flex flex-col">
-          <EscrowUtxoTable utxos={escrowUtxos ?? []} />
-        </div>
-        <div className="col-span-3 flex flex-col">
-          <PublishedProjectsTable projects={treasuryInfo?.projects ?? []} />
-        </div>
-        <div className="col-span-6 flex w-full">
-          <div>
+        <div className="col-span-8 row-span-2 flex w-full">
+          <div className="px-8">
             <h2>
               {escrow?.title} Task List
             </h2>
@@ -93,9 +86,16 @@ export default function ManageEscrowComponent({
             )}
           </div>
         </div>
-        <div className="col-span-6 flex flex-col space-y-5 w-full">
+        <div className="col-span-2 mx-auto justify-between flex flex-col">
           {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
             <MintProjectTokenDialog
+              treasuryNftPolicyId={treasuryNftPolicyId}
+              tasksToPublish={tasksToPublish}
+              contributorPolicies={contributorPolicies}
+            />
+          )}
+          {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
+            <ManageTreasuryTokenDialog
               treasuryNftPolicyId={treasuryNftPolicyId}
               tasksToPublish={tasksToPublish}
               contributorPolicies={contributorPolicies}
@@ -104,11 +104,20 @@ export default function ManageEscrowComponent({
         </div>
         {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
           <>
-            <div className="col-span-3">
+            <div className="col-span-4">
               <ContributorPrerequisites escrowId={escrowId} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
             </div>
-            <div className="col-span-3">
+            <div className="col-span-6 flex flex-col">
+              <EnrolledContributors treasuryNftPolicyId={treasuryNftPolicyId} />
+            </div>
+            <div className="col-span-4">
               <ProjectAcceptanceCriteria escrowId={escrowId} />
+            </div>
+            <div className="col-span-6 w-full flex flex-col">
+              <PublishedProjectsTable projects={treasuryInfo?.projects ?? []} />
+            </div>
+            <div className="col-span-6 flex flex-col">
+              <EscrowUtxoTable utxos={escrowUtxos ?? []} />
             </div>
           </>
         )}
