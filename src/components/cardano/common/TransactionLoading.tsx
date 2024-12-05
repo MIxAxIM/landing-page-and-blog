@@ -1,11 +1,11 @@
-import { type BrowserWallet } from "@meshsdk/wallet";
+import { IWallet } from "@meshsdk/common";
 import { useEffect, useState } from "react";
 import { Progress } from "~/components/ui/progress";
 
 export default function TransactionLoading({
   wallet,
 }: {
-  wallet: BrowserWallet;
+  wallet: IWallet;
 }) {
   const [progress, setProgress] = useState<number>(0);
   const [loadingMessage, setLoadingMessage] = useState<string>(

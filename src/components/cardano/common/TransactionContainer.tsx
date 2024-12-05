@@ -1,9 +1,9 @@
-import { type BrowserWallet } from "@meshsdk/wallet";
 import { Button } from "~/components/ui/button";
 import TransactionLoading from "./TransactionLoading";
 import { useToast } from "~/components/ui/use-toast";
 import { type Dispatch, type SetStateAction } from "react";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
+import { IWallet } from "@meshsdk/common";
 
 // Define a generic type for the callback parameters
 type TransactionCallback<T = void> = (txId: string, params?: T) => Promise<void> | void;
@@ -11,7 +11,7 @@ type TransactionCallback<T = void> = (txId: string, params?: T) => Promise<void>
 interface TransactionContainerProps<T = void> {
   buttonText: string;
   unsignedTxCBOR: { unsignedTxCBOR: string } | undefined;
-  wallet: BrowserWallet;
+  wallet: IWallet;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
   onTransactionSuccess?: TransactionCallback<T>;
   callbackParams?: T;
