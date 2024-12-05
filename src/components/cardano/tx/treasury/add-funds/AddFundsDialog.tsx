@@ -48,7 +48,7 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
 
   return (
     <Dialog>
-      <DialogTrigger>Add Ada to Project Treasury</DialogTrigger>
+      <DialogTrigger className="rounded-md border border-primary px-5 py-2 hover:bg-primary hover:text-primary-foreground my-3">Add Ada to Project Treasury</DialogTrigger>
       <DialogContent>
         {successTxHash ? (
           <SuccessTxModalContent

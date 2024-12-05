@@ -39,7 +39,7 @@ export default function MintProjectTokenDialog(
     return (
       [
         {
-          pdProjectContent_: t.hash,
+          pdProjectContent_: t.taskHash,
           pdExpirationTime_: parseInt(t.expirationTime),
           pdLovelaceAmount_: parseInt(t.lovelace),
           pdTokens_: [],

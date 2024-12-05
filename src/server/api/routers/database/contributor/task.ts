@@ -8,6 +8,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { generateTaskHash } from "~/utils/hashing";
+import { hashProjectData } from "@andamiojs/datum-utils";
 
 const taskSchema = z.object({
   title: z.string().min(1),
@@ -255,17 +256,25 @@ export const taskRouter = createTRPCRouter({
         input.status === TaskStatus.APPROVED
       ) {
         // NOTE: We can customize the hash generation here
-        const hash = generateTaskHash({
+        const taskHash = generateTaskHash({
           title: task.title,
           description: task.description,
           acceptanceCriteria: task.acceptanceCriteria,
         });
+
+        const hash = hashProjectData({
+          pdProjectContent_: taskHash,
+          pdExpirationTime_: task.expirationTime,
+          pdLovelaceAmount_: task.lovelace,
+          pdTokens_: [],
+        })
 
         return ctx.db.task.update({
           where: { id: input.id },
           data: {
             status: input.status,
             hash,
+            taskHash,
           },
         });
       }

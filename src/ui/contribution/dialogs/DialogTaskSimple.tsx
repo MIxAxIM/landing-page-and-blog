@@ -77,9 +77,17 @@ const TaskDisplay = ({ task }: { task: Task }) => {
           ))}
         </ul>
       </div>
+      {task.taskHash && (
+        <div>
+          <h3>Task Hash</h3>
+          <code className="block break-all rounded bg-muted p-2 text-xs">
+            {task.taskHash}
+          </code>
+        </div>
+      )}
       {task.hash && (
         <div>
-          <h3>Content Hash</h3>
+          <h3>Network Hash</h3>
           <code className="block break-all rounded bg-muted p-2 text-xs">
             {task.hash}
           </code>

@@ -7,7 +7,7 @@ const cardVariants = cva("", {
   variants: {
     intent: {
       default:
-        "rounded-md border-foreground bg-card text-card-foreground shadow",
+        "rounded-sm border border-primary bg-card text-card-foreground shadow",
       course:
         "border border-foreground bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground rounded-xl font-libreFranklin",
       module:
@@ -38,7 +38,7 @@ const cardVariants = cva("", {
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {
+  VariantProps<typeof cardVariants> {
   asChild?: boolean;
 }
 

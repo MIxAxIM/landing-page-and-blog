@@ -76,9 +76,6 @@ export function PrerequisiteItem({
             </p>
           </div>
         ))}
-      <p className="break-all text-xs text-muted-foreground">
-        {prerequisite.id}
-      </p>
     </div>
   );
 }

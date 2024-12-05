@@ -27,6 +27,7 @@ export type Task = {
   description: string;
   acceptanceCriteria: string[];
   status: TaskStatus;
+  taskHash: string | null;
   hash: string | null;
   lovelace: string;
   expirationTime: string;
@@ -71,7 +72,7 @@ export type ContributorPrerequisite = {
 };
 
 
-type Project = {
+export type ProjectDatum = {
   project_hash: string;
   escrow_hash: string;
   commitment_allowed: number;
@@ -85,5 +86,5 @@ type Funds = {
 
 export type TreasuryInfo = {
   funds: Funds[]
-  projects: Project[]
+  projects: ProjectDatum[]
 }

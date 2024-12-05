@@ -1,10 +1,10 @@
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { hexToString } from "@meshsdk/common";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
+// Move to andamio/datum-utils:
 // Core types for the UTxO data
 type Asset = {
   unit: string;
@@ -40,8 +40,8 @@ type EscrowUtxo = {
   txout_cbor: null | string;
 };
 
-// Type for our transformed/clean data
-type TransformedEscrowUtxo = {
+// Move to andamio/datum-utils:
+export type DecodedEscrowUtxo = {
   txHash: string;
   index: number;
   slot: number;
@@ -75,7 +75,7 @@ export const escrowValidatorRouter = createTRPCRouter({
           { policy: input.treasuryNftPolicyId },
         );
 
-        return response.map((utxo): TransformedEscrowUtxo => {
+        return response.map((utxo): DecodedEscrowUtxo => {
           // Extract lovelace and escrow token amounts
 
           // Get datum fields safely
@@ -126,7 +126,7 @@ export const escrowValidatorRouter = createTRPCRouter({
 
         // Since we're querying by alias, we expect only one result
         // But handle the array case safely
-        const utxos = response.map((utxo): TransformedEscrowUtxo => {
+        const utxos = response.map((utxo): DecodedEscrowUtxo => {
           const datumFields = utxo.datum.json.fields;
           const projectDataFields = datumFields[0]?.fields || [];
 
