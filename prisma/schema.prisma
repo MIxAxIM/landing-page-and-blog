@@ -215,10 +215,21 @@ model SltVariant {
   @@index([id])
 }
 
+enum ModuleStatus {
+  DRAFT
+  APPROVED
+  PENDING_TX
+  ON_CHAIN
+  DEPRECATED
+  BACKLOG
+  ARCHIVED
+}
+
 model Module {
-  id         String  @id @default(cuid())
+  id         String       @id @default(cuid())
   moduleCode String
   moduleHash String?
+  status     ModuleStatus @default(DRAFT)
 
   title       String
   description String?
