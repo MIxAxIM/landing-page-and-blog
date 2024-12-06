@@ -50,6 +50,9 @@ export type Task = {
   isEditable?: boolean;
 };
 
+export type TaskCommitment = RouterOutputs["taskCommitment"]["getTaskCommitmentById"]
+
+
 // TODO: Need course policyId to sent to Project APIs
 
 export type CourseRequirement = {

@@ -30,6 +30,7 @@ import { contributorPrerequisiteRouter } from "./routers/database/contributor/co
 import { contributorRouter } from "./routers/database/contributor/contributor";
 import { treasuryOwnerRouter } from "./routers/database/contributor/treasuryOwner";
 import { contributionManagerRouter } from "./routers/database/contributor/contribution-manager";
+import { taskCommitmentRouter } from "./routers/database/contributor/task-commitment";
 
 // Organization DB Routes
 import { organizationRouter } from "./routers/database/organization/organization";
@@ -116,6 +117,7 @@ export const appRouter = createTRPCRouter({
   escrow: escrowRouter,
   task: taskRouter,
   contributorPrerequisite: contributorPrerequisiteRouter,
+  taskCommitment: taskCommitmentRouter,
 
   // project onchain
   treasuryValidator: treasuryValidatorRouter,
