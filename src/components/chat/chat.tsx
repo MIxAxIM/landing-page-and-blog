@@ -17,7 +17,7 @@ export function Chat({ roomId }: ChatProps) {
   }, [roomId, subscribeRoom]);
 
   return (
-    <div className="flex h-full w-full flex-col justify-between">
+    <div className="flex h-full w-full flex-col justify-between rounded-md bg-background/40">
       <ChatList />
     </div>
   );

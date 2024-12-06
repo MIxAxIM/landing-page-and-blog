@@ -67,8 +67,8 @@ export function ChatList() {
                       {((nostrChatUser &&
                         message.pubkey !== nostrChatUser.pubkey) ??
                         nostrChatUser === undefined) && (
-                        <UserAvatar pubkey={message.pubkey} />
-                      )}
+                          <UserAvatar pubkey={message.pubkey} />
+                        )}
                       <ChatMessage message={message.message} />
 
                       {nostrChatUser &&
@@ -107,8 +107,8 @@ function UserAvatar({ pubkey }: { pubkey: string }) {
             <AvatarImage
               src={user.image ?? ""}
               alt={user.name ?? ""}
-              width={6}
-              height={6}
+              width={4}
+              height={4}
             />
           </Avatar>
         </TooltipTrigger>
@@ -125,7 +125,7 @@ function ChatMessage({ message }: { message: string }) {
   const isEmoji = /\p{Extended_Pictographic}/u.test(message);
   return (
     <span
-      className={`max-w-xs rounded-md bg-card px-5 py-3 ${isEmoji && message.length == 2 ? `text-3xl` : `text-lg`}`}
+      className={`max-w-sm rounded-sm bg-card px-2 py-1 shadow-md ${isEmoji && message.length == 2 ? `text-3xl` : `text-sm`}`}
     >
       {message}
     </span>
