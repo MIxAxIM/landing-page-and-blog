@@ -40,6 +40,12 @@ export default function ManageTreasuryToken({
 
 	);
 
+	console.log("Manage Tx Checks")
+	console.log(accessTokenAsset)
+	console.log(treasuryNftPolicyId)
+	console.log(contributorsToAdd)
+	console.log(projects)
+
 	const handleStatusChange = () => {
 		updateTaskStatuses({
 			taskIds: taskIds,

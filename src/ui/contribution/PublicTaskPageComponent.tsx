@@ -6,6 +6,10 @@ import { ChatContainer } from "~/components/chat/chat-container";
 import { PrerequisiteItem } from "./lists/PrerequisiteList";
 import { useTerminology } from "~/contexts/terminology-context";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
+import { Card } from "~/components/ui/card";
+import Link from "next/link";
+import { BookIcon, School2Icon } from "lucide-react";
+import TaskStatusIndicator from "./status/TaskStatusIndicator";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
   const { translateCaps, translateCapsPlural } = useTerminology()
@@ -15,7 +19,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
   });
   return (
     <>
-      <div className="mx-auto my-24 max-w-7xl space-y-10">
+      <Card className="mx-auto my-24 max-w-5xl space-y-10">
         <h1>{task.title}</h1>
         <p className="prose text-2xl">
           This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
@@ -29,37 +33,44 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
             ))}
           </ul>
 
-          <p className="prose">Current Status: {task.status}</p>
+          <TaskStatusIndicator status={task.status} showLabel />
           <p className="prose">Ada Reward: {parseInt(task.lovelace) / 1000000}</p>
           <p className="prose">
             Expiration Time: {formatPosixTime(task.expirationTime)}
           </p>
         </div>
 
-        <p className="prose my-10 text-2xl">
-          The following {translateCapsPlural('prerequisite')} must be completed:
-        </p>
+        <div>
 
-        {escrowPrerequisites?.map((ep, i) => (
-          <div
-            key={i}
-            className="flex min-h-36 flex-row items-center gap-10 px-10"
-          >
-            <div className="h-12 w-12 rounded-full bg-green-400" />
-            <PrerequisiteItem prerequisite={ep} />
+          <h3>
+            The following {translateCapsPlural('prerequisite')} must be completed:
+          </h3>
+
+          {escrowPrerequisites?.map((ep, i) => (
+            <Link
+              key={i}
+              href={`/course/${ep.courseRequirements[0]?.courseCode}`}
+            >
+              <div
+                className="flex min-h-36 flex-row items-center gap-10 px-10"
+              >
+                <BookIcon size={48} className="text-success" />
+                <PrerequisiteItem prerequisite={ep} />
+              </div>
+            </Link>
+          ))}
+          <div className="rounded-md text-foreground">
+            <h3>
+              Discuss this task with the Andamio Community
+            </h3>
+            <ChatContainer roomId={task.id} />
           </div>
-        ))}
-        <p className="prose my-10 text-2xl">
-          Discuss this task with the Andamio Community
-        </p>
-        <div className="rounded-md bg-background text-foreground">
-          <ChatContainer roomId={task.id} />
         </div>
         <PlaceholderComponent name="If I am committed to this task, view submission UI. I can see how to submit evidence of work, receive feedback, and check the status of submissions." userStory="CONTRIBUTION-010" />
         <PlaceholderComponent name="Commit to this task" userStory="CONTRIBUTION-011" />
         <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
         <PlaceholderComponent name="what user stories are picked up here?" />
-      </div>
+      </Card>
     </>
   );
 }

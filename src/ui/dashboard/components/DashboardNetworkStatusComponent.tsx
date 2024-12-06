@@ -21,6 +21,7 @@ import {
   DecodedGlobalStateDatum,
 } from "@andamiojs/datum-utils";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
+import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/ContributionManagerComponent";
 
 // TODO: How to handle creator course policies?
 
@@ -208,7 +209,8 @@ export function TabsDemo() {
               </Card>
             </div>
           </TabsContent>
-          <TabsContent value="workspace" className="space-y-4">
+          <TabsContent value="workspace" className="w-11/12 mx-auto my-24 space-y-4">
+            <ContributionManagerComponent />
             <Card>
               <CardContent className="space-y-4">
                 <Link
@@ -349,9 +351,9 @@ export function MyCoursesBar({
           <div className="flex space-x-4 pb-4">
             {(isLoadingCourses || !aggregateUserInfo) && <Loading />}
             {!isLoadingCourses &&
-            aggregateUserInfo &&
-            courses &&
-            myCourses.length === 0 ? (
+              aggregateUserInfo &&
+              courses &&
+              myCourses.length === 0 ? (
               <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
                 <p>You have not enrolled in any courses yet.</p>
                 <Link href="/courses" passHref>
@@ -424,9 +426,9 @@ export function MyProjectsBar({
         <div className="flex space-x-4 pb-4">
           {(isLoadingTreasuries || !aggregateUserInfo) && <Loading />}
           {!isLoadingTreasuries &&
-          aggregateUserInfo &&
-          treasuries &&
-          myProjects.length === 0 ? (
+            aggregateUserInfo &&
+            treasuries &&
+            myProjects.length === 0 ? (
             <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
               <p>You have not joined any projects yet.</p>
               <Link href="/projects" passHref>

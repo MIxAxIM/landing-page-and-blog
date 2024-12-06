@@ -24,18 +24,18 @@ type ContributorPolicies = {
 export default function ManageTreasuryTokenDialog(
 	{
 		treasuryNftPolicyId,
-		tasksToPublish,
+		tasksToManage,
 		contributorPolicies
 	}: {
 		treasuryNftPolicyId: string,
-		tasksToPublish: Task[],
+		tasksToManage: Task[],
 		contributorPolicies: ContributorPolicies
 	}) {
 	const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
 		undefined,
 	);
 
-	const datumReadyTasks = tasksToPublish.map(t => {
+	const datumReadyTasks = tasksToManage.map(t => {
 		return (
 			[
 				{
@@ -50,16 +50,11 @@ export default function ManageTreasuryTokenDialog(
 	}
 	)
 
-	const taskIds = tasksToPublish.map(t => t.id)
+	const taskIds = tasksToManage.map(t => t.id)
 
-	// NOTE: (updated 2024-11-27)
-	// Start with one-of tasks working. Then implement multi-commitments according to user stories
-	// Start with automatic assignment of contributorPolicy to Project Token.
-	//  - Strategic Alignment: make a plan for how to roll out shared contributor features
 
-	// When ready:
-	//  <TableHead className="text-right"># Commitments</TableHead>
-	//  <TableCell>{t.numAllowedCommitments}</TableCell>
+	// TODO: 2024-12-06
+	// Contribution manager can remove on-chain tasks by deselecting them in the list.
 
 	return (
 		<Dialog>
@@ -79,7 +74,7 @@ export default function ManageTreasuryTokenDialog(
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{tasksToPublish.map((t) => (
+							{tasksToManage.map((t) => (
 								<TableRow key={t.id}>
 									<TableCell className="font-bold">{t.title}</TableCell>
 									<TableCell>{formatPosixTime(t.expirationTime)}</TableCell>

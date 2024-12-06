@@ -37,6 +37,7 @@ export default function ManageEscrowComponent({
   const { treasuryInfo, escrowUtxos, contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
+  const [tasksToManage, setTasksToManage] = useState<Task[]>([])
 
   useTaskStatusCheck(treasuryNftPolicyId ?? "")
 
@@ -48,10 +49,11 @@ export default function ManageEscrowComponent({
   }, [treasuryOwnerStatus?.onboardingStatus]);
 
   useEffect(() => {
-
     if (!!escrow?.tasks) {
       const _tasks = escrow.tasks.filter(t => t.status === "APPROVED")
       setTasksToPublish(_tasks)
+      const _manageTasks = escrow.tasks.filter(t => (t.status === "APPROVED" || t.status === "ON_CHAIN"))
+      setTasksToManage(_manageTasks)
     }
   }, [escrow])
 
@@ -97,7 +99,7 @@ export default function ManageEscrowComponent({
             {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
               <ManageTreasuryTokenDialog
                 treasuryNftPolicyId={treasuryNftPolicyId}
-                tasksToPublish={tasksToPublish}
+                tasksToManage={tasksToManage}
                 contributorPolicies={contributorPolicies}
               />
             )}

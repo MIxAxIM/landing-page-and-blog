@@ -16,6 +16,7 @@ import { Card } from "~/components/ui/card";
 import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { CheckCircledIcon, QuestionMarkCircledIcon, Pencil1Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { ChatContainer } from "~/components/chat/chat-container";
 
 export default function ProjectTaskManagementList({
   escrow,
@@ -188,8 +189,6 @@ export default function ProjectTaskManagementList({
                             ))}
                           </ul>
                         </div>
-                      </div>
-                      <div className="flex flex-col gap-y-8">
                         <h3>Network Status</h3>
                         {!!validateNetworkTask(task) ? (
                           <>
@@ -218,7 +217,7 @@ export default function ProjectTaskManagementList({
                           </>
                         )}
                         <div>
-                          {task.status === "ON_CHAIN" && (
+                          {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
                             <Link href={`/app/contribute/task/${task.id}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>
@@ -226,6 +225,11 @@ export default function ProjectTaskManagementList({
                         </div>
 
                       </div>
+                      <div className="col-span-1">
+                        <h3>Chat</h3>
+                        <ChatContainer roomId={task.id} />
+                      </div>
+
                     </div>
                   </AccordionContent>
                 </AccordionItem>
