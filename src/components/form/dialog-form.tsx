@@ -120,7 +120,7 @@ export default function DialogForm({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-5xl border border-black">
+      <DialogContent className="max-w-5xl border-l-4 border-secondary shadow-primary">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

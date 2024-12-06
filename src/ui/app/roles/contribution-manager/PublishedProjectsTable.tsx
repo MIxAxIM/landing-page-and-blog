@@ -14,7 +14,7 @@ export default function ProjectTable({ projects }: { projects: ProjectDatum[] })
           <TableHeader>
             <TableRow>
               <TableHead>Project Hash</TableHead>
-              <TableHead>Task Hash</TableHead>
+              <TableHead>Escrow Hash</TableHead>
               <TableHead className="text-right">Max Commitments</TableHead>
               <TableHead>Contributors</TableHead>
             </TableRow>

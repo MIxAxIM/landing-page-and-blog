@@ -25,9 +25,9 @@ const statusStyles = {
 
 const validTransitions: Record<TaskStatus, TaskStatus[]> = {
   DRAFT: [TaskStatus.APPROVED, TaskStatus.ARCHIVED, TaskStatus.BACKLOG],
-  APPROVED: [TaskStatus.PENDING_TX, TaskStatus.DRAFT],
-  PENDING_TX: [TaskStatus.ON_CHAIN, TaskStatus.APPROVED],
-  ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
+  APPROVED: [TaskStatus.DRAFT],
+  PENDING_TX: [],
+  ON_CHAIN: [],
   COMMITMENT_MADE: [
     TaskStatus.COMMITMENT_DENIED,
     TaskStatus.COMMITMENT_ACCEPTED,

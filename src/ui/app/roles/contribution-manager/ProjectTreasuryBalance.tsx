@@ -21,22 +21,18 @@ export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicy
 
   // Format ADA with 6 decimal places and commas for thousands
   const formattedAda = totalAda.toLocaleString('en-US', {
-    minimumFractionDigits: 6,
+    minimumFractionDigits: 1,
     maximumFractionDigits: 6
   });
 
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">Project Treasury Balance</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center space-x-2">
-          <span className="text-lg font-bold">₳ {formattedAda}</span>
-        </div>
-        <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
-      </CardContent>
+    <Card className="flex flex-row gap-x-4 items-center">
+      <p>Project Treasury Balance</p>
+      <div className="flex items-center space-x-2">
+        <span className="text-lg font-bold">₳ {formattedAda}</span>
+      </div>
+      <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
     </Card>
   );
 }

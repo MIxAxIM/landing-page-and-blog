@@ -15,7 +15,7 @@ const cardVariants = cva("", {
         "flex flex-col items-center justify-center gap-5 bg-card shadow rounded-md",
     },
     size: {
-      default: "px-5 py-3",
+      default: "h-full px-5 py-3",
       md: "min-h-12",
       sm: "min-h-8",
       wide: "w-11/12 mx-auto my-5 px-10 py-3",
