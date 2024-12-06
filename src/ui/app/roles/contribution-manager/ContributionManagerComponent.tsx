@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import ManageEscrowComponent from "./ManageEscrowComponent";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
+import { Treasury } from "~/types/db";
+import Link from "next/link";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
@@ -36,23 +38,31 @@ export default function ContributionManagerComponent() {
             <div className="min-h-[40px]">
               {!!currentProjectId && <Button onClick={() => setCurrentProjectId(undefined)}>Back</Button>}
             </div>
-            <h3>As {translateCaps('treasury')} Owner</h3>
-            <div className="grid grid-cols-5 gap-3 my-2">
-              {treasuries.asOwner.map((treasury) => (
-                <Card key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
-                  <p>{treasury.title}</p>
-                  <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
-                </Card>
-              ))}
+            <div className="">
+              <h3>As {translateCaps('treasury')} Owner</h3>
+              <div className="grid grid-cols-5 gap-3 my-6">
+                {treasuries.asOwner.map((treasury) => (
+                  <div
+                    key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}
+                    onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}
+
+                  >
+                    <ProjectImageSelect treasury={treasury} />
+                  </div>
+
+                ))}
+              </div>
             </div>
-            <h3>As {translateCaps('contributionManager')}</h3>
-            <div className="grid grid-cols-5 gap-3 my-5">
-              {treasuries.asManager.map((treasury) => (
-                <Card key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
-                  <p>{treasury.title}</p>
-                  <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
-                </Card>
-              ))}
+            <div className="my-6">
+              <h3>As {translateCaps('contributionManager')}</h3>
+              <div className="grid grid-cols-5 gap-3 my-6">
+                {treasuries.asManager.map((treasury) => (
+                  <div key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
+                    <ProjectImageSelect treasury={treasury} />
+                    <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="w-full border-t border-primary my-12" />
           </>
@@ -104,4 +114,39 @@ export default function ContributionManagerComponent() {
       </div>
     </div>
   );
+}
+
+
+export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
+
+  return (
+    <div
+      key={treasury.id}
+      className="item min-w-[180px] mx-auto transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+    >
+      {!!treasury.treasuryNftPolicyId ? (
+        <span
+          className={`absolute left-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold
+                  `}
+        >
+          published
+        </span>
+      ) : (
+        <span
+          className={`absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold 
+                    `}
+        >
+          not published
+        </span>
+      )}
+      <img
+        src={`/images/sample-covers/2.jpg`}
+        alt={treasury.title}
+        className="h-40 w-full rounded-t-lg object-cover"
+      />
+      <div className="p-2">
+        <p className="font-bold">{treasury.title}</p>
+      </div>
+    </div>
+  )
 }

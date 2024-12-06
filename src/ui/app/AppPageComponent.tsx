@@ -4,6 +4,7 @@ import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Link from "next/link";
 import SearchAndamio from "~/components/search/SearchAndamio";
+import { Treasury } from "~/types/db";
 
 export default function AppPageComponent() {
   return (
@@ -84,40 +85,46 @@ export function ExploreProjectsBar() {
           {isLoadingTreasuries && <Loading />}
           {treasuries &&
             treasuries.map((treasury) => (
-              <Link
-                href={`/app/project/${treasury.id}`}
-                passHref
-                key={treasury.id}
-                className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
-              >
-                {Math.random() > 0.5 ? (
-                  <span
-                    className={`absolute left-2 top-2 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white
-                  `}
-                  >
-                    prerequisite
-                  </span>
-                ) : (
-                  <span
-                    className={`absolute left-2 top-2 rounded bg-green-500 px-2 py-1 text-xs font-bold text-white
-                    `}
-                  >
-                    no prerequisite
-                  </span>
-                )}
-                <img
-                  src={`images/sample-covers/2.jpg`}
-                  alt={treasury.title}
-                  className="h-40 w-full rounded-t-lg object-cover"
-                />
-                <div className="p-2">
-                  <p className="font-bold">{treasury.title}</p>
-                </div>
-              </Link>
+              <ProjectImageLink key={treasury.id} treasury={treasury} />
             ))}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </div>
   );
+}
+
+export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
+  return (
+    <Link
+      href={`/app/project/${treasury.id}`}
+      passHref
+      key={treasury.id}
+      className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+    >
+      {Math.random() > 0.5 ? (
+        <span
+          className={`absolute left-2 top-2 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white
+                  `}
+        >
+          prerequisite
+        </span>
+      ) : (
+        <span
+          className={`absolute left-2 top-2 rounded bg-green-500 px-2 py-1 text-xs font-bold text-white
+                    `}
+        >
+          no prerequisite
+        </span>
+      )}
+      <img
+        src={`images/sample-covers/2.jpg`}
+        alt={treasury.title}
+        className="h-40 w-full rounded-t-lg object-cover"
+      />
+      <div className="p-2">
+        <p className="font-bold">{treasury.title}</p>
+      </div>
+    </Link>
+  )
 }
