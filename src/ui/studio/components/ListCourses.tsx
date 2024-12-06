@@ -29,7 +29,7 @@ export default function ListCourses() {
               })}
             </div>
           ) : (
-            <Card intent="default" size="default">
+            <Card size="default">
               <h1>
                 You do not have any courses yet
               </h1>

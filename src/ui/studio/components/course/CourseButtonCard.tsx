@@ -12,7 +12,7 @@ export default function CourseButtonCard({
 }) {
   return (
     <Link href={link}>
-      <Card className="" intent="course">
+      <Card className="">
         <p className="text-lg font-medium">{course?.title}</p>
         <p className="mt-1 text-sm">
           <Markdown>{course?.description}</Markdown>
