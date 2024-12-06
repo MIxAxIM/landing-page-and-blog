@@ -570,6 +570,8 @@ model Contributor {
   onboardingCompletedAt DateTime?
   Treasury              Treasury[]
 
+  TaskCommitments TaskCommitment[]
+
   @@unique([userId])
 }
 
@@ -720,10 +722,42 @@ model Task {
   escrowId String
   escrow   Escrow @relation("EscrowTasks", fields: [escrowId], references: [id])
 
+  taskCommitments TaskCommitment[]
+
   @@unique([escrowId, index])
   @@index([escrowId])
   @@index([id])
   @@index([title])
+}
+
+enum TaskCommitmentStatus {
+  PENDING_APPROVAL
+  COMMITMENT_MADE
+  COMMITMENT_DENIED
+  COMMITMENT_ACCEPTED
+  COMMITMENT_REFUSED
+}
+
+model TaskCommitment {
+  id String @id @default(cuid())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id])
+
+  contributorId String
+  contributor   Contributor @relation(fields: [contributorId], references: [id])
+
+  status TaskCommitmentStatus @default(PENDING_APPROVAL)
+
+  evidence Json?
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  @@unique([taskId, contributorId])
+  @@index([taskId])
+  @@index([contributorId])
+  @@index([id])
 }
 
 // ---------------- END OF NEW CONTRIBUTION FEATURES -----------------------------------------
