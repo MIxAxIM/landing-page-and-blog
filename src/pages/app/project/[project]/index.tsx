@@ -1,4 +1,3 @@
-import { DecodedGlobalStateDatum } from "@andamiojs/datum-utils";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { BadgeCheck, BadgeX } from "lucide-react";
 import Link from "next/link";
@@ -11,18 +10,12 @@ import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
-import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import AccessTokenComponent from "~/ui/dashboard/components/AccessTokenComponent";
 import MenuBar from "~/ui/landing/MenuBar";
@@ -45,8 +38,8 @@ export default function ProjectPage() {
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-      project_content: string;
-      status: "PENDING_APPROVAL" | "IN_COMMITMENT";
+      project_content?: string;
+      status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
       submitted_info?: string;
     }
     | undefined
