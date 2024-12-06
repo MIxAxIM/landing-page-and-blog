@@ -23,6 +23,7 @@ import { Button } from "~/components/ui/button";
 import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-manager/manage-treasury-token/ManageTreasuryTokenDialog";
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
 import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskStatusCheck";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -79,36 +80,42 @@ export default function ManageEscrowComponent({
             treasuryInfo={treasuryInfo}
             treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
           />
+        </div>
+        <div className="col-span-8 row-span-2 flex w-full">
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                {escrow?.title} Task List
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!!escrow?.tasks && (
+                <EscrowTaskListComponent
+                  treasuryId={escrow.treasuryId}
+                  escrow={escrow}
+                />
+              )}
+              <div className="w-full mx-auto justify-between flex flex-row">
+                {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
+                  <MintProjectTokenDialog
+                    treasuryNftPolicyId={treasuryNftPolicyId}
+                    tasksToPublish={tasksToPublish}
+                    contributorPolicies={contributorPolicies}
+                  />
+                )}
+                {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
+                  <ManageTreasuryTokenDialog
+                    treasuryNftPolicyId={treasuryNftPolicyId}
+                    tasksToPublish={tasksToPublish}
+                    contributorPolicies={contributorPolicies}
+                  />
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="col-span-2 flex flex-col">
           <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
-        </div>
-        <div className="col-span-8 row-span-3 flex w-full">
-          <div className="px-8">
-            <h2>
-              {escrow?.title} Task List
-            </h2>
-            {!!escrow?.tasks && (
-              <EscrowTaskListComponent
-                treasuryId={escrow.treasuryId}
-                escrow={escrow}
-              />
-            )}
-          </div>
-        </div>
-        <div className="col-span-2 mx-auto justify-between flex flex-col">
-          {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
-            <MintProjectTokenDialog
-              treasuryNftPolicyId={treasuryNftPolicyId}
-              tasksToPublish={tasksToPublish}
-              contributorPolicies={contributorPolicies}
-            />
-          )}
-          {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
-            <ManageTreasuryTokenDialog
-              treasuryNftPolicyId={treasuryNftPolicyId}
-              tasksToPublish={tasksToPublish}
-              contributorPolicies={contributorPolicies}
-            />
-          )}
         </div>
         {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
           <>
