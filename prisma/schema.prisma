@@ -612,7 +612,11 @@ model ClientsDomain {
 model Treasury {
   id                  String  @id @default(cuid())
   treasuryNftPolicyId String? @unique
-  title               String
+
+  title       String
+  description String?
+  imageUrl    String?
+  videoUrl    String?
 
   live Boolean @default(false)
 
