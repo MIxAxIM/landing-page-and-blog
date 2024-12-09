@@ -4,11 +4,11 @@ import { Button } from "~/components/ui/button";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPublishTreasuryTx from "~/ui/contribution/dialogs/DialogPublishTreasuryTx";
 import DialogTask from "~/ui/contribution/dialogs/DialogTask";
-import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
 import TreasuryTaskListComponent from "~/ui/contribution/lists/TreasuryTaskListComponent";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
 import { useTerminology } from "~/contexts/terminology-context";
+import DialogUpdateTreasury from "~/ui/contribution/dialogs/DialogUpdateTreasury";
 
 export default function ManageTreasuryComponent({
   treasuryInfo,
@@ -29,7 +29,7 @@ export default function ManageTreasuryComponent({
               treasuryId={treasuryInfo?.id}
               key={treasuryInfo?.treasuryNftPolicyId}
             />
-            <DialogTreasury
+            <DialogUpdateTreasury
               treasuryId={treasuryInfo?.id}
             />
             <Button>Add Funds</Button>

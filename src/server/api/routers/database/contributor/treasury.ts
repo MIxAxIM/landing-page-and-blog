@@ -27,6 +27,9 @@ const createTreasurySchema = z.object({
   treasuryNftPolicyId: z.string().optional(),
   title: z.string().min(1),
   treasuryOwnerId: z.string().min(1),
+  description: z.string().optional(),
+  imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
 });
 
 const initializeTreasuryWithEscrowSchema = z.object({
@@ -45,6 +48,9 @@ const updateTreasurySchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1).optional(),
   treasuryNftPolicyId: z.string().optional(),
+  description: z.string().optional(),
+  imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
   live: z.boolean().optional(),
 });
 

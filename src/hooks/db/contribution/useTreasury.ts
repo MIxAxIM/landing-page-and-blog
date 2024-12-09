@@ -14,17 +14,26 @@ interface UseTreasuryReturn {
     treasuryNftPolicyId?: string;
     title: string;
     treasuryOwnerId: string;
+    description?: string;
+    imageUrl?: string;
+    videoUrl?: string;
   }) => void;
   initializeTreasuryWithEscrow: (data: {
     treasuryNftPolicyId?: string;
     title: string;
     treasuryOwnerId: string;
+    description?: string;
+    imageUrl?: string;
+    videoUrl?: string;
   }) => void;
   updateTreasury: (data: {
     id: string;
     title?: string;
     treasuryNftPolicyId?: string;
     live?: boolean;
+    description?: string;
+    imageUrl?: string;
+    videoUrl?: string;
   }) => void;
   deleteTreasury: (id: string) => void;
   isCreating: boolean;

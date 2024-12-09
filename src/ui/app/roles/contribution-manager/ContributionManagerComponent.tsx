@@ -1,7 +1,5 @@
-import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
-import { Card } from "~/components/ui/card";
 import { useTerminology } from "~/contexts/terminology-context";
 import MyProjectsListComponent from "./MyProjectsListComponent";
 import DialogTaskToProject from "~/ui/contribution/dialogs/DialogTaskToProject";
@@ -10,7 +8,6 @@ import { Button } from "~/components/ui/button";
 import ManageEscrowComponent from "./ManageEscrowComponent";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 import { Treasury } from "~/types/db";
-import Link from "next/link";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
@@ -140,7 +137,7 @@ export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
         </span>
       )}
       <img
-        src={`/images/sample-covers/2.jpg`}
+        src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
         alt={treasury.title}
         className="h-40 w-full rounded-t-lg object-cover"
       />

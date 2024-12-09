@@ -3,8 +3,8 @@ import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
 import DialogTask from "../dialogs/DialogTask";
-import DialogTreasury from "../dialogs/DialogTreasury";
 import { useTerminology } from "~/contexts/terminology-context";
+import DialogUpdateTreasury from "../dialogs/DialogUpdateTreasury";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
@@ -154,7 +154,7 @@ export default function TreasuryListComponent() {
                 400
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
-                <DialogTreasury
+                <DialogUpdateTreasury
                   treasuryId={t?.id}
                   openButtonSize="sm"
                 />

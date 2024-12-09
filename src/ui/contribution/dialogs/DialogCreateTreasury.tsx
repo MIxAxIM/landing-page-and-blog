@@ -18,7 +18,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function DialogTreasury({
+export default function DialogCreateTreasury({
   treasuryId,
   openButtonSize,
 }: {

@@ -2,10 +2,10 @@ import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
 import { useTerminology } from "~/contexts/terminology-context";
-import DialogTreasury from "~/ui/contribution/dialogs/DialogTreasury";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import DialogTaskToProject from "~/ui/contribution/dialogs/DialogTaskToProject";
+import DialogUpdateTreasury from "~/ui/contribution/dialogs/DialogUpdateTreasury";
 
 export default function MyProjectsListComponent() {
   const { treasuries } = useUserRelationships()
@@ -187,7 +187,7 @@ const TreasuryTableRow = ({ t }: { t: Treasury }) => {
 
       </TableCell>
       <TableCell className="relative border-x border-gray-500 text-center">
-        <DialogTreasury
+        <DialogUpdateTreasury
           treasuryId={t?.id}
           openButtonSize="sm"
         />
