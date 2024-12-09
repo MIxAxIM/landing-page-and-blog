@@ -4,6 +4,7 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function ManageTreasuryToken({
 	treasuryNftPolicyId,
@@ -22,6 +23,13 @@ export default function ManageTreasuryToken({
 	const { wallet } = useWallet();
 	const { updateTaskStatuses } = useTask({ treasuryNftPolicyId })
 
+	const costBreakdown: CostBreakdown = {
+		costDescriptions: [
+			{ txOutputIndex: 0, description: "Define costs here", tooltipText: "Tooltip info" },
+		],
+		andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
+	}
+
 	const {
 		data: unsignedTxCBOR,
 		isLoading,
@@ -37,7 +45,6 @@ export default function ManageTreasuryToken({
 			// Don't attempt the query without inputs 
 			enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
 		}
-
 	);
 
 	console.log("Manage Tx Checks")
@@ -49,7 +56,7 @@ export default function ManageTreasuryToken({
 	const handleStatusChange = () => {
 		updateTaskStatuses({
 			taskIds: taskIds,
-			status: "ON_CHAIN",
+			status: "PENDING_TX",
 		});
 	};
 
@@ -62,15 +69,20 @@ export default function ManageTreasuryToken({
 		);
 	}
 
-
 	return (
-		<TransactionContainer
-			buttonText={`Manage Treasury Token`}
-			unsignedTxCBOR={unsignedTxCBOR}
-			wallet={wallet}
-			setSuccessTxHash={setSuccessTxHash}
-			onTransactionSuccess={handleStatusChange}
-		/>
+		<div className="flex flex-col w-full mx-auto">
+			{!!unsignedTxCBOR && (
+				<TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
+			)}
+			<TransactionContainer
+				buttonText={`Manage Treasury Token`}
+				unsignedTxCBOR={unsignedTxCBOR}
+				wallet={wallet}
+				setSuccessTxHash={setSuccessTxHash}
+				onTransactionSuccess={handleStatusChange}
+			/>
+		</div >
 	);
+
 
 }

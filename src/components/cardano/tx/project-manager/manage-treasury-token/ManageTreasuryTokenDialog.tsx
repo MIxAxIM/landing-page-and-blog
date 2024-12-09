@@ -20,7 +20,6 @@ type ContributorPolicies = {
 	projectNFTPolicy: string;
 }[]
 
-
 export default function ManageTreasuryTokenDialog(
 	{
 		treasuryNftPolicyId,
@@ -39,7 +38,7 @@ export default function ManageTreasuryTokenDialog(
 		return (
 			[
 				{
-					pdProjectContent_: t.hash,
+					pdProjectContent_: t.taskHash,
 					pdExpirationTime_: parseInt(t.expirationTime),
 					pdLovelaceAmount_: parseInt(t.lovelace),
 					pdTokens_: [],

@@ -42,7 +42,7 @@ const isValidStatusTransition = (
       TaskStatus.ARCHIVED,
     ],
     PENDING_TX: [TaskStatus.ON_CHAIN, TaskStatus.APPROVED],
-    ON_CHAIN: [TaskStatus.COMMITMENT_MADE],
+    ON_CHAIN: [TaskStatus.COMMITMENT_MADE, TaskStatus.PENDING_TX],
     COMMITMENT_MADE: [
       TaskStatus.COMMITMENT_ACCEPTED,
       TaskStatus.COMMITMENT_DENIED,
