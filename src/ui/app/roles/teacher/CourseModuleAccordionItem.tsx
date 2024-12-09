@@ -14,6 +14,7 @@ import MintModuleTokensDialog from "~/components/cardano/tx/course-creator/mint-
 import SelectCourseModuleStatus from "~/ui/studio/components/SelectCourseModuleStatus";
 import { useModuleRefCheck } from "~/hooks/cardano-indexer-api/polling/useModuleRefCheck";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
+import ModuleStatusIndicator from "~/ui/course/status/ModuleStatusIndicator";
 
 export default function CourseModuleAccordionItem({
   courseCode,
@@ -42,13 +43,15 @@ export default function CourseModuleAccordionItem({
     <>
       <AccordionItem key={courseNftPolicyId + cm.moduleCode} value={cm.moduleCode}>
         <AccordionTrigger
-          className={`items-center border-b border-primary p-2 ${isAccordionOpen ? "bg-primary text-primary-foreground" : "bg-background text-foreground"}`}
+          className={`items-center border-b border-primary p-2 ${isAccordionOpen && "font-semibold text-primary"}`}
           onClick={() => setIsAccordionOpen(!isAccordionOpen)}
         >
-          <div className="grid w-full grid-cols-5 gap-5 text-left">
-            <h2>
-              <span className="text-sm">Module</span> {cm.moduleCode}
-            </h2>
+          <div className="grid w-full grid-cols-6 gap-5 text-left">
+            <div>
+              <h2>
+                <span className="text-sm">Module</span> {cm.moduleCode}
+              </h2>
+            </div>
             <div className="text-base col-span-2 h-full flex items-center">
               {cm.title}
             </div>
@@ -72,6 +75,10 @@ export default function CourseModuleAccordionItem({
                 <p>No Assignment</p>
               </div>
             )}
+            <div className="flex h-full flex-row items-center justify-start gap-1 text-left">
+              {isChecking && (<LoadingCircle />)}
+              <ModuleStatusIndicator status={cm.status} showLabel={true} />
+            </div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="mb-5 grid grid-cols-1 border-x border-b border-primary px-2 py-2 md:grid-cols-3">
@@ -123,7 +130,12 @@ export default function CourseModuleAccordionItem({
                         <LoadingCircle />
                       ) : (
                         <div>
-                          <SelectCourseModuleStatus disabled={cm.status != "DRAFT" && cm.status != "APPROVED"} moduleId={cm.id} currentStatus={cm.status} moduleHash={cm.moduleHash ?? "no hash"} />
+                          <SelectCourseModuleStatus
+                            disabled={cm.status != "DRAFT" && cm.status != "APPROVED"}
+                            moduleId={cm.id}
+                            currentStatus={cm.status}
+                            moduleHash={cm.moduleHash ?? "no hash"}
+                          />
                         </div>
 
                       )}

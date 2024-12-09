@@ -6,6 +6,7 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { ModuleStatus } from "@prisma/client";
 import useCourseModule from "~/hooks/db/course/useCourseModule";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import { useToast } from "~/components/ui/use-toast";
 
 export default function MintModuleTokens({
   accessTokenAssetId,
@@ -20,6 +21,7 @@ export default function MintModuleTokens({
 }) {
   const { wallet } = useWallet();
   const { updateModuleStatus } = useCourseModule(courseModuleOverview.id);
+  const { toast } = useToast();
 
 
   // Any tx will have a set of outputs.
@@ -51,9 +53,7 @@ export default function MintModuleTokens({
       moduleInfos: JSON.stringify(courseModuleDetails),
     });
 
-  const updateModuleStatusCallback = async (txId: string) => {
-    if (!courseModuleOverview.id || !txId) return;
-
+  const handleStatusChange = async () => {
     updateModuleStatus({
       id: courseModuleOverview.id,
       status: ModuleStatus.PENDING_TX
@@ -70,7 +70,7 @@ export default function MintModuleTokens({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
-        onTransactionSuccess={updateModuleStatusCallback}
+        onTransactionSuccess={handleStatusChange}
       />
     </div >
   );

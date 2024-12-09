@@ -19,7 +19,7 @@ export default function TeacherPageComponent() {
 
   return (
     <AppLayout>
-      <div className="mx-auto my-24 w-2/3 space-y-5">
+      <div className="mx-auto my-24 w-11/12 space-y-5">
         <h2>Teacher Page</h2>
         {!currentCourseCode && courses.asCreator.map((course, i) => (
           <Card key={i}>

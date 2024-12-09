@@ -16,7 +16,7 @@ const isValidStatusTransition = (
   newStatus: ModuleStatus,
 ) => {
   const allowedTransitions: Record<ModuleStatus, ModuleStatus[]> = {
-    DRAFT: [ModuleStatus.APPROVED, ModuleStatus.BACKLOG, ModuleStatus.ARCHIVED],
+    DRAFT: [ModuleStatus.APPROVED, ModuleStatus.BACKLOG, ModuleStatus.ARCHIVED, ModuleStatus.PENDING_TX],
     APPROVED: [
       ModuleStatus.DRAFT,
       ModuleStatus.PENDING_TX,
