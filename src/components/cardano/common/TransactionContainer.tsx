@@ -13,8 +13,8 @@ interface TransactionContainerProps<T = void> {
   unsignedTxCBOR: { unsignedTxCBOR: string } | undefined;
   wallet: IWallet;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
-  onTransactionSuccess?: TransactionCallback<T>;
-  callbackParams?: T;
+  onTransactionSuccess?: TransactionCallback<T>; // optional callback function
+  callbackParams?: T; // optional callback parameters
 }
 
 export default function TransactionContainer<T = void>({
@@ -28,6 +28,7 @@ export default function TransactionContainer<T = void>({
   const { toast } = useToast();
   const { connected } = useWallet();
 
+
   async function onSubmit() {
     if (unsignedTxCBOR) {
       try {
@@ -40,6 +41,7 @@ export default function TransactionContainer<T = void>({
           description: `${txId}`,
         });
 
+        // If the callback function is passed, it is called in the onSubmit function
         // Call the callback with both txId and additional params if they exist
         if (onTransactionSuccess) {
           if (callbackParams !== undefined) {
@@ -62,6 +64,10 @@ export default function TransactionContainer<T = void>({
     return <CardanoWallet />;
   }
 
+  // A button appears when a valid tx is returned aby the Andamio API. 
+  // The onSubmit function is called when user with connected waller clicks the button
+
+  // Otherwise, the TransactionLoading component is shown (this component can be improved)
   return (
     <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
       {unsignedTxCBOR ? (

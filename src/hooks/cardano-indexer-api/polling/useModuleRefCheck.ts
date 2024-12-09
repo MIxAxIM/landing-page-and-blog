@@ -10,10 +10,9 @@ export function useModuleRefCheck(
 	courseNftPolicyId: string
 ) {
 	const [isChecking, setIsChecking] = useState(false);
-	const [error, setError] = useState<string>();
 	const { updateModuleStatus } = useCourseModule(courseModule.id);
 
-	const { data: moduleRefs, refetch } = api.moduleRefValidator.getUtxos.useQuery<ModuleRefUtxo[]>(
+	const { data: moduleRefUtxos } = api.moduleRefValidator.getUtxos.useQuery<ModuleRefUtxo[]>(
 		{ courseNftPolicy: courseNftPolicyId },
 		{
 			enabled: courseModule.status === ModuleStatus.PENDING_TX,
@@ -23,9 +22,10 @@ export function useModuleRefCheck(
 
 
 	useEffect(() => {
-		if (!moduleRefs || courseModule.status !== ModuleStatus.PENDING_TX) return;
+		if (!moduleRefUtxos || courseModule.status !== ModuleStatus.PENDING_TX) return;
+		setIsChecking(true);
 
-		const matchingRef = moduleRefs.find(ref => {
+		const matchingRef = moduleRefUtxos.find(ref => {
 			return ref.moduleCode === courseModule.moduleCode;
 		});
 
@@ -37,7 +37,7 @@ export function useModuleRefCheck(
 			});
 			setIsChecking(false);
 		}
-	}, [moduleRefs, courseModule, courseNftPolicyId, updateModuleStatus]);
+	}, [moduleRefUtxos, courseModule, courseNftPolicyId, updateModuleStatus]);
 
-	return { moduleRefs, isChecking, error };
+	return { moduleRefUtxos, isChecking };
 }
