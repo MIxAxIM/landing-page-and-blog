@@ -14,7 +14,7 @@ interface InfoTooltipProps {
 export function InfoTooltip({ content }: InfoTooltipProps) {
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip defaultOpen={false}>
         <TooltipTrigger>
           <Info className="h-4 w-4 text-muted-foreground" />
         </TooltipTrigger>

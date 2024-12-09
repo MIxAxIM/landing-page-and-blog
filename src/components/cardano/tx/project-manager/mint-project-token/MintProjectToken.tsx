@@ -67,12 +67,11 @@ export default function MintProjectToken({
     );
   }
 
+  if (!wallet) return
 
   return (
     <div className="flex flex-col w-full mx-auto">
-      {!!unsignedTxCBOR && (
-        <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
-      )}
+      <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
       <TransactionContainer
         buttonText={`Mint Project Token`}
         unsignedTxCBOR={unsignedTxCBOR}

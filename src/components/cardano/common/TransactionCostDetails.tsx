@@ -1,14 +1,10 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "~/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { deserializeTx } from "@meshsdk/core-csl";
 import { useEffect, useState } from "react";
-import MintModuleTokens from "~/components/cardano/tx/course-creator/mint-module-tokens/MintModuleTokens";
-import { ToggleTextBox } from "~/components/ui/toggle-text-box";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { InfoTooltip } from "~/components/ui/InfoTooltip";
-import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
+import { useWallet } from "@meshsdk/react";
 
 // From a transaction Component, pass a list of costDescriptions
 // For each output index, we can write a description and tooltip text.
@@ -26,40 +22,45 @@ export interface CostBreakdown {
 
 interface TxFeeDetail {
   costDescription: CostDescription,
-  lovelaceAmount: number,
+  lovelaceAmount?: number,
 }
 
 // Future development - add a real-time Cardano cost API
 const mockExchangeRate = 1.15 // from API?
 
-export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }: { unsignedTxCBOR: string, costBreakdown: CostBreakdown }) {
+export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }: { unsignedTxCBOR?: string, costBreakdown: CostBreakdown }) {
 
-  const unsignedTx = deserializeTx(unsignedTxCBOR).to_js_value();
+  const [cardanoTxFee, setCardanoTxFee] = useState<number | undefined>(undefined)
 
-  const [txFeeDetails, setTxFeeDetails] = useState<TxFeeDetail[] | undefined>(undefined)
+  const { connected } = useWallet()
+
+  const [txFeeDetails, setTxFeeDetails] = useState<TxFeeDetail[] | undefined>(costBreakdown.costDescriptions.map((cd) => ({ costDescription: cd, lovelaceAmount: undefined })))
   const [total, setTotal] = useState<number | undefined>(undefined)
 
-  // get tx fee from unsigned tx
-  const cardanoTxFee = parseInt(unsignedTx.body.fee)
-
-  // Get actual amounts of any costs, save these as txFeeDetails
   useEffect(() => {
-    if (costBreakdown) {
-      const _txFeeDetails: TxFeeDetail[] = costBreakdown.costDescriptions.map((costDescription) => ({
-        costDescription,
-        lovelaceAmount: parseInt(unsignedTx.body.outputs[costDescription.txOutputIndex].amount.coin)
-      }))
-      setTxFeeDetails(_txFeeDetails)
+    if (unsignedTxCBOR) {
+      const _txBody = deserializeTx(unsignedTxCBOR).to_js_value()
+      setCardanoTxFee(parseInt(_txBody.body.fee))
+
+      if (costBreakdown && !!_txBody) {
+        const _txFeeDetails: TxFeeDetail[] = costBreakdown.costDescriptions.map((costDescription) => ({
+          costDescription,
+          lovelaceAmount: parseInt(_txBody.body.outputs[costDescription.txOutputIndex].amount.coin)
+        }))
+        setTxFeeDetails(_txFeeDetails)
+      }
     }
-  }, [costBreakdown])
+  }, [unsignedTxCBOR])
 
   // Calculate total cost to user - should match what they see as net delta of tx when signing in wallet 
   useEffect(() => {
-    const _total = (txFeeDetails?.reduce((sum, detail) => sum + detail.lovelaceAmount, 0) ?? 0)
-      + (cardanoTxFee)
+    const _total = (txFeeDetails?.reduce((sum, detail) => sum + (detail.lovelaceAmount ?? 0), 0) ?? 0)
+      + (cardanoTxFee ?? 0)
       + (costBreakdown.andamioNetworkFee)
     setTotal(_total / 1000000)
   }, [txFeeDetails, costBreakdown])
+
+  if (!connected) return
 
   return (
     <Card className="w-full max-w-2xl mx-auto text-sm">
@@ -72,22 +73,30 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
           <div key={key} className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span>{fee.costDescription.description}</span>
-              <InfoTooltip content={fee.costDescription.tooltipText} />
+              {!!unsignedTxCBOR && <InfoTooltip content={fee.costDescription.tooltipText} />}
             </div>
-            <span>{fee.lovelaceAmount / 1000000} ADA</span>
+            {!!fee.lovelaceAmount ? (
+              <span>{fee.lovelaceAmount / 1000000} ADA</span>
+            ) : (
+              <LoadingCircle />
+            )}
           </div>
         ))}
         <div key="cardanoFee" className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span>Cardano Tx Fee</span>
-            <InfoTooltip content="Cardano tx fee" />
+            {!!unsignedTxCBOR && <InfoTooltip content="Cardano tx fee" />}
           </div>
-          <span>{cardanoTxFee / 1000000} ADA</span>
+          {!!cardanoTxFee ? (
+            <span>{(cardanoTxFee ?? 0) / 1000000} ADA</span>
+          ) : (
+            <LoadingCircle />
+          )}
         </div>
         <div key="andamioFee" className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <span>Andamio Network Fee</span>
-            <InfoTooltip content="Cost of using Andamio Network" />
+            {!!unsignedTxCBOR && <InfoTooltip content="Cost of using Andamio Network" />}
           </div>
           <span>{costBreakdown.andamioNetworkFee / 1000000} ADA</span>
         </div>
@@ -96,14 +105,16 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
           <span>{total} ADA (~${!!total && (total * mockExchangeRate).toFixed(2)} USD)</span>
         </div>
       </CardContent>
-      <div className="mt-6 p-4 bg-muted rounded-md">
-        <h3 className="font-semibold mb-2">Refund and Adjustment Policies</h3>
-        <p className="text-sm text-muted-foreground">
-          Refunds are available within 14 days of purchase if the project hasn't started.
-          Adjustments to costs may occur if project requirements change significantly.
-          Please contact support for more information.
-        </p>
-      </div>
+      {!!unsignedTxCBOR && (
+        <div className="mt-6 p-4 bg-muted rounded-md">
+          <h3 className="font-semibold mb-2">Refund and Adjustment Policies</h3>
+          <p className="text-sm text-muted-foreground">
+            Refunds are available within 14 days of purchase if the project hasn't started.
+            Adjustments to costs may occur if project requirements change significantly.
+            Please contact support for more information.
+          </p>
+        </div>
+      )}
     </Card>
 
 
