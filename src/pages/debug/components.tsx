@@ -1,10 +1,18 @@
-import { ToggleTextBox } from "~/components/ui/toggle-text-box";
+
 
 export default function Components() {
+
+
   return (
     <div>
       <h2>Test Compontents</h2>
-      <ToggleTextBox>Hello World</ToggleTextBox>
+      <div className="text-sm p-5 border border-gray-300">
+      </div>
+
+
     </div>
   );
 }
+
+
+

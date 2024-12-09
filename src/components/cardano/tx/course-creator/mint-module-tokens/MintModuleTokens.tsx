@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { ModuleStatus } from "@prisma/client";
 import useCourseModule from "~/hooks/db/course/useCourseModule";
+import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function MintModuleTokens({
   accessTokenAssetId,
@@ -19,6 +20,16 @@ export default function MintModuleTokens({
 }) {
   const { wallet } = useWallet();
   const { updateModuleStatus } = useCourseModule(courseModuleOverview.id);
+
+
+  // Any tx will have a set of outputs.
+  // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
+  const costBreakdown: CostBreakdown = {
+    costDescriptions: [
+      { txOutputIndex: 1, description: "Module Credential Token", tooltipText: "Store min utxo with a token and SLT datum." },
+    ],
+    andamioNetworkFee: 2000000, // How to incorporate network fee -> Dev team 2024-12-09
+  }
 
   const slts = courseModuleOverview.slts.map((slt) => ({
     sltId: slt.moduleIndex.toString(),
@@ -50,12 +61,19 @@ export default function MintModuleTokens({
   };
 
   return (
-    <TransactionContainer
-      buttonText={`Publish Credential Criteria for module`}
-      unsignedTxCBOR={unsignedTxCBOR}
-      wallet={wallet}
-      setSuccessTxHash={setSuccessTxHash}
-      onTransactionSuccess={updateModuleStatusCallback}
-    />
+    <div className="flex flex-col w-full mx-auto">
+      {!!unsignedTxCBOR && (
+        <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
+      )}
+      <TransactionContainer
+        buttonText={`Publish Credential Criteria for module`}
+        unsignedTxCBOR={unsignedTxCBOR}
+        wallet={wallet}
+        setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={updateModuleStatusCallback}
+      />
+    </div >
   );
 }
+
+
