@@ -10,6 +10,9 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 
+// From a transaction Component, pass a list of costDescriptions
+// For each output index, we can write a description and tooltip text.
+// By this method, any utxos can be ignored - only add descriptions of costs to user
 interface CostDescription {
   txOutputIndex: number,
   description: string,
@@ -18,7 +21,6 @@ interface CostDescription {
 
 export interface CostBreakdown {
   costDescriptions: CostDescription[],
-  cardanoTxFee?: number,
   andamioNetworkFee: number,
 }
 
@@ -27,33 +29,38 @@ interface TxFeeDetail {
   lovelaceAmount: number,
 }
 
+// Future development - add a real-time Cardano cost API
+const mockExchangeRate = 1.15 // from API?
+
 export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }: { unsignedTxCBOR: string, costBreakdown: CostBreakdown }) {
 
-  const testTx = deserializeTx(unsignedTxCBOR).to_js_value();
+  const unsignedTx = deserializeTx(unsignedTxCBOR).to_js_value();
 
   const [txFeeDetails, setTxFeeDetails] = useState<TxFeeDetail[] | undefined>(undefined)
   const [total, setTotal] = useState<number | undefined>(undefined)
 
+  // get tx fee from unsigned tx
+  const cardanoTxFee = parseInt(unsignedTx.body.fee)
 
-  const mockExchangeRate = 1.15 // from API?
-
-  const cardanoTxFee = parseInt(testTx.body.fee)
+  // Get actual amounts of any costs, save these as txFeeDetails
   useEffect(() => {
     if (costBreakdown) {
       const _txFeeDetails: TxFeeDetail[] = costBreakdown.costDescriptions.map((costDescription) => ({
         costDescription,
-        lovelaceAmount: parseInt(testTx.body.outputs[costDescription.txOutputIndex].amount.coin)
+        lovelaceAmount: parseInt(unsignedTx.body.outputs[costDescription.txOutputIndex].amount.coin)
       }))
       setTxFeeDetails(_txFeeDetails)
     }
   }, [costBreakdown])
 
+  // Calculate total cost to user - should match what they see as net delta of tx when signing in wallet 
   useEffect(() => {
     const _total = (txFeeDetails?.reduce((sum, detail) => sum + detail.lovelaceAmount, 0) ?? 0)
       + (cardanoTxFee)
       + (costBreakdown.andamioNetworkFee)
     setTotal(_total / 1000000)
   }, [txFeeDetails, costBreakdown])
+
   return (
     <Card className="w-full max-w-2xl mx-auto text-sm">
       <CardHeader>
