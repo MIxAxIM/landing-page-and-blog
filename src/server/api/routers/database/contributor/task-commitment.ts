@@ -8,9 +8,8 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-const updateTaskCommitmentSchema = z.object({
+const updateTaskCommitmentEvidenceSchema = z.object({
   id: z.string().min(1),
-  status: z.nativeEnum(TaskCommitmentStatus).optional(),
   evidence: z.object({}).passthrough().optional(),
 });
 
@@ -20,6 +19,44 @@ const createTaskCommitmentSchema = z.object({
   status: z.nativeEnum(TaskCommitmentStatus).optional(),
   evidence: z.object({}).passthrough().optional(),
 });
+
+
+// Helper function to validate status transitions
+const isValidStatusTransition = (
+  currentStatus: TaskCommitmentStatus,
+  newStatus: TaskCommitmentStatus,
+) => {
+  const allowedTransitions: Record<TaskCommitmentStatus, TaskCommitmentStatus[]> = {
+    PENDING_TX_COMMITMENT_MADE: [TaskCommitmentStatus.COMMITMENT_MADE],
+    COMMITMENT_MADE: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+    PENDING_TX_ADD_INFO: [TaskCommitmentStatus.PENDING_APPROVAL],
+    PENDING_APPROVAL: [
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_DENIED,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_REFUSED,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_ACCEPTED
+    ],
+    PENDING_TX_COMMITMENT_REFUSED: [TaskCommitmentStatus.COMMITMENT_REFUSED],
+    COMMITMENT_REFUSED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+
+    PENDING_TX_COMMITMENT_DENIED: [TaskCommitmentStatus.COMMITMENT_DENIED],
+    COMMITMENT_DENIED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+
+    PENDING_TX_COMMITMENT_ACCEPTED: [TaskCommitmentStatus.COMMITMENT_ACCEPTED],
+    COMMITMENT_ACCEPTED: [TaskCommitmentStatus.ARCHIVED],
+
+    PENDING_TX_GET_REWARDS: [TaskCommitmentStatus.REWARDS_CLAIMED],
+    REWARDS_CLAIMED: [TaskCommitmentStatus.ARCHIVED],
+
+    PENDING_TX_UNLOCKED_BY_CONTRIBUTOR: [TaskCommitmentStatus.UNLOCKED_BY_CONTRIBUTOR],
+    UNLOCKED_BY_CONTRIBUTOR: [],
+
+    ARCHIVED: [],
+  };
+
+  return allowedTransitions[currentStatus].includes(newStatus);
+};
+
 
 export const taskCommitmentRouter = createTRPCRouter({
   // Public procedures
@@ -126,8 +163,9 @@ export const taskCommitmentRouter = createTRPCRouter({
       });
     }),
 
-  updateTaskCommitment: protectedProcedure
-    .input(updateTaskCommitmentSchema)
+  // Task Commitment Evidence is updated according to Contributor input in Andamio Platform
+  updateTaskCommitmentEvidence: protectedProcedure
+    .input(updateTaskCommitmentEvidenceSchema)
     .mutation(async ({ ctx, input }) => {
       const { id, ...updateData } = input;
 
@@ -148,18 +186,43 @@ export const taskCommitmentRouter = createTRPCRouter({
           ...updateData,
           updated: new Date(),
         },
-        include: {
-          task: true,
-          contributor: {
-            include: {
-              user: {
-                select: {
-                  name: true,
-                  image: true,
-                },
-              },
-            },
-          },
+      });
+    }),
+
+  // Task Commitment Status is updated according to on-chain events
+  updateTaskCommitmentStatus: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        status: z.nativeEnum(TaskCommitmentStatus),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, status } = input;
+
+      const existingCommitment = await ctx.db.taskCommitment.findUnique({
+        where: { id },
+      });
+
+      if (!existingCommitment) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task commitment not found",
+        });
+      }
+
+      if (!isValidStatusTransition(existingCommitment.status, status)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Invalid status transition",
+        });
+      }
+
+      return ctx.db.taskCommitment.update({
+        where: { id },
+        data: {
+          status,
+          updated: new Date(),
         },
       });
     }),

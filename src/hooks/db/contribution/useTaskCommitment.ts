@@ -10,10 +10,16 @@ type CreateTaskCommitmentInput = {
   evidence?: Record<string, unknown>;
 };
 
-type UpdateTaskCommitmentInput = {
+type UpdateTaskCommitmentEvidenceInput = {
   id: string;
   status?: TaskCommitmentStatus;
   evidence?: Record<string, unknown>;
+};
+
+
+type UpdateTaskCommitmentStatusInput = {
+  id: string;
+  status: TaskCommitmentStatus;
 };
 
 interface UseTaskCommitmentReturn {
@@ -21,7 +27,8 @@ interface UseTaskCommitmentReturn {
   taskCommitments: TaskCommitment[];
   isLoading: boolean;
   createTaskCommitment: (data: CreateTaskCommitmentInput) => void;
-  updateTaskCommitment: (data: UpdateTaskCommitmentInput) => void;
+  updateTaskCommitmentEvidence: (data: UpdateTaskCommitmentEvidenceInput) => void;
+  updateTaskCommitmentStatus: (data: UpdateTaskCommitmentStatusInput) => void;
   deleteTaskCommitment: (id: string) => void;
   isCreating: boolean;
   isUpdating: boolean;
@@ -81,7 +88,7 @@ export function useTaskCommitment({
     },
   });
 
-  const updateMutation = api.taskCommitment.updateTaskCommitment.useMutation({
+  const updateTaskCommitmentEvidenceMutation = api.taskCommitment.updateTaskCommitmentEvidence.useMutation({
     onSuccess: async () => {
       toast.success("Commitment updated successfully");
       await refreshQueries();
@@ -99,6 +106,23 @@ export function useTaskCommitment({
     },
   });
 
+  const updateTaskCommitmentStatusMutation = api.taskCommitment.updateTaskCommitmentStatus.useMutation({
+    onSuccess: async () => {
+      toast.success("Commitment updated successfully");
+      await refreshQueries();
+    },
+    onError: (error) => {
+      const zodErrors = error.data?.zodError?.fieldErrors;
+      if (zodErrors) {
+        const errorMessages = Object.entries(zodErrors)
+          .map(([field, errors]) => `${field}: ${errors?.join(", ")}`)
+          .join("\n");
+        toast.error(`Validation failed:\n${errorMessages}`);
+      } else {
+        toast.error(error.message || "Failed to update commitment");
+      }
+    },
+  });
   const deleteMutation = api.taskCommitment.deleteTaskCommitment.useMutation({
     onSuccess: async () => {
       toast.success("Commitment deleted successfully");
@@ -114,10 +138,11 @@ export function useTaskCommitment({
     taskCommitments,
     isLoading,
     createTaskCommitment: createMutation.mutate,
-    updateTaskCommitment: updateMutation.mutate,
+    updateTaskCommitmentEvidence: updateTaskCommitmentEvidenceMutation.mutate,
+    updateTaskCommitmentStatus: updateTaskCommitmentStatusMutation.mutate,
     deleteTaskCommitment: deleteMutation.mutate,
     isCreating: createMutation.isLoading,
-    isUpdating: updateMutation.isLoading,
+    isUpdating: updateTaskCommitmentEvidenceMutation.isLoading || updateTaskCommitmentStatusMutation.isLoading,
     isDeleting: deleteMutation.isLoading,
   };
 }
