@@ -66,30 +66,32 @@ export default function MintProjectTokenDialog(
       <DialogTrigger className="m-0 p-0">
         <Button>Publish Approved Tasks on Andamio Network</Button>
       </DialogTrigger>
-      <DialogContent>
-        <div>
-          <h3>Projects</h3>
-          <Table className="w-full">
-            <TableCaption>These tasks will be added.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead></TableHead>
-                <TableHead>Expires</TableHead>
-                <TableHead>Ada</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {tasksToPublish.map((t) => (
-                <TableRow key={t.id}>
-                  <TableCell className="font-bold">{t.title}</TableCell>
-                  <TableCell>{formatPosixTime(t.expirationTime)}</TableCell>
-                  <TableCell>{parseInt(t.lovelace) / 1000000}</TableCell>
+      <DialogContent className="max-w-7xl">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-2">
+            <h3>Projects</h3>
+            <Table className="w-full">
+              <TableCaption>These tasks will be added.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead></TableHead>
+                  <TableHead>Expires</TableHead>
+                  <TableHead>Ada</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
+              </TableHeader>
+              <TableBody>
+                {tasksToPublish.map((t) => (
+                  <TableRow key={t.id}>
+                    <TableCell className="font-bold">{t.title}</TableCell>
+                    <TableCell>{formatPosixTime(t.expirationTime)}</TableCell>
+                    <TableCell>{parseInt(t.lovelace) / 1000000}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
 
-          </Table>
-          <div className="mt-8 justify-center">
+            </Table>
+          </div>
+          <div className="p-2">
             {!!contributorPolicies[0] && !!datumReadyTasks && (
               <MintProjectToken
                 treasuryNftPolicyId={treasuryNftPolicyId}
@@ -101,8 +103,8 @@ export default function MintProjectTokenDialog(
             )}
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </DialogContent >
+    </Dialog >
 
   )
 }

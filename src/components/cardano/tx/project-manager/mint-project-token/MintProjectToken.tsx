@@ -4,6 +4,7 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function MintProjectToken({
   treasuryNftPolicyId,
@@ -21,6 +22,16 @@ export default function MintProjectToken({
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
   const { updateTaskStatuses } = useTask({ treasuryNftPolicyId })
+
+
+  // Any tx will have a set of outputs.
+  // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
+  const costBreakdown: CostBreakdown = {
+    costDescriptions: [
+      { txOutputIndex: 1, description: "Project Treasury State Token", tooltipText: "This is where project data is stored..." },
+    ],
+    andamioNetworkFee: 5000000, // How to incorporate network fee -> Dev team 2024-12-09
+  }
 
   const {
     data: unsignedTxCBOR,
@@ -58,13 +69,18 @@ export default function MintProjectToken({
 
 
   return (
-    <TransactionContainer
-      buttonText={`Mint Project Token`}
-      unsignedTxCBOR={unsignedTxCBOR}
-      wallet={wallet}
-      setSuccessTxHash={setSuccessTxHash}
-      onTransactionSuccess={handleStatusChange}
-    />
+    <div className="flex flex-col w-full mx-auto">
+      {!!unsignedTxCBOR && (
+        <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
+      )}
+      <TransactionContainer
+        buttonText={`Mint Project Token`}
+        unsignedTxCBOR={unsignedTxCBOR}
+        wallet={wallet}
+        setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
+      />
+    </div >
   );
 
 }
