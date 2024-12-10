@@ -16,32 +16,35 @@ export default function MintProjectState({
 }) {
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
-  const { prerequisiteByPolicyId } = useContributorPrerequisite({ contributorPolicyId: contributorPolicyId })
+  const { prerequisiteByPolicyId } = useContributorPrerequisite({
+    contributorPolicyId: contributorPolicyId,
+  });
 
-  const [formattedPrereqs, setFormattedPrereqs] = useState<string | undefined>(undefined)
+  const [formattedPrereqs, setFormattedPrereqs] = useState<string | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     if (prerequisiteByPolicyId) {
-      const _formattedPrereqs = prerequisiteByPolicyId.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
-      setFormattedPrereqs(JSON.stringify(_formattedPrereqs))
-
+      const _formattedPrereqs = prerequisiteByPolicyId.courseRequirements.map(
+        (cm) => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules],
+      );
+      setFormattedPrereqs(JSON.stringify(_formattedPrereqs));
     }
-  }, [prerequisiteByPolicyId])
+  }, [prerequisiteByPolicyId]);
 
-  const {
-    data: unsignedTxCBOR,
-    error: txError,
-  } = api.contributorTransactions.mintProjectState.useQuery(
-    {
-      treasuryNftPolicyId: treasuryNftPolicyId ?? "",
-      userAccessTokenUnit: accessTokenAsset?.unit ?? "",
-      prerequisite: formattedPrereqs ?? "",
-    },
-    {
-      // Don't attempt the query if we don't have an alias
-      enabled: !!treasuryNftPolicyId && !!accessTokenAsset && !!formattedPrereqs
-    },
-  );
+  const { data: unsignedTxCBOR, error: txError } =
+    api.contributorTransactions.mintProjectState.useQuery(
+      {
+        treasuryNftPolicyId: treasuryNftPolicyId ?? "",
+        userAccessTokenUnit: accessTokenAsset?.unit ?? "",
+        prerequisite: formattedPrereqs ?? "",
+      },
+      {
+        // Don't attempt the query if we don't have an alias
+        enabled: !!treasuryNftPolicyId && !!accessTokenAsset,
+      },
+    );
 
   if (txError) {
     return (
@@ -55,6 +58,7 @@ export default function MintProjectState({
   return (
     <div>
       <pre className="text-xs">
+        Prerequisites:
         {JSON.stringify(prerequisiteByPolicyId, null, 2)}
       </pre>
 

@@ -39,7 +39,7 @@ export const contributorTxRouter = createTRPCRouter({
       z.object({
         userAccessTokenUnit: z.string().min(62),
         treasuryNftPolicyId: z.string().length(56),
-        prerequisite: z.string().min(1)
+        prerequisite: z.string()
       }),
     )
     .query(async ({ input }) => {

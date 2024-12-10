@@ -102,6 +102,10 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
       key={treasury.id}
       className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
     >
+      {/* 
+      
+      TO-DO
+      
       {Math.random() > 0.5 ? (
         <span
           className={`absolute left-2 top-2 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white
@@ -116,7 +120,7 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
         >
           no prerequisite
         </span>
-      )}
+      )} */}
       <img
         src={`images/sample-covers/2.jpg`}
         alt={treasury.title}

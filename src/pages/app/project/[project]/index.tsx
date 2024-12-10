@@ -1,8 +1,9 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
+import { Task } from "@prisma/client";
 import { BadgeCheck, BadgeX } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import MintProjectStateDialog from "~/components/cardano/tx/contributor/mint-project-state/MintProjectStateDialog";
 import Loading from "~/components/common/loading";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
@@ -16,7 +17,9 @@ import {
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+import { useTask } from "~/hooks/db/contribution/useTask";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
+import { ProjectDatum } from "~/types/db";
 import AccessTokenComponent from "~/ui/dashboard/components/AccessTokenComponent";
 import MenuBar from "~/ui/landing/MenuBar";
 
@@ -34,24 +37,25 @@ export default function ProjectPage() {
   const { aggregateUserInfo, isLoadingAggregateUserInfo } =
     useAggregateUserInfo(accessTokenAlias ?? "");
 
-  const [currentProject, setCurrentProject] = useState<string | undefined>(undefined);
+  const [currentProject, setCurrentProject] = useState<string | undefined>(
+    undefined,
+  );
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-      project_content?: string;
-      status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
-      submitted_info?: string;
-    }
+        project_content?: string;
+        status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
+        submitted_info?: string;
+      }
     | undefined
   >(undefined);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
 
   useEffect(() => {
-
     if (project) {
       setCurrentProject(project as string);
     }
-  }, [project])
+  }, [project]);
 
   useEffect(() => {
     if (aggregateUserInfo && treasury && treasury.treasuryNftPolicyId) {
@@ -73,117 +77,175 @@ export default function ProjectPage() {
     isLoading,
   ]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading)
+    return (
+      <DesktopOnlyLayout>
+        <MenuBar />
+        <Loading />
+      </DesktopOnlyLayout>
+    );
   return (
     <DesktopOnlyLayout>
       <MenuBar />
       <div className="container mx-auto px-4 py-8">
-        {/* Header Section */}
-        <div className="mb-8 flex flex-col items-center space-y-4 md:flex-row md:space-x-8 md:space-y-0">
-          <img
-            src="https://andamio.io/andamio.png"
-            className="h-40 rounded-t-lg object-cover"
-          />
-          <div className="mb-8 text-center">
-            <h1 className="mb-4 text-4xl font-bold">{treasury?.title}</h1>
-            <p className="text-gray-600">
-              Policy: {treasury?.treasuryNftPolicyId}
-            </p>
-            {/* <p className="text-gray-600">
-              Maybe a short description of the project here.
-            </p> */}
-          </div>
-        </div>
-        {!connected ? (
-          <div className="flex max-w-full justify-center">
-            <CardanoWallet />
+        {!treasury ? (
+          <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+            "No Project found."
           </div>
         ) : (
           <>
-            {hasLocalState ? (
+            {/* Header Section */}
+            <div className="mb-8 flex flex-col items-center space-y-4 md:flex-row md:space-x-8 md:space-y-0">
+              <img
+                src="https://andamio.io/andamio.png"
+                className="h-40 rounded-t-lg object-cover"
+              />
+              <div className="mb-8 text-center">
+                <h1 className="mb-4 text-4xl font-bold">{treasury?.title}</h1>
+                <p className="text-gray-600">
+                  Policy:{" "}
+                  {treasury && treasury.treasuryNftPolicyId ? (
+                    treasury.treasuryNftPolicyId
+                  ) : (
+                    <text className="text-red-500">
+                      Policy missing in database.
+                    </text>
+                  )}
+                </p>
+                {/* <p className="text-gray-600">
+              Maybe a short description of the project here.
+            </p> */}
+              </div>
+            </div>
+            {!connected ? (
+              <div className="flex max-w-full justify-center">
+                <CardanoWallet />
+              </div>
+            ) : (
               <>
-                <div className="flex justify-between gap-x-40">
-                  <div className="mt-8">
-                    <h2 className="mb-4 text-2xl font-bold">My Commitment</h2>
+                {hasLocalState ? (
+                  <>
+                    <div className="flex justify-between gap-x-40">
+                      <div className="mt-8">
+                        <h2 className="mb-4 text-2xl font-bold">
+                          My Commitment
+                        </h2>
 
-                    {!commitment ? (
-                      <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                        "No commitment found."
+                        {!commitment ? (
+                          <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                            "No commitment found."
+                          </div>
+                        ) : (
+                          <Link
+                            href={`/app/project/${currentProject}/${commitment.project_content}`}
+                            passHref
+                            key={project as string}
+                            className="flex transform items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+                          >
+                            <h6 className="text-xl font-bold">
+                              {commitment.project_content}
+                            </h6>
+                          </Link>
+                        )}
                       </div>
-                    ) : (
-                      <Link
-                        href={`/app/project/${currentProject}/${commitment.project_content}`}
-                        passHref
-                        key={project as string}
-                        className="transform flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
-                      >
-                        <h6 className="text-xl font-bold">
-                          {commitment.project_content}
-                        </h6>
-                      </Link>
-                    )}
 
+                      <div className="mt-8">
+                        <h2 className="mb-4 text-2xl font-bold">Status</h2>
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                          {!commitment ? null : (
+                            <>
+                              <h3 className="text-xl font-bold">
+                                {commitment.status}
+                              </h3>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8">
+                      <h2 className="mb-4 text-2xl font-bold">
+                        Completed Tasks
+                      </h2>
+                      {/* Datum of contributor state */}
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {/* Placeholder for completed tasks */}
+                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                          No completed tasks yet.
+                        </div>
+                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                          No completed tasks yet.
+                        </div>
+                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                          No completed tasks yet.
+                        </div>
+                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                          No completed tasks yet.
+                        </div>
+                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                          No completed tasks yet.
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : accessTokenAlias && isLoadingAggregateUserInfo ? (
+                  <Loading />
+                ) : (
+                  // /* CTA Section */
+                  <div className="mt-8 flex justify-start text-center">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                          disabled={!treasury?.treasuryNftPolicyId}
+                        >
+                          Join Now
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <div className="grid gap-4 py-4">
+                          <div className="flex gap-x-4">
+                            {connected ? <BadgeCheck /> : <BadgeX />}
+                            Connected to Cardano
+                            {!connected && <CardanoWallet />}
+                          </div>
+                          <div className="flex gap-x-4">
+                            {accessTokenAlias ? <BadgeCheck /> : <BadgeX />}
+                            Connected to Andamio Network
+                            {connected && !accessTokenAlias && (
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button>Connect</Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                  <AccessTokenComponent />
+                                </DialogContent>
+                              </Dialog>
+                            )}
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <MintProjectStateDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId as string} />
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </div>
-
-                  <div className="mt-8">
-                    <h2 className="mb-4 text-2xl font-bold">Status</h2>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {!commitment ? null : (
-                        <>
-                          <h3 className="text-xl font-bold">
-                            {commitment.status}
-                          </h3>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8">
-                  <h2 className="mb-4 text-2xl font-bold">Completed Tasks</h2>
-                  {/* Datum of contributor state */}
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {/* Placeholder for completed tasks */}
-                    <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                      No completed tasks yet.
-                    </div>
-                    <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                      No completed tasks yet.
-                    </div>
-                    <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                      No completed tasks yet.
-                    </div>
-                    <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                      No completed tasks yet.
-                    </div>
-                    <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                      No completed tasks yet.
-                    </div>
-                  </div>
-                </div>
-
+                )}
+              </>
+            )}
+            {treasury?.treasuryNftPolicyId &&
+              typeof treasury.treasuryNftPolicyId === "string" && (
                 <div className="mt-8">
                   <h2 className="mb-4 text-2xl font-bold">Explore Tasks</h2>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {treasuryInfo && treasuryInfo.projects.length > 0 ? (
                       treasuryInfo.projects.map((project) => (
-                        <div
+                        <TaskCard
                           key={project.project_hash}
-                          className="rounded-lg bg-white p-4 shadow-md"
-                        >
-                          <h6 className="truncate text-xl font-bold">
-                            {project.project_hash}
-                          </h6>
-                          <p className="truncate text-gray-600">
-                            {project.commitment_allowed}
-                          </p>
-                          <Link
-                            href={`/app/project/${project.project_hash}`}
-                            passHref
-                          >
-                            <Button className="mt-4">View Project</Button>
-                          </Link>
-                        </div>
+                          treasury_id={treasury.id}
+                          project={project}
+                          treasuryNftPolicyId={treasury.treasuryNftPolicyId!}
+                        />
                       ))
                     ) : isLoadingTreasuryInfo ? (
                       <Loading />
@@ -194,63 +256,55 @@ export default function ProjectPage() {
                     )}
                   </div>
                 </div>
-              </>
-            ) : accessTokenAlias && isLoadingAggregateUserInfo ? (
-              <Loading />
-            ) : (
-              // /* CTA Section */
-              <div className="mt-8 flex justify-start text-center">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
-                      Join Now
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <div className="grid gap-4 py-4">
-                      <div className="flex gap-x-4">
-                        {connected ? <BadgeCheck /> : <BadgeX />}
-                        Connected to Cardano
-                        {!connected && <CardanoWallet />}
-                      </div>
-                      <div className="flex gap-x-4">
-                        {accessTokenAlias ? <BadgeCheck /> : <BadgeX />}
-                        Connected to Andamio Network
-                        {connected && !accessTokenAlias && (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button>Join Andamio Network</Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <AccessTokenComponent />
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            type="submit"
-                            disabled={!connected || !accessTokenAlias}
-                          >
-                            Proceed To Join
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          {/* TO-DO */}
-                          <MintProjectStateDialog />
-                        </DialogContent>
-                      </Dialog>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            )}
+              )}
           </>
         )}
       </div>
     </DesktopOnlyLayout>
+  );
+}
+
+function TaskCard({
+  treasury_id,
+  project,
+  treasuryNftPolicyId,
+}: {
+  treasury_id: string;
+  project: ProjectDatum;
+  treasuryNftPolicyId: string;
+}) {
+  const { tasks, isLoading: isLoadingTasks } = useTask({ treasuryNftPolicyId });
+  const [task, setTask] = useState<Task | undefined>(undefined);
+  useEffect(() => {
+    if (tasks && tasks.length > 0) {
+      tasks.find((task) => {
+        if (task.hash === project.project_hash) {
+          setTask(task);
+          return true;
+        }
+      });
+    }
+  }, [tasks, isLoadingTasks]);
+  return (
+    <Link
+      href={`/app/project/${treasury_id}/${project.project_hash}`}
+      passHref
+      key={project.project_hash ?? ""}
+      className="transform rounded-lg bg-white p-4 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+    >
+      <div className="max-w-fit truncate">
+        <span className="text-xs text-slate-500">{project.project_hash}</span>
+      </div>
+      {isLoadingTasks ? (
+        <Loading />
+      ) : task ? (
+        <pre>{JSON.stringify(task, null, 2)}</pre>
+      ) : (
+        <div className="my-4 text-red-500">Task data not found in database</div>
+      )}
+      <p className="truncate text-sm text-gray-600">
+        Commitments left: <b>{project.commitment_allowed}</b>
+      </p>
+    </Link>
   );
 }
