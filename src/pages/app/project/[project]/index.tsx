@@ -59,7 +59,6 @@ export default function ProjectPage() {
 
   useEffect(() => {
     if (aggregateUserInfo && treasury && treasury.treasuryNftPolicyId) {
-      // Also check if boolean is true
       setHasLocalState(
         aggregateUserInfo?.projects.ongoing.some((info) => {
           if (info.policy === treasury.treasuryNftPolicyId) {
@@ -225,7 +224,11 @@ export default function ProjectPage() {
                           </div>
                         </div>
                         <DialogFooter>
-                          <MintProjectStateDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId as string} />
+                          <MintProjectStateDialog
+                            treasuryNftPolicyId={
+                              treasury.treasuryNftPolicyId as string
+                            }
+                          />
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>

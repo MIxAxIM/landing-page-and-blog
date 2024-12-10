@@ -1,4 +1,3 @@
-
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -20,13 +19,17 @@ export default function CommitProjectDialog({
   treasuryNftPolicyId,
   taskId,
   info,
+  disabled,
 }: {
   treasuryNftPolicyId: string;
   taskId: string;
   info?: string;
+  disabled: boolean;
 }) {
   const { connected } = useWallet();
-  const [successTxHash, setSuccessTxHash] = useState<string | undefined>(undefined);
+  const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
+    undefined,
+  );
   const { task } = useTask({ id: taskId });
 
   const apiProject = {
@@ -34,7 +37,7 @@ export default function CommitProjectDialog({
     pdExpirationTime_: parseInt(task?.expirationTime ?? "0"),
     pdLovelaceAmount_: parseInt(task?.lovelace ?? "0"),
     pdTokens_: [],
-  }
+  };
 
   console.log("apiProject", apiProject);
   console.log("treasuryNftPolicyId", treasuryNftPolicyId);
@@ -43,7 +46,12 @@ export default function CommitProjectDialog({
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button intent="dialog" size="dialog" className="mx-auto">
+          <Button
+            disabled={disabled}
+            intent="dialog"
+            size="dialog"
+            className="mx-auto"
+          >
             Commit to Task
           </Button>
         </DialogTrigger>
@@ -54,17 +62,14 @@ export default function CommitProjectDialog({
                 <DialogTitle>Commit to Task</DialogTitle>
                 <DialogDescription>
                   By completing this transaction, you will make a public
-                  commitment to this task on the Andamio
-                  Network.
+                  commitment to this task on the Andamio Network.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <p className="pt-5 text-xs font-bold">
                   To learn about network Project Commitments, view{" "}
                   <Link href="/course/andamio101">
-                    <span className="underline">
-                      Andamio 101
-                    </span>
+                    <span className="underline">Andamio 101</span>
                   </Link>
                   .
                 </p>
