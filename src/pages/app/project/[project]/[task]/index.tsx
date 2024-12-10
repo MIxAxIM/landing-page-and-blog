@@ -141,8 +141,8 @@ export default function ProjectPage() {
         </Button> */}
         <div>
           <CommitProjectDialog
-            treasuryNftPolicyId={treasury?.treasuryNftPolicyId as string}
-            taskId={projectDatum?.project_hash as string}
+            treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""}
+            taskId={projectDatum?.project_hash ?? ""}
             info={evidenceHash}
             disabled={!lock}
           />

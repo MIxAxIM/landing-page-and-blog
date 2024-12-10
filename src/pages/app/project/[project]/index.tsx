@@ -3,7 +3,7 @@ import { Task } from "@prisma/client";
 import { BadgeCheck, BadgeX } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MintProjectStateDialog from "~/components/cardano/tx/contributor/mint-project-state/MintProjectStateDialog";
 import Loading from "~/components/common/loading";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
@@ -43,10 +43,10 @@ export default function ProjectPage() {
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-        project_content?: string;
-        status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
-        submitted_info?: string;
-      }
+      project_content?: string;
+      status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
+      submitted_info?: string;
+    }
     | undefined
   >(undefined);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -226,7 +226,7 @@ export default function ProjectPage() {
                         <DialogFooter>
                           <MintProjectStateDialog
                             treasuryNftPolicyId={
-                              treasury.treasuryNftPolicyId as string
+                              treasury.treasuryNftPolicyId ?? ""
                             }
                           />
                         </DialogFooter>
