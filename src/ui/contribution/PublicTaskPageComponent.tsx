@@ -10,6 +10,7 @@ import { Card } from "~/components/ui/card";
 import Link from "next/link";
 import { BookIcon, School2Icon } from "lucide-react";
 import TaskStatusIndicator from "./status/TaskStatusIndicator";
+import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
   const { translateCaps, translateCapsPlural } = useTerminology()
@@ -39,6 +40,13 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
             Expiration Time: {formatPosixTime(task.expirationTime)}
           </p>
         </div>
+
+        {!!treasury && (
+          <div>
+            <h2>Commit to this task</h2>
+            <CommitProjectDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} taskId={task.id} />
+          </div>
+        )}
 
         <div>
 
