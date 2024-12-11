@@ -43,10 +43,10 @@ export default function ProjectPage() {
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-      project_content?: string;
-      status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
-      submitted_info?: string;
-    }
+        project_content?: string;
+        status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
+        submitted_info?: string;
+      }
     | undefined
   >(undefined);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -166,24 +166,37 @@ export default function ProjectPage() {
                       <h2 className="mb-4 text-2xl font-bold">
                         Completed Tasks
                       </h2>
-                      {/* Datum of contributor state */}
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {/* Placeholder for completed tasks */}
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                          No completed tasks yet.
-                        </div>
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                          No completed tasks yet.
-                        </div>
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                          No completed tasks yet.
-                        </div>
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                          No completed tasks yet.
-                        </div>
-                        <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
-                          No completed tasks yet.
-                        </div>
+                        {isLoadingAggregateUserInfo ? (
+                          <Loading />
+                        ) : aggregateUserInfo ? (
+                          aggregateUserInfo.projects.ongoing.filter(
+                            (info) =>
+                              info.policy === treasury.treasuryNftPolicyId,
+                          ).length === 0 ? (
+                            <div className="flex items-center justify-center rounded-lg bg-gray-200 p-4 text-gray-600">
+                              No completed tasks yet.
+                            </div>
+                          ) : (
+                            aggregateUserInfo.projects.ongoing
+                              .filter(
+                                (info) =>
+                                  info.policy === treasury.treasuryNftPolicyId,
+                              )
+                              .flatMap((info) =>
+                                info.completed_tasks_hashes.map((task_hash) => (
+                                  <TaskCard
+                                    key={task_hash}
+                                    treasury_id={treasury.id}
+                                    task_hash={task_hash}
+                                    treasuryNftPolicyId={
+                                      treasury.treasuryNftPolicyId!
+                                    }
+                                  />
+                                )),
+                              )
+                          )
+                        ) : null}
                       </div>
                     </div>
                   </>
@@ -269,11 +282,13 @@ export default function ProjectPage() {
 
 function TaskCard({
   treasury_id,
+  task_hash,
   project,
   treasuryNftPolicyId,
 }: {
   treasury_id: string;
-  project: ProjectDatum;
+  task_hash?: string;
+  project?: ProjectDatum;
   treasuryNftPolicyId: string;
 }) {
   const { tasks, isLoading: isLoadingTasks } = useTask({ treasuryNftPolicyId });
@@ -281,7 +296,7 @@ function TaskCard({
   useEffect(() => {
     if (tasks && tasks.length > 0) {
       tasks.find((task) => {
-        if (task.hash === project.project_hash) {
+        if (task.hash === (project ? project?.project_hash : task_hash)) {
           setTask(task);
           return true;
         }
@@ -290,13 +305,15 @@ function TaskCard({
   }, [tasks, isLoadingTasks]);
   return (
     <Link
-      href={`/app/project/${treasury_id}/${project.project_hash}`}
+      href={`/app/project/${treasury_id}/${project ? project?.project_hash : task_hash}`}
       passHref
-      key={project.project_hash ?? ""}
+      key={project ? project?.project_hash : task_hash}
       className="transform rounded-lg bg-white p-4 shadow-md transition-transform hover:scale-105 hover:shadow-lg"
     >
       <div className="max-w-fit truncate">
-        <span className="text-xs text-slate-500">{project.project_hash}</span>
+        <span className="text-xs text-slate-500">
+          {project ? project?.project_hash : task_hash}
+        </span>
       </div>
       {isLoadingTasks ? (
         <Loading />
@@ -305,9 +322,11 @@ function TaskCard({
       ) : (
         <div className="my-4 text-red-500">Task data not found in database</div>
       )}
-      <p className="truncate text-sm text-gray-600">
-        Commitments left: <b>{project.commitment_allowed}</b>
-      </p>
+      {project && (
+        <p className="truncate text-sm text-gray-600">
+          Commitments left: <b>{project.commitment_allowed}</b>
+        </p>
+      )}
     </Link>
   );
 }
