@@ -89,7 +89,7 @@ export default function MintAccessTokenDialog() {
           Mint Andamio Network Token
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-7xl">
         {successTxHash ? (
           <SuccessTxModalContent
             txName="Mint Access Token"
@@ -98,46 +98,53 @@ export default function MintAccessTokenDialog() {
           />
         ) : (
           <>
-            <h2>
-              Mint Andamio Network Token
-            </h2>
-            {/* About this Module */}
-            <h2>About</h2>
-            <p className="mb-5">
-              When you mint an Andamio Network Token, you gain access to
-              credentials on the Andamio Network.
-            </p>
-            <p className="mb-5">
-              When you mint an Andamio Network Token, you gain access to this
-              token after you mint it, and no one else can mint one with the
-              same name.
-            </p>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormLabel>Your Andamio Network Token Name:</FormLabel>
-                <FormInput
-                  {...register("tokenAlias")}
-                  name="tokenAlias"
-                  placeholder="Choose your token name"
-                  form={form}
-                />
-                {isAvailable && (
-                  <div className="mb-2 text-sm text-green-500">
-                    This network token name is available.
-                  </div>
+            <div className="grid grid-cols-2 gap-8">
+              <div className="p-2">
+                <h2>
+                  Mint Andamio Network Token
+                </h2>
+                {/* About this Module */}
+                <h2>About</h2>
+                <p className="mb-5">
+                  When you mint an Andamio Network Token, you gain access to
+                  credentials on the Andamio Network.
+                </p>
+                <p className="mb-5">
+                  When you mint an Andamio Network Token, you gain access to this
+                  token after you mint it, and no one else can mint one with the
+                  same name.
+                </p>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormLabel>Your Andamio Network Token Name:</FormLabel>
+                    <FormInput
+                      {...register("tokenAlias")}
+                      name="tokenAlias"
+                      placeholder="Choose your token name"
+                      form={form}
+                    />
+                    {isAvailable && (
+                      <div className="mb-2 text-sm text-green-500">
+                        This network token name is available.
+                      </div>
+                    )}
+                    <Button>Submit</Button>
+                  </form>
+                </Form>
+              </div>
+              <div className="p-2">
+                {address && mintingAlias && (
+                  <>
+                    <MintAccessToken
+                      userAddress={address}
+                      alias={mintingAlias}
+                      successTxHash={successTxHash}
+                      setSuccessTxHash={setSuccessTxHash}
+                    />
+                  </>
                 )}
-                <Button>Submit</Button>
-              </form>
-            </Form>
-            {address && mintingAlias && (
-              <>
-                <MintAccessToken
-                  userAddress={address}
-                  alias={mintingAlias}
-                  setSuccessTxHash={setSuccessTxHash}
-                />
-              </>
-            )}
+              </div>
+            </div>
           </>
         )}
       </DialogContent>

@@ -11,9 +11,9 @@ import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
-import useProjects from "~/hooks/cardano-indexer-api/project/useProjects";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import MintProjectState from "./MintProjectState";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
 // TODO: Check if this access token is enrolled (via Global State query)
 // Delete checkIfEnrolled
@@ -29,7 +29,7 @@ export default function MintProjectStateDialog({
     undefined,
   );
 
-  const { contributorPolicies } = useProjects({
+  const { contributorPolicies } = useProjectByTreasury({
     treasuryNftPolicyId: treasuryNftPolicyId,
   });
 

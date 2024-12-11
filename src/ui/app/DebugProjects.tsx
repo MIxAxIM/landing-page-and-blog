@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
-import useProjects from "~/hooks/cardano-indexer-api/project/useProjects";
 import useTreasuryInstances from "~/hooks/cardano-indexer-api/project/useTreasuryInstances";
 import { Treasury } from "~/types/db";
 import {
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "~/components/ui/select"
 import CommitProject from "~/components/cardano/tx/contributor/commit-project/CommitProject";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
 export default function DebugProjects() {
 
@@ -30,7 +30,7 @@ export default function DebugProjects() {
     contributorPolicies,
     escrowUtxos,
     treasuryInfo,
-  } = useProjects({ treasuryNftPolicyId: currentTreasury?.treasuryNftPolicyId ?? undefined })
+  } = useProjectByTreasury({ treasuryNftPolicyId: currentTreasury?.treasuryNftPolicyId ?? undefined })
 
 
   useEffect(() => {

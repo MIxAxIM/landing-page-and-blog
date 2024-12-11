@@ -102,6 +102,7 @@ export const userRouter = createTRPCRouter({
       z.object({
         userId: z.string(),
         hasMinted: z.boolean(),
+        txHash: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -111,6 +112,7 @@ export const userRouter = createTRPCRouter({
         },
         data: {
           hasMintedAccessToken: input.hasMinted,
+          unconfirmedTx: input.txHash,
         },
       });
     }),
@@ -133,23 +135,6 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  updateUnconfirmedTx: protectedProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-        txHash: z.string(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      return ctx.db.user.update({
-        where: {
-          id: input.userId,
-        },
-        data: {
-          unconfirmedTx: input.txHash,
-        },
-      });
-    }),
 
   updateUserNsec: protectedProcedure
     .input(

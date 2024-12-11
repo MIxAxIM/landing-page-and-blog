@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useTerminology } from "~/contexts/terminology-context";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequisites";
 import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import { PrerequisiteItem } from "~/ui/contribution/lists/PrerequisiteList";

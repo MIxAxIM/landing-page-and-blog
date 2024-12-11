@@ -1,7 +1,7 @@
 import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { hexToString } from "@meshsdk/common";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
 export default function EnrolledContributors({ treasuryNftPolicyId }: { treasuryNftPolicyId?: string | null }) {
 

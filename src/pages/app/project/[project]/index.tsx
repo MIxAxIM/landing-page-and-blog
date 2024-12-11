@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/dialog";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { ProjectDatum } from "~/types/db";

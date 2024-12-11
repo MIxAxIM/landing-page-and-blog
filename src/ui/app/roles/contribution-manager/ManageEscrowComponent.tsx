@@ -3,7 +3,7 @@ import { Task } from "~/types/db";
 
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { useRoles } from "~/hooks/app/useRoles";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjects";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
 import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";

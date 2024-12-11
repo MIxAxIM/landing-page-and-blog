@@ -93,13 +93,15 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
             <LoadingCircle />
           )}
         </div>
-        <div key="andamioFee" className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span>Andamio Network Fee</span>
-            {!!unsignedTxCBOR && <InfoTooltip content="Cost of using Andamio Network" />}
+        {costBreakdown.andamioNetworkFee > 0 && (
+          <div key="andamioFee" className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span>Andamio Network Fee</span>
+              {!!unsignedTxCBOR && <InfoTooltip content="Cost of using Andamio Network" />}
+            </div>
+            <span>{costBreakdown.andamioNetworkFee / 1000000} ADA</span>
           </div>
-          <span>{costBreakdown.andamioNetworkFee / 1000000} ADA</span>
-        </div>
+        )}
         <div className="flex justify-between items-center font-bold">
           <span>Total</span>
           <span>{total} ADA (~${!!total && (total * mockExchangeRate).toFixed(2)} USD)</span>
