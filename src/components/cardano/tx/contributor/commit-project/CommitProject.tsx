@@ -23,7 +23,7 @@ export default function CommitProject({
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
-      { txOutputIndex: 0, description: "Cost desc.", tooltipText: "Tooltip" },
+      { txOutputIndexes: [0], description: "Cost desc.", tooltipText: "Tooltip" },
     ],
     andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
   }

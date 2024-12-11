@@ -28,7 +28,7 @@ export default function MintProjectToken({
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
-      { txOutputIndex: 1, description: "Project Treasury State Token", tooltipText: "This is where project data is stored..." },
+      { txOutputIndexes: [1], description: "Project Treasury State Token", tooltipText: "This is where project data is stored..." },
     ],
     andamioNetworkFee: 5000000, // How to incorporate network fee -> Dev team 2024-12-09
   }

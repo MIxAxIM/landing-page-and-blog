@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { InfoTooltip } from "~/components/ui/InfoTooltip";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { useWallet } from "@meshsdk/react";
+import maestro from "~/config/maestro";
 
 // From a transaction Component, pass a list of costDescriptions
 // For each output index, we can write a description and tooltip text.
 // By this method, any utxos can be ignored - only add descriptions of costs to user
 interface CostDescription {
-  txOutputIndex: number,
+  txInputIndexes?: number[],
+  txOutputIndexes: number[],
   description: string,
   tooltipText: string,
 }
@@ -34,27 +36,65 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
 
   const { connected } = useWallet()
 
-  const [txFeeDetails, setTxFeeDetails] = useState<TxFeeDetail[] | undefined>(costBreakdown.costDescriptions.map((cd) => ({ costDescription: cd, lovelaceAmount: undefined })))
+  const [txFeeDetails, setTxFeeDetails] = useState<(TxFeeDetail | undefined)[] | undefined>(costBreakdown.costDescriptions.map((cd) => ({ costDescription: cd, lovelaceAmount: undefined })))
   const [total, setTotal] = useState<number | undefined>(undefined)
-
   useEffect(() => {
-    if (unsignedTxCBOR) {
-      const _txBody = deserializeTx(unsignedTxCBOR).to_js_value()
-      setCardanoTxFee(parseInt(_txBody.body.fee))
+    if (!unsignedTxCBOR) return;
 
-      if (costBreakdown && !!_txBody) {
-        const _txFeeDetails: TxFeeDetail[] = costBreakdown.costDescriptions.map((costDescription) => ({
-          costDescription,
-          lovelaceAmount: parseInt(_txBody.body.outputs[costDescription.txOutputIndex].amount.coin)
-        }))
-        setTxFeeDetails(_txFeeDetails)
-      }
-    }
-  }, [unsignedTxCBOR])
+    const txBody = deserializeTx(unsignedTxCBOR).to_js_value().body;
+    setCardanoTxFee(parseInt(txBody.fee));
+
+    const fetchTxDetails = async () => {
+      const details = await Promise.all(
+        costBreakdown.costDescriptions.map(async (costDescription) => {
+          // Simple case: no inputs and single output
+          if (!costDescription.txInputIndexes?.length && costDescription.txOutputIndexes.length === 1) {
+            return {
+              costDescription,
+              lovelaceAmount: parseInt(txBody.outputs[costDescription.txOutputIndexes[0] ?? 0].amount.coin)
+            };
+          }
+
+          // Complex case: need to fetch UTXOs
+          try {
+            const inputIndex = costDescription.txInputIndexes?.[0] ?? 0;
+            const input = txBody.inputs[inputIndex];
+
+            const utxos = await maestro.fetchUTxOs(
+              input.transaction_id,
+              input.index
+            );
+
+            const inputLovelace = parseInt(utxos[0]?.output.amount[0]?.quantity ?? "0");
+
+            const outputSum = costDescription.txOutputIndexes.reduce(
+              (sum, outputIndex) => sum + parseInt(txBody.outputs[outputIndex].amount.coin ?? "0"),
+              0
+            );
+
+            return {
+              costDescription,
+              lovelaceAmount: outputSum - inputLovelace
+            };
+          } catch (error) {
+            console.error('Error fetching UTXOs:', error);
+            return {
+              costDescription,
+              lovelaceAmount: 0
+            };
+          }
+        })
+      );
+
+      setTxFeeDetails(details);
+    };
+
+    void fetchTxDetails();
+  }, [unsignedTxCBOR, costBreakdown]);
 
   // Calculate total cost to user - should match what they see as net delta of tx when signing in wallet 
   useEffect(() => {
-    const _total = (txFeeDetails?.reduce((sum, detail) => sum + (detail.lovelaceAmount ?? 0), 0) ?? 0)
+    const _total = (txFeeDetails?.reduce((sum, detail) => sum + (detail?.lovelaceAmount ?? 0), 0) ?? 0)
       + (cardanoTxFee ?? 0)
       + (costBreakdown.andamioNetworkFee)
     setTotal(_total / 1000000)
@@ -72,10 +112,10 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
         {!!txFeeDetails && txFeeDetails.map((fee, key) => (
           <div key={key} className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span>{fee.costDescription.description}</span>
-              {!!unsignedTxCBOR && <InfoTooltip content={fee.costDescription.tooltipText} />}
+              <span>{fee?.costDescription.description}</span>
+              {!!unsignedTxCBOR && <InfoTooltip content={fee?.costDescription.tooltipText ?? ""} />}
             </div>
-            {!!fee.lovelaceAmount ? (
+            {!!fee?.lovelaceAmount ? (
               <span>{fee.lovelaceAmount / 1000000} ADA</span>
             ) : (
               <LoadingCircle />

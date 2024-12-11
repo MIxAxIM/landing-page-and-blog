@@ -67,6 +67,7 @@ export default function useProjectByTreasury(
     {
       enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56,
       refetchInterval: 60000,
+      refetchOnMount: true,
       retry: false,
       onError: (error) => {
         console.error('getAllEscrowUtxosByTreasury error:', error);
@@ -95,6 +96,7 @@ export default function useProjectByTreasury(
     {
       enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56,
       refetchInterval: 60000,
+      refetchOnMount: true,
       onError: (error) => {
         console.error('getTreasuryInfo error:', error);
       },

@@ -1,4 +1,5 @@
 import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
 
 interface Fund {
@@ -12,9 +13,10 @@ interface TreasuryInfo {
 interface ProjectTreasuryBalanceProps {
   treasuryInfo?: TreasuryInfo;
   treasuryNftPolicyId: string;
+  isLoading?: boolean;
 }
 
-export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicyId }: ProjectTreasuryBalanceProps) {
+export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicyId, isLoading }: ProjectTreasuryBalanceProps) {
   // Calculate total balance in ADA
   const totalBalance = treasuryInfo?.funds.reduce((sum, fund) => sum + fund.amount, 0) ?? 0;
   const totalAda = totalBalance / 1_000_000;
@@ -29,8 +31,12 @@ export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicy
   return (
     <Card className="flex flex-row gap-x-4 items-center">
       <p>Project Treasury Balance</p>
-      <div className="flex items-center space-x-2">
-        <span className="text-lg font-bold">₳ {formattedAda}</span>
+      <div className="flex items-center space-x-2 min-w-28">
+        {isLoading ? (
+          <LoadingCircle />
+        ) : (
+          <span className="text-lg font-bold">{formattedAda} ada</span>
+        )}
       </div>
       <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
     </Card>

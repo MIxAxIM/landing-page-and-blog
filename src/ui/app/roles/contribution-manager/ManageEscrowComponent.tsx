@@ -34,7 +34,7 @@ export default function ManageEscrowComponent({
   const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
-  const { treasuryInfo, escrowUtxos, contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+  const { treasuryInfo, escrowUtxos, contributorPolicies, isLoadingTreasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
   const [tasksToManage, setTasksToManage] = useState<Task[]>([])
@@ -70,6 +70,7 @@ export default function ManageEscrowComponent({
           <ProjectTreasuryBalance
             treasuryInfo={treasuryInfo}
             treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+            isLoading={isLoadingTreasuryInfo}
           />
           <div className="space-x-2">
             {!!escrow && (

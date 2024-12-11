@@ -27,7 +27,7 @@ export default function AcceptProject({
 	// Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
 	const costBreakdown: CostBreakdown = {
 		costDescriptions: [
-			{ txOutputIndex: 0, description: "About this tx cost", tooltipText: "Tooltip text" },
+			{ txOutputIndexes: [0], description: "About this tx cost", tooltipText: "Tooltip text" },
 		],
 		andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
 	}

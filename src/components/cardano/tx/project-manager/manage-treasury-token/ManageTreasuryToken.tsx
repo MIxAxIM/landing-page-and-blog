@@ -25,7 +25,7 @@ export default function ManageTreasuryToken({
 
 	const costBreakdown: CostBreakdown = {
 		costDescriptions: [
-			{ txOutputIndex: 0, description: "Define costs here", tooltipText: "Tooltip info" },
+			{ txOutputIndexes: [0], description: "Define costs here", tooltipText: "Tooltip info" },
 		],
 		andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
 	}
