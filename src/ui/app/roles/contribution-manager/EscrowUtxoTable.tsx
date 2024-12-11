@@ -6,8 +6,10 @@ import CopyableTruncatedHash from "~/components/ui/CopyableHash"
 import AcceptProjectDialog from "~/components/cardano/tx/project-manager/accept-project/AcceptProjectDialog"
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken"
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment"
-import { stringToHex } from "@meshsdk/common"
+import { hexToString, stringToHex } from "@meshsdk/common"
 import { useEffect, useState } from "react"
+import { Button } from "~/components/ui/button"
+import DenyProjectDialog from "~/components/cardano/tx/project-manager/deny-project/DenyProjectDialog"
 
 export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos: DecodedEscrowUtxo[], treasuryNftPolicyId: string }) {
   const { accessTokenAsset } = useAccessToken()
@@ -27,8 +29,10 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
 
         return {
           ...utxo,
-          contributorAlias: dbTC?.contributorId ?? "Unknown",
+          contributorUsernameInDb: dbTC?.contributor.user.name ?? "Unknown",
           taskCommitmentId: dbTC?.id,
+          taskId: dbTC?.task.id,
+          taskTitle: dbTC?.task.title,
         }
 
       }
@@ -51,19 +55,19 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Task Hash</TableHead>
+              <TableHead>Task Title</TableHead>
               <TableHead>Contributor</TableHead>
               <TableHead>Amount (₳)</TableHead>
               <TableHead>Expires</TableHead>
-              <TableHead>Slot</TableHead>
-              <TableHead>Tx Hash</TableHead>
+              <TableHead>Task Hash</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {matchedTaskCommitmentsToUtxos.map((tx) => (
               <TableRow key={`${tx.txHash}-${tx.index}`}>
                 <TableCell>
-                  <CopyableTruncatedHash hash={tx.datum.projectData.taskHash} />
+                  {tx.taskTitle ?? "not found"}
                 </TableCell>
                 <TableCell>{tx.contributorAlias}</TableCell>
                 <TableCell>
@@ -72,21 +76,28 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                 <TableCell>
                   {formatDate(tx.datum.projectData.expirationTime)}
                 </TableCell>
-                <TableCell>{tx.slot}</TableCell>
-                <TableCell className="font-mono">
-                  <CopyableTruncatedHash hash={tx.txHash} />
+                <TableCell>
+                  <CopyableTruncatedHash hash={hexToString(tx.datum.projectData.taskHash)} />
                 </TableCell>
                 <TableCell>
+                  <div className="flex w-full gap-x-2 items-center h-full">
+                    <AcceptProjectDialog
+                      taskCommitmentId={""}
+                      treasuryNftPolicyId={treasuryNftPolicyId}
+                      contributorAlias={tx.contributorAlias}
+                      userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
+                    />
+                    <DenyProjectDialog
+                      taskCommitmentId={""}
+                      treasuryNftPolicyId={treasuryNftPolicyId}
+                      contributorAlias={tx.contributorAlias}
+                      userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
+                    />
+                    <Button size="sm">View Conversation</Button>
+                    <Button size="sm">View Public Task Page</Button>
 
-                  <AcceptProjectDialog
-                    taskCommitmentId={""}
-                    treasuryNftPolicyId={treasuryNftPolicyId}
-                    contributorAlias={tx.contributorAlias}
-                    userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
-                  />
-                </TableCell>
-                <TableCell>
-                  {tx.taskCommitmentId ?? "No Alias"}
+
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
