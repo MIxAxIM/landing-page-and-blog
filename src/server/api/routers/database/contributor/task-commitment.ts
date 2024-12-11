@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { TaskCommitmentStatus } from "@prisma/client";
+import { TaskCommitmentStatus, TaskStatus } from "@prisma/client";
 
 import {
   createTRPCRouter,
@@ -28,7 +28,12 @@ const isValidStatusTransition = (
 ) => {
   const allowedTransitions: Record<TaskCommitmentStatus, TaskCommitmentStatus[]> = {
     PENDING_TX_COMMITMENT_MADE: [TaskCommitmentStatus.COMMITMENT_MADE],
-    COMMITMENT_MADE: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+    COMMITMENT_MADE: [
+      TaskCommitmentStatus.PENDING_TX_ADD_INFO,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_DENIED,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_REFUSED,
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_ACCEPTED,
+    ],
     PENDING_TX_ADD_INFO: [TaskCommitmentStatus.PENDING_APPROVAL],
     PENDING_APPROVAL: [
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE,
@@ -123,17 +128,25 @@ export const taskCommitmentRouter = createTRPCRouter({
     }),
 
   getTaskCommitmentsByTreasury: publicProcedure
-    .input(z.string())
-    .query(async ({ ctx, input: treasuryNftPolicyId }) => {
+    .input(
+      z.object({
+        treasuryNftPolicyId: z.string().min(56),
+        taskId: z.string().optional(),
+        contributorId: z.string().optional(),
+        status: z.nativeEnum(TaskCommitmentStatus).optional(),
+      }).optional()
+    )
+    .query(async ({ ctx, input }) => {
       const taskCommitments = await ctx.db.taskCommitment.findMany({
         where: {
           task: {
             escrow: {
               treasury: {
-                treasuryNftPolicyId,
+                treasuryNftPolicyId: input?.treasuryNftPolicyId,
               },
             },
           },
+          ...(input?.status && { status: input.status }),
         },
         include: {
           task: {
@@ -237,31 +250,63 @@ export const taskCommitmentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { id, status } = input;
 
-      const existingCommitment = await ctx.db.taskCommitment.findUnique({
-        where: { id },
+      return ctx.db.$transaction(async (tx) => {
+        // Get existing commitment with task
+        const existingCommitment = await tx.taskCommitment.findUnique({
+          where: { id },
+          include: { task: true }
+        });
+
+        if (!existingCommitment) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Task commitment not found",
+          });
+        }
+
+        if (!isValidStatusTransition(existingCommitment.status, status)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `Invalid status transition from ${existingCommitment.status} to ${input.status}`,
+          });
+        }
+
+        // Handle coupled status transitions
+        // Add more couple status transitions here -- after implementing a full polling loop
+        if (status === TaskCommitmentStatus.COMMITMENT_MADE &&
+          existingCommitment.status === TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE) {
+
+          // Update task status first
+          await tx.task.update({
+            where: { id: existingCommitment.task.id },
+            data: {
+              status: TaskStatus.COMMITMENT_MADE,
+            }
+          });
+        }
+
+        if (status === TaskCommitmentStatus.COMMITMENT_ACCEPTED &&
+          existingCommitment.status === TaskCommitmentStatus.PENDING_TX_COMMITMENT_ACCEPTED) {
+
+          // Update task status first
+          await tx.task.update({
+            where: { id: existingCommitment.task.id },
+            data: {
+              status: TaskStatus.COMMITMENT_ACCEPTED,
+            }
+          });
+        }
+
+        // Update the commitment status
+        return tx.taskCommitment.update({
+          where: { id },
+          data: {
+            status,
+            updated: new Date(),
+          },
+        });
       });
 
-      if (!existingCommitment) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Task commitment not found",
-        });
-      }
-
-      if (!isValidStatusTransition(existingCommitment.status, status)) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Invalid status transition",
-        });
-      }
-
-      return ctx.db.taskCommitment.update({
-        where: { id },
-        data: {
-          status,
-          updated: new Date(),
-        },
-      });
     }),
 
   deleteTaskCommitment: protectedProcedure

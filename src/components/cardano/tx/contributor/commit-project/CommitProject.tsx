@@ -57,11 +57,12 @@ export default function CommitProject({
     },
   );
 
-
+  // TODO: Implement PENDING_TX_ADD_INFO when editor passes content
   const handleStatusChange = async () => {
     createTaskCommitment({
       taskId: taskId,
-      contributorId: sessionData?.user?.contributorId ?? ""
+      contributorId: sessionData?.user?.contributorId ?? "",
+      status: "PENDING_TX_COMMITMENT_MADE",
     });
   };
 

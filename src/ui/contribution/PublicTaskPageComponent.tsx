@@ -45,7 +45,7 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
           </p>
         </div>
 
-        {!!treasury && (
+        {!!treasury && !!task.id && (
           <div>
             <h2>Commit to this task</h2>
             <CommitProjectDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} taskId={task.id} disabled={false} />

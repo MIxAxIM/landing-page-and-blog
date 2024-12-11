@@ -244,6 +244,15 @@ export const taskRouter = createTRPCRouter({
         });
       }
 
+      // Prevent direct updates for coupled statuses
+      // Additional coupled states here
+      if (input.status === TaskStatus.COMMITMENT_ACCEPTED) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Task status can only be updated to COMMITMENT_ACCEPTED through task commitment updates",
+        });
+      }
+
       if (!isValidStatusTransition(task.status, input.status)) {
         throw new TRPCError({
           code: "BAD_REQUEST",

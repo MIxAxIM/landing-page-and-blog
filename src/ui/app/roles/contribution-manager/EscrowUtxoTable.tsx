@@ -10,8 +10,13 @@ import { hexToString, stringToHex } from "@meshsdk/common"
 import { useEffect, useState } from "react"
 import { Button } from "~/components/ui/button"
 import DenyProjectDialog from "~/components/cardano/tx/project-manager/deny-project/DenyProjectDialog"
+import { usePendingAcceptProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingAcceptProjectCheck"
+import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck"
 
 export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos: DecodedEscrowUtxo[], treasuryNftPolicyId: string }) {
+  usePendingAcceptProjectCheck(treasuryNftPolicyId)
+  usePendingCommitProjectCheck(treasuryNftPolicyId)
+
   const { accessTokenAsset } = useAccessToken()
   const { taskCommitmentsByTreasury } = useTaskCommitment({ treasuryNftPolicyId: treasuryNftPolicyId })
 
@@ -82,13 +87,13 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                 <TableCell>
                   <div className="flex w-full gap-x-2 items-center h-full">
                     <AcceptProjectDialog
-                      taskCommitmentId={""}
+                      taskCommitmentId={tx.taskCommitmentId}
                       treasuryNftPolicyId={treasuryNftPolicyId}
                       contributorAlias={tx.contributorAlias}
                       userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
                     />
                     <DenyProjectDialog
-                      taskCommitmentId={""}
+                      taskCommitmentId={tx.taskCommitmentId}
                       treasuryNftPolicyId={treasuryNftPolicyId}
                       contributorAlias={tx.contributorAlias}
                       userAccessTokenUnit={accessTokenAsset?.unit ?? ""}

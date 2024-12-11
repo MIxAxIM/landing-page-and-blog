@@ -13,9 +13,6 @@ export default function GetRewardsDialog({
 		undefined,
 	);
 
-	if (successTxHash) {
-		alert("Success");
-	}
 	return (
 		<Dialog>
 			<DialogTrigger className="m-0 p-0">

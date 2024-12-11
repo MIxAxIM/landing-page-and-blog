@@ -247,6 +247,7 @@ export function useTask({
     },
     onError: (error) => {
       if (error.message.includes("Invalid status transition")) {
+        console.log("Invalid status transition updateTaskStatusMutation")
         toast.error(error.message);
       } else {
         toast.error("Failed to update task status");
@@ -261,6 +262,7 @@ export function useTask({
     },
     onError: (error) => {
       if (error.message.includes("Invalid status transition")) {
+        console.log("Invalid status transition updateTaskStatusesMutation")
         toast.error(error.message);
       } else {
         toast.error("Failed to update task status");

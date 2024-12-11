@@ -1,12 +1,12 @@
 import { api } from "~/utils/api";
-import { type TaskCommitmentStatus } from "@prisma/client";
+import { TaskCommitmentStatus } from "@prisma/client";
 import toast from "react-hot-toast";
 import { type TaskCommitment } from "~/types/db";
 
 type CreateTaskCommitmentInput = {
   taskId: string;
   contributorId: string;
-  status?: TaskCommitmentStatus;
+  status: "PENDING_TX_COMMITMENT_MADE" | "PENDING_TX_ADD_INFO";
   evidence?: Record<string, unknown>;
 };
 
@@ -66,7 +66,7 @@ export function useTaskCommitment({
 
   // Get all Commitments for a Treasury
   const { data: taskCommitmentsByTreasury = [] } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery(
-    treasuryNftPolicyId ?? "",
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
     { enabled: !!treasuryNftPolicyId }
   );
 
@@ -75,6 +75,9 @@ export function useTaskCommitment({
     await Promise.all([
       ctx.taskCommitment.getTaskCommitments.invalidate(),
       ctx.task.getTasks.invalidate(),
+      ctx.escrow.getEscrowById.invalidate(),
+      ctx.escrow.getEscrowByPolicyId.invalidate(),
+      ctx.treasuryValidator.getTreasuryInfo.invalidate(),
       id ? ctx.taskCommitment.getTaskCommitmentById.invalidate(id) : Promise.resolve(),
     ]);
   };
