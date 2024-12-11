@@ -12,12 +12,14 @@ import { BookIcon, School2Icon } from "lucide-react";
 import TaskStatusIndicator from "./status/TaskStatusIndicator";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
+import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
+import { useSession } from "next-auth/react";
 
-// TODO: Check that taskCommitment belongs to user
-const isClaimableByContributor = true;
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
+  const { data: sessionData } = useSession();
   const { translateCaps, translateCapsPlural } = useTerminology()
+  const { taskCommitments } = useTaskCommitment({ taskId: task.id, contributorId: sessionData?.user?.contributorId, status: "COMMITMENT_ACCEPTED" });
   const { treasury } = useTreasury(task.escrow?.treasuryId);
   const { escrowPrerequisites } = useEscrowPrerequisites({
     escrowId: task.escrow?.id,
@@ -52,8 +54,8 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
           </div>
         )}
 
-        {isClaimableByContributor && (
-          <GetRewardsDialog treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""} />
+        {taskCommitments[0] && (
+          <GetRewardsDialog treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""} taskCommitmentId={taskCommitments[0].id} />
         )}
 
         <div>

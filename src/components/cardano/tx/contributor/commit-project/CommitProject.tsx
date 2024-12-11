@@ -54,6 +54,7 @@ export default function CommitProject({
       // Don't attempt the query if we don't have an alias
       enabled: !!treasuryNftPolicyId && !!accessTokenAsset && !!project,
       // Don't retry on error since we expect some queries to fail
+      retry: false,
     },
   );
 

@@ -25,6 +25,7 @@ export interface CostBreakdown {
 interface TxFeeDetail {
   costDescription: CostDescription,
   lovelaceAmount?: number,
+  isPaidToUser?: boolean,
 }
 
 // Future development - add a real-time Cardano cost API
@@ -52,6 +53,19 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
             return {
               costDescription,
               lovelaceAmount: parseInt(txBody.outputs[costDescription.txOutputIndexes[0] ?? 0].amount.coin)
+            };
+          }
+
+          if (!!costDescription.txInputIndexes && !!costDescription.txInputIndexes[0] && costDescription.txOutputIndexes.length === 0) {
+            const utxos = await maestro.fetchUTxOs(
+              txBody.inputs[costDescription.txInputIndexes[0]].transaction_id,
+              txBody.inputs[costDescription.txInputIndexes[0]].index
+            )
+
+            return {
+              costDescription,
+              lovelaceAmount: parseInt(utxos[0]?.output.amount[0]?.quantity ?? "0"),
+              isPaidToUser: true
             };
           }
 
@@ -115,8 +129,8 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
               <span>{fee?.costDescription.description}</span>
               {!!unsignedTxCBOR && <InfoTooltip content={fee?.costDescription.tooltipText ?? ""} />}
             </div>
-            {!!fee?.lovelaceAmount ? (
-              <span>{fee.lovelaceAmount / 1000000} ADA</span>
+            {(!!fee?.lovelaceAmount || fee?.lovelaceAmount === 0) ? (
+              <span className={`${fee.lovelaceAmount < 0 && "text-success font-bold"}`}>{Math.abs(fee.lovelaceAmount / 1000000)} ada</span>
             ) : (
               <LoadingCircle />
             )}
@@ -127,10 +141,10 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
             <span>Cardano Tx Fee</span>
             {!!unsignedTxCBOR && <InfoTooltip content="Cardano tx fee" />}
           </div>
-          {!!cardanoTxFee ? (
-            <span>{(cardanoTxFee ?? 0) / 1000000} ADA</span>
+          {(!!cardanoTxFee || cardanoTxFee === 0) ? (
+            <span>{(cardanoTxFee ?? 0) / 1000000} ada</span>
           ) : (
-            <LoadingCircle />
+            <span>0 ada</span>
           )}
         </div>
         {costBreakdown.andamioNetworkFee > 0 && (
@@ -139,21 +153,19 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
               <span>Andamio Network Fee</span>
               {!!unsignedTxCBOR && <InfoTooltip content="Cost of using Andamio Network" />}
             </div>
-            <span>{costBreakdown.andamioNetworkFee / 1000000} ADA</span>
+            <span>{costBreakdown.andamioNetworkFee / 1000000} ada</span>
           </div>
         )}
         <div className="flex justify-between items-center font-bold">
           <span>Total</span>
-          <span>{total} ADA (~${!!total && (total * mockExchangeRate).toFixed(2)} USD)</span>
+          <span className={`${total && total < 0 && "text-success font-bold"}`}>{Math.abs(total ?? 0)} ada (~${!!total && (Math.abs(total) * mockExchangeRate).toFixed(2)} USD)</span>
         </div>
       </CardContent>
       {!!unsignedTxCBOR && (
         <div className="mt-6 p-4 bg-muted rounded-md">
           <h3 className="font-semibold mb-2">Refund and Adjustment Policies</h3>
           <p className="text-sm text-muted-foreground">
-            Refunds are available within 14 days of purchase if the project hasn't started.
-            Adjustments to costs may occur if project requirements change significantly.
-            Please contact support for more information.
+            Todo: we need a refund policy?
           </p>
         </div>
       )}

@@ -18,7 +18,7 @@ export function usePendingAcceptProjectCheck(treasuryNftPolicyId: string) {
 	const { data: escrowUtxos } = api.escrowValidator.getAllEscrowUtxosByTreasury.useQuery(
 		{ treasuryNftPolicyId },
 		{
-			enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 && !!pendingAcceptedCommitments,
+			enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 && !!pendingAcceptedCommitments && pendingAcceptedCommitments.length > 0,
 			refetchInterval: 10000,
 			onSuccess: async () => {
 				await Promise.all([

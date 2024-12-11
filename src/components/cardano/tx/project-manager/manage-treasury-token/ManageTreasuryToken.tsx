@@ -25,7 +25,7 @@ export default function ManageTreasuryToken({
 
 	const costBreakdown: CostBreakdown = {
 		costDescriptions: [
-			{ txOutputIndexes: [0], description: "Define costs here", tooltipText: "Tooltip info" },
+			{ txInputIndexes: [0], txOutputIndexes: [0], description: "Updated Min UTxO", tooltipText: "When you add more tasks to a Treasury, the utxo might need a bit more lovelace" },
 		],
 		andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
 	}
@@ -44,6 +44,7 @@ export default function ManageTreasuryToken({
 		{
 			// Don't attempt the query without inputs 
 			enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
+			retry: false,
 		}
 	);
 

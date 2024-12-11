@@ -48,7 +48,7 @@ const isValidStatusTransition = (
     COMMITMENT_DENIED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
 
     PENDING_TX_COMMITMENT_ACCEPTED: [TaskCommitmentStatus.COMMITMENT_ACCEPTED],
-    COMMITMENT_ACCEPTED: [TaskCommitmentStatus.ARCHIVED],
+    COMMITMENT_ACCEPTED: [TaskCommitmentStatus.ARCHIVED, TaskCommitmentStatus.PENDING_TX_GET_REWARDS],
 
     PENDING_TX_GET_REWARDS: [TaskCommitmentStatus.REWARDS_CLAIMED],
     REWARDS_CLAIMED: [TaskCommitmentStatus.ARCHIVED],
