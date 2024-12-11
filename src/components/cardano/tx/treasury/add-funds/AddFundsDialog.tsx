@@ -48,48 +48,55 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
 
   return (
     <Dialog>
-      <DialogTrigger className="rounded-md border border-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground my-3">Add Funds</DialogTrigger>
-      <DialogContent>
-        {successTxHash ? (
-          <SuccessTxModalContent
-            txName="Add Funds"
-            nextStepLinks={[]}
-            txHash={successTxHash}
-          />
-        ) : (
-          <>
-            {connected ? (
+      <DialogTrigger className="rounded-md border border-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground my-3">Add Funds HERE</DialogTrigger>
+      <DialogContent className="max-w-7xl">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-2">
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName="Add Funds"
+                nextStepLinks={[]}
+                txHash={successTxHash}
+              />
+            ) : (
               <>
-                <h2>Add Funds</h2>
-                {/* About this Module */}
-                <h2>About</h2>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormLabel>Andamio Token Name</FormLabel>
-                    <FormInput
-                      {...register("adaAmount")}
-                      name="adaAmount"
-                      placeholder="100"
-                      form={form}
-                    />
-                    <Button>Submit</Button>
-                  </form>
-                </Form>
-                {connected && adaToDeposit && treasuryNftPolicyId && (
+                {connected ? (
                   <>
-                    <AddFunds
-                      treasuryNftPolicyId={treasuryNftPolicyId}
-                      adaAmount={adaToDeposit}
-                      setSuccessTxHash={setSuccessTxHash}
-                    />
+                    <h2>Add Funds</h2>
+                    {/* About this Module */}
+                    <h2>About</h2>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormLabel>Funds to Add:</FormLabel>
+                        <FormInput
+                          {...register("adaAmount")}
+                          name="adaAmount"
+                          placeholder="100"
+                          form={form}
+                        />
+                        <Button>Submit</Button>
+                      </form>
+                    </Form>
                   </>
+                ) : (
+                  <CardanoWallet />
                 )}
               </>
-            ) : (
-              <CardanoWallet />
             )}
-          </>
-        )}
+          </div>
+          <div>
+            {connected && adaToDeposit && treasuryNftPolicyId && (
+              <>
+                <AddFunds
+                  treasuryNftPolicyId={treasuryNftPolicyId}
+                  adaAmount={adaToDeposit}
+                  setSuccessTxHash={setSuccessTxHash}
+                />
+              </>
+            )}
+
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

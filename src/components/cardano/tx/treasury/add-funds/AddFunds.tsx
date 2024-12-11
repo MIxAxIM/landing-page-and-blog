@@ -2,6 +2,7 @@ import { api } from "~/utils/api";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useAddress, useWallet } from "@meshsdk/react";
+import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function AddFunds({
   treasuryNftPolicyId,
@@ -14,6 +15,13 @@ export default function AddFunds({
 }) {
   const address = useAddress();
   const { wallet } = useWallet();
+
+  const costBreakdown: CostBreakdown = {
+    costDescriptions: [
+      { txOutputIndexes: [0], description: "To deposit in Treasury", tooltipText: "These funds will be used for tasks in this Project" },
+    ],
+    andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
+  }
 
   const {
     data: unsignedTxCBOR,
@@ -43,11 +51,14 @@ export default function AddFunds({
   }
 
   return (
-    <TransactionContainer
-      buttonText={`Add Ada to Treasury`}
-      unsignedTxCBOR={unsignedTxCBOR}
-      wallet={wallet}
-      setSuccessTxHash={setSuccessTxHash}
-    />
+    <div className="flex flex-col w-full mx-auto">
+      <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
+      <TransactionContainer
+        buttonText={`Add Ada to Treasury`}
+        unsignedTxCBOR={unsignedTxCBOR}
+        wallet={wallet}
+        setSuccessTxHash={setSuccessTxHash}
+      />
+    </div >
   );
 }
