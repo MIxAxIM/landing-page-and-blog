@@ -4,13 +4,18 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
+import { useSession } from "next-auth/react";
 
+// TODO: Get tx costs
 export default function CommitProject({
+  taskId,
   treasuryNftPolicyId,
   project,
   info,
   setSuccessTxHash,
 }: {
+  taskId: string;
   treasuryNftPolicyId: string;
   project: string;
   info?: string;
@@ -18,6 +23,9 @@ export default function CommitProject({
 }) {
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
+  const { data: sessionData } = useSession()
+
+  const { createTaskCommitment } = useTaskCommitment({})
 
   // Any tx will have a set of outputs.
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
@@ -49,6 +57,15 @@ export default function CommitProject({
     },
   );
 
+
+  const handleStatusChange = async () => {
+    createTaskCommitment({
+      taskId: taskId,
+      contributorId: sessionData?.user?.contributorId ?? ""
+    });
+  };
+
+
   if (txError) {
     return (
       <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
@@ -66,6 +83,7 @@ export default function CommitProject({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
       />
     </div >
   );

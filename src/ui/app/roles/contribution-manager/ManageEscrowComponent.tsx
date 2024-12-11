@@ -121,7 +121,7 @@ export default function ManageEscrowComponent({
               <EnrolledContributors treasuryNftPolicyId={treasuryNftPolicyId} />
             </div>
             <div className="col-span-10 flex flex-col">
-              <EscrowUtxoTable utxos={escrowUtxos ?? []} />
+              <EscrowUtxoTable utxos={escrowUtxos ?? []} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
             </div>
           </>
         )}

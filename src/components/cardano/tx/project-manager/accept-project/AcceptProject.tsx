@@ -37,7 +37,7 @@ export default function AcceptProject({
 		contributorAlias: contributorAlias,
 		treasuryNftPolicyId: treasuryNftPolicyId,
 	})
-
+	// RETURN HERE
 	// TODO: implement polling to update from PENDING_TX_COMMITMENT_ACCEPTED to COMMITMENT_ACCEPTED
 	const handleStatusChange = async () => {
 		updateTaskCommitmentStatus({
@@ -68,3 +68,5 @@ export default function AcceptProject({
 		</div>
 	);
 }
+
+

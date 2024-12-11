@@ -25,6 +25,7 @@ type UpdateTaskCommitmentStatusInput = {
 interface UseTaskCommitmentReturn {
   taskCommitment: TaskCommitment | null | undefined;
   taskCommitments: TaskCommitment[];
+  taskCommitmentsByTreasury: TaskCommitment[];
   isLoading: boolean;
   createTaskCommitment: (data: CreateTaskCommitmentInput) => void;
   updateTaskCommitmentEvidence: (data: UpdateTaskCommitmentEvidenceInput) => void;
@@ -40,11 +41,13 @@ export function useTaskCommitment({
   taskId,
   contributorId,
   status,
+  treasuryNftPolicyId,
 }: {
   id?: string;
   taskId?: string;
   contributorId?: string;
   status?: TaskCommitmentStatus;
+  treasuryNftPolicyId?: string;
 }): UseTaskCommitmentReturn {
   const ctx = api.useUtils();
 
@@ -58,6 +61,13 @@ export function useTaskCommitment({
   const { data: taskCommitments = [] } = api.taskCommitment.getTaskCommitments.useQuery(
     { taskId, contributorId, status },
     { enabled: !id }
+  );
+
+
+  // Get all Commitments for a Treasury
+  const { data: taskCommitmentsByTreasury = [] } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery(
+    treasuryNftPolicyId ?? "",
+    { enabled: !!treasuryNftPolicyId }
   );
 
   // Helper function to invalidate and refetch queries
@@ -136,6 +146,7 @@ export function useTaskCommitment({
   return {
     taskCommitment,
     taskCommitments,
+    taskCommitmentsByTreasury,
     isLoading,
     createTaskCommitment: createMutation.mutate,
     updateTaskCommitmentEvidence: updateTaskCommitmentEvidenceMutation.mutate,

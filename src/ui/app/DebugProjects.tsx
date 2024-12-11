@@ -73,6 +73,7 @@ export default function DebugProjects() {
       {treasuryInfo?.projects.map((p) => (
         <div key={p.project_hash}>
           <CommitProject
+            taskId={""}
             treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId ?? ""}
             project={p.project_hash}
             info="Got it done!"

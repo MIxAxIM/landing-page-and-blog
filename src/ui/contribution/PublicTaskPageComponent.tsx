@@ -11,6 +11,10 @@ import Link from "next/link";
 import { BookIcon, School2Icon } from "lucide-react";
 import TaskStatusIndicator from "./status/TaskStatusIndicator";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
+import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
+
+// TODO: Check that taskCommitment belongs to user
+const isClaimableByContributor = true;
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
   const { translateCaps, translateCapsPlural } = useTerminology()
@@ -46,6 +50,10 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
             <h2>Commit to this task</h2>
             <CommitProjectDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} taskId={task.id} disabled={false} />
           </div>
+        )}
+
+        {isClaimableByContributor && (
+          <GetRewardsDialog treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""} />
         )}
 
         <div>

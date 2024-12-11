@@ -87,7 +87,6 @@ export const taskCommitmentRouter = createTRPCRouter({
                 select: {
                   id: true,
                   name: true,
-                  email: true,
                   image: true,
                 },
               },
@@ -114,7 +113,6 @@ export const taskCommitmentRouter = createTRPCRouter({
                 select: {
                   id: true,
                   name: true,
-                  email: true,
                   image: true,
                 },
               },
@@ -124,6 +122,45 @@ export const taskCommitmentRouter = createTRPCRouter({
       });
     }),
 
+  getTaskCommitmentsByTreasury: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input: treasuryNftPolicyId }) => {
+      const taskCommitments = await ctx.db.taskCommitment.findMany({
+        where: {
+          task: {
+            escrow: {
+              treasury: {
+                treasuryNftPolicyId,
+              },
+            },
+          },
+        },
+        include: {
+          task: {
+            include: {
+              escrow: true,
+            },
+          },
+          contributor: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: [
+          { updated: 'desc' },
+          { created: 'desc' },
+        ],
+      });
+
+      return taskCommitments;
+    }),
 
   // Protected procedures
   createTaskCommitment: protectedProcedure

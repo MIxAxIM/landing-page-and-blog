@@ -32,6 +32,8 @@ export default function CommitProjectDialog({
   );
   const { task } = useTask({ id: taskId });
 
+  // TODO: 
+  // What goes on-chain does not match task.tashHash - ask Adrian why?
   const apiProject = {
     pdProjectContent_: task?.taskHash ?? "",
     pdExpirationTime_: parseInt(task?.expirationTime ?? "0"),
@@ -81,6 +83,7 @@ export default function CommitProjectDialog({
                 "Enter Assignment Info, then press Commit to sign a transaction."}
 
               <CommitProject
+                taskId={taskId}
                 treasuryNftPolicyId={treasuryNftPolicyId}
                 project={JSON.stringify(apiProject)}
                 info={"Testing!"}
