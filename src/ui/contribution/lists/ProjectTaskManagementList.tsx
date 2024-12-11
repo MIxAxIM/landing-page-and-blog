@@ -201,7 +201,7 @@ export default function ProjectTaskManagementList({
                               </PopoverContent>
                             </Popover>
                             <p className="prose"># Commitments Allowed: {validateNetworkTask(task)?.commitment_allowed}</p>
-                            <p className="prose text-xs">Network Hash: {validateNetworkTask(task)?.allowed_contributors}</p>
+                            <p className="prose text-xs">Project Hash on Andamio Network: {validateNetworkTask(task)?.project_hash}</p>
                           </>
                         ) : (
                           <>

@@ -12,10 +12,12 @@ import { Button } from "~/components/ui/button"
 import DenyProjectDialog from "~/components/cardano/tx/project-manager/deny-project/DenyProjectDialog"
 import { usePendingAcceptProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingAcceptProjectCheck"
 import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck"
+import { usePendingGetRewards } from "~/hooks/cardano-indexer-api/polling/usePendingGetRewards"
 
 export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos: DecodedEscrowUtxo[], treasuryNftPolicyId: string }) {
   usePendingAcceptProjectCheck(treasuryNftPolicyId)
   usePendingCommitProjectCheck(treasuryNftPolicyId)
+  usePendingGetRewards(treasuryNftPolicyId)
 
   const { accessTokenAsset } = useAccessToken()
   const { taskCommitmentsByTreasury } = useTaskCommitment({ treasuryNftPolicyId: treasuryNftPolicyId })
