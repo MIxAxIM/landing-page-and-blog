@@ -32,7 +32,7 @@ export default function CommitProjectDialog({
   );
   const { task } = useTask({ id: taskId });
 
-  // TODO: 
+  // TODO:
   // What goes on-chain does not match task.tashHash - ask Adrian why?
   const apiProject = {
     pdProjectContent_: task?.taskHash ?? "",
@@ -57,7 +57,7 @@ export default function CommitProjectDialog({
             Commit to Task
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-7xl">
+        <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
           <div className="grid grid-cols-2 gap-8">
             <div className="p-2">
               <DialogHeader>

@@ -10,6 +10,7 @@ import { Form } from "~/components/ui/form";
 import FormLabel from "~/components/form/form-label";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import AddFunds from "./AddFunds";
+import Image from "next/image";
 
 export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPolicyId: string }) {
   const { connected } = useWallet();
@@ -48,10 +49,10 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
 
   return (
     <Dialog>
-      <DialogTrigger className="rounded-md border border-primary px-3 py-1 hover:bg-primary hover:text-primary-foreground my-3">Add Funds HERE</DialogTrigger>
-      <DialogContent className="max-w-7xl">
+      <DialogTrigger className="rounded-md bg-secondary text-secondary-foreground px-3 py-1 hover:bg-primary hover:text-primary-foreground my-3">Add Funds</DialogTrigger>
+      <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">
-          <div className="p-2">
+          <div className="space-y-4 my-12">
             {successTxHash ? (
               <SuccessTxModalContent
                 txName="Add Funds"
@@ -59,33 +60,36 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
                 txHash={successTxHash}
               />
             ) : (
-              <>
+              <div className="space-y-4">
                 {connected ? (
                   <>
-                    <h2>Add Funds</h2>
+                    <h1>Add Funds to Project Treasury</h1>
                     {/* About this Module */}
-                    <h2>About</h2>
+                    <p className="prose">
+                      Lock funds in a Treasury so Contributors can earn rewards for completing tasks. The funds can only be claimed by qualifited contributors when you approve the work.
+                    </p>
                     <Form {...form}>
                       <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <FormLabel>Funds to Add:</FormLabel>
+                        <FormLabel>Amount of Ada</FormLabel>
                         <FormInput
                           {...register("adaAmount")}
                           name="adaAmount"
                           placeholder="100"
                           form={form}
+                          className="h-12 text-2xl"
                         />
-                        <Button>Submit</Button>
+                        <Button className="my-12">Submit</Button>
                       </form>
                     </Form>
                   </>
                 ) : (
                   <CardanoWallet />
                 )}
-              </>
+              </div>
             )}
           </div>
           <div>
-            {connected && adaToDeposit && treasuryNftPolicyId && (
+            {connected && adaToDeposit && treasuryNftPolicyId ? (
               <>
                 <AddFunds
                   treasuryNftPolicyId={treasuryNftPolicyId}
@@ -93,6 +97,11 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
                   setSuccessTxHash={setSuccessTxHash}
                 />
               </>
+            ) : (
+
+              <div className="flex w-full h-full items-center justify-center">
+                <Image src="/andamio.png" width="200" height="200" alt="andamio" />
+              </div>
             )}
 
           </div>

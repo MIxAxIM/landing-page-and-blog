@@ -20,7 +20,7 @@ export default function GetRewardsDialog({
       <DialogTrigger className="m-0 p-0">
         <Button size="sm">Claim Rewards</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl">
+      <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">
           <div className="p-2">
             <h3>Claim Rewards</h3>

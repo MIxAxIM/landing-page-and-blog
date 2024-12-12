@@ -35,7 +35,7 @@ export default function BurnModuleTokensDialog({
             Burn Module Token
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-7xl">
+        <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
           <div className="grid grid-cols-2 gap-8">
             <div className="p-2">
               <DialogHeader>

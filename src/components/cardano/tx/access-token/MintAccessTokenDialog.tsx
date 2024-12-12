@@ -89,7 +89,7 @@ export default function MintAccessTokenDialog() {
           Mint Andamio Network Token
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-7xl">
+      <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         {successTxHash ? (
           <SuccessTxModalContent
             txName="Mint Access Token"
