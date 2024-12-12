@@ -37,7 +37,8 @@
       "react": [
         "./node_modules/@types/react"
       ]
-    }
+    },
+    "tabSize": 2,
   },
   "include": [
     ".eslintrc.cjs",
