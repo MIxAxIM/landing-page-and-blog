@@ -44,21 +44,38 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectStateMintingParams: ProjectStateMintingParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-        prerequisite: input.prerequisite,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectStateMintingParams
-      >(`/tx/contributor/mint-project-state`, projectStateMintingParams);
+      try {
+        const projectStateMintingParams: ProjectStateMintingParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+          prerequisite: input.prerequisite,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectStateMintingParams
+        >(`/tx/contributor/mint-project-state`, projectStateMintingParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
-  // TODO: Apply improved pattern from this tx to other
   commitProject: publicProcedure
     .input(
       z.object({
@@ -112,18 +129,36 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectAddInfoParams: ProjectAddInfoParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-        info: input.info,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectAddInfoParams
-      >(`/tx/contributor/add-info`, projectAddInfoParams);
+      try {
+        const projectAddInfoParams: ProjectAddInfoParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+          info: input.info,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectAddInfoParams
+        >(`/tx/contributor/add-info`, projectAddInfoParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   burnContributorState: publicProcedure
@@ -134,17 +169,35 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const burnContributorStateParams: ProjectStateBurningParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectStateBurningParams
-      >(`/tx/contributor/burn-contributor-state`, burnContributorStateParams);
+      try {
+        const burnContributorStateParams: ProjectStateBurningParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectStateBurningParams
+        >(`/tx/contributor/burn-contributor-state`, burnContributorStateParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   getRewards: publicProcedure
@@ -155,17 +208,35 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const getRewardsParams: GetRewardsParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        GetRewardsParams
-      >(`/tx/contributor/get-rewards`, getRewardsParams);
+      try {
+        const getRewardsParams: GetRewardsParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          GetRewardsParams
+        >(`/tx/contributor/get-rewards`, getRewardsParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   unlockProject: publicProcedure
@@ -176,16 +247,34 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const unlockProjectParams: GetRewardsParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        GetRewardsParams
-      >(`/tx/contributor/unlock-project`, unlockProjectParams);
+      try {
+        const unlockProjectParams: GetRewardsParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          GetRewardsParams
+        >(`/tx/contributor/unlock-project`, unlockProjectParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 });

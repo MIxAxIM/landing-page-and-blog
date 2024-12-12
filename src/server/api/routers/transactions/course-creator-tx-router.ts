@@ -1,4 +1,5 @@
 
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
@@ -26,18 +27,36 @@ export const courseCreatorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const moduleMintingParams: ModuleMintingParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.courseNftPolicyId,
-        module_infos: input.moduleInfos,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ModuleMintingParams
-      >(`/tx/course-creator/mint-module-tokens`, moduleMintingParams);
+      try {
+        const moduleMintingParams: ModuleMintingParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.courseNftPolicyId,
+          module_infos: input.moduleInfos,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ModuleMintingParams
+        >(`/tx/course-creator/mint-module-tokens`, moduleMintingParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build minting transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   acceptAssignment: publicProcedure
@@ -49,18 +68,36 @@ export const courseCreatorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const acceptAssignmentParams: AssignmentAcceptanceParams = {
-        user_access_token: input.userAccessTokenUnit,
-        student_alias: input.studentAlias,
-        policy: input.courseNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        AssignmentAcceptanceParams
-      >(`/tx/course-creator/accept-assignment`, acceptAssignmentParams);
+      try {
+        const acceptAssignmentParams: AssignmentAcceptanceParams = {
+          user_access_token: input.userAccessTokenUnit,
+          student_alias: input.studentAlias,
+          policy: input.courseNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          AssignmentAcceptanceParams
+        >(`/tx/course-creator/accept-assignment`, acceptAssignmentParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build accept assignment transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   denyAssignment: publicProcedure
@@ -72,17 +109,35 @@ export const courseCreatorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const denyAssignmentParams: AssignmentAcceptanceParams = {
-        user_access_token: input.userAccessTokenUnit,
-        student_alias: input.studentAlias,
-        policy: input.courseNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        AssignmentAcceptanceParams
-      >(`/tx/course-creator/deny-assignment`, denyAssignmentParams);
+      try {
+        const denyAssignmentParams: AssignmentAcceptanceParams = {
+          user_access_token: input.userAccessTokenUnit,
+          student_alias: input.studentAlias,
+          policy: input.courseNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          AssignmentAcceptanceParams
+        >(`/tx/course-creator/deny-assignment`, denyAssignmentParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build deny assignment transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 });

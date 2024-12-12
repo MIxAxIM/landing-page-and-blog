@@ -38,20 +38,41 @@ export const projectManagerTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectMintingParams: ProjectMintingParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-        allowed_contributors: input.allowedContributors,
-        projects: input.projects,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectMintingParams
-      >(`/tx/project-manager/mint-project-token`, projectMintingParams);
+      try {
+        const projectMintingParams: ProjectMintingParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+          allowed_contributors: input.allowedContributors,
+          projects: input.projects,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectMintingParams
+        >(`/tx/project-manager/mint-project-token`, projectMintingParams);
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build minting transaction");
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
+        return unsignedTxCBOR;
+      }
+
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
+
 
   manageTreasuryToken: publicProcedure
     .input(
@@ -63,19 +84,38 @@ export const projectManagerTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const manageTreasuryTokenParams: ProjectMintingParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-        allowed_contributors: input.allowedContributors,
-        projects: input.projects,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectMintingParams
-      >(`/tx/project-manager/manage-treasury-token`, manageTreasuryTokenParams);
+      try {
+        const manageTreasuryTokenParams: ProjectMintingParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+          allowed_contributors: input.allowedContributors,
+          projects: input.projects,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectMintingParams
+        >(`/tx/project-manager/manage-treasury-token`, manageTreasuryTokenParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build minting transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   acceptProject: publicProcedure
@@ -130,18 +170,37 @@ export const projectManagerTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectDenyParams: ProjectAcceptDenyParams = {
-        user_access_token: input.userAccessTokenUnit,
-        contributor_alias: input.contributorAlias,
-        policy: input.treasuryNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectAcceptDenyParams
-      >(`/tx/project-manager/deny-project`, projectDenyParams);
+      try {
+        const projectDenyParams: ProjectAcceptDenyParams = {
+          user_access_token: input.userAccessTokenUnit,
+          contributor_alias: input.contributorAlias,
+          policy: input.treasuryNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectAcceptDenyParams
+        >(`/tx/project-manager/deny-project`, projectDenyParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build minting transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   addFunds: publicProcedure
@@ -153,17 +212,40 @@ export const projectManagerTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const treasuryAddFundsParams: TreasuryAddFundsParams = {
-        policy: input.treasuryNftPolicyId,
-        user_address: input.dipositorsAddress,
-        amount: input.adaAmount.toString(),
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        TreasuryAddFundsParams
-      >(`/tx/treasury/add-funds`, treasuryAddFundsParams);
+      try {
+        const treasuryAddFundsParams: TreasuryAddFundsParams = {
+          policy: input.treasuryNftPolicyId,
+          user_address: input.dipositorsAddress,
+          amount: input.adaAmount.toString(),
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          TreasuryAddFundsParams
+        >(`/tx/treasury/add-funds`, treasuryAddFundsParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 });
+
+
+
+

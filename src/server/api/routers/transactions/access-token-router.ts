@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
@@ -18,17 +19,35 @@ export const accessTokenTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const accessTokenMintingParams: AccessTokenMintingParams = {
-        user_address: input.userAddress,
-        new_alias: input.alias,
-        user_info: "Andamio Access Token",
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        AccessTokenMintingParams
-      >(`/tx/access-token/mint`, accessTokenMintingParams);
+      try {
+        const accessTokenMintingParams: AccessTokenMintingParams = {
+          user_address: input.userAddress,
+          new_alias: input.alias,
+          user_info: "Andamio Access Token",
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          AccessTokenMintingParams
+        >(`/tx/access-token/mint`, accessTokenMintingParams);
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not mint access token");
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 });
