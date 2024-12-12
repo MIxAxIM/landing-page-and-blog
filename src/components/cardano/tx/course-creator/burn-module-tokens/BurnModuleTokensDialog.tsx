@@ -35,28 +35,34 @@ export default function BurnModuleTokensDialog({
             Burn Module Token
           </Button>
         </DialogTrigger>
-        <DialogContent className="p-6">
-          <DialogHeader>
-            <DialogTitle>Burn (remove) Module Token</DialogTitle>
-            <DialogDescription>
-              Disable the on-chain credential for this course module by burning the module token
-            </DialogDescription>
-          </DialogHeader>
-          {!connected && "Please connect a wallet."}
-          {!!connected &&
-            "Press Commit to sign the transaction."}
+        <DialogContent className="max-w-7xl">
+          <div className="grid grid-cols-2 gap-8">
+            <div className="p-2">
+              <DialogHeader>
+                <DialogTitle>Burn (remove) Module Token</DialogTitle>
+                <DialogDescription>
+                  Disable the on-chain credential for this course module by burning the module token
+                </DialogDescription>
+              </DialogHeader>
+              {!connected && "Please connect a wallet."}
+              {!!connected &&
+                "Press Commit to sign the transaction."}
 
-          <BurnModuleTokens
-            accessTokenAssetId={accessTokenAssetId}
-            courseNftPolicyId={courseNftPolicyId}
-            courseModuleOverview={courseModuleOverview}
-            setSuccessTxHash={setSuccessTxHash}
-          />
-          <DialogFooter>
-            <p className="pt-5 text-xs font-bold">
-              Learn more...
-            </p>
-          </DialogFooter>
+              <DialogFooter>
+                <p className="pt-5 text-xs font-bold">
+                  Learn more...
+                </p>
+              </DialogFooter>
+            </div>
+            <div className="p-2">
+              <BurnModuleTokens
+                accessTokenAssetId={accessTokenAssetId}
+                courseNftPolicyId={courseNftPolicyId}
+                courseModuleOverview={courseModuleOverview}
+                setSuccessTxHash={setSuccessTxHash}
+              />
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </>

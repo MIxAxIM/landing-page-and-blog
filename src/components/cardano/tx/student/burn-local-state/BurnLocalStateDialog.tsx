@@ -22,16 +22,22 @@ export default function BurnLocalStateDialog({
       <DialogTrigger className="m-0 p-0">
         <Button size="sm">Leave Course + Receive Credential</Button>
       </DialogTrigger>
-      <DialogContent>
-        <h3>Leave Course + Receive Credential</h3>
-        <p className="prose">
-          You can leave a course any time. When you do, you will earn an Andamio credential for the course modules you have completed. Then, you will be able to use this credential to join projects.
-        </p>
-        <BurnLocalState
-          accessTokenAssetId={accessTokenAssetId}
-          courseNftPolicyId={courseNftPolicyId}
-          setSuccessTxHash={setSuccessTxHash}
-        />
+      <DialogContent className="max-w-7xl">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-2">
+            <h3>Leave Course + Receive Credential</h3>
+            <p className="prose">
+              You can leave a course any time. When you do, you will earn an Andamio credential for the course modules you have completed. Then, you will be able to use this credential to join projects.
+            </p>
+          </div>
+          <div className="p-2">
+            <BurnLocalState
+              accessTokenAssetId={accessTokenAssetId}
+              courseNftPolicyId={courseNftPolicyId}
+              setSuccessTxHash={setSuccessTxHash}
+            />
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

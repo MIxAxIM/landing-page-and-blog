@@ -31,46 +31,51 @@ export default function AcceptDenyAssignmentDialog({
         {decision === "accept" && <Button>Accept Assignment Commitment</Button>}
         {decision === "deny" && <Button>Deny Assignment Commitment</Button>}
       </DialogTrigger>
-      <DialogContent>
-        {successTxHash ? (
-          <SuccessTxModalContent
-            txName={
-              decision === "accept" ? "Accept Assignment" : "Deny Assignment"
-            }
-            nextStepLinks={nextSteps}
-            txHash={successTxHash}
-          />
-        ) : (
-          <>
-            {decision === "accept" && (
+      <DialogContent className="max-w-7xl">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-2">
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName={
+                  decision === "accept" ? "Accept Assignment" : "Deny Assignment"
+                }
+                nextStepLinks={nextSteps}
+                txHash={successTxHash}
+              />
+            ) : (
               <>
-                <h1>Publish Credential Criteria</h1>
-                <h2>
-                  What it means to publish credential criteria
-                </h2>
-                <p>
-                  By accepting this assignment commitment, you will issue a
-                  credential to {studentAlias} asserting that this assignment is
-                  complete. Did {studentAlias} provide sufficient evidence that
-                  the Assignment is complete?
-                </p>
-                <p>If yes, then you can put this credential on-chain!</p>
+                {decision === "accept" && (
+                  <>
+                    <h1>Publish Credential Criteria</h1>
+                    <h2>
+                      What it means to publish credential criteria
+                    </h2>
+                    <p>
+                      By accepting this assignment commitment, you will issue a
+                      credential to {studentAlias} asserting that this assignment is
+                      complete. Did {studentAlias} provide sufficient evidence that
+                      the Assignment is complete?
+                    </p>
+                    <p>If yes, then you can put this credential on-chain!</p>
+                  </>
+                )}
+                {decision === "deny" && (
+                  <>
+                    <h1>Deny Assignment Submission</h1>
+                    <h2>
+                      What it means to deny an Assignment
+                    </h2>
+                    <p>
+                      {studentAlias} will still be committed to this Assignment and
+                      will be able to resubmit evidence of completion. Be sure to
+                      communicate with learners about their assignment status.
+                    </p>
+                  </>
+                )}
               </>
             )}
-            {decision === "deny" && (
-              <>
-                <h1>Deny Assignment Submission</h1>
-                <h2>
-                  What it means to deny an Assignment
-                </h2>
-                <p>
-                  {studentAlias} will still be committed to this Assignment and
-                  will be able to resubmit evidence of completion. Be sure to
-                  communicate with learners about their assignment status.
-                </p>
-              </>
-            )}
-            {/* What it means to mint a Module */}
+          </div>
+          <div className="p-2">
             <AcceptDenyAssignment
               courseNftPolicy={courseNftPolicy}
               userAccessTokenUnit={userAccessTokenUnit}
@@ -78,8 +83,8 @@ export default function AcceptDenyAssignmentDialog({
               decision={decision}
               setSuccessTxHash={setSuccessTxHash}
             />
-          </>
-        )}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

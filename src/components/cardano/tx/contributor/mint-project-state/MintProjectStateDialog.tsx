@@ -46,35 +46,39 @@ export default function MintProjectStateDialog({
       <DialogTrigger>
         <Button disabled={!connected || !accessTokenAlias}>Join Project</Button>
       </DialogTrigger>
-      <DialogContent className="flex items-center justify-center justify-items-center">
-        {successTxHash ? (
-          <SuccessTxModalContent
-            txName="Join Project Tx"
-            nextStepLinks={nextSteps}
-            txHash={successTxHash}
-          />
-        ) : (
-          <DialogHeader>
-            <DialogTitle className="py-4">
-              Ready to join this Project?
-            </DialogTitle>
-            <pre className="text-[6pt]">{treasuryNftPolicyId}</pre>
-            <pre className="text-[6pt]">
-              Contributor CS:{" "}
-              {!!contributorPolicies &&
-                contributorPolicies[0]?.contributorPolicy}
-            </pre>
-            <div className="space-y-2">
-              {contributorPolicies && contributorPolicies[0] && (
-                <MintProjectState
-                  treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
-                  contributorPolicyId={contributorPolicies[0].contributorPolicy}
-                  setSuccessTxHash={setSuccessTxHash}
-                />
-              )}
-            </div>
-          </DialogHeader>
-        )}
+      <DialogContent className="max-w-7xl">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="p-2">
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName="Join Project Tx"
+                nextStepLinks={nextSteps}
+                txHash={successTxHash}
+              />
+            ) : (
+              <DialogHeader>
+                <DialogTitle className="py-4">
+                  Ready to join this Project?
+                </DialogTitle>
+                <pre className="text-[6pt]">{treasuryNftPolicyId}</pre>
+                <pre className="text-[6pt]">
+                  Contributor CS:{" "}
+                  {!!contributorPolicies &&
+                    contributorPolicies[0]?.contributorPolicy}
+                </pre>
+              </DialogHeader>
+            )}
+          </div>
+          <div className="p-2">
+            {contributorPolicies && contributorPolicies[0] && (
+              <MintProjectState
+                treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+                contributorPolicyId={contributorPolicies[0].contributorPolicy}
+                setSuccessTxHash={setSuccessTxHash}
+              />
+            )}
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

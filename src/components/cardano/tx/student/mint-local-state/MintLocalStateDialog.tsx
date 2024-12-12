@@ -8,11 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "~/components/ui/collapsible";
 import { Button } from "~/components/ui/button";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
@@ -74,71 +69,59 @@ export default function MintLocalStateDialog({
           <DialogTrigger>
             <Button>Enroll</Button>
           </DialogTrigger>
-          <DialogContent className="flex items-center justify-center justify-items-center">
-            {successTxHash ? (
-              <SuccessTxModalContent
-                txName="Course Enrollment"
-                nextStepLinks={nextSteps}
-                txHash={successTxHash}
-              />
-            ) : (
-              <DialogHeader>
-                <DialogTitle className="py-4">
-                  Thinking of taking this course?
-                </DialogTitle>
-                <DialogDescription>
-                  {!isOpen && (
-                    <div className="py-4 text-xs text-black hover:font-semibold hover:text-primary sm:justify-start">
-                      <Link href={`/course/${courseCode}`}>
-                        I&apos;ll do it after taking a look inside first
-                      </Link>
-                    </div>
-                  )}
-                  <Collapsible
-                    open={isOpen}
-                    onOpenChange={setIsOpen}
-                    className="w-[350px] space-y-2 py-4"
-                  >
-                    <div className="flex w-full items-center justify-center">
-                      <CollapsibleTrigger asChild>
-                        <Button>
-                          {isOpen ? <>Back</> : <>Enroll On Andamio Network</>}
-                        </Button>
-                      </CollapsibleTrigger>
-                    </div>
-
-                    <CollapsibleContent className="space-y-2">
+          <DialogContent className="max-w-7xl">
+            <div className="grid grid-cols-2 gap-8">
+              <div className="p-2">
+                {successTxHash ? (
+                  <SuccessTxModalContent
+                    txName="Course Enrollment"
+                    nextStepLinks={nextSteps}
+                    txHash={successTxHash}
+                  />
+                ) : (
+                  <DialogHeader>
+                    <DialogTitle className="py-4">
+                      Thinking of taking this course?
+                    </DialogTitle>
+                    <DialogDescription>
+                      {!isOpen && (
+                        <div className="py-4 text-xs text-black hover:font-semibold hover:text-primary sm:justify-start">
+                          <Link href={`/course/${courseCode}`}>
+                            I&apos;ll do it after taking a look inside first
+                          </Link>
+                        </div>
+                      )}
+                    </DialogDescription>
+                  </DialogHeader>
+                )}
+              </div>
+              <div className="p-2">
+                {!connected ? (
+                  <CardanoWallet />
+                ) : (
+                  <>
+                    {isEnrolled ? (
+                      <div>Currently Enrolled</div>
+                    ) : (
                       <>
-                        {!connected ? (
-                          <CardanoWallet />
+                        {accessTokenAsset &&
+                          !!courseNftPolicyId ? (
+                          <MintLocalState
+                            userAccessTokenUnit={accessTokenAsset.unit}
+                            courseNftPolicyId={
+                              courseNftPolicyId
+                            }
+                            setSuccessTxHash={setSuccessTxHash}
+                          />
                         ) : (
-                          <>
-                            {isEnrolled ? (
-                              <div>Currently Enrolled</div>
-                            ) : (
-                              <>
-                                {accessTokenAsset &&
-                                  !!courseNftPolicyId ? (
-                                  <MintLocalState
-                                    userAccessTokenUnit={accessTokenAsset.unit}
-                                    courseNftPolicyId={
-                                      courseNftPolicyId
-                                    }
-                                    setSuccessTxHash={setSuccessTxHash}
-                                  />
-                                ) : (
-                                  <Loading />
-                                )}
-                              </>
-                            )}
-                          </>
+                          <Loading />
                         )}
                       </>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </DialogDescription>
-              </DialogHeader>
-            )}
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
       )}

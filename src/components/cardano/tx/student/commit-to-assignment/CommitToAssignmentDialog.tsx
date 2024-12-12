@@ -40,35 +40,41 @@ export default function CommitToAssignmentDialog({
               Commit to Assignment
             </Button>
           </DialogTrigger>
-          <DialogContent className="p-6">
-            <DialogHeader>
-              <DialogTitle>Commit to Assignment</DialogTitle>
-              <DialogDescription>
-                By completing this transaction, you will make a public
-                commitment to Assignment {assignmentCode} on the Andamio
-                Network.
-              </DialogDescription>
-            </DialogHeader>
-            {!connected && "Connect a wallet to make a commitment."}
-            {!!connected &&
-              "Enter Assignment Info, then press Commit to sign a transaction."}
+          <DialogContent className="max-w-7xl">
+            <div className="grid grid-cols-2 gap-8">
+              <div className="p-2">
+                <DialogHeader>
+                  <DialogTitle>Commit to Assignment</DialogTitle>
+                  <DialogDescription>
+                    By completing this transaction, you will make a public
+                    commitment to Assignment {assignmentCode} on the Andamio
+                    Network.
+                  </DialogDescription>
+                </DialogHeader>
+                {!connected && "Connect a wallet to make a commitment."}
+                {!!connected &&
+                  "Enter Assignment Info, then press Commit to sign a transaction."}
 
-            <CommitToAssignment
-              courseCode={courseCode}
-              assignmentCode={assignmentCode}
-              isCommitted={isLearnerCommitted ?? false}
-            />
-            <DialogFooter>
-              <p className="pt-5 text-xs font-bold">
-                To learn about network Assignment Commitments, view{" "}
-                <Link href="/course/andamio101/102/lesson/4">
-                  <span className="underline">
-                    Lesson 102.4 in the Andamio 101 Course
-                  </span>
-                </Link>
-                .
-              </p>
-            </DialogFooter>
+                <DialogFooter>
+                  <p className="pt-5 text-xs font-bold">
+                    To learn about network Assignment Commitments, view{" "}
+                    <Link href="/course/andamio101/102/lesson/4">
+                      <span className="underline">
+                        Lesson 102.4 in the Andamio 101 Course
+                      </span>
+                    </Link>
+                    .
+                  </p>
+                </DialogFooter>
+              </div>
+              <div className="p-2">
+                <CommitToAssignment
+                  courseCode={courseCode}
+                  assignmentCode={assignmentCode}
+                  isCommitted={isLearnerCommitted ?? false}
+                />
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
       )}
