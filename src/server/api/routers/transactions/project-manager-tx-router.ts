@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
@@ -86,18 +87,38 @@ export const projectManagerTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectAcceptParams: ProjectAcceptDenyParams = {
-        user_access_token: input.userAccessTokenUnit,
-        contributor_alias: input.contributorAlias,
-        policy: input.treasuryNftPolicyId,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectAcceptDenyParams
-      >(`/tx/project-manager/accept-project`, projectAcceptParams);
+      try {
+        const projectAcceptParams: ProjectAcceptDenyParams = {
+          user_access_token: input.userAccessTokenUnit,
+          contributor_alias: input.contributorAlias,
+          policy: input.treasuryNftPolicyId,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectAcceptDenyParams
+        >(`/tx/project-manager/accept-project`, projectAcceptParams);
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build minting transaction");
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
+
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   denyProject: publicProcedure

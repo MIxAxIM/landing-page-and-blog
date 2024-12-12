@@ -87,6 +87,7 @@ export default function CommitProjectDialog({
                 treasuryNftPolicyId={treasuryNftPolicyId}
                 project={JSON.stringify(apiProject)}
                 info={"Testing!"}
+                successTxHash={successTxHash}
                 setSuccessTxHash={setSuccessTxHash}
               />
             </div>

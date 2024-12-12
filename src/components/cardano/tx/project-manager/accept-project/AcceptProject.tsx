@@ -10,12 +10,14 @@ export default function AcceptProject({
 	treasuryNftPolicyId,
 	userAccessTokenUnit,
 	contributorAlias,
+	successTxHash,
 	setSuccessTxHash,
 }: {
 	taskCommitmentId: string;
 	treasuryNftPolicyId: string;
 	userAccessTokenUnit: string;
 	contributorAlias: string;
+	successTxHash: string | undefined;
 	setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
 	const { wallet } = useWallet();
@@ -27,16 +29,51 @@ export default function AcceptProject({
 	// Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
 	const costBreakdown: CostBreakdown = {
 		costDescriptions: [
-			{ txOutputIndexes: [0], description: "About this tx cost", tooltipText: "Tooltip text" },
 		],
 		andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
 	}
 
-	const { data: unsignedTxCBOR, error: txError } = api.projectManagerTransactions.acceptProject.useQuery({
-		userAccessTokenUnit: userAccessTokenUnit,
-		contributorAlias: contributorAlias,
-		treasuryNftPolicyId: treasuryNftPolicyId,
-	})
+	const { data: unsignedTxCBOR, error: txError } = api.projectManagerTransactions.acceptProject.useQuery(
+		{
+			userAccessTokenUnit: userAccessTokenUnit,
+			contributorAlias: contributorAlias,
+			treasuryNftPolicyId: treasuryNftPolicyId,
+		},
+		{
+			// Don't attempt the query if we don't have an alias
+			enabled: !!treasuryNftPolicyId && !!userAccessTokenUnit && !!contributorAlias && !successTxHash,
+			// Don't retry on error since we expect some queries to fail
+			retry: (failureCount, error) => {
+				// Only retry up to 3 times
+				if (failureCount >= 3) return false;
+
+				// Don't retry on certain errors (you can customize this based on your API's error patterns)
+				if (error instanceof Error) {
+					const skipRetryMessages = [
+						"Invalid parameters",
+						"Unauthorized",
+						// Add other error messages that shouldn't trigger retries
+					];
+					if (skipRetryMessages.some(msg => error.message.includes(msg))) {
+						return false;
+					}
+				}
+
+				return true;
+			},
+
+			retryDelay: (failureCount) => {
+				// Exponential backoff: 1s, 2s, 4s
+				return Math.min(1000 * (2 ** (failureCount - 1)), 4000);
+			},
+			// Cache the successful result to prevent unnecessary refetches
+			cacheTime: Infinity,
+			staleTime: Infinity,
+			// Don't refetch on window focus since this is a transaction preparation
+			refetchOnWindowFocus: false
+		},
+
+	)
 	// RETURN HERE
 	// TODO: implement polling to update from PENDING_TX_COMMITMENT_ACCEPTED to COMMITMENT_ACCEPTED
 	const handleStatusChange = async () => {

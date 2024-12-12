@@ -39,6 +39,7 @@ export default function AcceptProjectDialog({
 							treasuryNftPolicyId={treasuryNftPolicyId}
 							userAccessTokenUnit={userAccessTokenUnit}
 							contributorAlias={contributorAlias}
+							successTxHash={successTxHash}
 							setSuccessTxHash={setSuccessTxHash}
 						/>
 					</div>

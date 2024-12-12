@@ -15,6 +15,7 @@ interface CostDescription {
   txOutputIndexes: number[],
   description: string,
   tooltipText: string,
+  fixedAmount?: number,
 }
 
 export interface CostBreakdown {
@@ -48,6 +49,12 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
     const fetchTxDetails = async () => {
       const details = await Promise.all(
         costBreakdown.costDescriptions.map(async (costDescription) => {
+          if (costDescription.fixedAmount) {
+            return {
+              costDescription,
+              lovelaceAmount: costDescription.fixedAmount
+            };
+          }
           // Simple case: no inputs and single output
           if (!costDescription.txInputIndexes?.length && costDescription.txOutputIndexes.length === 1) {
             return {

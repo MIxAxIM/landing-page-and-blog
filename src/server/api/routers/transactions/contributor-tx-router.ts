@@ -1,4 +1,5 @@
 
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
@@ -57,6 +58,7 @@ export const contributorTxRouter = createTRPCRouter({
       else throw new Error("Could not build transaction");
     }),
 
+  // TODO: Apply improved pattern from this tx to other
   commitProject: publicProcedure
     .input(
       z.object({
@@ -67,19 +69,38 @@ export const contributorTxRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const projectCommitmentParams: ProjectCommitmentParams = {
-        user_access_token: input.userAccessTokenUnit,
-        policy: input.treasuryNftPolicyId,
-        project: input.project,
-        info: input.info,
-      };
-      const unsignedTxCBOR = await indexerGetWithParams<
-        { unsignedTxCBOR: string },
-        ProjectCommitmentParams
-      >(`/tx/contributor/commit-project`, projectCommitmentParams);
+      try {
+        const projectCommitmentParams: ProjectCommitmentParams = {
+          user_access_token: input.userAccessTokenUnit,
+          policy: input.treasuryNftPolicyId,
+          project: input.project,
+          info: input.info,
+        };
+        const unsignedTxCBOR = await indexerGetWithParams<
+          { unsignedTxCBOR: string },
+          ProjectCommitmentParams
+        >(`/tx/contributor/commit-project`, projectCommitmentParams);
 
-      if (unsignedTxCBOR) return unsignedTxCBOR;
-      else throw new Error("Could not build transaction");
+        if (!unsignedTxCBOR) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not build transaction',
+          });
+        }
+        return unsignedTxCBOR;
+      }
+      catch (error) {
+        // Handle specific API errors and convert them to appropriate TRPC errors
+        // TODO: Read TRPC docs
+        if (error instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: error.message,
+            cause: error,
+          });
+        }
+        throw error;
+      }
     }),
 
   addInfo: publicProcedure

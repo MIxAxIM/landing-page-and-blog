@@ -77,6 +77,7 @@ export default function DebugProjectsPage() {
             treasuryNftPolicyId={currentTreasury?.treasuryNftPolicyId ?? ""}
             project={p.project_hash}
             info="Got it done!"
+            successTxHash={successTxHash}
             setSuccessTxHash={setSuccessTxHash}
           />
 
