@@ -24,13 +24,11 @@ export default function AcceptProject({
 
   const { updateTaskCommitmentStatus, taskCommitment } = useTaskCommitment({ id: taskCommitmentId });
 
-
-  // Any tx will have a set of outputs.
-  // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
+      { txOutputIndexes: [0], description: "Cost Desc.", tooltipText: "Tooltip text" },
     ],
-    andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
+    andamioNetworkFee: 0,
   }
 
   const { data: unsignedTxCBOR, error: txError } = api.projectManagerTransactions.acceptProject.useQuery(
@@ -74,8 +72,7 @@ export default function AcceptProject({
     },
 
   )
-  // RETURN HERE
-  // TODO: implement polling to update from PENDING_TX_COMMITMENT_ACCEPTED to COMMITMENT_ACCEPTED
+
   const handleStatusChange = async () => {
     updateTaskCommitmentStatus({
       id: taskCommitmentId,

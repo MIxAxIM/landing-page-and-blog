@@ -5,8 +5,10 @@ import { useState } from "react";
 import UnlockProject from "./UnlockProject";
 
 export default function UnlockProjectDialog({
+  taskCommitmentId,
   treasuryNftPolicyId,
 }: {
+  taskCommitmentId: string;
   treasuryNftPolicyId: string;
 }) {
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
@@ -31,6 +33,7 @@ export default function UnlockProjectDialog({
           </div>
           <div className="p-2">
             <UnlockProject
+              taskCommitmentId={taskCommitmentId}
               treasuryNftPolicyId={treasuryNftPolicyId}
               setSuccessTxHash={setSuccessTxHash}
             />

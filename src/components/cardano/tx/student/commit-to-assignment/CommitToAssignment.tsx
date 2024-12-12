@@ -20,6 +20,7 @@ import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
+import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 const FormSchema = z.object({
   assignmentInfo: z.string().min(2, {
@@ -128,6 +129,14 @@ export function CommitToAssignmentButton({
     undefined,
   );
 
+
+  const costBreakdown: CostBreakdown = {
+    costDescriptions: [
+      { txOutputIndexes: [0], description: "Cost Desc.", tooltipText: "Tooltip text" },
+    ],
+    andamioNetworkFee: 0,
+  }
+
   const { data: unsignedTxCBOR } =
     api.studentTransactions.commitToAssignment.useQuery({
       userAccessTokenUnit: userAccessTokenUnit,
@@ -147,11 +156,14 @@ export function CommitToAssignmentButton({
   }
 
   return (
-    <TransactionContainer
-      buttonText={`Commit to Assignment`}
-      unsignedTxCBOR={unsignedTxCBOR}
-      wallet={wallet}
-      setSuccessTxHash={setSuccessTxHash}
-    />
+    <div className="flex flex-col w-full mx-auto">
+      <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
+      <TransactionContainer
+        buttonText={`Commit to Assignment`}
+        unsignedTxCBOR={unsignedTxCBOR}
+        wallet={wallet}
+        setSuccessTxHash={setSuccessTxHash}
+      />
+    </div>
   );
 }

@@ -27,8 +27,10 @@ const FormSchema = z.object({
 });
 
 export default function AddInfoDialog({
+  taskCommitmentId,
   treasuryNftPolicyId
 }: {
+  taskCommitmentId: string;
   treasuryNftPolicyId?: string;
 }) {
   const { connected } = useWallet();
@@ -107,6 +109,7 @@ export default function AddInfoDialog({
                     {accessTokenAsset &&
                       !!treasuryNftPolicyId && (
                         <AddInfo
+                          taskCommitmentId={taskCommitmentId}
                           treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
                           setSuccessTxHash={setSuccessTxHash}
                           info={commitmentInfo}
