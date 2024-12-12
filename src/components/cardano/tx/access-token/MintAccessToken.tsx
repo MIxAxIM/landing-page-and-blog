@@ -26,7 +26,7 @@ export default function MintAccessToken({
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
-      { txInputIndexes: [1], txOutputIndexes: [0, 1], description: "Unique name reservation", tooltipText: "Tooltip info" },
+      { txInputIndexes: [0], txOutputIndexes: [0, 1], description: "Unique name reservation", tooltipText: "Tooltip info" },
       { txOutputIndexes: [2], description: "Andamio Network Fee", tooltipText: "Fee paid to Andamio Network" },
       { txOutputIndexes: [3], description: "Andamio Reference Credential", tooltipText: "This Ada is required to initialize your Andamio Network Token" },
     ],
