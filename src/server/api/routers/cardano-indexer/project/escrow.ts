@@ -1,3 +1,4 @@
+import { DecodedEscrowDatum } from "@andamiojs/datum-utils";
 import { hexToString } from "@meshsdk/common";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -157,6 +158,28 @@ export const escrowValidatorRouter = createTRPCRouter({
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Cannot get Escrow UTxOs",
+        });
+      }
+    }),
+
+  getEscrowDecodedDatumByTreasuryByAlias: publicProcedure
+    .input(
+      z.object({
+        policy: z.string().length(56),
+        alias: z.string().min(1),
+      }),
+    )
+    .query(async ({ input }) => {
+      try {
+        const response = await indexerGetWithParams<DecodedEscrowDatum[], { policy: string, alias: string }>(
+          `/escrow/decoded-datum`,
+          { policy: input.policy, alias: input.alias },
+        );
+        return response
+      } catch (error) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cannot get Escrow Datum",
         });
       }
     }),

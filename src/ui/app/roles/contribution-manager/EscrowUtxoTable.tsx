@@ -13,6 +13,7 @@ import DenyProjectDialog from "~/components/cardano/tx/project-manager/deny-proj
 import { usePendingAcceptProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingAcceptProjectCheck"
 import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck"
 import { usePendingGetRewards } from "~/hooks/cardano-indexer-api/polling/usePendingGetRewards"
+import Link from "next/link"
 
 export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos: DecodedEscrowUtxo[], treasuryNftPolicyId: string }) {
   usePendingAcceptProjectCheck(treasuryNftPolicyId)
@@ -40,6 +41,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
           taskCommitmentId: dbTC?.id,
           taskId: dbTC?.task.id,
           taskTitle: dbTC?.task.title,
+          hash: dbTC?.task.hash,
         }
 
       }
@@ -100,7 +102,9 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                       contributorAlias={tx.contributorAlias}
                       userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
                     />
-                    <Button size="sm">View Conversation</Button>
+                    <Link href={`/app/project/${treasuryNftPolicyId}/${tx.taskId}`}>
+                      <Button size="sm">View Conversation</Button>
+                    </Link>
                     <Button size="sm">View Public Task Page</Button>
 
 
