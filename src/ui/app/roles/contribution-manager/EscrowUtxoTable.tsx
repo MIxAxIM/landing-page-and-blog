@@ -111,33 +111,33 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
 
                   </div>
                 </TableCell>
+                <div>
+
+                </div>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        {matchedTaskCommitmentsToUtxos.length === 1 && !!matchedTaskCommitmentsToUtxos[0] && !!matchedTaskCommitmentsToUtxos[0].evidence && (
+          <ReadEvidenceContent content={matchedTaskCommitmentsToUtxos[0].evidence as Content} />
+        )}
       </CardContent>
-    </Card>
+    </Card >
   )
 }
 
-//export function ReadEvidenceContent({ content }: { content: Content }) {
-//  const editor = useEditor({
-//    extensions: [...ExtensionKit(), EditableCodeBlock],
-//    content: content,
-//    editable: false,
-//    editorProps: {
-//      attributes: {
-//        class:
-//          "prose prose-lg prose-headings:font-title font-default focus:outline-none max-w-full text-foreground prose-headings:text-foreground",
-//      },
-//    },
-//  });
-//
-//  return <>{editor && <EditorContent editor={editor} />}</>;
-//}
-//
-//
-//
-//        {matchedTaskCommitmentsToUtxos.length === 1 && !!matchedTaskCommitmentsToUtxos[0] && (
-//          <ReadEvidenceContent content={matchedTaskCommitmentsToUtxos[0].evidence} />
-//        )}
+export function ReadEvidenceContent({ content }: { content: Content }) {
+  const editor = useEditor({
+    extensions: [...ExtensionKit(), EditableCodeBlock],
+    content: content,
+    editable: false,
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-lg prose-headings:font-title font-default focus:outline-none max-w-full text-foreground prose-headings:text-foreground",
+      },
+    },
+  });
+
+  return <>{editor && <EditorContent editor={editor} />}</>;
+}

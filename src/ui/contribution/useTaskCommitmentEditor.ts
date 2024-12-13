@@ -4,10 +4,7 @@ import { ExtensionKit } from "~/components/editor/extension-kit";
 import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock";
 import { TaskCommitment } from "~/types/db";
 
-export default function useTaskCommitmentEditor(
-  taskCommitment: TaskCommitment,
-  editable: boolean,
-) {
+export default function useTaskCommitmentEditor({ taskCommitment, editable }: { taskCommitment?: TaskCommitment, editable: boolean }) {
   const editor = useEditor({
     extensions: [...ExtensionKit(), EditableCodeBlock],
     // Start with empty content, we'll set it after parsing

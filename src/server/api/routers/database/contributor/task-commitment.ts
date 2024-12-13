@@ -27,14 +27,14 @@ const isValidStatusTransition = (
   newStatus: TaskCommitmentStatus,
 ) => {
   const allowedTransitions: Record<TaskCommitmentStatus, TaskCommitmentStatus[]> = {
-    PENDING_TX_COMMITMENT_MADE: [TaskCommitmentStatus.COMMITMENT_MADE],
+    PENDING_TX_COMMITMENT_MADE: [TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE, TaskCommitmentStatus.COMMITMENT_MADE],
     COMMITMENT_MADE: [
       TaskCommitmentStatus.PENDING_TX_ADD_INFO,
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_DENIED,
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_REFUSED,
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_ACCEPTED,
     ],
-    PENDING_TX_ADD_INFO: [TaskCommitmentStatus.PENDING_APPROVAL],
+    PENDING_TX_ADD_INFO: [TaskCommitmentStatus.PENDING_TX_ADD_INFO, TaskCommitmentStatus.PENDING_APPROVAL],
     PENDING_APPROVAL: [
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE,
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_DENIED,

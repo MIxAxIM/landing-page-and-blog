@@ -1,20 +1,15 @@
+
 import { useRouter } from "next/router";
 import { z } from "zod";
+import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import TaskCommitmentPage from "~/ui/app/TaskCommitmentPage";
 import MenuBar from "~/ui/landing/MenuBar";
-
-//
-// NOTE:
-// - we have a route for Treasury -> Project -> Alias for a current commitment
-// - we need Treasury -> Project -> conditional rendering
-//  --> which is where a Contributor can commit to this Task
-//
 
 const taskCommitmentParamsSchema = z.object({
   treasurynft: z.string().min(1),
   projecthash: z.string().min(1),
-  alias: z.string().optional()
 });
 
 export default function ProjectTaskCommitmentPage() {
@@ -30,12 +25,18 @@ export default function ProjectTaskCommitmentPage() {
     return null;
   }
 
-  const { treasurynft, projecthash, alias } = result.data;
+  const { treasurynft, projecthash } = result.data;
+
+  const { accessTokenAlias } = useAccessToken()
 
   return (
     <DesktopOnlyLayout>
       <MenuBar />
-      <TaskCommitmentPage treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={alias} />
+      {!!accessTokenAlias ? (
+        <TaskCommitmentPage treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={accessTokenAlias} />
+      ) : (
+        <ConnectWalletCard message={"Please connect a wallet"} />
+      )}
     </DesktopOnlyLayout >
 
   )

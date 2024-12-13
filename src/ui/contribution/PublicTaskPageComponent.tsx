@@ -14,6 +14,7 @@ import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-proj
 import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { useSession } from "next-auth/react";
+import { Button } from "~/components/ui/button";
 
 
 export default function PublicTaskPageComponent({ task }: { task: Task }) {
@@ -50,7 +51,9 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
         {!!treasury && !!task.id && (
           <div>
             <h2>Commit to this task</h2>
-            <CommitProjectDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} taskId={task.id} disabled={false} />
+            <Link href={`/app/testing/${treasury.treasuryNftPolicyId}/${task.hash}`}>
+              <Button>Commit to this Task</Button>
+            </Link>
           </div>
         )}
 

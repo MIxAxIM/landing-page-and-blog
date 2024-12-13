@@ -27,7 +27,7 @@ export default function CommitProject({
   const { wallet } = useWallet();
   const { data: sessionData } = useSession()
 
-  const { createTaskCommitment } = useTaskCommitment({})
+  const { createTaskCommitment, updateTaskCommitmentStatus } = useTaskCommitment({})
 
   // Any tx will have a set of outputs.
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
@@ -88,11 +88,19 @@ export default function CommitProject({
 
   // TODO: Implement PENDING_TX_ADD_INFO when editor passes content
   const handleStatusChange = async () => {
-    createTaskCommitment({
-      taskId: taskId,
-      contributorId: sessionData?.user?.contributorId ?? "",
-      status: "PENDING_TX_COMMITMENT_MADE",
-    });
+    if (!!info) {
+      updateTaskCommitmentStatus({
+        id: taskId,
+        status: "PENDING_TX_ADD_INFO",
+      })
+    }
+    else {
+      createTaskCommitment({
+        taskId: taskId,
+        contributorId: sessionData?.user?.contributorId ?? "",
+        status: "PENDING_TX_COMMITMENT_MADE",
+      });
+    }
   };
 
 
