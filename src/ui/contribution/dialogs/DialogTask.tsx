@@ -122,7 +122,7 @@ interface TaskDialogProps {
   openButtonSize?: "sm" | "lg";
 }
 
-export default function DialogTask({
+export default function DialogTaskOld({
   id,
   escrowId: defaultEscrowId,
   treasuryId: defaultTreasuryId,

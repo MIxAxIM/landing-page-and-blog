@@ -4,12 +4,15 @@ import { TaskCommitmentStatus } from "@prisma/client";
 import { useTaskCommitment } from '~/hooks/db/contribution/useTaskCommitment';
 import { stringToHex } from '@meshsdk/common';
 
-export function usePendingCommitProjectCheck(treasuryNftPolicyId: string) {
+export function usePendingAddInfoCheck(treasuryNftPolicyId: string) {
   const [isChecking, setIsChecking] = useState(false);
   const ctx = api.useUtils();
 
   // Get all Commitments for current treasury
-  const { data: pendingCommitments, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({ treasuryNftPolicyId: treasuryNftPolicyId, status: TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE });
+  const { data: pendingCommitments, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({
+    treasuryNftPolicyId: treasuryNftPolicyId,
+    status: TaskCommitmentStatus.PENDING_TX_ADD_INFO
+  });
 
   // Task Commitment Status mutation
   const { updateTaskCommitmentStatus } = useTaskCommitment({});
@@ -40,7 +43,7 @@ export function usePendingCommitProjectCheck(treasuryNftPolicyId: string) {
       )) {
         updateTaskCommitmentStatus({
           id: commitment.id,
-          status: TaskCommitmentStatus.COMMITMENT_MADE
+          status: TaskCommitmentStatus.PENDING_APPROVAL
         });
       }
     }

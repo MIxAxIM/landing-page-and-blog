@@ -5,14 +5,12 @@ import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { useRoles } from "~/hooks/app/useRoles";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
-import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
 
 
 import EscrowUtxoTable from "./EscrowUtxoTable";
 import EnrolledContributors from "./EnrolledContributors";
-import ContributorPrerequisites from "./ContributorPrerequisites";
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
 import ProjectTreasuryBalance from "./ProjectTreasuryBalance";
 import MintProjectTokenDialog from "~/components/cardano/tx/project-manager/mint-project-token/MintProjectTokenDialog";
@@ -20,6 +18,8 @@ import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-manager/m
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
 import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskStatusCheck";
 import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
+import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
+import ContributorPrerequisites from "./ContributorPrerequisites";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -58,6 +58,11 @@ export default function ManageEscrowComponent({
   }, [escrow])
 
 
+
+
+
+
+
   return (
     <div key={escrowId}>
       <ProjectManagerOnboardingModal
@@ -72,11 +77,7 @@ export default function ManageEscrowComponent({
             treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
             isLoading={isLoadingTreasuryInfo}
           />
-          <div className="space-x-2">
-            {!!escrow && (
-              <DialogTaskSimple escrow={escrow} treasuryId={escrow.treasuryId} />
-            )}
-          </div>
+          {!!escrow && <DialogTaskSimple treasuryId={escrow.treasuryId} escrow={escrow} />}
         </div>
         <div className="col-span-10 row-span-2 flex flex-col w-full">
           <h2>
@@ -89,6 +90,7 @@ export default function ManageEscrowComponent({
               networkTasks={treasuryInfo?.projects ?? []}
             />
           )}
+
           <div className="w-full mx-auto justify-between flex flex-row">
             {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
               <MintProjectTokenDialog
@@ -123,6 +125,7 @@ export default function ManageEscrowComponent({
             <div className="col-span-10 flex flex-col">
               <EscrowUtxoTable utxos={escrowUtxos ?? []} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
             </div>
+
           </>
         )}
         <div className="col-span-10">
@@ -134,7 +137,7 @@ export default function ManageEscrowComponent({
           )}
         </div>
       </div>
-      {/** 
+      {/**
       <DebugProjects />
       **/}
 

@@ -58,15 +58,15 @@ export default function ProjectPage() {
     undefined,
   );
 
-  useEffect(() => {
-    if (lock) {
-      const data = editor?.getJSON();
-      if (data) {
-        const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
-        setEvidenceHash(Buffer.from(hash).toString("hex"));
-      }
-    }
-  }, [lock]);
+  //useEffect(() => {
+  //  if (lock) {
+  //    const data = editor?.getJSON();
+  //    if (data) {
+  //      const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
+  //      setEvidenceHash(Buffer.from(hash).toString("hex"));
+  //    }
+  //  }
+  //}, [lock]);
 
   function lockEditor() {
     if (lock) {
@@ -76,7 +76,7 @@ export default function ProjectPage() {
     setLock(true);
   }
 
-  const { editor } = useTaskCommitmentEditor(task as string, !lock);
+  //const { editor } = useTaskCommitmentEditor(task as string, !lock);
 
   return (
     <DesktopOnlyLayout>
@@ -109,7 +109,7 @@ export default function ProjectPage() {
         <h3>Enter Submission Details</h3>
       </div>
 
-      {!!editor && <ContentEditorSm editor={editor} editable={!lock} />}
+      {/** !!editor && <ContentEditorSm editor={editor} editable={!lock} /> **/}
       {lock && evidenceHash && (
         <div className="flex items-center justify-center">
           <h5>

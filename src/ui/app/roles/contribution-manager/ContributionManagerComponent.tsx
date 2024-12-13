@@ -2,7 +2,6 @@ import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import { useTerminology } from "~/contexts/terminology-context";
 import MyProjectsListComponent from "./MyProjectsListComponent";
-import DialogTaskToProject from "~/ui/contribution/dialogs/DialogTaskToProject";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import ManageEscrowComponent from "./ManageEscrowComponent";
@@ -71,7 +70,6 @@ export default function ContributionManagerComponent() {
             <div className="col-span-3 flex flex-row items-center justify-between">
               <h1>{translateCaps('treasuryOwner')} Page</h1>
               <div className="flex flex-row items-center space-x-5">
-                <DialogTaskToProject />
                 <DialogInitializeProject />
               </div>
             </div>
@@ -130,7 +128,7 @@ export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
         </span>
       ) : (
         <span
-          className={`absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold 
+          className={`absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold
                     `}
         >
           not published

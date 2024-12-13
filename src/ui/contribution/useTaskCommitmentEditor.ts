@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-import { useEditor } from "@tiptap/react";
+import { Content, useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/editor/extension-kit";
 import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock";
-import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
+import { TaskCommitment } from "~/types/db";
 
 export default function useTaskCommitmentEditor(
-  taskId: string,
+  taskCommitment: TaskCommitment,
   editable: boolean,
 ) {
-  const { taskCommitment } = useTaskCommitment({ taskId });
   const editor = useEditor({
     extensions: [...ExtensionKit(), EditableCodeBlock],
+    // Start with empty content, we'll set it after parsing
     content: "",
     editorProps: {
       attributes: {
@@ -23,13 +23,15 @@ export default function useTaskCommitmentEditor(
 
   // Set content when taskCommitment updates
   useEffect(() => {
-    if (
-      taskCommitment &&
-      taskCommitment.evidence &&
-      typeof taskCommitment.evidence === "object" &&
-      editor
-    ) {
-      editor.commands.setContent(taskCommitment.evidence);
+    if (taskCommitment?.evidence && editor) {
+      try {
+        const content = taskCommitment.evidence as Content
+        editor.commands.setContent(content);
+      } catch (error) {
+        console.error('Failed to load content json:', error);
+        // Optionally set some fallback content or show an error
+        editor.commands.setContent('');
+      }
     }
   }, [taskCommitment, editor]);
 
@@ -40,5 +42,5 @@ export default function useTaskCommitmentEditor(
     }
   }, [editable, editor]);
 
-  return { editor, taskId, taskCommitment };
+  return { editor, taskCommitment };
 }

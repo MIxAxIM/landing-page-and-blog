@@ -2,9 +2,9 @@ import { Table, TableHead, TableCell, TableRow } from "~/components/ui/table";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { type Treasury } from "~/types/db";
 import Link from "next/link";
-import DialogTask from "../dialogs/DialogTask";
 import { useTerminology } from "~/contexts/terminology-context";
 import DialogUpdateTreasury from "../dialogs/DialogUpdateTreasury";
+import { Button } from "~/components/ui/button";
 
 export default function TreasuryListComponent() {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
@@ -160,10 +160,7 @@ export default function TreasuryListComponent() {
                 />
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
-                <DialogTask
-                  treasuryId={t?.id}
-                  openButtonSize="sm"
-                />
+                <Button>Put a dialog task button here</Button>
               </TableCell>
             </TableRow>
           ))}

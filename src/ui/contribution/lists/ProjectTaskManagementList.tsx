@@ -9,7 +9,6 @@ import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { ProjectDatum, Task, type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
-import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 import DialogDeleteTask from "../dialogs/DialogDeleteTask";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { Card } from "~/components/ui/card";
@@ -17,6 +16,7 @@ import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { CheckCircledIcon, QuestionMarkCircledIcon, Pencil1Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
+import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 
 export default function ProjectTaskManagementList({
   escrow,
@@ -120,7 +120,6 @@ export default function ProjectTaskManagementList({
             <p className="">
               No tasks found. Get started by drafting one:
             </p>
-            {treasuryId && escrow && <DialogTaskSimple treasuryId={treasuryId} escrow={escrow} />}
           </div>
         ) : (
           filteredTasks?.map((task) => (

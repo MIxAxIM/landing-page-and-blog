@@ -175,6 +175,40 @@ export const taskCommitmentRouter = createTRPCRouter({
       return taskCommitments;
     }),
 
+  getTaskCommitmentsByProjectHash: publicProcedure
+    .input(z.string().min(1))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.taskCommitment.findMany({
+        where: {
+          task: {
+            hash: input
+          }
+        },
+        include: {
+          task: {
+            include: {
+              escrow: true,
+            },
+          },
+          contributor: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: [
+          { updated: 'desc' },
+          { created: 'desc' },
+        ],
+      });
+    }),
+
   // Protected procedures
   createTaskCommitment: protectedProcedure
     .input(createTaskCommitmentSchema)

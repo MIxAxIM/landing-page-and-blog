@@ -89,14 +89,14 @@ export default function DialogPrerequisite({
         })),
       });
     }
-  }, [prerequisite, form, isEditMode]);
+  }, [prerequisite, isEditMode]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
       form.reset();
     }
-  }, [isOpen, form]);
+  }, [isOpen]);
 
   const addCourseRequirement = () => {
     const currentRequirements = form.getValues("courseRequirements");

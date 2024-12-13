@@ -114,15 +114,15 @@ export const escrowValidatorRouter = createTRPCRouter({
   getEscrowUtxoByTreasuryByAlias: publicProcedure
     .input(
       z.object({
-        treasuryNftPolicyId: z.string().length(56),
+        policy: z.string().length(56),
         alias: z.string().min(1),
       }),
     )
     .query(async ({ input }) => {
       try {
-        const response = await indexerGetWithParams<EscrowUtxo[], { treasuryNftPolicyId: string, alias: string }>(
+        const response = await indexerGetWithParams<EscrowUtxo[], { policy: string, alias: string }>(
           `/escrow/utxos`,
-          { treasuryNftPolicyId: input.treasuryNftPolicyId, alias: input.alias },
+          { policy: input.policy, alias: input.alias },
         );
 
         // Since we're querying by alias, we expect only one result

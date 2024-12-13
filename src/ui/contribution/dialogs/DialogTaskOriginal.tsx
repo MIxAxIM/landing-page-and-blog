@@ -3,11 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { Form } from "~/components/ui/form";
 import DialogForm from "~/components/form/dialog-form";
 import FormInput from "~/components/form/form-input";
 import FormTextArea from "~/components/form/form-textarea";
+import FormSelect from "~/components/form/form-select";
 import { TaskStatus } from "@prisma/client";
+import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import {
   Popover,
   PopoverContent,
@@ -18,12 +21,12 @@ import { Calendar } from "~/components/ui/calendar";
 import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { Task, type Escrow } from "~/types/db";
+import { type Escrow, type Task } from "~/types/db";
 import { useTerminology } from "~/contexts/terminology-context";
 
 // Validation constants
-const MIN_ADA = 10;
-const MIN_HOURS_FUTURE = 168;
+const MIN_ADA = 2;
+const MIN_HOURS_FUTURE = 48;
 
 // Get minimum valid date
 const getMinDate = () => {
@@ -44,6 +47,8 @@ const FormSchema = z.object({
       (criteria) => criteria.length >= 1,
       "At least one criterion must be provided",
     ),
+  treasuryId: z.string().min(1, "Please select a treasury"),
+  escrowId: z.string().min(1, "Please select an escrow"),
   ada: z
     .number()
     .min(MIN_ADA, `Minimum ${MIN_ADA} Ada required`)
@@ -111,22 +116,30 @@ const TaskDisplay = ({ task }: { task: Task }) => {
 
 interface TaskDialogProps {
   id?: string;
-  treasuryId: string;
-  escrow: Escrow;
+  escrowId?: string;
+  treasuryId?: string;
+  escrow?: Escrow;
   openButtonSize?: "sm" | "lg";
 }
 
-export default function DialogTaskSimple({
+export default function DialogTaskOriginal({
   id,
-  treasuryId,
+  escrowId: defaultEscrowId,
+  treasuryId: defaultTreasuryId,
   escrow,
   openButtonSize,
 }: TaskDialogProps) {
   // State management
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTreasuryId, setSelectedTreasuryId] = useState(
+    defaultTreasuryId ?? "",
+  );
+  const [filteredEscrows, setFilteredEscrows] = useState<Escrow[] | undefined>(
+    undefined,
+  );
   const [hasLoadedCriteria, setHasLoadedCriteria] = useState(false);
 
-  const isEditMode = !!id;
+  const isEditMode = !!id || !!escrow;
 
   // Custom hooks
   const {
@@ -136,8 +149,12 @@ export default function DialogTaskSimple({
     revertToDraftFromApproved,
     isCreating,
     isUpdating,
-  } = useTask({ id: id, treasuryNftPolicyId: treasuryId });
+  } = useTask({ id: defaultTreasuryId });
 
+  const { treasuries, isLoadingTreasuries } = useTreasuries(!!escrow);
+  const { escrows, isLoading: isLoadingEscrows } = useEscrow({
+    disabled: !!escrow,
+  });
   const { translate, translateCaps, translatePlural } = useTerminology()
 
   // Form initialization with proper typing
@@ -147,6 +164,8 @@ export default function DialogTaskSimple({
       title: "",
       description: "",
       acceptanceCriteria: [""],
+      treasuryId: defaultTreasuryId ?? "",
+      escrowId: defaultEscrowId ?? escrow?.id ?? "",
       ada: MIN_ADA,
       expirationTime: getMinDate(),
     },
@@ -163,14 +182,35 @@ export default function DialogTaskSimple({
           ),
           { shouldValidate: true },
         );
+        form.setValue("escrowId", escrow.id);
+        form.setValue("treasuryId", escrow.treasuryId);
+        setFilteredEscrows([escrow]);
         setHasLoadedCriteria(true);
       }
     }
-  }, [escrow, isOpen, hasLoadedCriteria]);
+  }, [escrow, form, isOpen, hasLoadedCriteria]);
+
+  // Effect: Handle treasury selection change
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const treasurySubscription = form.watch((value, { name }) => {
+      if (name === "treasuryId") {
+        setSelectedTreasuryId(value.treasuryId ?? "");
+        if (!defaultEscrowId) {
+          form.setValue("escrowId", "");
+        }
+      }
+    });
+
+    return () => treasurySubscription.unsubscribe();
+  }, [form, defaultEscrowId, isOpen]);
 
   // Effect: Load task data in edit mode
   useEffect(() => {
     if (task && isEditMode && isOpen) {
+      const treasuryId = task.escrow?.treasuryId ?? "";
+      setSelectedTreasuryId(treasuryId);
 
       form.reset({
         title: task.title,
@@ -178,17 +218,73 @@ export default function DialogTaskSimple({
         acceptanceCriteria: task.acceptanceCriteria,
         ada: parseInt(task.lovelace) / 1000000,
         expirationTime: new Date(parseInt(task.expirationTime)),
+        treasuryId,
+        escrowId: task.escrowId,
       });
     }
-  }, [task, isEditMode, isOpen]);
+  }, [task, form, isEditMode, isOpen]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
       form.reset();
       setHasLoadedCriteria(false);
+      if (!defaultTreasuryId) {
+        setSelectedTreasuryId("");
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, form, defaultTreasuryId]);
+
+  // Add this effect after the other useEffect hooks
+  useEffect(() => {
+    if (defaultTreasuryId && treasuries) {
+      const treasury = treasuries.find(
+        (t) => t.treasuryNftPolicyId === defaultTreasuryId,
+      );
+      if (treasury) {
+        form.setValue("treasuryId", treasury.id);
+        setSelectedTreasuryId(treasury.id);
+      }
+    }
+  }, [defaultTreasuryId, treasuries, form]);
+
+  useEffect(() => {
+    // Filtered escrows based on selected treasury
+    const _filteredEscrows = escrows
+      .filter((escrow) => escrow?.treasuryId === selectedTreasuryId)
+      .filter(
+        (escrow): escrow is NonNullable<typeof escrow> => escrow !== null,
+      );
+    setFilteredEscrows(_filteredEscrows);
+  }, [escrows, selectedTreasuryId]);
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (
+        name === "escrowId" &&
+        value.escrowId &&
+        !!filteredEscrows &&
+        !hasLoadedCriteria
+      ) {
+        const selectedEscrow = filteredEscrows.find(
+          (e) => e.id === value.escrowId,
+        );
+
+        if (selectedEscrow?.savedAcceptanceCriteria?.length) {
+          form.setValue(
+            "acceptanceCriteria",
+            selectedEscrow.savedAcceptanceCriteria.filter(
+              (criteria) => criteria.trim() !== "",
+            ),
+            { shouldValidate: true },
+          );
+          setHasLoadedCriteria(true);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form, filteredEscrows, hasLoadedCriteria]);
 
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
@@ -213,8 +309,8 @@ export default function DialogTaskSimple({
   };
 
   const getDialogTitle = () => {
-    if (!isEditMode) return "Create New Task in " + escrow.title;
-    if (!task) return "Create New Task in " + escrow.title;
+    if (!isEditMode) return "Create New Task";
+    if (!task) return "Create New Task";
 
     const statusTitles = {
       [TaskStatus.DRAFT]: "Edit Task",
@@ -268,7 +364,7 @@ export default function DialogTaskSimple({
         });
       } else {
         createTask({
-          escrowId: escrow.id,
+          escrowId: data.escrowId,
           task: {
             ...taskData,
             status: TaskStatus.DRAFT,
@@ -282,7 +378,7 @@ export default function DialogTaskSimple({
   };
 
   const isLoading =
-    isCreating || isUpdating;
+    isCreating || isUpdating || isLoadingEscrows || isLoadingTreasuries;
 
   return (
     <Form {...form}>
@@ -300,14 +396,36 @@ export default function DialogTaskSimple({
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       >
-        {(!task || task.status === TaskStatus.DRAFT) && (
-
-          <div className="grid gap-4 py-4">
-            <p>in {escrow.title}</p>
-            <div className="grid grid-cols-4 gap-5">
-              {!!escrow ? (
+        <div className="grid gap-4 py-4">
+          {!task || task.status === TaskStatus.DRAFT ? (
+            <div className="grid grid-cols-2 gap-5">
+              <FormSelect
+                name="treasuryId"
+                label={`${translateCaps('treasury')}`}
+                form={form}
+                options={
+                  treasuries?.map((t) => ({
+                    value: t.id,
+                    label: t.title,
+                  })) ?? []
+                }
+                placeholder={`Select a ${translateCaps('treasury')}`}
+                disabled={!!defaultTreasuryId || !!escrow || isLoading}
+              />
+              {!!filteredEscrows ? (
                 <>
-                  <div className="col-span-3">
+                  <FormSelect
+                    name="escrowId"
+                    label={`${translateCaps('escrow')}`}
+                    form={form}
+                    options={filteredEscrows.map((e) => ({
+                      value: e.id,
+                      label: `${e.title}${e.savedAcceptanceCriteria?.length ? ` (${e.savedAcceptanceCriteria.length} saved criteria)` : ""}`,
+                    }))}
+                    placeholder={`Select ${translateCaps('escrow')}`}
+                    disabled={!selectedTreasuryId || isLoading}
+                  />
+                  <div>
                     <FormInput
                       name="title"
                       label={`${translateCaps('task')} Title`}
@@ -324,9 +442,6 @@ export default function DialogTaskSimple({
                       height={150}
                       disabled={isLoading}
                     />
-                  </div>
-
-                  <div className="flex w-full flex-col space-y-2">
                     <FormInput
                       name="ada"
                       label="Ada Reward"
@@ -336,64 +451,9 @@ export default function DialogTaskSimple({
                       form={form}
                       disabled={isLoading}
                     />
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Expiration Date
-                      </label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button intent="outline" disabled={isLoading}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {form.watch("expirationTime") ? (
-                              format(form.watch("expirationTime"), "PPP")
-                            ) : (
-                              <span>Select Expiration Date</span>
-                            )}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent
-                          className="z-50 w-auto p-0"
-                          align="start"
-                          onOpenAutoFocus={(e) => e.preventDefault()}
-                        >
-                          <div onClick={(e) => e.stopPropagation()}>
-                            <Calendar
-                              mode="single"
-                              selected={form.watch("expirationTime")}
-                              onSelect={(date) => {
-                                if (date) {
-                                  form.setValue("expirationTime", date, {
-                                    shouldValidate: true,
-                                  });
-                                }
-                              }}
-                              disabled={(date) => date < getMinDate()}
-                              initialFocus
-                            />
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                      {form.formState.errors.expirationTime && (
-                        <p className="text-sm text-red-500">
-                          {form.formState.errors.expirationTime.message}
-                        </p>
-                      )}
-                    </div>
-
-
-                    {(escrow.savedAcceptanceCriteria?.length ?? 0) > 0 && (
-                      <Alert>
-                        <AlertTitle>Saved Criteria Loaded</AlertTitle>
-                        <AlertDescription>
-                          {translateCaps('acceptanceCriteria')} have been pre-loaded from the
-                          selected {translate('escrow')}. You can modify or remove them as
-                          needed.
-                        </AlertDescription>
-                      </Alert>
-                    )}
                   </div>
-                  <div className="col-span-4 mt-5 pt-5 border-t border-primary">
 
+                  <div className="mt-3 flex w-full flex-col space-y-2 border-t border-primary pt-3">
                     <label className="block text-sm font-medium text-gray-700">
                       Acceptance Criteria
                     </label>
@@ -431,44 +491,96 @@ export default function DialogTaskSimple({
                       size="sm"
                       onClick={handleAddCriterion}
                       disabled={isLoading}
-                      className="my-3"
                     >
                       Add Acceptance Criterion
                     </Button>
+                    {form.watch("escrowId") &&
+                      filteredEscrows &&
+                      (filteredEscrows.find(
+                        (e) => e?.id === form.watch("escrowId"),
+                      )?.savedAcceptanceCriteria?.length ?? 0) > 0 && (
+                        <Alert>
+                          <AlertTitle>Saved Criteria Loaded</AlertTitle>
+                          <AlertDescription>
+                            {translateCaps('acceptanceCriteria')} have been pre-loaded from the
+                            selected {translate('escrow')}. You can modify or remove them as
+                            needed.
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Expiration Date
+                    </label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button intent="outline" disabled={isLoading}>
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {form.watch("expirationTime") ? (
+                            format(form.watch("expirationTime"), "PPP")
+                          ) : (
+                            <span>Select Expiration Date</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="z-50 w-auto p-0"
+                        align="start"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
+                      >
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <Calendar
+                            mode="single"
+                            selected={form.watch("expirationTime")}
+                            onSelect={(date) => {
+                              if (date) {
+                                form.setValue("expirationTime", date, {
+                                  shouldValidate: true,
+                                });
+                              }
+                            }}
+                            disabled={(date) => date < getMinDate()}
+                            initialFocus
+                          />
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    {form.formState.errors.expirationTime && (
+                      <p className="text-sm text-red-500">
+                        {form.formState.errors.expirationTime.message}
+                      </p>
+                    )}
                   </div>
                 </>
               ) : (
                 <p>No {translatePlural('escrow')}. Please make one first.</p>
               )}
             </div>
-          </div>
-        )}
-        {!!task && task.status != TaskStatus.DRAFT && <>
-
-          <div className="space-y-4">
-            <TaskDisplay task={task} />
-            {task?.status === TaskStatus.APPROVED && (
-              <>
-                <Alert>
-                  <AlertTitle>{translateCaps('task')} is locked</AlertTitle>
-                  <AlertDescription>
-                    This {translate('task')} is approved and its content is locked. To make
-                    changes, you must first revert it to draft status.
-                  </AlertDescription>
-                </Alert>
-                <Button
-                  onClick={handleRevertToDraft}
-                  disabled={isUpdating}
-                  className="w-full"
-                >
-                  Revert to Draft
-                </Button>
-              </>
-            )}
-          </div>
-
-
-        </>}
+          ) : (
+            <div className="space-y-4">
+              <TaskDisplay task={task} />
+              {task.status === TaskStatus.APPROVED && (
+                <>
+                  <Alert>
+                    <AlertTitle>{translateCaps('task')} is locked</AlertTitle>
+                    <AlertDescription>
+                      This {translate('task')} is approved and its content is locked. To make
+                      changes, you must first revert it to draft status.
+                    </AlertDescription>
+                  </Alert>
+                  <Button
+                    onClick={handleRevertToDraft}
+                    disabled={isUpdating}
+                    className="w-full"
+                  >
+                    Revert to Draft
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </DialogForm>
     </Form>
   );

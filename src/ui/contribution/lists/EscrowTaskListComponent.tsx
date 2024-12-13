@@ -5,14 +5,12 @@ import { formatPosixTime } from "~/utils/time";
 import { TaskStatus } from "@prisma/client";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import DialogTask from "../dialogs/DialogTask";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
-import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 import DialogDeleteTask from "../dialogs/DialogDeleteTask";
 
 export default function EscrowTaskListComponent({
@@ -167,7 +165,6 @@ export default function EscrowTaskListComponent({
                     <p className="">
                       No tasks found. Get started by drafting one:
                     </p>
-                    {treasuryId && escrow && <DialogTaskSimple treasuryId={treasuryId} escrow={escrow} />}
                   </div>
                 </TableCell>
               </TableRow>
@@ -210,9 +207,6 @@ export default function EscrowTaskListComponent({
                   </TableCell>
                   <TableCell className="">
                     <div className="flex h-fit items-center justify-center gap-x-2">
-                      {treasuryId && escrow &&
-                        <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
-                      }
                       <DialogDeleteTask id={task.id} />
                     </div>
                   </TableCell>

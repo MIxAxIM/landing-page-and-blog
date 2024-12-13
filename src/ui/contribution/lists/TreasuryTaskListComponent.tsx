@@ -7,7 +7,6 @@ import { useState, useCallback } from "react";
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { SortableTableHeader } from "~/components/ui/SortableTableHeader";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import DialogTask from "../dialogs/DialogTask";
 import TaskEscrowFilter from "../filters/TaskEscrowFilter";
 import TaskStatusFilter from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
@@ -197,7 +196,6 @@ export default function TreasuryTaskListComponent({
                     />
                   </TableCell>
                   <TableCell className="items-center justify-center gap-x-2">
-                    <DialogTask openButtonSize="sm" id={task.id} />
                     <Link href={`/app/contribute/task/${task.id}`}>
                       <Button size="sm">Public Task</Button>
                     </Link>

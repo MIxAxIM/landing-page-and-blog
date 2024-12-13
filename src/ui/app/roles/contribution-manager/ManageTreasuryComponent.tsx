@@ -3,7 +3,6 @@ import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent
 import { Button } from "~/components/ui/button";
 import DialogEscrow from "~/ui/contribution/dialogs/DialogEscrow";
 import DialogPublishTreasuryTx from "~/ui/contribution/dialogs/DialogPublishTreasuryTx";
-import DialogTask from "~/ui/contribution/dialogs/DialogTask";
 import EscrowListComponent from "~/ui/contribution/lists/EscrowListComponent";
 import TreasuryTaskListComponent from "~/ui/contribution/lists/TreasuryTaskListComponent";
 import DashboardDataComponent from "~/ui/dashboard/components/DashboardDataComponent";
@@ -25,10 +24,6 @@ export default function ManageTreasuryComponent({
           </div>
 
           <div className="flex flex-row space-x-2">
-            <DialogTask
-              treasuryId={treasuryInfo?.id}
-              key={treasuryInfo?.treasuryNftPolicyId}
-            />
             <DialogUpdateTreasury
               treasuryId={treasuryInfo?.id}
             />
@@ -85,10 +80,6 @@ export default function ManageTreasuryComponent({
                   treasury={treasuryInfo.treasuryNftPolicyId}
                 />
               )}
-              <DialogTask
-                treasuryId={treasuryInfo?.id}
-                key={treasuryInfo?.treasuryNftPolicyId}
-              />
             </>
           </PlaceholderComponent>
         </div>

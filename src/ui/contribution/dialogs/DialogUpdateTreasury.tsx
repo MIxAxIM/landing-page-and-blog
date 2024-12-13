@@ -63,7 +63,7 @@ export default function DialogUpdateTreasury({
         videoUrl: treasury.videoUrl ?? "",
       });
     }
-  }, [treasury, form, isEditMode]);
+  }, [treasury, isEditMode]);
 
   const onSubmit = async (data: FormValues) => {
     if (!!treasury) {

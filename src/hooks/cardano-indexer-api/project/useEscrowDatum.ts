@@ -7,7 +7,7 @@ export default function useEscrowDatum(treasuryNftPolicyId?: string, alias?: str
     isLoading: isLoadingDecodedEscrowDatum,
     isError: isErrorDecodedEscrowDatum,
     error: errorDecodedEscrowDatum,
-  } = api.escrowValidator.getEscrowDecodedDatumByTreasuryByAlias.useQuery(
+  } = api.escrowValidator.getEscrowUtxoByTreasuryByAlias.useQuery(
     {
       policy: treasuryNftPolicyId ?? "",
       alias: alias ?? "",
