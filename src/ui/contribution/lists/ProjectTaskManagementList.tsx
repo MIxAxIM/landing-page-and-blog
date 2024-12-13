@@ -216,7 +216,7 @@ export default function ProjectTaskManagementList({
                           </>
                         )}
                         <div>
-                          {(task.status === "APPROVED" || task.status === "ON_CHAIN" || task.status === "COMMITMENT_ACCEPTED") && (
+                          {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
                             <Link href={`/app/contribute/task/${task.id}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>

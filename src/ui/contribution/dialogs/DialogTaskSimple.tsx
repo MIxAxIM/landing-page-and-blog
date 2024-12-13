@@ -221,10 +221,6 @@ export default function DialogTaskSimple({
       [TaskStatus.APPROVED]: "View Approved Task",
       [TaskStatus.PENDING_TX]: "Task is Awaiting On-Chain Confirmation",
       [TaskStatus.ON_CHAIN]: "View On-Chain Task",
-      [TaskStatus.COMMITMENT_MADE]: "View Task Commitment",
-      [TaskStatus.COMMITMENT_DENIED]: "Task has been denied",
-      [TaskStatus.COMMITMENT_ACCEPTED]:
-        "Task commitment has been accepted and task is complete",
       [TaskStatus.BACKLOG]: "Task is in backlog",
       [TaskStatus.ARCHIVED]: "Task is archived",
     };

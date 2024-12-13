@@ -16,9 +16,6 @@ const statusStyles = {
   [TaskStatus.APPROVED]: "bg-blue-100 text-blue-800",
   [TaskStatus.PENDING_TX]: "bg-yellow-100 text-yellow-800",
   [TaskStatus.ON_CHAIN]: "bg-purple-100 text-purple-800",
-  [TaskStatus.COMMITMENT_MADE]: "bg-orange-100 text-orange-800",
-  [TaskStatus.COMMITMENT_DENIED]: "bg-orange-100 text-orange-800",
-  [TaskStatus.COMMITMENT_ACCEPTED]: "bg-green-100 text-green-800",
   [TaskStatus.BACKLOG]: "bg-gray-800 text-gray-100",
   [TaskStatus.ARCHIVED]: "bg-gray-800 text-gray-100",
 };
@@ -28,12 +25,6 @@ const validTransitions: Record<TaskStatus, TaskStatus[]> = {
   APPROVED: [TaskStatus.DRAFT],
   PENDING_TX: [],
   ON_CHAIN: [],
-  COMMITMENT_MADE: [
-    TaskStatus.COMMITMENT_DENIED,
-    TaskStatus.COMMITMENT_ACCEPTED,
-  ],
-  COMMITMENT_DENIED: [TaskStatus.COMMITMENT_MADE],
-  COMMITMENT_ACCEPTED: [],
   BACKLOG: [TaskStatus.DRAFT, TaskStatus.ARCHIVED, TaskStatus.APPROVED],
   ARCHIVED: [TaskStatus.DRAFT, TaskStatus.BACKLOG],
 };
@@ -43,9 +34,6 @@ const statusLabels = {
   [TaskStatus.APPROVED]: "Approved",
   [TaskStatus.PENDING_TX]: "Pending TX",
   [TaskStatus.ON_CHAIN]: "On Chain",
-  [TaskStatus.COMMITMENT_MADE]: "Contributor Committed",
-  [TaskStatus.COMMITMENT_DENIED]: "Contribution Denied",
-  [TaskStatus.COMMITMENT_ACCEPTED]: "Contribution Acccepted",
   [TaskStatus.BACKLOG]: "Backlog",
   [TaskStatus.ARCHIVED]: "Archived",
 };

@@ -42,13 +42,7 @@ const isValidStatusTransition = (
       TaskStatus.ARCHIVED,
     ],
     PENDING_TX: [TaskStatus.ON_CHAIN, TaskStatus.APPROVED],
-    ON_CHAIN: [TaskStatus.COMMITMENT_MADE, TaskStatus.PENDING_TX],
-    COMMITMENT_MADE: [
-      TaskStatus.COMMITMENT_ACCEPTED,
-      TaskStatus.COMMITMENT_DENIED,
-    ],
-    COMMITMENT_DENIED: [TaskStatus.ON_CHAIN, TaskStatus.COMMITMENT_MADE],
-    COMMITMENT_ACCEPTED: [TaskStatus.ARCHIVED],
+    ON_CHAIN: [TaskStatus.PENDING_TX],
     BACKLOG: [TaskStatus.DRAFT, TaskStatus.ARCHIVED],
     ARCHIVED: [TaskStatus.BACKLOG, TaskStatus.DRAFT],
   };
@@ -244,14 +238,6 @@ export const taskRouter = createTRPCRouter({
         });
       }
 
-      // Prevent direct updates for coupled statuses
-      // Additional coupled states here
-      if (input.status === TaskStatus.COMMITMENT_ACCEPTED) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Task status can only be updated to COMMITMENT_ACCEPTED through task commitment updates",
-        });
-      }
 
       if (!isValidStatusTransition(task.status, input.status)) {
         throw new TRPCError({

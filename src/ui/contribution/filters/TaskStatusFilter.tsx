@@ -15,9 +15,6 @@ const statusLabels: Record<TaskStatus, string> = {
   APPROVED: "Approved",
   PENDING_TX: "Pending TX",
   ON_CHAIN: "On Chain",
-  COMMITMENT_MADE: "Committed",
-  COMMITMENT_DENIED: "Denied",
-  COMMITMENT_ACCEPTED: "Complete",
   BACKLOG: "Backlog",
   ARCHIVED: "Archived",
 };
@@ -27,9 +24,6 @@ const statusStyles: Record<TaskStatus, string> = {
   APPROVED: "bg-blue-100 text-blue-800",
   PENDING_TX: "bg-yellow-100 text-yellow-800",
   ON_CHAIN: "bg-purple-100 text-purple-800",
-  COMMITMENT_MADE: "bg-orange-100 text-orange-800",
-  COMMITMENT_DENIED: "bg-orange-100 text-orange-800",
-  COMMITMENT_ACCEPTED: "bg-green-100 text-green-800",
   BACKLOG: "bg-gray-800 text-gray-100",
   ARCHIVED: "bg-gray-800 text-gray-100",
 };

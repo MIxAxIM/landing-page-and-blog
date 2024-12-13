@@ -34,21 +34,6 @@ const statusConfig = {
     color: "text-purple-800",
     background: "bg-purple-100",
   },
-  [TaskStatus.COMMITMENT_MADE]: {
-    icon: DrawingPinIcon,
-    color: "text-orange-800",
-    background: "bg-orange-100",
-  },
-  [TaskStatus.COMMITMENT_DENIED]: {
-    icon: CrossCircledIcon,
-    color: "text-orange-800",
-    background: "bg-orange-100",
-  },
-  [TaskStatus.COMMITMENT_ACCEPTED]: {
-    icon: UpdateIcon,
-    color: "text-green-800",
-    background: "bg-green-100",
-  },
   [TaskStatus.BACKLOG]: {
     icon: BackpackIcon,
     color: "text-gray-100",
