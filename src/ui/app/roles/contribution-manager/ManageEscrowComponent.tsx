@@ -72,11 +72,13 @@ export default function ManageEscrowComponent({
       <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-10 gap-8">
         <div className="col-span-10 mb-6 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
-          <ProjectTreasuryBalance
-            treasuryInfo={treasuryInfo}
-            treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
-            isLoading={isLoadingTreasuryInfo}
-          />
+          {!!treasuryInfo && (
+            <ProjectTreasuryBalance
+              treasuryInfo={treasuryInfo}
+              treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+              isLoading={isLoadingTreasuryInfo}
+            />
+          )}
           {!!escrow && <DialogTaskSimple treasuryId={escrow.treasuryId} escrow={escrow} />}
         </div>
         <div className="col-span-10 row-span-2 flex flex-col w-full">
