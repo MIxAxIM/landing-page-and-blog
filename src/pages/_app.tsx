@@ -13,6 +13,7 @@ import { ThemeProvider } from "~/contexts/theme-provider";
 import { TerminologyProvider } from "~/contexts/terminology-context";
 import TncDialog from "~/components/common/TncDialog";
 import { DialogReportSupport } from "~/components/common/DialogReportSupport";
+import UserActionDialog from "~/components/common/UserActionDialog";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -34,6 +35,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
               <Component {...pageProps} />
               <UiToaster />
               <TncDialog />
+              <UserActionDialog />
             </div>
             <DialogReportSupport />
           </MeshProvider>

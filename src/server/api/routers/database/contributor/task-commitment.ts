@@ -307,8 +307,10 @@ export const taskCommitmentRouter = createTRPCRouter({
 
         // Handle coupled status transitions
         // Add more couple status transitions here -- after implementing a full polling loop
-        if (status === TaskCommitmentStatus.COMMITMENT_MADE &&
-          existingCommitment.status === TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE) {
+        if ((status === TaskCommitmentStatus.COMMITMENT_MADE &&
+          existingCommitment.status === TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE) || (
+            status === TaskCommitmentStatus.PENDING_APPROVAL && existingCommitment.status === TaskCommitmentStatus.PENDING_TX_ADD_INFO
+          )) {
 
           // Update task status first
           await tx.task.update({

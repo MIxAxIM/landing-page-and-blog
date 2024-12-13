@@ -98,11 +98,6 @@ export default function TaskCommitmentPage({
               evidenceHash={evidenceHash}
               setEvidenceHash={setEvidenceHash}
             />
-            <AddInfoDialog
-              treasuryNftPolicyId={treasuryNftPolicyId}
-              taskCommitmentId={currentTaskCommitment.id}
-              evidenceInfoString={evidenceHash}
-            />
           </>
         ) : (
           <>
@@ -113,16 +108,23 @@ export default function TaskCommitmentPage({
               evidenceHash={evidenceHash}
               setEvidenceHash={setEvidenceHash}
             />
-            <CommitProjectDialog treasuryNftPolicyId={treasuryNftPolicyId ?? ""} taskId={currentTask?.id ?? ""} disabled={false} />
           </>
-
+        )}
+        {decodedEscrowDatum ? (
+          <>
+            <AddInfoDialog
+              treasuryNftPolicyId={treasuryNftPolicyId}
+              taskCommitmentId={currentTaskCommitment?.id ?? ""}
+              evidenceInfoString={evidenceHash}
+            />
+          </>
+        ) : (
+          <>
+            <CommitProjectDialog treasuryNftPolicyId={treasuryNftPolicyId ?? ""} taskCommitmentId={currentTaskCommitment?.id} taskId={currentTask?.id ?? ""} disabled={false} />
+          </>
         )}
       </div>
 
-      <div className="flex flex-col gap-y-4">
-        <p>Todo: View other Tasks in this Project</p>
-        <pre>{JSON.stringify(tasks, null, 2)}</pre>
-      </div>
     </div>
 
   )

@@ -87,6 +87,7 @@ export function useTaskCommitment({
       ctx.escrow.getEscrowById.invalidate(),
       ctx.escrow.getEscrowByPolicyId.invalidate(),
       ctx.treasuryValidator.getTreasuryInfo.invalidate(),
+      ctx.taskCommitment.getTaskCommitmentsByProjectHash.invalidate(projectHash),
       id ? ctx.taskCommitment.getTaskCommitmentById.invalidate(id) : Promise.resolve(),
     ]);
   };

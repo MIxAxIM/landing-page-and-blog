@@ -18,11 +18,13 @@ import { useTask } from "~/hooks/db/contribution/useTask";
 export default function CommitProjectDialog({
   treasuryNftPolicyId,
   taskId,
+  taskCommitmentId,
   info,
   disabled,
 }: {
   treasuryNftPolicyId: string;
   taskId: string;
+  taskCommitmentId?: string;
   info?: string;
   disabled: boolean;
 }) {
@@ -84,6 +86,7 @@ export default function CommitProjectDialog({
 
               <CommitProject
                 taskId={taskId}
+                taskCommitmentId={taskCommitmentId}
                 treasuryNftPolicyId={treasuryNftPolicyId}
                 project={JSON.stringify(apiProject)}
                 info={"Testing!"}

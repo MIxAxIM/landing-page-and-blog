@@ -10,13 +10,15 @@ import { useSession } from "next-auth/react";
 // TODO: Get tx costs
 export default function CommitProject({
   taskId,
+  taskCommitmentId,
   treasuryNftPolicyId,
   project,
   info,
   successTxHash,
   setSuccessTxHash,
 }: {
-  taskId: string;
+  taskId?: string;
+  taskCommitmentId?: string;
   treasuryNftPolicyId: string;
   project: string;
   info?: string;
@@ -88,13 +90,13 @@ export default function CommitProject({
 
   // TODO: Implement PENDING_TX_ADD_INFO when editor passes content
   const handleStatusChange = async () => {
-    if (!!info) {
+    if (!!info && !!taskCommitmentId) {
       updateTaskCommitmentStatus({
-        id: taskId,
+        id: taskCommitmentId,
         status: "PENDING_TX_ADD_INFO",
       })
     }
-    else {
+    else if (!!taskId) {
       createTaskCommitment({
         taskId: taskId,
         contributorId: sessionData?.user?.contributorId ?? "",

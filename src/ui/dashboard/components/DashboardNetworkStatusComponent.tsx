@@ -132,8 +132,7 @@ export function TabsDemo() {
 
   const { accessTokenAlias } = useAccessToken();
 
-  const { aggregateUserInfo, isLoadingAggregateUserInfo } =
-    useAggregateUserInfo(accessTokenAlias ?? "");
+  const { aggregateUserInfo, isLoadingAggregateUserInfo } = useAggregateUserInfo()
 
   useEffect(() => {
     if (connected) {

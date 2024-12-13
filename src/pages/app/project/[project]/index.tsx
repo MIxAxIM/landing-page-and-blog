@@ -35,7 +35,7 @@ export default function ProjectPage() {
   });
 
   const { aggregateUserInfo, isLoadingAggregateUserInfo } =
-    useAggregateUserInfo(accessTokenAlias ?? "");
+    useAggregateUserInfo();
 
   const [currentProject, setCurrentProject] = useState<string | undefined>(
     undefined,
@@ -43,10 +43,10 @@ export default function ProjectPage() {
   const [hasLocalState, setHasLocalState] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<
     | {
-        project_content?: string;
-        status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
-        submitted_info?: string;
-      }
+      project_content?: string;
+      status: "PENDING_APPROVAL" | "IN_COMMITMENT" | "REJECTED";
+      submitted_info?: string;
+    }
     | undefined
   >(undefined);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);

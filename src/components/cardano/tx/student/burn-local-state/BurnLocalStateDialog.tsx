@@ -14,9 +14,6 @@ export default function BurnLocalStateDialog({
     undefined,
   );
 
-  if (successTxHash) {
-    alert("Success");
-  }
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
