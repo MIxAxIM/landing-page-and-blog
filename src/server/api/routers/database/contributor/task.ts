@@ -112,6 +112,12 @@ export const taskRouter = createTRPCRouter({
               savedAcceptanceCriteria: true,
             },
           },
+          taskCommitments: {
+            select: {
+              status: true,
+              contributorId: true,
+            }
+          }
         },
       });
 
@@ -135,6 +141,15 @@ export const taskRouter = createTRPCRouter({
       where: { id: input },
       include: {
         escrow: true,
+        taskCommitments: {
+          select: {
+            id: true,
+            status: true,
+            contributorId: true,
+            created: true,
+            updated: true,
+          }
+        }
       },
     });
   }),
@@ -145,6 +160,14 @@ export const taskRouter = createTRPCRouter({
     return ctx.db.task.findMany({
       where: { escrowId: input },
       orderBy: { index: "asc" },
+      include: {
+        taskCommitments: {
+          select: {
+            status: true,
+            contributorId: true,
+          }
+        }
+      }
     });
   }),
 

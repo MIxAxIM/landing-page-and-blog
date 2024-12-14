@@ -20,6 +20,7 @@ import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskS
 import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
 import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
+import { useTask } from "~/hooks/db/contribution/useTask";
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -35,6 +36,7 @@ export default function ManageEscrowComponent({
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
   const { treasuryInfo, escrowUtxos, contributorPolicies, isLoadingTreasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
+  const { tasks } = useTask({ treasuryNftPolicyId: treasuryNftPolicyId ?? "" })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
   const [tasksToManage, setTasksToManage] = useState<Task[]>([])
@@ -88,6 +90,7 @@ export default function ManageEscrowComponent({
           {!!escrow?.tasks && (
             <ProjectTaskManagementList
               treasuryId={escrow.treasuryId}
+              projectTasks={tasks}
               escrow={escrow}
               networkTasks={treasuryInfo?.projects ?? []}
             />

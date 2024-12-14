@@ -73,7 +73,7 @@ export default function TaskCommitmentPage({
             </div>
             <div>
               <p>Task Status</p>
-              {!!currentTask && <TaskStatusIndicator status={currentTask.status} showLabel />}
+              {!!currentTask && <TaskStatusIndicator status={currentTask.status} numAllowedCommitments={currentTask.numAllowedCommitments} showLabel />}
               <p>Task Commitment Status</p>
               {!!currentTaskCommitment && <TaskCommitmentStatusIndicator status={currentTaskCommitment.status} showLabel />}
             </div>

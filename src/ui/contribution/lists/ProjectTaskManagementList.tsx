@@ -23,12 +23,14 @@ export default function ProjectTaskManagementList({
   treasuryId,
   showFilters = true,
   className = "",
+  projectTasks,
   networkTasks,
 }: {
   escrow: Escrow;
   treasuryId: string;
   showFilters?: boolean;
   className?: string;
+  projectTasks: Task[];
   networkTasks: ProjectDatum[]
 }) {
   // Status filter state
@@ -45,25 +47,24 @@ export default function ProjectTaskManagementList({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter and sort tasks
-  const filteredTasks = escrow?.tasks
-    .filter((task) => {
-      // Status filter
-      if (!selectedStatuses.includes(task.status)) return false;
+  const filteredTasks = projectTasks?.filter((task) => {
+    // Status filter
+    if (!selectedStatuses.includes(task.status)) return false;
 
-      // Search filter
-      if (searchQuery.trim()) {
-        const search = searchQuery.toLowerCase();
-        return (
-          task.title.toLowerCase().includes(search) ||
-          task.description.toLowerCase().includes(search) ||
-          task.acceptanceCriteria.some((criteria) =>
-            criteria.toLowerCase().includes(search),
-          )
-        );
-      }
+    // Search filter
+    if (searchQuery.trim()) {
+      const search = searchQuery.toLowerCase();
+      return (
+        task.title.toLowerCase().includes(search) ||
+        task.description.toLowerCase().includes(search) ||
+        task.acceptanceCriteria.some((criteria) =>
+          criteria.toLowerCase().includes(search),
+        )
+      );
+    }
 
-      return true;
-    })
+    return true;
+  })
     .sort((a, b) => {
       if (!sortConfig.key) return 0;
 
@@ -153,14 +154,18 @@ export default function ProjectTaskManagementList({
                       <div className="col-span-1">
                         {(task.status === "DRAFT" ||
                           task.status === "APPROVED" ||
-                          task.status === "ARCHIVED" ||
                           task.status === "BACKLOG") ? (
                           <TaskStatusSelect
                             taskId={task.id}
                             currentStatus={task.status}
                           />
                         ) : (
-                          <TaskStatusIndicator status={task.status} showLabel />
+                          <TaskStatusIndicator
+                            status={task.status}
+                            numAllowedCommitments={task.numAllowedCommitments}
+                            taskCommitments={task.taskCommitments}
+                            showLabel
+                          />
 
                         )}
                       </div>
