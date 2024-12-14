@@ -1,5 +1,4 @@
 import AppLayout from "~/components/layout/AppLayout";
-import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
 import PublicTreasuryListComponent from "../contribution/lists/PublicTreasuryListComponent";
 
 export default function ContributorPageComponent() {
@@ -9,8 +8,6 @@ export default function ContributorPageComponent() {
         <h1>Andamio Contributors</h1>
         <h2>Public Treasuries</h2>
         <PublicTreasuryListComponent />
-        <h2>Public Tasks</h2>
-        <AllTasksListComponent />
       </div>
     </AppLayout>
   );

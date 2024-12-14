@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import { formatPosixTime } from "~/utils/time";
-import { TaskStatus } from "@prisma/client";
+import { TaskStatus, TaskCommitmentStatus } from "@prisma/client";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import TaskStatusFilter from "../filters/TaskStatusFilter";
+import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { ProjectDatum, Task, type Escrow } from "~/types/db";
@@ -21,22 +21,33 @@ import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 export default function ProjectTaskManagementList({
   escrow,
   treasuryId,
+  treasuryNftPolicyId,
   showFilters = true,
   className = "",
-  projectTasks,
   networkTasks,
 }: {
   escrow: Escrow;
   treasuryId: string;
+  treasuryNftPolicyId: string;
   showFilters?: boolean;
   className?: string;
-  projectTasks: Task[];
   networkTasks: ProjectDatum[]
 }) {
-  // Status filter state
-  const [selectedStatuses, setSelectedStatuses] = useState<TaskStatus[]>(
-    Object.values(TaskStatus),
-  );
+  type StatusFilter =
+    | { type: 'task', status: TaskStatus }
+    | { type: 'commitment', status: ConsolidatedCommitmentStatus };
+
+  // Initialize with all task statuses and all commitment statuses
+  const [selectedStatuses, setSelectedStatuses] = useState<StatusFilter[]>([
+    ...Object.values(TaskStatus).map(status => ({
+      type: 'task' as const,
+      status: status
+    })),
+    ...Object.values(consolidatedCommitmentStatuses).map(status => ({
+      type: 'commitment' as const,
+      status: status as ConsolidatedCommitmentStatus
+    }))
+  ]);
 
   // Sort state
   const [sortConfig, setSortConfig] = useState<SortConfig>({
@@ -47,23 +58,21 @@ export default function ProjectTaskManagementList({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter and sort tasks
-  const filteredTasks = projectTasks?.filter((task) => {
-    // Status filter
-    if (!selectedStatuses.includes(task.status)) return false;
+  const filteredTasks = escrow.tasks?.filter((task) => {
+    // Check if task status is selected
+    const isTaskStatusSelected = selectedStatuses.some(
+      s => s.type === 'task' && s.status === task.status
+    );
 
-    // Search filter
-    if (searchQuery.trim()) {
-      const search = searchQuery.toLowerCase();
-      return (
-        task.title.toLowerCase().includes(search) ||
-        task.description.toLowerCase().includes(search) ||
-        task.acceptanceCriteria.some((criteria) =>
-          criteria.toLowerCase().includes(search),
-        )
-      );
-    }
+    // Check if any commitment status is selected
+    const isCommitmentStatusSelected = task.taskCommitments?.some(commitment =>
+      selectedStatuses.some(
+        s => s.type === 'commitment' &&
+          s.status === consolidateStatus(commitment.status)
+      )
+    );
 
-    return true;
+    return isTaskStatusSelected || isCommitmentStatusSelected;
   })
     .sort((a, b) => {
       if (!sortConfig.key) return 0;
@@ -97,6 +106,8 @@ export default function ProjectTaskManagementList({
   const validateNetworkTask = (task: Task) => {
     return networkTasks?.find((networkTask) => networkTask.project_hash === task.hash);
   }
+
+  if (treasuryNftPolicyId.length != 56) return
 
   return (
     <div className={`flex flex-col mb-8 w-full ${className}`}>
@@ -179,6 +190,7 @@ export default function ProjectTaskManagementList({
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="grid md:grid-cols-2 gap-4 mt-6 mb-3 pt-3">
+                      <pre>{JSON.stringify(task, null, 2)}</pre>
                       <div className="flex flex-col gap-y-8">
                         <h3>About</h3>
                         <div>

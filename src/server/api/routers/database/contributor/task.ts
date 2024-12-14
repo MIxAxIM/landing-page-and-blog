@@ -42,7 +42,7 @@ const isValidStatusTransition = (
       TaskStatus.ARCHIVED,
     ],
     PENDING_TX: [TaskStatus.ON_CHAIN, TaskStatus.APPROVED],
-    ON_CHAIN: [TaskStatus.PENDING_TX],
+    ON_CHAIN: [],
     BACKLOG: [TaskStatus.DRAFT, TaskStatus.ARCHIVED],
     ARCHIVED: [TaskStatus.BACKLOG, TaskStatus.DRAFT],
   };
@@ -114,6 +114,7 @@ export const taskRouter = createTRPCRouter({
           },
           taskCommitments: {
             select: {
+              id: true,
               status: true,
               contributorId: true,
             }
@@ -163,6 +164,7 @@ export const taskRouter = createTRPCRouter({
       include: {
         taskCommitments: {
           select: {
+            id: true,
             status: true,
             contributorId: true,
           }
@@ -427,6 +429,13 @@ export const taskRouter = createTRPCRouter({
         orderBy: { index: "asc" },
         include: {
           escrow: true,
+          taskCommitments: {
+            select: {
+              id: true,
+              status: true,
+              contributorId: true,
+            }
+          }
         },
       });
     }),
@@ -496,6 +505,18 @@ export const taskRouter = createTRPCRouter({
                   }
                   : undefined,
                 orderBy: { index: "asc" },
+                include: {
+                  taskCommitments: {
+                    select: {
+                      id: true,
+                      status: true,
+                      contributorId: true,
+                      created: true,
+                      updated: true,
+                      evidence: true,
+                    }
+                  }
+                }
               },
               contributorPrerequisites: {
                 select: {

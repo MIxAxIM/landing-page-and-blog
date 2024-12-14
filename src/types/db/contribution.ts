@@ -1,4 +1,4 @@
-import { PrerequisiteStatus, TaskCommitmentStatus, type TaskStatus } from "@prisma/client";
+import { PrerequisiteStatus, Prisma, TaskCommitmentStatus, type TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 export type TreasuryOwner = RouterOutputs["treasuryOwner"]["getTreasuryOwnerByUser"]
@@ -48,14 +48,60 @@ export type Task = {
     }[];
   };
   taskCommitments?: {
-    id?: string;
+    id: string;
     status: TaskCommitmentStatus;
     contributorId: string;
+    created?: Date;
+    updated?: Date;
+    evidence?: Prisma.JsonValue | null;
   }[];
   isEditable?: boolean;
 };
 
-export type TaskCommitment = RouterOutputs["taskCommitment"]["getTaskCommitmentById"]
+export type TaskCommitment = {
+  id: string;
+  taskId: string;
+  contributorId: string;
+  status: TaskCommitmentStatus;
+  evidence?: Prisma.JsonValue | null;
+  created: Date;
+  updated: Date;
+  task: {
+    id: string;
+    index: number;
+    title: string;
+    description: string;
+    acceptanceCriteria: string[];
+    numAllowedCommitments: number;
+    status: TaskStatus;
+    taskHash: string | null;
+    hash: string | null;
+    lovelace: string;
+    tokens?: {
+      assetId: string;
+      quantity: number;
+    }[];
+    expirationTime: string;
+    escrowId: string;
+    escrow: {
+      id: string;
+      title: string | null;
+      escrowNftPolicyId: string | null;
+      treasuryId: string;
+      isSyncedWithNetwork: boolean;
+      savedAcceptanceCriteria: string[];
+    };
+  };
+  contributor: {
+    id: string;
+    userId: string;
+    user: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    };
+  };
+};
 
 
 // TODO: Need course policyId to sent to Project APIs

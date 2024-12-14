@@ -41,7 +41,17 @@ export const escrowRouter = createTRPCRouter({
     const escrows = await ctx.db.escrow.findMany({
       include: {
         treasury: true,
-        tasks: true,
+        tasks: {
+          include: {
+            taskCommitments: {
+              select: {
+                id: true,
+                status: true,
+                contributorId: true,
+              }
+            }
+          }
+        },
       },
     });
 
@@ -57,7 +67,17 @@ export const escrowRouter = createTRPCRouter({
       const escrow = await ctx.db.escrow.findUnique({
         where: { id: input },
         include: {
-          tasks: true,
+          tasks: {
+            include: {
+              taskCommitments: {
+                select: {
+                  id: true,
+                  status: true,
+                  contributorId: true,
+                }
+              }
+            }
+          },
           contributorPrerequisites: true,
         },
       });
@@ -77,7 +97,17 @@ export const escrowRouter = createTRPCRouter({
         where: { escrowNftPolicyId: input },
         include: {
           treasury: true,
-          tasks: true,
+          tasks: {
+            include: {
+              taskCommitments: {
+                select: {
+                  id: true,
+                  status: true,
+                  contributorId: true,
+                }
+              }
+            }
+          },
           contributorPrerequisites: true,
         },
       });
@@ -96,7 +126,17 @@ export const escrowRouter = createTRPCRouter({
       const escrows = await ctx.db.escrow.findMany({
         where: { treasuryId: input },
         include: {
-          tasks: true,
+          tasks: {
+            include: {
+              taskCommitments: {
+                select: {
+                  id: true,
+                  status: true,
+                  contributorId: true,
+                }
+              }
+            }
+          },
           contributorPrerequisites: true,
         },
       });

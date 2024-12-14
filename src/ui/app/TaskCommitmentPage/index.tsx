@@ -6,7 +6,6 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import useEscrowDatum from "~/hooks/cardano-indexer-api/project/useEscrowDatum";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { Task, TaskCommitment } from "~/types/db";
-import TaskCommitmentStatusIndicator from "~/ui/contribution/status/TaskCommitmentStatusIndicator";
 import TaskStatusIndicator from "~/ui/contribution/status/TaskStatusIndicator";
 import EvidenceEditor from "./EvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
@@ -73,9 +72,14 @@ export default function TaskCommitmentPage({
             </div>
             <div>
               <p>Task Status</p>
-              {!!currentTask && <TaskStatusIndicator status={currentTask.status} numAllowedCommitments={currentTask.numAllowedCommitments} showLabel />}
-              <p>Task Commitment Status</p>
-              {!!currentTaskCommitment && <TaskCommitmentStatusIndicator status={currentTaskCommitment.status} showLabel />}
+              {!!currentTask && (
+                <TaskStatusIndicator
+                  status={currentTask.status}
+                  numAllowedCommitments={currentTask.numAllowedCommitments}
+                  taskCommitments={currentTask.taskCommitments}
+                  showLabel
+                />
+              )}
             </div>
             <div>
               {!accessTokenAlias && <CardanoWallet />}

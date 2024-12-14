@@ -8,7 +8,6 @@ import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProject
 import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
 import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
 
-
 import EscrowUtxoTable from "./EscrowUtxoTable";
 import EnrolledContributors from "./EnrolledContributors";
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
@@ -21,6 +20,12 @@ import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManage
 import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
 import { useTask } from "~/hooks/db/contribution/useTask";
+
+// TODO: 2024-12-14
+// 1. Remove the need for escrow?
+// 2. At least do not pass Escrow to ProjectTaskManagementList
+// 3. Look at where treasuryInfo is used and make it more efficient
+// 4. Clean up tasks query from useTask so that only Treasury Tasks are queried and appear in UI
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -64,7 +69,6 @@ export default function ManageEscrowComponent({
 
 
 
-
   return (
     <div key={escrowId}>
       <ProjectManagerOnboardingModal
@@ -87,10 +91,10 @@ export default function ManageEscrowComponent({
           <h2>
             Manage All Tasks
           </h2>
-          {!!escrow?.tasks && (
+          {!!escrow?.tasks && treasuryNftPolicyId?.length === 56 && (
             <ProjectTaskManagementList
               treasuryId={escrow.treasuryId}
-              projectTasks={tasks}
+              treasuryNftPolicyId={treasuryNftPolicyId}
               escrow={escrow}
               networkTasks={treasuryInfo?.projects ?? []}
             />

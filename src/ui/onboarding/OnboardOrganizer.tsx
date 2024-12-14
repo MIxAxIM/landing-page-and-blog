@@ -1,5 +1,4 @@
 import { useRoles } from "~/hooks/app/useRoles";
-import AllTasksListComponent from "../contribution/lists/AllTasksListComponent";
 import OnboardRole from "./components/OnboardingComponent";
 import { useTerminology } from "~/contexts/terminology-context";
 
@@ -32,7 +31,6 @@ function FirstStep() {
       <h2>
         Next step: view projects
       </h2>
-      <AllTasksListComponent />
     </div>
 
   )

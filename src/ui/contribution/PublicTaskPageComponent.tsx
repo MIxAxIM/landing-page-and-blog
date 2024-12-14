@@ -37,7 +37,12 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
             </Link>
           </div>
         </div>
-        <TaskStatusIndicator status={task.status} numAllowedCommitments={task.numAllowedCommitments} showLabel />
+        <TaskStatusIndicator
+          status={task.status}
+          numAllowedCommitments={task.numAllowedCommitments}
+          taskCommitments={task.taskCommitments}
+          showLabel
+        />
         <p className="prose text-lg">
           This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
         </p>
