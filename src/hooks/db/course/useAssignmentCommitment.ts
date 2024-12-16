@@ -48,6 +48,7 @@ interface UseAssignmentCommitmentReturn {
   updateNetworkEvidence: (data: UpdateNetworkEvidenceInput) => void;
   updateNetworkStatus: (data: UpdateNetworkStatusInput) => void;
   deleteAssignmentCommitment: (id: string) => void;
+  claimCredentials: (data: { learnerId: string, courseCode: string }) => void;
   isLoadingAssignmentCommitment: boolean;
   isLoadingCommitments: boolean;
   isCreating: boolean;
@@ -195,6 +196,20 @@ export function useAssignmentCommitment({
     },
   });
 
+  const claimCredentialsMutation = api.assignmentCommitment.claimAllApprovedCredentials.useMutation({
+    onSuccess: async () => {
+      toast.success("Network statuses updated successfully");
+      await refreshQueries();
+    },
+    onError: (error) => {
+      if (!!error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to update network status");
+      }
+    },
+  })
+
   // Update private status mutation
   const updatePrivateStatusMutation = api.assignmentCommitment.updatePrivateStatus.useMutation({
     onSuccess: async () => {
@@ -279,6 +294,7 @@ export function useAssignmentCommitment({
     updateNetworkEvidence: updateNetworkEvidenceMutation.mutate,
     updateNetworkStatus: updateNetworkStatusMutation.mutate,
     updatePrivateStatus: updatePrivateStatusMutation.mutate,
+    claimCredentials: claimCredentialsMutation.mutate,
     toggleFavorite: toggleFavoriteMutation.mutate,
     toggleArchived: toggleArchivedMutation.mutate,
     deleteAssignmentCommitment: deleteMutation.mutate,

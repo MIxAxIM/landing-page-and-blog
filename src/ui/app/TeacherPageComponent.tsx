@@ -29,7 +29,7 @@ export default function TeacherPageComponent() {
         <CardanoWallet />
         {!!accessTokenAlias && !!currentCourseCode && (
           <>
-            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={currentCourseCode} />
+            <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={currentCourseCode} key={currentCourseCode} />
           </>
         )}
         <PlaceholderComponent name="view courses in my organization" />

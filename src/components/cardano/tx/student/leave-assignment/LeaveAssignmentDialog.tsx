@@ -4,8 +4,10 @@ import { useState } from "react";
 import LeaveAssignment from "./LeaveAssignment";
 
 export default function LeaveAssignmentDialog({
+  assignmentCommitmentId,
   courseNftPolicyId,
 }: {
+  assignmentCommitmentId: string;
   courseNftPolicyId: string;
 }) {
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
@@ -18,7 +20,7 @@ export default function LeaveAssignmentDialog({
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
-        <Button size="sm">Leave Assignment</Button>
+        <Button size="sm">Give Up on this Assignment</Button>
       </DialogTrigger>
       <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">
@@ -30,6 +32,7 @@ export default function LeaveAssignmentDialog({
           </div>
           <div className="p-2">
             <LeaveAssignment
+              assignmentCommitmentId={assignmentCommitmentId}
               courseNftPolicyId={courseNftPolicyId}
               setSuccessTxHash={setSuccessTxHash}
             />

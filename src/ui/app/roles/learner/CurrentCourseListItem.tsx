@@ -63,7 +63,7 @@ export default function CurrentCourseListItem({
       setCompletedCredentials(_assignments);
     } else if (!!assignmentDatum) {
       const _assignments =
-        assignmentDatum.CourseState.CompletedAssignments.length;
+        assignmentDatum.CourseState?.CompletedAssignments?.length ?? 0;
       setCompletedCredentials(_assignments);
     }
   }, [courseStateDatum, assignmentDatum]);

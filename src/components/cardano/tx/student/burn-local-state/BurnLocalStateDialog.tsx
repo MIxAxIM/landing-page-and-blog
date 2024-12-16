@@ -2,22 +2,28 @@ import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { useState } from "react";
 import BurnLocalState from "./BurnLocalState";
+import { useSession } from "next-auth/react";
 
 export default function BurnLocalStateDialog({
   accessTokenAssetId,
+  courseCode,
   courseNftPolicyId,
 }: {
   accessTokenAssetId: string;
+  courseCode: string;
   courseNftPolicyId: string;
 }) {
+  const { data: sessionData } = useSession();
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
     undefined,
   );
 
+  if (!sessionData?.user.learnerId) return
+
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
-        <Button size="sm">Leave Course + Receive Credential</Button>
+        <Button size="sm">Claim Credentials</Button>
       </DialogTrigger>
       <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">
@@ -29,6 +35,8 @@ export default function BurnLocalStateDialog({
           </div>
           <div className="p-2">
             <BurnLocalState
+              learnerId={sessionData?.user.learnerId}
+              courseCode={courseCode}
               accessTokenAssetId={accessTokenAssetId}
               courseNftPolicyId={courseNftPolicyId}
               setSuccessTxHash={setSuccessTxHash}

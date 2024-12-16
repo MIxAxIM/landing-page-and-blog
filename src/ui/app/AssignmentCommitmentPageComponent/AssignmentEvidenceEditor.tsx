@@ -36,6 +36,7 @@ export default function AssignmentEvidenceEditor({
         const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
         setEvidenceHash(Buffer.from(hash).toString("hex"));
         if (!!assignmentCommitment) {
+          console.log("UPDATING NETWORK EVIDENCE")
           updateNetworkEvidence({
             id: assignmentCommitment?.id ?? "",
             networkEvidence: data,

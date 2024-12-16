@@ -4,16 +4,20 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function LeaveAssignment({
+  assignmentCommitmentId,
   courseNftPolicyId,
   setSuccessTxHash,
 }: {
+  assignmentCommitmentId: string;
   courseNftPolicyId: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
+  const { updateNetworkStatus } = useAssignmentCommitment({})
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
@@ -64,6 +68,15 @@ export default function LeaveAssignment({
     },
   );
 
+
+  // callback for submitted transaction
+  const handleStatusChange = async () => {
+    updateNetworkStatus({
+      id: assignmentCommitmentId,
+      networkStatus: "PENDING_TX_LEAVE_ASSIGNMENT"
+    })
+  }
+
   if (txError) {
     return (
       <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
@@ -81,6 +94,7 @@ export default function LeaveAssignment({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
       />
     </div>
   );

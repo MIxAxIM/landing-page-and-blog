@@ -33,7 +33,7 @@ export default function TeacherSection({
   //if (!isTeacher) return null;
 
   return (
-    <div className="mx-auto flex w-full flex-col">
+    <div className="mx-auto flex w-full flex-col" key={courseCode}>
       <h2>This should be on the route /app/teach/{course?.courseCode}</h2>
       <h3>{course?.description}</h3>
       <p>On chain instance: {!!course?.onchainInstance ? "yes" : "no"}</p>

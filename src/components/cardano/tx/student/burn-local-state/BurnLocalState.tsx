@@ -3,23 +3,36 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function BurnLocalState({
+  learnerId,
+  courseCode,
   accessTokenAssetId,
   courseNftPolicyId,
   setSuccessTxHash,
 }: {
+  learnerId: string;
+  courseCode: string;
   accessTokenAssetId: string;
   courseNftPolicyId: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { wallet } = useWallet();
+  const { claimCredentials } = useAssignmentCommitment({})
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
       { txOutputIndexes: [0], description: "Cost Desc.", tooltipText: "Tooltip text" },
     ],
     andamioNetworkFee: 0,
+  }
+
+  const handleStatusChange = async () => {
+    claimCredentials({
+      learnerId: learnerId,
+      courseCode: courseCode
+    })
   }
 
   const { data: unsignedTxCBOR } =
@@ -36,6 +49,7 @@ export default function BurnLocalState({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
       />
     </div>
   );

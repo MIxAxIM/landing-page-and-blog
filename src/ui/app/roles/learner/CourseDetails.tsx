@@ -147,6 +147,7 @@ export default function CourseDetails({
                 {accessTokenAsset &&
                   course?.onchainInstance[0]?.CourseCreatorNFTPolicyID && (
                     <BurnLocalStateDialog
+                      courseCode={course.courseCode}
                       accessTokenAssetId={accessTokenAsset.unit}
                       courseNftPolicyId={
                         course?.onchainInstance[0]?.CourseCreatorNFTPolicyID

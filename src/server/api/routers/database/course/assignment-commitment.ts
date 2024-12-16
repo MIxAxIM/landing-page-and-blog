@@ -29,7 +29,9 @@ const isValidNetworkStatusTransition = (
     PENDING_TX_ASSIGNMENT_ACCEPTED: [AssignmentNetworkStatus.ASSIGNMENT_ACCEPTED],
     ASSIGNMENT_ACCEPTED: [AssignmentNetworkStatus.PENDING_TX_CLAIM_CREDENTIAL],
     PENDING_TX_ASSIGNMENT_DENIED: [AssignmentNetworkStatus.ASSIGNMENT_DENIED],
-    ASSIGNMENT_DENIED: [AssignmentNetworkStatus.PENDING_TX_ADD_INFO],
+    ASSIGNMENT_DENIED: [AssignmentNetworkStatus.PENDING_TX_ADD_INFO, AssignmentNetworkStatus.PENDING_TX_LEAVE_ASSIGNMENT],
+    PENDING_TX_LEAVE_ASSIGNMENT: [AssignmentNetworkStatus.ASSIGNMENT_LEFT],
+    ASSIGNMENT_LEFT: [AssignmentNetworkStatus.PENDING_TX_ADD_INFO],
     PENDING_TX_CLAIM_CREDENTIAL: [AssignmentNetworkStatus.CREDENTIAL_CLAIMED],
     CREDENTIAL_CLAIMED: [],
   };
@@ -250,6 +252,7 @@ export const assignmentCommitmentRouter = createTRPCRouter({
       z.object({
         id: z.string().min(1),
         networkEvidence: z.object({}).passthrough(),
+        networkEvidenceHash: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -306,6 +309,34 @@ export const assignmentCommitmentRouter = createTRPCRouter({
           networkEvidenceHash: input.networkEvidenceHash,
         },
       });
+    }),
+
+  claimAllApprovedCredentials: protectedProcedure
+    .input(
+      z.object({
+        learnerId: z.string().min(1, "Learner ID is required"),
+        courseCode: z.string().min(1, "Course code is required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Get all assignment commitments for this learner in this course
+      const updatedCommitments = await ctx.db.assignmentCommitment.updateMany({
+        where: {
+          learnerId: input.learnerId,
+          assignment: {
+            module: {
+              originalCourse: {
+                courseCode: input.courseCode,
+              },
+            },
+          },
+        },
+        data: {
+          networkStatus: AssignmentNetworkStatus.PENDING_TX_CLAIM_CREDENTIAL,
+        },
+      });
+
+      return updatedCommitments;
     }),
 
   updatePrivateStatus: protectedProcedure

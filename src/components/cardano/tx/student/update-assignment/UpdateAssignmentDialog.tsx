@@ -14,11 +14,15 @@ import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAs
 import UpdateAssignment from "./UpdateAssignment";
 
 export default function UpdateAssignmentDialog({
+  assignmentCommitmentId,
   courseCode,
   assignmentCode,
+  networkEvidenceHash,
 }: {
+  assignmentCommitmentId: string;
   courseCode: string;
   assignmentCode: string;
+  networkEvidenceHash: string;
 }) {
   const { connected } = useWallet();
 
@@ -69,8 +73,9 @@ export default function UpdateAssignmentDialog({
                   "Enter Assignment Info, then press Commit to sign a transaction."}
 
                 <UpdateAssignment
+                  assignmentCommitmentId={assignmentCommitmentId}
                   courseCode={courseCode}
-                  isCommitted={isLearnerCommitted ?? false}
+                  evidenceHash={networkEvidenceHash}
                 />
               </div>
             </div>

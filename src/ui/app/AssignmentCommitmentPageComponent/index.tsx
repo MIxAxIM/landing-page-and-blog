@@ -9,6 +9,9 @@ import UpdateAssignmentDialog from "~/components/cardano/tx/student/update-assig
 import useAssignmentDatums from "~/hooks/cardano-indexer-api/course/useAssignmentDatums";
 import { useSession } from "next-auth/react";
 import useAssignment from "~/hooks/db/course/useAssignment";
+import { AssignmentCommitmentStatusIndicator } from "~/ui/course/components/ui/status/AssignmentStatusIndicators";
+import { useAssignmentCommitmentStatusCheck } from "~/hooks/cardano-indexer-api/polling/useAssignmentCommitmentStatusCheck";
+import LeaveAssignmentDialog from "~/components/cardano/tx/student/leave-assignment/LeaveAssignmentDialog";
 
 export default function AssignmentCommitmentPageComponent({
   courseCode,
@@ -19,6 +22,7 @@ export default function AssignmentCommitmentPageComponent({
   moduleCode: string,
   courseNftPolicyId: string
 }) {
+  useAssignmentCommitmentStatusCheck(courseCode, courseNftPolicyId)
   const { data: sessionData } = useSession();
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | undefined>(undefined);
   const [currentAssignmentCommitment, setCurrentAssignmentCommitment] = useState<AssignmentCommitment | undefined>(undefined);
@@ -59,6 +63,11 @@ export default function AssignmentCommitmentPageComponent({
           className="mt-2 max-w-fit transform rounded-lg bg-white p-4 shadow-md transition-transform"
         >
           <h3 className="font-bold">Task Details</h3>
+          <AssignmentCommitmentStatusIndicator
+            privateStatus={currentAssignmentCommitment?.privateStatus ?? "IN_PROGRESS"}
+            networkStatus={currentAssignmentCommitment?.networkStatus}
+            showLabel={true}
+          />
           <div className="max-w-fit grid grid-cols-3">
             {currentAssignment && (
               <div>
@@ -111,20 +120,21 @@ export default function AssignmentCommitmentPageComponent({
             />
           </>
         )}
-        {!!assignmentDatum ? (
-          <>
-            <div>Add Assignment Info Dialog</div>
-            <pre>{JSON.stringify(assignmentDatum, null, 2)}</pre>
-            <UpdateAssignmentDialog courseCode={courseCode} assignmentCode={moduleCode} />
-          </>
+        {!!assignmentDatum && !!currentAssignmentCommitment?.id ? (
+          <div className="flex flex-row justify-between items-center w-1/2 mx-auto">
+            <UpdateAssignmentDialog
+              assignmentCommitmentId={currentAssignmentCommitment?.id}
+              courseCode={courseCode}
+              assignmentCode={moduleCode}
+              networkEvidenceHash={evidenceHash ?? ""}
+            />
+            <LeaveAssignmentDialog
+              assignmentCommitmentId={currentAssignmentCommitment?.id}
+              courseNftPolicyId={courseNftPolicyId}
+            />
+          </div>
         ) : (
           <>
-            <div>Commit Assignment Dialog</div>
-            <div>
-              <pre>courseCode: {courseCode}</pre>
-              <pre>moduleCode: {moduleCode}</pre>
-              <pre>networkEvidenceHash: {evidenceHash ?? ""}</pre>
-            </div>
             <CommitToAssignmentDialog
               courseCode={courseCode}
               moduleCode={moduleCode}

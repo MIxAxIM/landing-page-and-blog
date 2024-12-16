@@ -87,6 +87,16 @@ const networkStatusConfig = {
     color: "text-red-800",
     background: "bg-red-100",
   },
+  [AssignmentNetworkStatus.PENDING_TX_LEAVE_ASSIGNMENT]: {
+    icon: TimerIcon,
+    color: "text-yellow-800",
+    background: "bg-yellow-100",
+  },
+  [AssignmentNetworkStatus.ASSIGNMENT_LEFT]: {
+    icon: CheckCircledIcon,
+    color: "text-green-800",
+    background: "bg-green-100",
+  },
   [AssignmentNetworkStatus.PENDING_TX_CLAIM_CREDENTIAL]: {
     icon: TimerIcon,
     color: "text-yellow-800",
