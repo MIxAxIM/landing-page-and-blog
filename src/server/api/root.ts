@@ -21,6 +21,7 @@ import { creatorRouter } from "./routers/database/course/creator";
 import { learnerRouter } from "./routers/database/course/learner";
 import { introductionRouter } from "./routers/database/course/introduction";
 import { assignmentStatusRouter } from "./routers/database/course/assignment-status";
+import { assignmentCommitmentRouter } from "./routers/database/course/assignment-commitment";
 
 // Contribution DB Routers
 import { treasuryRouter } from "./routers/database/contributor/treasury";
@@ -97,6 +98,7 @@ export const appRouter = createTRPCRouter({
   lesson: lessonRouter,
   assignment: assignmentRouter,
   introduction: introductionRouter,
+  assignmentCommitment: assignmentCommitmentRouter,
 
 
   // cardano network

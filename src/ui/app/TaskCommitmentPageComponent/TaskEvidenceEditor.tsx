@@ -8,7 +8,7 @@ import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { TaskCommitment } from "~/types/db";
 import useTaskCommitmentEditor from "~/ui/contribution/useTaskCommitmentEditor";
 
-export default function EvidenceEditor({
+export default function TaskEvidenceEditor({
   taskCommitment,
   taskId,
   lock,

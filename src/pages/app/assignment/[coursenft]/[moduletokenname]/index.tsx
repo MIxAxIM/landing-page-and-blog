@@ -3,28 +3,28 @@ import { z } from "zod";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import TaskCommitmentPageComponent from "~/ui/app/TaskCommitmentPageComponent";
+import AssignmentCommitmentPageComponent from "~/ui/app/AssignmentCommitmentPageComponent";
 import MenuBar from "~/ui/landing/MenuBar";
 
-const taskCommitmentParamsSchema = z.object({
-  treasurynft: z.string().min(1),
-  projecthash: z.string().min(1),
+const assignmentCommitmentParamsSchema = z.object({
+  coursenft: z.string().min(1),
+  moduletokenname: z.string().min(1),
 });
 
-export default function ProjectTaskCommitmentPage() {
+export default function AssignmentCommitmentPage() {
   const router = useRouter();
 
   if (!router.isReady) {
     return <div>Loading...</div>; // Or your preferred loading component
   }
-  const result = taskCommitmentParamsSchema.safeParse(router.query);
+  const result = assignmentCommitmentParamsSchema.safeParse(router.query);
   if (!result.success) {
     // Handle invalid params - could redirect or show error
     router.push('/404');
     return null;
   }
 
-  const { treasurynft, projecthash } = result.data;
+  const { coursenft, moduletokenname } = result.data;
 
   const { accessTokenAlias } = useAccessToken()
 
@@ -32,7 +32,7 @@ export default function ProjectTaskCommitmentPage() {
     <DesktopOnlyLayout>
       <MenuBar />
       {!!accessTokenAlias ? (
-        <TaskCommitmentPageComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={accessTokenAlias} />
+        <AssignmentCommitmentPageComponent courseNftPolicyId={coursenft} moduleTokenName={moduletokenname} />
       ) : (
         <ConnectWalletCard message={"Please connect a wallet"} />
       )}

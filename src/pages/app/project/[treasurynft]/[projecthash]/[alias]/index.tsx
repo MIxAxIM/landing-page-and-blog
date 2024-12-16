@@ -1,15 +1,9 @@
+
 import { useRouter } from "next/router";
 import { z } from "zod";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import TaskCommitmentPageComponent from "~/ui/app/TaskCommitmentPageComponent";
 import MenuBar from "~/ui/landing/MenuBar";
-
-//
-// NOTE:
-// - we have a route for Treasury -> Project -> Alias for a current commitment
-// - we need Treasury -> Project -> conditional rendering
-//  --> which is where a Contributor can commit to this Task
-//
 
 const taskCommitmentParamsSchema = z.object({
   treasurynft: z.string().min(1),
@@ -17,7 +11,7 @@ const taskCommitmentParamsSchema = z.object({
   alias: z.string().optional()
 });
 
-export default function ProjectTaskCommitmentPage() {
+export default function ProjectTaskCommitmentPageWithAlias() {
   const router = useRouter();
 
   if (!router.isReady) {

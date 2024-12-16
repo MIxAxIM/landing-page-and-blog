@@ -1,3 +1,4 @@
+import { AssignmentPrivateStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { type AssignmentCommitment } from "~/types/db";
@@ -11,7 +12,7 @@ export type LearnerAssignment = {
   courseCode: string;
   moduleTitle: string;
   moduleCode: string;
-  status: "SAVE_FOR_LATER" | "IN_PROGRESS" | "COMPLETE" | "COMMITMENT";
+  status: AssignmentPrivateStatus;
   learnerNote: string;
   archived: boolean;
 };
@@ -57,7 +58,7 @@ export function useLearnerAssignmentStatuses() {
 
         if (aInfo) {
           const _la: LearnerAssignment = {
-            id: as.assignmentCommitmentId,
+            id: as.id,
             title: aInfo.title,
             assignmentCode: aInfo.assignmentCode,
             courseTitle: aInfo.module.originalCourse.title,
@@ -65,7 +66,7 @@ export function useLearnerAssignmentStatuses() {
             moduleTitle: aInfo.module.title,
             moduleCode: aInfo.module.moduleCode,
             status: as.status,
-            learnerNote: as.learnerNotes,
+            learnerNote: as.learnerNotes ?? "",
             archived: as.archived,
           };
           _laList.push(_la);

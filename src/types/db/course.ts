@@ -1,3 +1,4 @@
+import { AssignmentNetworkStatus, AssignmentPrivateStatus, AssignmentStatus, Prisma } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 // Course types
@@ -22,9 +23,19 @@ export type Lesson = RouterOutputs["lesson"]["getModuleLessons"][number];
 export type Assignment = RouterOutputs["assignment"]["getAssignmentByModuleId"];
 export type Introduction = RouterOutputs["introduction"]["getIntroduction"];
 export type AssignmentCommitment = {
+  id: string;
   assignmentId: string;
-  assignmentCommitmentId: string;
-  learnerNotes: string;
-  status: "SAVE_FOR_LATER" | "IN_PROGRESS" | "COMPLETE" | "COMMITMENT";
+  learnerId: string;
+  privateStatus: AssignmentPrivateStatus;
+  privateEvidence?: Prisma.JsonValue | null;
+  networkStatus: AssignmentNetworkStatus;
+  networkEvidence?: Prisma.JsonValue | null;
+  networkEvidenceHash?: string | null;
+  favorite: boolean;
   archived: boolean;
+  // deprecated
+  learnerNotes?: string | null;
+  privateNotes?: string | null;
+  status: AssignmentStatus;
+  // end deprecated
 };

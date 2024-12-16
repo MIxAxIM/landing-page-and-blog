@@ -2,9 +2,17 @@ import { useEffect } from "react";
 import { Content, useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/editor/extension-kit";
 import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock";
-import { TaskCommitment } from "~/types/db";
+import { AssignmentCommitment, TaskCommitment } from "~/types/db";
 
-export default function useTaskCommitmentEditor({ taskCommitment, editable }: { taskCommitment?: TaskCommitment, editable: boolean }) {
+export default function useTaskCommitmentEditor({
+  taskCommitment,
+  assignmentCommitment,
+  editable
+}: {
+  taskCommitment?: TaskCommitment,
+  assignmentCommitment?: AssignmentCommitment,
+  editable: boolean
+}) {
   const editor = useEditor({
     extensions: [...ExtensionKit(), EditableCodeBlock],
     // Start with empty content, we'll set it after parsing
@@ -18,7 +26,7 @@ export default function useTaskCommitmentEditor({ taskCommitment, editable }: { 
     editable,
   });
 
-  // Set content when taskCommitment updates
+  // Set content when taskCommitment updates...
   useEffect(() => {
     if (taskCommitment?.evidence && editor) {
       try {
@@ -32,6 +40,20 @@ export default function useTaskCommitmentEditor({ taskCommitment, editable }: { 
     }
   }, [taskCommitment, editor]);
 
+  // ...or when assignmentCommitment updates
+  useEffect(() => {
+    if (assignmentCommitment?.networkEvidence && editor) {
+      try {
+        const content = assignmentCommitment.networkEvidence as Content
+        editor.commands.setContent(content);
+      } catch (error) {
+        console.error('Failed to load content json:', error);
+        // Optionally set some fallback content or show an error
+        editor.commands.setContent('');
+      }
+    }
+  }, [assignmentCommitment, editor]);
+
   // Update editability dynamically
   useEffect(() => {
     if (editor) {
@@ -39,5 +61,5 @@ export default function useTaskCommitmentEditor({ taskCommitment, editable }: { 
     }
   }, [editable, editor]);
 
-  return { editor, taskCommitment };
+  return { editor, taskCommitment, assignmentCommitment };
 }

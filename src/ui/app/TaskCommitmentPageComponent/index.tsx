@@ -7,16 +7,11 @@ import useEscrowDatum from "~/hooks/cardano-indexer-api/project/useEscrowDatum";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { Task, TaskCommitment } from "~/types/db";
 import TaskStatusIndicator from "~/ui/contribution/status/TaskStatusIndicator";
-import EvidenceEditor from "./EvidenceEditor";
+import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";
 
-// TODO:
-// What happens when connected wallet is not the contributor (yet!) to this task?
-// There will not be Escrow Datum...so we must get info about the task from somewhere else
-// ...however, we still want to store the evidence...
-
-export default function TaskCommitmentPage({
+export default function TaskCommitmentPageComponent({
   treasuryNftPolicyId,
   projectHash,
   alias,
@@ -58,7 +53,6 @@ export default function TaskCommitmentPage({
 
   return (
     <div>
-
       <div className="flex flex-col items-center justify-center">
         <div
           className="mt-2 max-w-fit transform rounded-lg bg-white p-4 shadow-md transition-transform"
@@ -95,7 +89,7 @@ export default function TaskCommitmentPage({
         <h3>Enter Submission Details</h3>
         {currentTaskCommitment ? (
           <>
-            <EvidenceEditor
+            <TaskEvidenceEditor
               taskCommitment={currentTaskCommitment}
               lock={lock}
               setLock={setLock}
@@ -105,7 +99,7 @@ export default function TaskCommitmentPage({
           </>
         ) : (
           <>
-            <EvidenceEditor
+            <TaskEvidenceEditor
               taskId={currentTask?.id ?? ""}
               lock={lock}
               setLock={setLock}

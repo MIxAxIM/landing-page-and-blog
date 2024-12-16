@@ -79,7 +79,7 @@ export default function DialogAssignmentLearnerStatus({
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (assignmentCommitment) {
       updateEvidence({
-        assignmentCommitmentId: assignmentCommitment.assignmentCommitmentId,
+        assignmentCommitmentId: assignmentCommitment.id,
         learnerNotes: data.learnerNotes ?? "",
         status: data.status,
       });
