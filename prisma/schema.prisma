@@ -451,6 +451,9 @@ enum AssignmentNetworkStatus {
 
   PENDING_TX_CLAIM_CREDENTIAL
   CREDENTIAL_CLAIMED
+
+  PENDING_TX_LEAVE_ASSIGNMENT
+  ASSIGNMENT_LEFT
 }
 
 model AssignmentCommitment {
