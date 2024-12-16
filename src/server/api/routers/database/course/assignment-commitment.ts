@@ -18,7 +18,10 @@ const isValidNetworkStatusTransition = (
       AssignmentNetworkStatus.PENDING_TX_ADD_INFO,
       AssignmentNetworkStatus.PENDING_APPROVAL,
     ],
-    PENDING_TX_ADD_INFO: [AssignmentNetworkStatus.PENDING_APPROVAL],
+    PENDING_TX_ADD_INFO: [
+      AssignmentNetworkStatus.PENDING_TX_ADD_INFO,
+      AssignmentNetworkStatus.PENDING_APPROVAL
+    ],
     PENDING_APPROVAL: [
       AssignmentNetworkStatus.PENDING_TX_ASSIGNMENT_ACCEPTED,
       AssignmentNetworkStatus.PENDING_TX_ASSIGNMENT_DENIED
@@ -55,8 +58,9 @@ export const assignmentCommitmentRouter = createTRPCRouter({
         },
         include: {
           assignment: {
-            include: {
-              module: true,
+            select: {
+              title: true,
+              assignmentCode: true,
             },
           },
           learner: {
@@ -79,6 +83,14 @@ export const assignmentCommitmentRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.db.assignmentCommitment.findUnique({
         where: { id: input },
+        include: {
+          assignment: {
+            select: {
+              title: true,
+              assignmentCode: true,
+            },
+          },
+        },
       });
     }),
 
@@ -87,7 +99,7 @@ export const assignmentCommitmentRouter = createTRPCRouter({
       z.object({
         courseCode: z.string().min(1),
         learnerId: z.string().optional(),
-        networkStatus: z.nativeEnum(AssignmentNetworkStatus).optional(),
+        networkStatuses: z.array(z.nativeEnum(AssignmentNetworkStatus)).optional(),
         privateStatus: z.nativeEnum(AssignmentPrivateStatus).optional(),
       })
     )
@@ -101,9 +113,19 @@ export const assignmentCommitmentRouter = createTRPCRouter({
               }
             }
           },
-          ...(input.networkStatus && { networkStatus: input.networkStatus }),
+          ...(input.networkStatuses && input.networkStatuses.length > 0 && {
+            networkStatus: { in: input.networkStatuses }
+          }),
           ...(input.privateStatus && { privateStatus: input.privateStatus }),
           ...(input.learnerId && { learnerId: input.learnerId }),
+        },
+        include: {
+          assignment: {
+            select: {
+              title: true,
+              assignmentCode: true,
+            },
+          },
         },
         orderBy: { networkStatus: 'asc' },
       });
@@ -134,6 +156,14 @@ export const assignmentCommitmentRouter = createTRPCRouter({
           ...(input.networkStatus && { networkStatus: input.networkStatus }),
           ...(input.privateStatus && { privateStatus: input.privateStatus }),
           ...(input.learnerId && { learnerId: input.learnerId }),
+        },
+        include: {
+          assignment: {
+            select: {
+              title: true,
+              assignmentCode: true,
+            },
+          },
         },
         orderBy: { networkStatus: 'asc' },
       });
@@ -220,7 +250,6 @@ export const assignmentCommitmentRouter = createTRPCRouter({
       z.object({
         id: z.string().min(1),
         networkEvidence: z.object({}).passthrough(),
-        networkEvidenceHash: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -248,6 +277,7 @@ export const assignmentCommitmentRouter = createTRPCRouter({
       z.object({
         id: z.string().min(1),
         networkStatus: z.nativeEnum(AssignmentNetworkStatus),
+        networkEvidenceHash: z.string().optional().nullable(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -273,6 +303,7 @@ export const assignmentCommitmentRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           networkStatus: input.networkStatus,
+          networkEvidenceHash: input.networkEvidenceHash,
         },
       });
     }),

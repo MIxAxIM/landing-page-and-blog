@@ -12,7 +12,7 @@ export default function useAssignmentDatums(
     error: errorListCourseAssignmentDatums,
   } = api.assignmentValidator.getDecodedCourseAssignmentDatums.useQuery(
     {
-      courseNftPolicy: courseNftPolicy,
+      courseNftPolicyId: courseNftPolicy,
     },
     { enabled: !alias && !!courseNftPolicy },
   );

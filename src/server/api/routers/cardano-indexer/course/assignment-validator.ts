@@ -65,12 +65,12 @@ export const assignmentValidatorRouter = createTRPCRouter({
   getDecodedCourseAssignmentDatums: protectedProcedure
     .input(
       z.object({
-        courseNftPolicy: z.string().length(56),
+        courseNftPolicyId: z.string().length(56),
       }),
     )
     .query(async ({ input }) => {
       const assignments = await indexerGet<DecodedAssignmentDecisionDatum[]>(
-        `/assignment-validator/decoded-datum?policy=${input.courseNftPolicy}`,
+        `/assignment-validator/decoded-datum?policy=${input.courseNftPolicyId}`,
       );
       return assignments;
     }),

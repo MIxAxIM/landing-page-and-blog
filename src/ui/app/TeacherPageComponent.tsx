@@ -5,17 +5,15 @@ import TeacherSection from "./roles/teacher/TeacherSection";
 import { CardanoWallet } from "@meshsdk/react";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import { Card } from "~/components/ui/card";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Button } from "~/components/ui/button";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import AppLayout from "~/components/layout/AppLayout";
-
 
 export default function TeacherPageComponent() {
   const { accessTokenAlias } = useAccessToken()
   const { courses } = useUserRelationships()
   const [currentCourseCode, setCurrentCourseCode] = useState<string | undefined>(undefined)
-
 
   return (
     <AppLayout>

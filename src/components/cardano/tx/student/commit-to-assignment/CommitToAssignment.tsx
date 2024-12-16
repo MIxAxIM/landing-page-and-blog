@@ -31,15 +31,17 @@ export default function CommitToAssignment({
 
   return (
     <div className="flex w-full items-center justify-center rounded-md border py-3 font-mono text-sm">
-      {!connected ? (
+      {!connected && (
         <CardanoWallet />
-      ) : isCommitted ? (
-        <p>Already in Commitment</p>
-      ) : (
+      )}
+      {isCommitted && (
+        <p>You are already committed to this assignment</p>
+      )}
+
+      {!!accessTokenAsset && (
         <>
-          {/* {isConfirming && <p>Confirming transaction...</p>} */}
           <CommitToAssignmentButton
-            userAccessTokenUnit={accessTokenAsset!.unit}
+            userAccessTokenUnit={accessTokenAsset.unit}
             courseNftPolicyId={courseOnchain.CourseCreatorNFTPolicyID}
             assignmentCommitmentId={assignmentCommitmentId}
             assignmentCode={assignmentCode}

@@ -37,5 +37,8 @@ export type AssignmentCommitment = {
   learnerNotes?: string | null;
   privateNotes?: string | null;
   status: AssignmentStatus;
+  assignment: {
+    title: string
+  };
   // end deprecated
 };

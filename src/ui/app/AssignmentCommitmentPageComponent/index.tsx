@@ -46,6 +46,11 @@ export default function AssignmentCommitmentPageComponent({
   }, [assignmentCommitmentsByCourseModule])
 
   // TODO: Write helpful useEffects
+  useEffect(() => {
+    if (currentAssignmentCommitment && !!currentAssignmentCommitment.networkEvidenceHash) {
+      setEvidenceHash(currentAssignmentCommitment.networkEvidenceHash)
+    }
+  }, [currentAssignmentCommitment])
 
   return (
     <div>
@@ -86,7 +91,6 @@ export default function AssignmentCommitmentPageComponent({
         {currentAssignmentCommitment ? (
           <>
             <p>HAS CURRENT ASSIGNMENT</p>
-            <pre>{JSON.stringify(currentAssignmentCommitment, null, 2)}</pre>
             <AssignmentEvidenceEditor
               assignmentCommitment={currentAssignmentCommitment}
               lock={lock}
@@ -116,6 +120,11 @@ export default function AssignmentCommitmentPageComponent({
         ) : (
           <>
             <div>Commit Assignment Dialog</div>
+            <div>
+              <pre>courseCode: {courseCode}</pre>
+              <pre>moduleCode: {moduleCode}</pre>
+              <pre>networkEvidenceHash: {evidenceHash ?? ""}</pre>
+            </div>
             <CommitToAssignmentDialog
               courseCode={courseCode}
               moduleCode={moduleCode}

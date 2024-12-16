@@ -5,11 +5,13 @@ import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponen
 import AcceptDenyAssignment from "./AcceptDenyAssignment";
 
 export default function AcceptDenyAssignmentDialog({
+  assignmentCommitmentId,
   courseNftPolicy,
   userAccessTokenUnit,
   studentAlias,
   decision,
 }: {
+  assignmentCommitmentId: string;
   courseNftPolicy: string;
   userAccessTokenUnit: string;
   studentAlias: string;
@@ -77,6 +79,7 @@ export default function AcceptDenyAssignmentDialog({
           </div>
           <div className="p-2">
             <AcceptDenyAssignment
+              assignmentCommitmentId={assignmentCommitmentId}
               courseNftPolicy={courseNftPolicy}
               userAccessTokenUnit={userAccessTokenUnit}
               studentAlias={studentAlias}

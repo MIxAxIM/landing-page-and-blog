@@ -1,7 +1,8 @@
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
-import { type AssignmentPrivateStatus, type AssignmentNetworkStatus } from "@prisma/client";
+import { type AssignmentPrivateStatus, AssignmentNetworkStatus } from "@prisma/client";
 import { AssignmentCommitment } from "~/types/db";
+import { useEffect, useState } from "react";
 
 type CreateAssignmentCommitmentInput = {
   assignmentId: string;
@@ -31,6 +32,7 @@ type UpdateNetworkEvidenceInput = {
 type UpdateNetworkStatusInput = {
   id: string;
   networkStatus: AssignmentNetworkStatus;
+  networkEvidenceHash?: string | null;
 }
 
 
@@ -39,6 +41,7 @@ interface UseAssignmentCommitmentReturn {
   assignmentCommitments: AssignmentCommitment[] | undefined;
   assignmentCommitmentsByCourse: AssignmentCommitment[] | undefined;
   assignmentCommitmentsByCourseModule: AssignmentCommitment[] | undefined;
+  assignmentCommitmentsAwaitingApproval: AssignmentCommitment[] | undefined;
   createAssignmentCommitment: (data: CreateAssignmentCommitmentInput) => void;
   updatePrivateEvidence: (data: UpdatePrivateEvidenceInput) => void;
   updatePrivateStatus: (data: UpdatePrivateStatusInput) => void;
@@ -70,6 +73,7 @@ export function useAssignmentCommitment({
   moduleCode?: string;
 }): UseAssignmentCommitmentReturn {
   const ctx = api.useUtils();
+  const [assignmentCommitmentsAwaitingApproval, setAssginmentCommitmentsAwaitingApproval] = useState<AssignmentCommitment[] | undefined>(undefined);
 
   // Queries
   const {
@@ -103,6 +107,13 @@ export function useAssignmentCommitment({
     { enabled: !!courseCode }
   );
 
+  useEffect(() => {
+    if (assignmentCommitmentsByCourse && assignmentCommitmentsByCourse.length > 0) {
+      const _ac = assignmentCommitmentsByCourse.filter(ac => ac.networkStatus == AssignmentNetworkStatus.PENDING_APPROVAL);
+      setAssginmentCommitmentsAwaitingApproval(_ac);
+    }
+  }, [assignmentCommitmentsByCourse]);
+
   const {
     data: assignmentCommitmentsByCourseModule,
     isLoading: isLoadingCommitmentsByCourseModule
@@ -119,6 +130,8 @@ export function useAssignmentCommitment({
     await Promise.all([
       ctx.assignmentCommitment.getAssignmentCommitmentById.invalidate(id),
       ctx.assignmentCommitment.getAssignmentCommitments.invalidate(),
+      ctx.assignmentCommitment.getAssignmentCommitmentsByCourseModule.invalidate(),
+      ctx.assignmentCommitment.getAssignmentCommitmentsByCourse.invalidate(),
     ]);
   };
 
@@ -246,6 +259,7 @@ export function useAssignmentCommitment({
     assignmentCommitments,
     assignmentCommitmentsByCourse,
     assignmentCommitmentsByCourseModule,
+    assignmentCommitmentsAwaitingApproval,
     isLoadingAssignmentCommitment,
     isLoadingCommitments,
     error,

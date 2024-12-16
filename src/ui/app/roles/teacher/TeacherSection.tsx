@@ -3,6 +3,7 @@ import NetworkModuleManagement from "./NetworkModuleManagement";
 import { useState, useEffect } from "react";
 import useCourse from "~/hooks/db/course/useCourse";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
+import { useAssignmentCommitmentStatusCheck } from "~/hooks/cardano-indexer-api/polling/useAssignmentCommitmentStatusCheck";
 
 export default function TeacherSection({
   accessTokenAlias,
@@ -27,6 +28,7 @@ export default function TeacherSection({
   }, [course]);
 
 
+  useAssignmentCommitmentStatusCheck(courseCode, selectedCoursePolicyId ?? "")
 
   //if (!isTeacher) return null;
 

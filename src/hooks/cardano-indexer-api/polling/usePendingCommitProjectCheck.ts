@@ -9,7 +9,10 @@ export function usePendingCommitProjectCheck(treasuryNftPolicyId: string) {
   const ctx = api.useUtils();
 
   // Get all Commitments for current treasury
-  const { data: pendingCommitments, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({ treasuryNftPolicyId: treasuryNftPolicyId, status: TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE });
+  const { data: pendingCommitments, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({
+    treasuryNftPolicyId: treasuryNftPolicyId,
+    status: TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE
+  });
 
   // Task Commitment Status mutation
   const { updateTaskCommitmentStatus } = useTaskCommitment({});

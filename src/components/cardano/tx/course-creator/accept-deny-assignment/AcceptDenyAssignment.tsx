@@ -3,14 +3,17 @@ import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function AcceptDenyAssignment({
+  assignmentCommitmentId,
   courseNftPolicy,
   userAccessTokenUnit,
   studentAlias,
   decision,
   setSuccessTxHash,
 }: {
+  assignmentCommitmentId: string;
   courseNftPolicy: string;
   userAccessTokenUnit: string;
   studentAlias: string;
@@ -18,6 +21,7 @@ export default function AcceptDenyAssignment({
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { wallet } = useWallet();
+  const { updateNetworkStatus } = useAssignmentCommitment({})
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
@@ -39,6 +43,21 @@ export default function AcceptDenyAssignment({
         studentAlias: studentAlias,
       });
 
+  const handleStatusChange = async () => {
+    if (decision === "accept") {
+      updateNetworkStatus({
+        id: assignmentCommitmentId,
+        networkStatus: "PENDING_TX_ASSIGNMENT_ACCEPTED"
+      })
+    } else if (decision === "deny") {
+      updateNetworkStatus({
+        id: assignmentCommitmentId,
+        networkStatus: "PENDING_TX_ASSIGNMENT_DENIED",
+        networkEvidenceHash: null
+      })
+    }
+  }
+
   if (txError) {
     return (
       <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
@@ -56,7 +75,9 @@ export default function AcceptDenyAssignment({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
       />
     </div>
   );
 }
+
