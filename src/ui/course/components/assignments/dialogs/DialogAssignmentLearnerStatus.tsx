@@ -98,7 +98,7 @@ export default function DialogAssignmentLearnerStatus({
         status: assignmentCommitment?.status ?? "SAVE_FOR_LATER",
       });
     }
-  }, [form, assignmentId, assignmentCommitment]);
+  }, [assignmentId, assignmentCommitment]);
 
   useEffect(() => {
     resetForm();

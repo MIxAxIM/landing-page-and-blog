@@ -12,27 +12,38 @@ import { useWallet } from "@meshsdk/react";
 import Link from "next/link";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import CommitToAssignment from "~/components/cardano/tx/student/commit-to-assignment/CommitToAssignment";
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
+import { useSession } from "next-auth/react";
 
 export default function CommitToAssignmentDialog({
   courseCode,
-  assignmentCode,
+  moduleCode,
+  networkEvidenceHash,
 }: {
   courseCode: string;
-  assignmentCode: string;
+  moduleCode: string;
+  networkEvidenceHash: string;
 }) {
   const { connected } = useWallet();
+  const { data: sessionData } = useSession()
 
   // For now, assume that assignmentCode must match moduleCode
   const { isAssignmentOnchain, isLearnerCommitted } =
     useAssignmentNetworkStatus({
       courseCode: courseCode,
-      moduleCode: assignmentCode,
+      moduleCode: moduleCode,
     });
+
+  const { assignmentCommitmentsByCourse } = useAssignmentCommitment({
+    courseCode: courseCode,
+    moduleCode: moduleCode,
+    learnerId: sessionData?.user.learnerId ?? ""
+  });
 
   return (
     <>
       {!isAssignmentOnchain ? (
-        <p>Assignment {assignmentCode} is not published on chain</p>
+        <p>Assignment {moduleCode} is not published on chain</p>
       ) : (
         <Dialog>
           <DialogTrigger asChild>
@@ -47,7 +58,7 @@ export default function CommitToAssignmentDialog({
                   <DialogTitle>Commit to Assignment</DialogTitle>
                   <DialogDescription>
                     By completing this transaction, you will make a public
-                    commitment to Assignment {assignmentCode} on the Andamio
+                    commitment to Assignment {moduleCode} on the Andamio
                     Network.
                   </DialogDescription>
                 </DialogHeader>
@@ -68,11 +79,15 @@ export default function CommitToAssignmentDialog({
                 </DialogFooter>
               </div>
               <div className="p-2">
-                <CommitToAssignment
-                  courseCode={courseCode}
-                  assignmentCode={assignmentCode}
-                  isCommitted={isLearnerCommitted ?? false}
-                />
+                {!!assignmentCommitmentsByCourse && !!assignmentCommitmentsByCourse[0] && (
+                  <CommitToAssignment
+                    courseCode={courseCode}
+                    assignmentCode={moduleCode}
+                    assignmentCommitmentId={assignmentCommitmentsByCourse[0]?.id ?? ""}
+                    isCommitted={isLearnerCommitted ?? false}
+                    networkEvidenceHash={networkEvidenceHash}
+                  />
+                )}
               </div>
             </div>
           </DialogContent>

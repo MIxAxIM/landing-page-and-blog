@@ -1,110 +1,49 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useState } from "react";
-import { Button } from "~/components/ui/button";
 import { NETWORK } from "~/andamio.config";
-import { useToast } from "~/components/ui/use-toast";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
-
-const FormSchema = z.object({
-  assignmentInfo: z.string().min(2, {
-    message: "Assignment Info must be at least 2 characters.",
-  }),
-});
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function CommitToAssignment({
   courseCode,
   assignmentCode,
+  assignmentCommitmentId,
   isCommitted,
+  networkEvidenceHash,
 }: {
   courseCode: string;
   assignmentCode: string;
+  assignmentCommitmentId: string;
   isCommitted: boolean;
+  networkEvidenceHash?: string;
 }) {
-  const { toast } = useToast();
-
   const { connected } = useWallet();
   const { accessTokenAsset } = useAccessToken();
-  const [isReadyToCommit, setIsReadyToCommit] = useState(false);
-  const [assignmentInfo, setAssignmentInfo] = useState("");
 
   const { courseOnchain } = useNetworkCourseConfig(courseCode, NETWORK);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      assignmentInfo: "",
-    },
-  });
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    setAssignmentInfo(data.assignmentInfo);
-    if (accessTokenAsset && courseOnchain) {
-      setIsReadyToCommit(true);
-    } else {
-      toast({
-        title: "Something went wrong",
-        description: `accessTokenAsset and courseOnchain missing`,
-      });
-    }
-  }
+  if (!courseOnchain) return "This course is not published on the Andamio Network"
 
   return (
     <div className="flex w-full items-center justify-center rounded-md border py-3 font-mono text-sm">
-      {!isReadyToCommit ? (
-        <>
-          {!connected ? (
-            <CardanoWallet />
-          ) : isCommitted ? (
-            <p>Already in Commitment</p>
-          ) : (
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="mx-auto w-11/12 space-y-6"
-              >
-                <FormField
-                  control={form.control}
-                  name="assignmentInfo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Assignment Info</FormLabel>
-                      <FormControl>
-                        <Input placeholder="enter assignment info" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit">Ready To Commit</Button>
-              </form>
-            </Form>
-          )}
-        </>
+      {!connected ? (
+        <CardanoWallet />
+      ) : isCommitted ? (
+        <p>Already in Commitment</p>
       ) : (
         <>
           {/* {isConfirming && <p>Confirming transaction...</p>} */}
           <CommitToAssignmentButton
             userAccessTokenUnit={accessTokenAsset!.unit}
-            courseNftPolicyId={courseOnchain!.CourseCreatorNFTPolicyID}
+            courseNftPolicyId={courseOnchain.CourseCreatorNFTPolicyID}
+            assignmentCommitmentId={assignmentCommitmentId}
             assignmentCode={assignmentCode}
-            assignmentInfo={assignmentInfo}
+            networkEvidenceHash={networkEvidenceHash ?? "Assignment evidence will be submitted later"}
           />
         </>
       )}
@@ -115,20 +54,22 @@ export default function CommitToAssignment({
 export function CommitToAssignmentButton({
   userAccessTokenUnit,
   courseNftPolicyId,
+  assignmentCommitmentId,
   assignmentCode,
-  assignmentInfo,
+  networkEvidenceHash,
 }: {
   userAccessTokenUnit: string;
   courseNftPolicyId: string;
+  assignmentCommitmentId: string;
   assignmentCode: string;
-  assignmentInfo: string;
+  networkEvidenceHash: string;
 }) {
   const { wallet } = useWallet();
+  const { updateNetworkStatus } = useAssignmentCommitment({})
 
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
     undefined,
   );
-
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
@@ -142,8 +83,15 @@ export function CommitToAssignmentButton({
       userAccessTokenUnit: userAccessTokenUnit,
       courseNftPolicyId: courseNftPolicyId,
       assignmentCode: assignmentCode,
-      assignmentInfo: assignmentInfo,
+      assignmentInfo: networkEvidenceHash,
     });
+
+  const handleStatusChange = async () => {
+    updateNetworkStatus({
+      id: assignmentCommitmentId,
+      networkStatus: "PENDING_TX_ADD_INFO"
+    })
+  }
 
   if (!!successTxHash) {
     return (
@@ -163,6 +111,7 @@ export function CommitToAssignmentButton({
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
+        onTransactionSuccess={handleStatusChange}
       />
     </div>
   );

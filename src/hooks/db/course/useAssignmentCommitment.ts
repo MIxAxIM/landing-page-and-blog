@@ -110,6 +110,7 @@ export function useAssignmentCommitment({
     {
       courseCode: courseCode ?? "",
       moduleCode: moduleCode ?? "",
+      learnerId,
     },
     { enabled: !!courseCode && !!moduleCode }
   );

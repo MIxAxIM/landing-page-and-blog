@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { z } from "zod";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
+import useCourseByPolicyId from "~/hooks/cardano-indexer-api/course/useCourseByPolicyId";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import AssignmentCommitmentPageComponent from "~/ui/app/AssignmentCommitmentPageComponent";
 import MenuBar from "~/ui/landing/MenuBar";
@@ -27,12 +28,15 @@ export default function AssignmentCommitmentPage() {
   const { coursenft, moduletokenname } = result.data;
 
   const { accessTokenAlias } = useAccessToken()
+  const { courseInfo } = useCourseByPolicyId(coursenft);
+
+  if (!courseInfo) return
 
   return (
     <DesktopOnlyLayout>
       <MenuBar />
       {!!accessTokenAlias ? (
-        <AssignmentCommitmentPageComponent courseNftPolicyId={coursenft} moduleTokenName={moduletokenname} />
+        <AssignmentCommitmentPageComponent courseCode={courseInfo.courseCode} moduleCode={moduletokenname} courseNftPolicyId={coursenft} />
       ) : (
         <ConnectWalletCard message={"Please connect a wallet"} />
       )}

@@ -18,11 +18,11 @@ import CourseNavigation from "~/ui/course/components/ui/CourseNavigation";
 import Metatags from "~/components/common/metatags";
 
 import "highlight.js/styles/atom-one-dark.css";
-import NetworkCommitmentCard from "~/ui/course/components/assignments/cards/NetworkCommitmentCard";
 import PersonalNotesCard from "~/ui/course/components/assignments/cards/PersonalNotesCard";
 import { useWallet } from "@meshsdk/react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
+import AssignmentCommitmentPageComponent from "~/ui/app/AssignmentCommitmentPageComponent";
 
 export default function PageCourseAssignmentContent({
   courseCode,
@@ -138,9 +138,9 @@ function Page({
           {isAssignmentOnchain && (
             <>
               {connected ? (
-                <NetworkCommitmentCard
-                  moduleCode={courseModule.moduleCode}
+                <AssignmentCommitmentPageComponent
                   courseCode={courseCode}
+                  moduleCode={courseModule.moduleCode}
                   courseNftPolicyId={courseNftPolicyId}
                 />
               ) : (

@@ -3,14 +3,23 @@ import { useEffect, useState } from "react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { Assignment, AssignmentCommitment } from "~/types/db";
 import AssignmentEvidenceEditor from "./AssignmentEvidenceEditor";
+import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
+import CommitToAssignmentDialog from "~/components/cardano/tx/student/commit-to-assignment/CommitToAssignmentDialog";
+import UpdateAssignmentDialog from "~/components/cardano/tx/student/update-assignment/UpdateAssignmentDialog";
+import useAssignmentDatums from "~/hooks/cardano-indexer-api/course/useAssignmentDatums";
+import { useSession } from "next-auth/react";
+import useAssignment from "~/hooks/db/course/useAssignment";
 
 export default function AssignmentCommitmentPageComponent({
-  courseNftPolicyId,
-  moduleTokenName,
+  courseCode,
+  moduleCode,
+  courseNftPolicyId
 }: {
-  courseNftPolicyId: string,
-  moduleTokenName: string,
+  courseCode: string,
+  moduleCode: string,
+  courseNftPolicyId: string
 }) {
+  const { data: sessionData } = useSession();
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | undefined>(undefined);
   const [currentAssignmentCommitment, setCurrentAssignmentCommitment] = useState<AssignmentCommitment | undefined>(undefined);
   const [lock, setLock] = useState(false);
@@ -23,11 +32,18 @@ export default function AssignmentCommitmentPageComponent({
 
   // Andamio Indexer query:
   // TODO: Get the right indexer queries
-  const decodedAssignmentDatum = ""
+  const { assignmentDatum } = useAssignmentDatums(courseNftPolicyId, accessTokenAlias)
 
   // Database query:
   // TODO: Write the db router queries
+  const { assignmentCommitmentsByCourseModule } = useAssignmentCommitment({ courseCode: courseCode, moduleCode: moduleCode, learnerId: sessionData?.user?.learnerId })
+  const { assignment } = useAssignment(courseCode, moduleCode)
 
+  useEffect(() => {
+    if (assignmentCommitmentsByCourseModule && assignmentCommitmentsByCourseModule.length > 0) {
+      setCurrentAssignmentCommitment(assignmentCommitmentsByCourseModule[0])
+    }
+  }, [assignmentCommitmentsByCourseModule])
 
   // TODO: Write helpful useEffects
 
@@ -47,14 +63,18 @@ export default function AssignmentCommitmentPageComponent({
             )}
             <div>
               <p>Task Status</p>
-              {!!currentAssignment && (
+              {!!currentAssignmentCommitment && (
                 <div>TODO: Assignment Status Indicator goes here</div>
               )}
             </div>
             <div>
               {!accessTokenAlias && <CardanoWallet />}
               <div>
-                <div>TODO: Assignment Decoded Datum goes here</div>
+                {!!assignmentDatum ? (
+                  <pre>{JSON.stringify(assignmentDatum, null, 2)}</pre>
+                ) : (
+                  <p>No Assignment Info</p>
+                )}
               </div>
             </div>
           </div>
@@ -65,6 +85,8 @@ export default function AssignmentCommitmentPageComponent({
         <h3>Enter Submission Details</h3>
         {currentAssignmentCommitment ? (
           <>
+            <p>HAS CURRENT ASSIGNMENT</p>
+            <pre>{JSON.stringify(currentAssignmentCommitment, null, 2)}</pre>
             <AssignmentEvidenceEditor
               assignmentCommitment={currentAssignmentCommitment}
               lock={lock}
@@ -75,8 +97,9 @@ export default function AssignmentCommitmentPageComponent({
           </>
         ) : (
           <>
+            <p>NO CURRENT ASSIGNMENT</p>
             <AssignmentEvidenceEditor
-              assignmentId={currentAssignment?.id ?? ""}
+              assignmentId={assignment?.id ?? ""}
               lock={lock}
               setLock={setLock}
               evidenceHash={evidenceHash}
@@ -84,13 +107,21 @@ export default function AssignmentCommitmentPageComponent({
             />
           </>
         )}
-        {decodedAssignmentDatum ? (
+        {!!assignmentDatum ? (
           <>
             <div>Add Assignment Info Dialog</div>
+            <pre>{JSON.stringify(assignmentDatum, null, 2)}</pre>
+            <UpdateAssignmentDialog courseCode={courseCode} assignmentCode={moduleCode} />
           </>
         ) : (
           <>
             <div>Commit Assignment Dialog</div>
+            <CommitToAssignmentDialog
+              courseCode={courseCode}
+              moduleCode={moduleCode}
+              networkEvidenceHash={evidenceHash ?? ""}
+            />
+
           </>
         )}
       </div>
