@@ -420,6 +420,15 @@ model Assignment {
   @@index([id])
 }
 
+enum AssignmentPrivateStatus {
+  SAVE_FOR_LATER
+  IN_PROGRESS
+  COMPLETE
+  COMMITMENT
+  NETWORK_READY
+  NOT_STARTED
+}
+
 enum AssignmentStatus {
   SAVE_FOR_LATER
   IN_PROGRESS
@@ -427,6 +436,21 @@ enum AssignmentStatus {
   COMMITMENT
   NETWORK_READY
   NOT_STARTED
+}
+
+enum AssignmentNetworkStatus {
+  PENDING_TX_COMMITMENT_MADE
+  PENDING_TX_ADD_INFO
+  PENDING_APPROVAL
+
+  PENDING_TX_ASSIGNMENT_ACCEPTED
+  ASSIGNMENT_ACCEPTED
+
+  PENDING_TX_ASSIGNMENT_DENIED
+  ASSIGNMENT_DENIED
+
+  PENDING_TX_CLAIM_CREDENTIAL
+  CREDENTIAL_CLAIMED
 }
 
 model AssignmentCommitment {
@@ -438,11 +462,21 @@ model AssignmentCommitment {
   learnerId String
   learner   Learner @relation("LearnerAssignments", fields: [learnerId], references: [id])
 
-  status   AssignmentStatus @default(SAVE_FOR_LATER)
-  favorite Boolean          @default(false)
-  archived Boolean          @default(false)
+  privateStatus   AssignmentPrivateStatus @default(SAVE_FOR_LATER)
+  privateEvidence Json?
 
+  networkStatus       AssignmentNetworkStatus @default(PENDING_TX_COMMITMENT_MADE)
+  networkEvidence     Json?
+  networkEvidenceHash String?
+
+  favorite Boolean @default(false)
+  archived Boolean @default(false)
+
+  // Deprecated - remove these fields after migration
   learnerNotes String?
+  status       AssignmentStatus @default(NOT_STARTED)
+  privateNotes String?
+  // End Deprecated
 
   @@unique([assignmentId, learnerId])
   @@index([assignmentId])
