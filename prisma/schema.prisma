@@ -284,8 +284,9 @@ enum AccessTier {
 }
 
 model Course {
-  id         String @id @default(cuid())
-  courseCode String
+  id                String  @id @default(cuid())
+  courseCode        String
+  courseNftPolicyId String? @unique
 
   createdBy   Creator @relation("CreatedCourses", fields: [createdById], references: [id])
   createdById String
@@ -302,8 +303,7 @@ model Course {
   contributors       Creator[] @relation("CourseContributors")
   interestedLearners Learner[] @relation("LearnerCourses")
 
-  variants        CourseVariant[]         @relation("CourseVariants")
-  onchainInstance CourseOnChainInstance[] @relation("CourseInstance")
+  variants CourseVariant[] @relation("CourseVariants")
 
   accessTier AccessTier?
 
@@ -315,6 +315,7 @@ model Course {
   @@unique([courseCode])
   @@index([createdById])
   @@index([id])
+  @@index([courseNftPolicyId])
 }
 
 model CourseVariant {
@@ -339,19 +340,6 @@ enum Network {
   PREPROD
   MAINNET
   SANCHONET
-}
-
-model CourseOnChainInstance {
-  id String @id @default(cuid())
-
-  network Network @default(PREPROD)
-
-  course     Course @relation("CourseInstance", fields: [courseCode], references: [courseCode])
-  courseCode String
-
-  CourseCreatorNFTPolicyID String
-
-  @@index([courseCode])
 }
 
 model Lesson {
