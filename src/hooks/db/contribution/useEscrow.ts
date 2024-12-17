@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { type Escrow } from "~/types/db";
+import { TreasuryEscrowSummary, type Escrow } from "~/types/db";
 
 type CreateEscrowInput = {
   title?: string;
@@ -20,7 +20,7 @@ type UpdateEscrowInput = {
 interface UseEscrowReturn {
   escrow: Escrow | null | undefined;
   escrows: Escrow[];
-  treasuryEscrows: Escrow[];
+  treasuryEscrows: TreasuryEscrowSummary | null | undefined;
   isLoading: boolean;
   createEscrow: (data: CreateEscrowInput) => void;
   updateEscrow: (data: UpdateEscrowInput) => void;
@@ -32,18 +32,17 @@ interface UseEscrowReturn {
   isCreating: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
-  numUnusedTreasuryEscrows: number;
 }
 
 export function useEscrow({
   id,
   escrowNftPolicyId,
-  treasuryId,
+  treasuryNftPolicyId,
   disabled,
 }: {
   id?: string;
   escrowNftPolicyId?: string;
-  treasuryId?: string;
+  treasuryNftPolicyId?: string;
   disabled?: boolean;
 }): UseEscrowReturn {
   const ctx = api.useUtils();
@@ -70,8 +69,11 @@ export function useEscrow({
 
   // Treasury escrows query
   const treasuryEscrowsQuery = api.escrow.getTreasuryEscrows.useQuery(
-    treasuryId ?? "",
-    { enabled: !!treasuryId, select: (data) => data as Escrow[] },
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
+    {
+      enabled: !!treasuryNftPolicyId,
+      select: (data) => data as TreasuryEscrowSummary
+    },
   );
 
   // Helper function to invalidate and refetch queries
@@ -159,7 +161,7 @@ export function useEscrow({
   return {
     escrow: escrowQuery.data ?? escrowQueryByPolicyId.data,
     escrows: allEscrowsQuery.data ?? [],
-    treasuryEscrows: treasuryEscrowsQuery.data ?? [],
+    treasuryEscrows: treasuryEscrowsQuery.data,
     isLoading: id ? escrowQuery.isLoading : allEscrowsQuery.isLoading,
     createEscrow: createEscrowMutation.mutate,
     updateEscrow: updateEscrowMutation.mutate,
@@ -168,7 +170,5 @@ export function useEscrow({
     isCreating: createEscrowMutation.isLoading,
     isUpdating: updateEscrowMutation.isLoading,
     isDeleting: deleteEscrowMutation.isLoading,
-    numUnusedTreasuryEscrows:
-      treasuryEscrowsQuery.data?.filter((escrow) => !escrow.title).length ?? 0,
   };
 }

@@ -22,6 +22,11 @@ export type Escrow = RouterOutputs["escrow"]["getEscrowById"] & {
   totalAda?: number;
 };
 
+export type TreasuryEscrowSummary = {
+  title: string;
+  escrows: { id: string; title: string }[];
+}
+
 export type Task = {
   id: string;
   index: number;

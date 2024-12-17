@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import ManageEscrowComponent from "./ManageEscrowComponent";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 import { Treasury } from "~/types/db";
+import Link from "next/link";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
@@ -29,6 +30,16 @@ export default function ContributionManagerComponent() {
   return (
     <div>
       <div className="mx-auto my-2 w-full">
+        {!currentProjectId && (
+          <>
+            <div className="col-span-3 flex flex-row items-center justify-between">
+              <h1>Your Projects</h1>
+              <div className="flex flex-row items-center space-x-5">
+                <DialogInitializeProject />
+              </div>
+            </div>
+          </>
+        )}
         {!singletonProject && (
           <>
             <div className="min-h-[40px]">
@@ -36,7 +47,7 @@ export default function ContributionManagerComponent() {
             </div>
             <div className="">
               <h3>As {translateCaps('treasury')} Owner</h3>
-              <div className="grid grid-cols-5 gap-3 my-6">
+              <div className="grid grid-cols-2 gap-3 my-6">
                 {treasuries.asOwner.map((treasury) => (
                   <div
                     key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}
@@ -51,7 +62,7 @@ export default function ContributionManagerComponent() {
             </div>
             <div className="my-6">
               <h3>As {translateCaps('contributionManager')}</h3>
-              <div className="grid grid-cols-5 gap-3 my-6">
+              <div className="grid grid-cols-2 gap-3 my-6">
                 {treasuries.asManager.map((treasury) => (
                   <div key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
                     <ProjectImageSelect treasury={treasury} />
@@ -65,20 +76,6 @@ export default function ContributionManagerComponent() {
         )}
 
 
-        {!currentProjectId && (
-          <>
-            <div className="col-span-3 flex flex-row items-center justify-between">
-              <h1>{translateCaps('treasuryOwner')} Page</h1>
-              <div className="flex flex-row items-center space-x-5">
-                <DialogInitializeProject />
-              </div>
-            </div>
-            <h2>
-              All Projects:
-            </h2>
-            <MyProjectsListComponent />
-          </>
-        )}
 
         {!!currentProjectId && (
           <>
@@ -112,36 +109,61 @@ export default function ContributionManagerComponent() {
 }
 
 
-export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
 
+export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
   return (
-    <div
-      key={treasury.id}
-      className="item min-w-[180px] mx-auto transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
-    >
-      {!!treasury.treasuryNftPolicyId ? (
-        <span
-          className={`absolute left-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold
-                  `}
-        >
-          published
-        </span>
-      ) : (
-        <span
-          className={`absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold
-                    `}
-        >
-          not published
-        </span>
-      )}
-      <img
-        src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
-        alt={treasury.title}
-        className="h-40 w-full rounded-t-lg object-cover"
-      />
-      <div className="p-2">
-        <p className="font-bold">{treasury.title}</p>
+    <div className="group relative w-full mx-auto h-60">
+      <div className="transform rounded-lg bg-gray-800 text-white shadow-md transition-transform group-hover:shadow-lg">
+        <Link href={`/app/project/${treasury.treasuryNftPolicyId}`}>
+          {!!treasury.treasuryNftPolicyId ? (
+            <span className="absolute left-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold">
+              published
+            </span>
+          ) : (
+            <span className="absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold">
+              not published
+            </span>
+          )}
+          <img
+            src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
+            alt={treasury.title}
+            className="h-40 w-full rounded-t-lg object-cover"
+          />
+          <div className="p-2">
+            <p className="font-bold">{treasury.title}</p>
+          </div>
+        </Link>
       </div>
+
+      {/* Hover Overlay */}
     </div>
-  )
+  );
 }
+
+
+//<div className="absolute inset-0 flex flex-col justify-center items-center rounded-lg bg-black/80 opacity-0 transition-opacity group-hover:opacity-100">
+//  <div className="p-4 text-white space-y-2">
+//    <div className="grid grid-cols-2 gap-x-4 text-sm">
+//      <span className="text-gray-400"># Contributors:</span>
+//      <span>{treasury._count?.escrows ?? 0}</span>
+//
+//      <span className="text-gray-400">Open Tasks:</span>
+//      <span>{treasury.totalTasks ?? 0}</span>
+//
+//      <span className="text-gray-400">In Progress:</span>
+//      <span>5</span>
+//
+//      <span className="text-gray-400">Pending Review:</span>
+//      <span>2</span>
+//
+//      <span className="text-gray-400">Available:</span>
+//      <span>2500</span>
+//
+//      <span className="text-gray-400">Locked:</span>
+//      <span>{treasury.totalAda ?? 0}</span>
+//
+//      <span className="text-gray-400">Spent:</span>
+//      <span>400</span>
+//    </div>
+//  </div>
+//</div>

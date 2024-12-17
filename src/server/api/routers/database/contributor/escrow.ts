@@ -121,30 +121,34 @@ export const escrowRouter = createTRPCRouter({
     }),
 
   getTreasuryEscrows: publicProcedure
-    .input(z.string())
+    .input(z.object({
+      treasuryNftPolicyId: z.string().min(56)
+    }))
     .query(async ({ ctx, input }) => {
-      const escrows = await ctx.db.escrow.findMany({
-        where: { treasuryId: input },
-        include: {
-          tasks: {
-            include: {
-              taskCommitments: {
-                select: {
-                  id: true,
-                  status: true,
-                  contributorId: true,
-                }
-              }
+      const treasury = await ctx.db.treasury.findUnique({
+        where: { treasuryNftPolicyId: input.treasuryNftPolicyId },
+        select: {
+          title: true,
+          escrows: {
+            select: {
+              id: true,
+              title: true
             }
-          },
-          contributorPrerequisites: true,
-        },
+          }
+        }
       });
 
-      return escrows.map((escrow) => ({
-        ...escrow,
-        totalAda: calculateTotalAda(escrow.tasks),
-      }));
+      if (!treasury) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Treasury not found"
+        });
+      }
+
+      return {
+        title: treasury.title,
+        escrows: treasury.escrows
+      };
     }),
 
   getEscrowPrerequisites: publicProcedure

@@ -164,7 +164,7 @@ export function useTask({
       ctx.contributionManager.getContributionManagerTreasuries.invalidate(),
       ctx.treasury.getTreasuryAmountsByStatus.invalidate(),
       treasuryNftPolicyId &&
-      ctx.escrow.getTreasuryEscrows.invalidate(treasuryNftPolicyId),
+      ctx.escrow.getTreasuryEscrows.invalidate({ treasuryNftPolicyId: treasuryNftPolicyId }),
       // If we have a specific task ID, invalidate that too
       id ? ctx.task.getTaskById.invalidate(id) : Promise.resolve(),
       // If we have a treasury ID, invalidate that specific query
