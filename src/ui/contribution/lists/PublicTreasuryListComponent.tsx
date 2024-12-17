@@ -79,7 +79,7 @@ export default function PublicTreasuryListComponent() {
             >
               <TableCell className="relative border-x border-gray-500">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -87,7 +87,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -95,7 +95,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -103,7 +103,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -111,7 +111,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -119,7 +119,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -127,7 +127,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -135,7 +135,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />
@@ -143,7 +143,7 @@ export default function PublicTreasuryListComponent() {
               </TableCell>
               <TableCell className="relative border-x border-gray-500 text-center">
                 <Link
-                  href={`/app/projects/${t?.id}/${t.escrowIds[0] ?? ""}`}
+                  href={`/app/project/${t?.treasuryNftPolicyId} ?? ""}`}
                   className="absolute inset-0 cursor-pointer"
                   aria-label={`View details for ${t?.title}`}
                 />

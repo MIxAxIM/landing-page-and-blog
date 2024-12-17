@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { Task } from "~/types/db";
 
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
-import { useRoles } from "~/hooks/app/useRoles";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
-
-import OnboardingStatusButtons from "~/ui/onboarding/components/OnboardingStatusButtons";
-import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-modals/ProjectManagerOnboardingModal";
-
 import EscrowUtxoTable from "./EscrowUtxoTable";
 import EnrolledContributors from "./EnrolledContributors";
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
@@ -19,13 +14,11 @@ import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskS
 import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
 import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
-import { useTask } from "~/hooks/db/contribution/useTask";
 
-// TODO: 2024-12-14
-// 1. Remove the need for escrow?
-// 2. At least do not pass Escrow to ProjectTaskManagementList
-// 3. Look at where treasuryInfo is used and make it more efficient
-// 4. Clean up tasks query from useTask so that only Treasury Tasks are queried and appear in UI
+// TODO: 2024-12-17 - set up access control for this component
+// - As a Contribution, I want to view a list of Tasks, and click to a link to details
+// - As a Manager, I have all the functionality currently on this component
+// - Likely better to jump up to parent to implement this
 
 export default function ManageEscrowComponent({
   escrowId,
@@ -35,10 +28,7 @@ export default function ManageEscrowComponent({
   treasuryNftPolicyId?: string | null;
 }) {
 
-  const [showOnboardingModal, setShowOnboardingModal] = useState(false);
   const { escrow } = useEscrow({ id: escrowId });
-  const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
-  const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
   const { treasuryInfo, escrowUtxos, contributorPolicies, isLoadingTreasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
@@ -46,13 +36,6 @@ export default function ManageEscrowComponent({
   const [tasksToManage, setTasksToManage] = useState<Task[]>([])
 
   useTaskStatusCheck(treasuryNftPolicyId ?? "")
-
-  useEffect(() => {
-    if (treasuryOwnerStatus?.onboardingStatus === "PARTIAL" ||
-      treasuryOwnerStatus?.onboardingStatus === "NOT_STARTED") {
-      setShowOnboardingModal(true);
-    }
-  }, [treasuryOwnerStatus?.onboardingStatus]);
 
   useEffect(() => {
     if (!!escrow?.tasks) {
@@ -65,10 +48,6 @@ export default function ManageEscrowComponent({
 
   return (
     <div key={escrowId}>
-      <ProjectManagerOnboardingModal
-        isOpen={showOnboardingModal}
-        onClose={() => setShowOnboardingModal(false)}
-      />
       <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-10 gap-8">
         <div className="col-span-10 mb-6 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
@@ -110,38 +89,24 @@ export default function ManageEscrowComponent({
             )}
           </div>
         </div>
-        {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
-          <>
-            <div className="col-span-4 flex flex-col">
-              <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
-            </div>
-            <div className="col-span-6">
-              <ContributorPrerequisites escrowId={escrowId} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
-            </div>
-            <div className="col-span-4">
-              <ProjectAcceptanceCriteria escrowId={escrowId} />
-            </div>
-            <div className="col-span-6 flex flex-col">
-              <EnrolledContributors treasuryNftPolicyId={treasuryNftPolicyId} />
-            </div>
-            <div className="col-span-10 flex flex-col">
-              <EscrowUtxoTable utxos={escrowUtxos ?? []} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
-            </div>
-
-          </>
-        )}
-        <div className="col-span-10">
-          {treasuryOwnerStatus && (
-            <OnboardingStatusButtons
-              roleId={treasuryOwnerStatus.id}
-              onStatusChange={updateTreasuryManagerOnboardingStatus}
-            />
-          )}
-        </div>
+        <>
+          <div className="col-span-4 flex flex-col">
+            <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
+          </div>
+          <div className="col-span-6">
+            <ContributorPrerequisites escrowId={escrowId} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
+          </div>
+          <div className="col-span-4">
+            <ProjectAcceptanceCriteria escrowId={escrowId} />
+          </div>
+          <div className="col-span-6 flex flex-col">
+            <EnrolledContributors treasuryNftPolicyId={treasuryNftPolicyId} />
+          </div>
+          <div className="col-span-10 flex flex-col">
+            <EscrowUtxoTable utxos={escrowUtxos ?? []} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />
+          </div>
+        </>
       </div>
-      {/**
-      <DebugProjects />
-      **/}
 
     </div>
   );
