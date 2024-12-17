@@ -56,6 +56,7 @@ interface UseTaskReturn {
 export function useTask({
   id,
   treasuryNftPolicyId,
+  projectHash,
   selectedStatuses = Object.values(TaskStatus),
   selectedEscrows = [],
   searchQuery = "",
@@ -63,6 +64,7 @@ export function useTask({
 }: {
   id?: string;
   treasuryNftPolicyId?: string;
+  projectHash?: string;
   selectedStatuses?: TaskStatus[];
   selectedEscrows?: string[];
   searchQuery?: string;
@@ -77,6 +79,17 @@ export function useTask({
   // Single task query
   const taskQuery = api.task.getTaskById.useQuery(id ?? "", {
     enabled: !!id,
+    select: (data) => {
+      if (!data) return null;
+      return {
+        ...data,
+        isEditable: isTaskEditable(data.status),
+      };
+    },
+  });
+
+  const taskQueryByProjectHash = api.task.getTaskByProjectHash.useQuery(projectHash ?? "", {
+    enabled: !!projectHash,
     select: (data) => {
       if (!data) return null;
       return {
@@ -291,7 +304,7 @@ export function useTask({
   });
 
   return {
-    task: taskQuery.data ?? null,
+    task: taskQueryByProjectHash.data ?? taskQuery.data ?? null,
     tasks: allTasks,
     filteredTasks: processedTasks,
     isLoading: isLoading,

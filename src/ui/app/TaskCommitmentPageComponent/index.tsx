@@ -52,10 +52,11 @@ export default function TaskCommitmentPageComponent({
   }, [tasks, projectHash])
 
   return (
-    <div>
+    <div className="border-t border-primary my-10 py-10">
+      <h1 className="text-center">Commit to this Task</h1>
       <div className="flex flex-col items-center justify-center">
         <div
-          className="mt-2 max-w-fit transform rounded-lg bg-white p-4 shadow-md transition-transform"
+          className="mt-2 transform rounded-lg bg-white p-4 shadow-md transition-transform"
         >
           <h3 className="font-bold">Task Details</h3>
           <div className="max-w-fit grid grid-cols-3">

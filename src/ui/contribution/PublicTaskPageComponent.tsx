@@ -1,44 +1,40 @@
 import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequisites";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
-import { type Task } from "~/types/db";
 import { formatPosixTime } from "~/utils/time";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { PrerequisiteItem } from "./lists/PrerequisiteList";
 import { useTerminology } from "~/contexts/terminology-context";
-import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
-import { Card, CardContent } from "~/components/ui/card";
+import { Card } from "~/components/ui/card";
 import Link from "next/link";
-import { BookIcon, School2Icon } from "lucide-react";
+import { BookIcon } from "lucide-react";
 import TaskStatusIndicator from "./status/TaskStatusIndicator";
-import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { useSession } from "next-auth/react";
-import { Button } from "~/components/ui/button";
+import { useTask } from "~/hooks/db/contribution/useTask";
 
 
-export default function PublicTaskPageComponent({ task }: { task: Task }) {
+export default function PublicTaskPageComponent({ projectHash }: { projectHash: string }) {
   const { data: sessionData } = useSession();
+  // TODO: Add the new task query here
+  const { task } = useTask({ projectHash: projectHash })
   const { translateCaps, translateCapsPlural } = useTerminology()
-  const { taskCommitments } = useTaskCommitment({ taskId: task.id, contributorId: sessionData?.user?.contributorId, status: "COMMITMENT_ACCEPTED" });
-  const { treasury } = useTreasury(task.escrow?.treasuryId);
+  const { taskCommitments } = useTaskCommitment({ taskId: task?.id, contributorId: sessionData?.user?.contributorId, status: "COMMITMENT_ACCEPTED" });
+  const { treasury } = useTreasury(task?.escrow?.treasuryId);
   const { escrowPrerequisites } = useEscrowPrerequisites({
-    escrowId: task.escrow?.id,
+    escrowId: task?.escrow?.id,
   });
+
+  if (!task) return "Cannot find task"
+
   return (
     <>
       <div className="mx-auto my-24 max-w-5xl space-y-10">
         <div className="flex flex-row items-center justify-between">
           <h1>{task.title}</h1>
-          <div>
-            <p>Commit to this task</p>
-            <Link href={`/app/testing/${treasury?.treasuryNftPolicyId}/${task.hash}`}>
-              <Button>Commit to this Task</Button>
-            </Link>
-          </div>
         </div>
         <TaskStatusIndicator
-          status={task.status}
+          status={task?.status}
           numAllowedCommitments={task.numAllowedCommitments}
           taskCommitments={task.taskCommitments}
           showLabel
@@ -108,11 +104,14 @@ export default function PublicTaskPageComponent({ task }: { task: Task }) {
 
 
 
-        <PlaceholderComponent name="If I am committed to this task, view submission UI. I can see how to submit evidence of work, receive feedback, and check the status of submissions." userStory="CONTRIBUTION-010" />
-        <PlaceholderComponent name="Commit to this task" userStory="CONTRIBUTION-011" />
-        <PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
-        <PlaceholderComponent name="what user stories are picked up here?" />
       </div >
     </>
   );
 }
+
+// TODO: User Stories
+//
+//<PlaceholderComponent name="If I am committed to this task, view submission UI. I can see how to submit evidence of work, receive feedback, and check the status of submissions." userStory="CONTRIBUTION-010" />
+//<PlaceholderComponent name="Commit to this task" userStory="CONTRIBUTION-011" />
+//<PlaceholderComponent name="calls to action: go learn, from courses, get involved, etc" />
+//<PlaceholderComponent name="what user stories are picked up here?" />

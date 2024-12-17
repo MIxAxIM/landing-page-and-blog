@@ -67,6 +67,7 @@ export default function ManageEscrowComponent({
           {!!escrow?.tasks && treasuryNftPolicyId?.length === 56 && (
             <ProjectTaskManagementList
               treasuryId={escrow.treasuryId}
+              treasuryNftPolicyId={treasuryNftPolicyId}
               escrow={escrow}
               networkTasks={treasuryInfo?.projects ?? []}
             />

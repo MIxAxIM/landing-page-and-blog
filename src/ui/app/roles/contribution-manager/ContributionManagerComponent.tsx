@@ -1,11 +1,9 @@
-import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import { useTerminology } from "~/contexts/terminology-context";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
-import { Treasury } from "~/types/db";
-import Link from "next/link";
+import { ProjectImageSelect } from "~/ui/app/components/ProjectImageSelect";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
@@ -69,93 +67,19 @@ export default function ContributionManagerComponent() {
           </>
         )}
       </div>
-      <div className="mx-auto mt-12 grid w-full grid-cols-3 gap-5">
-
-
-        <PlaceholderComponent name="Status Updates: Yoram and Contribution managers can update the status of tasks (e.g., Draft, Approved --> other changes are in respone to on-chain events)." />
-
-        <PlaceholderComponent name="Progress Tracking Dashboard: A dashboard is available where Yoram can view all tasks with their current statuses, committed contributors, and deadlines." />
-
-
-        <PlaceholderComponent name="Notifications: Yoram receives notifications for key events such as task completions, upcoming due dates." />
-
-        <PlaceholderComponent name="Collaboration Tools: Yoram can add comments to tasks to facilitate communication with team members. --> Task route" />
-
-        <PlaceholderComponent name="Reporting: Yoram can generate reports summarizing task progress, completed tasks, and pending tasks." />
-
-        <PlaceholderComponent name="Access Control -- Org Features: Yoram can control who can view or edit tasks within his workspace." />
-
-        <PlaceholderComponent name="Usability: The task management interface is intuitive and requires minimal training for Yoram to use effectively." />
-
-        <PlaceholderComponent name="Data Export: Yoram can export task data in common formats (e.g., CSV, PDF) for external reporting needs." />
-
-      </div>
     </div>
   );
 }
 
-
-
-export function ProjectImageSelect({ treasury, escrowId }: { treasury: Treasury, escrowId?: string }) {
-  let url = `/app/projects/preview/${escrowId}`
-
-  if (treasury.treasuryNftPolicyId) {
-    url = `/app/project/${treasury.treasuryNftPolicyId}`
-  }
-
-  return (
-    <div className="group relative w-full mx-auto h-60">
-      <div className="transform rounded-lg bg-gray-800 text-white shadow-md transition-transform group-hover:shadow-lg">
-        <Link href={url}>
-          {!!treasury.treasuryNftPolicyId ? (
-            <span className="absolute left-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold">
-              published
-            </span>
-          ) : (
-            <span className="absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold">
-              not published
-            </span>
-          )}
-          <img
-            src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
-            alt={treasury.title}
-            className="h-52 w-full rounded-t-lg object-cover"
-          />
-          <div className="p-2">
-            <p className="font-bold group-hover:text-accent">{treasury.title}</p>
-          </div>
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center rounded-lg bg-black/80 opacity-0 transition-opacity group-hover:opacity-100">
-            <div className="p-4 text-white space-y-2">
-              <div className="grid grid-cols-2 gap-x-4 text-sm">
-                <span className="text-gray-400"># Contributors:</span>
-                <span>{treasury._count?.escrows ?? 0}</span>
-
-                <span className="text-gray-400">Open Tasks:</span>
-                <span>{treasury.totalTasks ?? 0}</span>
-
-                <span className="text-gray-400">In Progress:</span>
-                <span>5</span>
-
-                <span className="text-gray-400">Pending Review:</span>
-                <span>2</span>
-
-                <span className="text-gray-400">Available:</span>
-                <span>2500</span>
-
-                <span className="text-gray-400">Locked:</span>
-                <span>{treasury.totalAda ?? 0}</span>
-
-                <span className="text-gray-400">Spent:</span>
-                <span>400</span>
-              </div>
-            </div>
-          </div>
-        </Link>
-      </div>
-
-    </div>
-  );
-}
-
-
+// TODO: User Stories:
+//
+//<div className="mx-auto mt-12 grid w-full grid-cols-3 gap-5">
+//  <PlaceholderComponent name="Status Updates: Yoram and Contribution managers can update the status of tasks (e.g., Draft, Approved --> other changes are in respone to on-chain events)." />
+//  <PlaceholderComponent name="Progress Tracking Dashboard: A dashboard is available where Yoram can view all tasks with their current statuses, committed contributors, and deadlines." />
+//  <PlaceholderComponent name="Notifications: Yoram receives notifications for key events such as task completions, upcoming due dates." />
+//  <PlaceholderComponent name="Collaboration Tools: Yoram can add comments to tasks to facilitate communication with team members. --> Task route" />
+//  <PlaceholderComponent name="Reporting: Yoram can generate reports summarizing task progress, completed tasks, and pending tasks." />
+//  <PlaceholderComponent name="Access Control -- Org Features: Yoram can control who can view or edit tasks within his workspace." />
+//  <PlaceholderComponent name="Usability: The task management interface is intuitive and requires minimal training for Yoram to use effectively." />
+//  <PlaceholderComponent name="Data Export: Yoram can export task data in common formats (e.g., CSV, PDF) for external reporting needs." />
+//</div>

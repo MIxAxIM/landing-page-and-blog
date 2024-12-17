@@ -155,6 +155,47 @@ export const taskRouter = createTRPCRouter({
     });
   }),
 
+  getTaskByProjectHash: publicProcedure
+    .input(z.string().length(64))
+    .query(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findFirst({
+        where: {
+          hash: input,
+        },
+        include: {
+          escrow: {
+            select: {
+              id: true,
+              title: true,
+              escrowNftPolicyId: true,
+              treasuryId: true,
+              isSyncedWithNetwork: true,
+              savedAcceptanceCriteria: true,
+            },
+          },
+          taskCommitments: {
+            select: {
+              id: true,
+              status: true,
+              contributorId: true,
+              created: true,
+              updated: true,
+              evidence: true,
+            }
+          }
+        },
+      });
+
+      if (!task) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
+      }
+
+      return task;
+    }),
+
   // TODO: currently unused, but referenced in useEscrowTaskBoard, which might be helpful in some contributor-facing user stories
   // Does a kanban view lead to delight?
   getEscrowTasks: publicProcedure.input(z.string()).query(({ ctx, input }) => {

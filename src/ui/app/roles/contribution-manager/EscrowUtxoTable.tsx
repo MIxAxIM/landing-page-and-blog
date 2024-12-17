@@ -104,7 +104,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                       <Button size="sm">View Conversation</Button>
                     </Link>
                     <Button size="sm">View Public Task Page</Button>
-                    <Link href={`/app/testing/${treasuryNftPolicyId}/${tx.hash}/${tx.contributorAlias}`}>
+                    <Link href={`/app/project/${treasuryNftPolicyId}/${tx.hash}/${tx.contributorAlias}`}>
                       <Button size="sm">View Current Commitment</Button>
                     </Link>
 

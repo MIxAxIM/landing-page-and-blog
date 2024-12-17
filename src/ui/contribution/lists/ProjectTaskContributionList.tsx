@@ -18,17 +18,15 @@ import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons
 import { ChatContainer } from "~/components/chat/chat-container";
 import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 
-export default function ProjectTaskManagementList({
+export default function ProjectTaskContributionList({
   escrow,
   treasuryId,
-  treasuryNftPolicyId,
   showFilters = true,
   className = "",
   networkTasks,
 }: {
   escrow: Escrow;
   treasuryId: string;
-  treasuryNftPolicyId?: string;
   showFilters?: boolean;
   className?: string;
   networkTasks?: ProjectDatum[]
@@ -161,34 +159,17 @@ export default function ProjectTaskManagementList({
                         </p>
                       </div>
                       <div className="col-span-1">
-                        {(task.status === "DRAFT" ||
-                          task.status === "APPROVED" ||
-                          task.status === "BACKLOG") ? (
-                          <TaskStatusSelect
-                            taskId={task.id}
-                            currentStatus={task.status}
-                          />
-                        ) : (
-                          <TaskStatusIndicator
-                            status={task.status}
-                            numAllowedCommitments={task.numAllowedCommitments}
-                            taskCommitments={task.taskCommitments}
-                            showLabel
-                          />
-
-                        )}
-                      </div>
-                      <div className="col-span-2 flex h-fit items-center justify-center gap-x-2">
-                        {treasuryId && escrow &&
-                          <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
-                        }
-                        <DialogDeleteTask id={task.id} />
+                        <TaskStatusIndicator
+                          status={task.status}
+                          numAllowedCommitments={task.numAllowedCommitments}
+                          taskCommitments={task.taskCommitments}
+                          showLabel
+                        />
                       </div>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="grid md:grid-cols-2 gap-4 mt-6 mb-3 pt-3">
-                      <pre>{JSON.stringify(task, null, 2)}</pre>
                       <div className="flex flex-col gap-y-8">
                         <h3>About</h3>
                         <div>
@@ -211,7 +192,7 @@ export default function ProjectTaskManagementList({
                                 <CheckCircledIcon className="h-12 w-12 text-success" />
                               </PopoverTrigger>
                               <PopoverContent>
-                                This task is validated on the Andamio Network, and Contributors can commit to it.
+                                This task is validated on the Andamio Network, and you can commit to it.
                               </PopoverContent>
                             </Popover>
                             <p className="prose"># Commitments Allowed: {validateNetworkTask(task)?.commitment_allowed}</p>
@@ -227,12 +208,11 @@ export default function ProjectTaskManagementList({
                                 This task is not yet validated on the Andamio Network.
                               </PopoverContent>
                             </Popover>
-                            <Button>Show me how to publish this task</Button>
                           </>
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
-                            <Link href={`/app/project/${treasuryNftPolicyId}/${task.hash}`}>
+                            <Link href={`/app/contribute/task/${task.id}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>
                           )}

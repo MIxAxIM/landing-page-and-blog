@@ -17,7 +17,7 @@ import { useOnboardingTasks } from "~/hooks/app/useOnboardingTasks";
 // 1. Given data like `courses`, we can map over it on the client side
 // 2. Server-side search can be implemented as in the useTask hook
 
-// TODO: Post MVP, continually refine search according to needs in futture user stories. 
+// TODO: Post MVP, continually refine search according to needs in futture user stories.
 
 export default function SearchAndamio() {
   const { translate, translateCapsPlural } = useTerminology()
@@ -139,7 +139,6 @@ export default function SearchAndamio() {
 
       </ComboBox>
       <div className="mt-12">
-        {taskByValue && <PublicTaskPageComponent task={taskByValue} />}
         {courseByValue && <CourseCard course={courseByValue} savedCourse={false} />}
         {onboardByValue?.id === "oLearn" && <OnboardLearner />}
         {onboardByValue?.id === "oTeach" && <OnboardCreator />}
@@ -150,3 +149,6 @@ export default function SearchAndamio() {
     </>
   )
 }
+
+// TODO:
+// {taskByValue && <PublicTaskPageComponent task={taskByValue} />}
