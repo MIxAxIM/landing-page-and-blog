@@ -750,7 +750,7 @@ model Task {
   numAllowedCommitments Int        @default(1)
   status                TaskStatus @default(DRAFT)
   taskHash              String?
-  hash                  String?
+  hash                  String?    @unique
 
   lovelace String
   tokens   Token[]
@@ -766,6 +766,7 @@ model Task {
   @@index([escrowId])
   @@index([id])
   @@index([title])
+  @@index([hash])
 }
 
 enum TaskCommitmentStatus {
