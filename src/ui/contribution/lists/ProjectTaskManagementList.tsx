@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import { formatPosixTime } from "~/utils/time";
-import { TaskStatus, TaskCommitmentStatus } from "@prisma/client";
+import { TaskStatus } from "@prisma/client";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
 import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
@@ -14,24 +14,22 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/
 import { Card } from "~/components/ui/card";
 import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { CheckCircledIcon, QuestionMarkCircledIcon, Pencil1Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
 import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 
 export default function ProjectTaskManagementList({
   escrow,
   treasuryId,
-  treasuryNftPolicyId,
   showFilters = true,
   className = "",
   networkTasks,
 }: {
   escrow: Escrow;
   treasuryId: string;
-  treasuryNftPolicyId: string;
   showFilters?: boolean;
   className?: string;
-  networkTasks: ProjectDatum[]
+  networkTasks?: ProjectDatum[]
 }) {
   type StatusFilter =
     | { type: 'task', status: TaskStatus }
@@ -106,8 +104,6 @@ export default function ProjectTaskManagementList({
   const validateNetworkTask = (task: Task) => {
     return networkTasks?.find((networkTask) => networkTask.project_hash === task.hash);
   }
-
-  if (treasuryNftPolicyId.length != 56) return
 
   return (
     <div className={`flex flex-col mb-8 w-full ${className}`}>

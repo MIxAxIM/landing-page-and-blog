@@ -89,7 +89,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       if (id) void ctx.treasury.getTreasuryById.invalidate(id);
       void ctx.treasury.getTreasuries.invalidate();
       void updateTreasuryManagerOnboardingStatus(data.treasury.treasuryOwnerId, "PARTIAL")
-      router.push(`/app/projects/${data.treasury.id}/${data.escrow.id}`)
+      router.push(`/app/projects/preview/${data.escrow.id}`)
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors;

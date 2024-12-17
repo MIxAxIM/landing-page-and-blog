@@ -41,7 +41,6 @@ export default function ManageEscrowComponent({
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
 
   const { treasuryInfo, escrowUtxos, contributorPolicies, isLoadingTreasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
-  const { tasks } = useTask({ treasuryNftPolicyId: treasuryNftPolicyId ?? "" })
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
   const [tasksToManage, setTasksToManage] = useState<Task[]>([])
@@ -63,11 +62,6 @@ export default function ManageEscrowComponent({
       setTasksToManage(_manageTasks)
     }
   }, [escrow])
-
-
-
-
-
 
   return (
     <div key={escrowId}>
@@ -94,7 +88,6 @@ export default function ManageEscrowComponent({
           {!!escrow?.tasks && treasuryNftPolicyId?.length === 56 && (
             <ProjectTaskManagementList
               treasuryId={escrow.treasuryId}
-              treasuryNftPolicyId={treasuryNftPolicyId}
               escrow={escrow}
               networkTasks={treasuryInfo?.projects ?? []}
             />

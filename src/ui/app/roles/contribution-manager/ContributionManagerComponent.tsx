@@ -1,10 +1,8 @@
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import { useTerminology } from "~/contexts/terminology-context";
-import MyProjectsListComponent from "./MyProjectsListComponent";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
-import ManageEscrowComponent from "./ManageEscrowComponent";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 import { Treasury } from "~/types/db";
 import Link from "next/link";
@@ -16,7 +14,6 @@ export default function ContributionManagerComponent() {
   const [singletonProject, setSingletonProject] = useState<boolean>(true)
   const [currentProjectId, setCurrentProjectId] = useState<{ treasuryNftPolicyId: string, treasuryId: string, escrowId: string } | undefined>(undefined)
   // cardano hooks
-
 
   useEffect(() => {
     if (treasuries.asOwner.length > 1) {
@@ -42,44 +39,33 @@ export default function ContributionManagerComponent() {
         )}
         {!singletonProject && (
           <>
-            <div className="min-h-[40px]">
+            <div className="">
               {!!currentProjectId && <Button onClick={() => setCurrentProjectId(undefined)}>Back</Button>}
             </div>
             <div className="">
-              <h3>As {translateCaps('treasury')} Owner</h3>
-              <div className="grid grid-cols-2 gap-3 my-6">
+              {/** <h3>As {translateCaps('treasury')} Owner</h3> **/}
+              <div className="grid grid-cols-2 gap-10 my-6">
                 {treasuries.asOwner.map((treasury) => (
-                  <div
-                    key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}
-                    onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}
-
-                  >
-                    <ProjectImageSelect treasury={treasury} />
+                  <div key={treasury.id}>
+                    <ProjectImageSelect treasury={treasury} escrowId={treasury.escrowIds[0]} />
                   </div>
 
                 ))}
               </div>
             </div>
+            {/** Future feature: Viewing as Contribution Manager added to a project
             <div className="my-6">
               <h3>As {translateCaps('contributionManager')}</h3>
               <div className="grid grid-cols-2 gap-3 my-6">
                 {treasuries.asManager.map((treasury) => (
-                  <div key={treasury.id} className={`flex flex-row justify-between items-center ${currentProjectId?.treasuryId === treasury.id && "bg-secondary"}`}>
+                  <div key={treasury.id}>
                     <ProjectImageSelect treasury={treasury} />
-                    <Button onClick={() => setCurrentProjectId({ treasuryNftPolicyId: treasury.treasuryNftPolicyId ?? "", treasuryId: treasury.id, escrowId: treasury.escrowIds[0] ?? "" })}>View</Button>
                   </div>
                 ))}
               </div>
             </div>
+            **/}
             <div className="w-full border-t border-primary my-12" />
-          </>
-        )}
-
-
-
-        {!!currentProjectId && (
-          <>
-            <ManageEscrowComponent escrowId={currentProjectId.escrowId} treasuryNftPolicyId={currentProjectId.treasuryNftPolicyId} />
           </>
         )}
       </div>
@@ -110,11 +96,17 @@ export default function ContributionManagerComponent() {
 
 
 
-export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
+export function ProjectImageSelect({ treasury, escrowId }: { treasury: Treasury, escrowId?: string }) {
+  let url = `/app/projects/preview/${escrowId}`
+
+  if (treasury.treasuryNftPolicyId) {
+    url = `/app/project/${treasury.treasuryNftPolicyId}`
+  }
+
   return (
     <div className="group relative w-full mx-auto h-60">
       <div className="transform rounded-lg bg-gray-800 text-white shadow-md transition-transform group-hover:shadow-lg">
-        <Link href={`/app/project/${treasury.treasuryNftPolicyId}`}>
+        <Link href={url}>
           {!!treasury.treasuryNftPolicyId ? (
             <span className="absolute left-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold">
               published
@@ -127,43 +119,43 @@ export function ProjectImageSelect({ treasury }: { treasury: Treasury }) {
           <img
             src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
             alt={treasury.title}
-            className="h-40 w-full rounded-t-lg object-cover"
+            className="h-52 w-full rounded-t-lg object-cover"
           />
           <div className="p-2">
-            <p className="font-bold">{treasury.title}</p>
+            <p className="font-bold group-hover:text-accent">{treasury.title}</p>
+          </div>
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center rounded-lg bg-black/80 opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="p-4 text-white space-y-2">
+              <div className="grid grid-cols-2 gap-x-4 text-sm">
+                <span className="text-gray-400"># Contributors:</span>
+                <span>{treasury._count?.escrows ?? 0}</span>
+
+                <span className="text-gray-400">Open Tasks:</span>
+                <span>{treasury.totalTasks ?? 0}</span>
+
+                <span className="text-gray-400">In Progress:</span>
+                <span>5</span>
+
+                <span className="text-gray-400">Pending Review:</span>
+                <span>2</span>
+
+                <span className="text-gray-400">Available:</span>
+                <span>2500</span>
+
+                <span className="text-gray-400">Locked:</span>
+                <span>{treasury.totalAda ?? 0}</span>
+
+                <span className="text-gray-400">Spent:</span>
+                <span>400</span>
+              </div>
+            </div>
           </div>
         </Link>
       </div>
 
-      {/* Hover Overlay */}
     </div>
   );
 }
 
 
-//<div className="absolute inset-0 flex flex-col justify-center items-center rounded-lg bg-black/80 opacity-0 transition-opacity group-hover:opacity-100">
-//  <div className="p-4 text-white space-y-2">
-//    <div className="grid grid-cols-2 gap-x-4 text-sm">
-//      <span className="text-gray-400"># Contributors:</span>
-//      <span>{treasury._count?.escrows ?? 0}</span>
-//
-//      <span className="text-gray-400">Open Tasks:</span>
-//      <span>{treasury.totalTasks ?? 0}</span>
-//
-//      <span className="text-gray-400">In Progress:</span>
-//      <span>5</span>
-//
-//      <span className="text-gray-400">Pending Review:</span>
-//      <span>2</span>
-//
-//      <span className="text-gray-400">Available:</span>
-//      <span>2500</span>
-//
-//      <span className="text-gray-400">Locked:</span>
-//      <span>{treasury.totalAda ?? 0}</span>
-//
-//      <span className="text-gray-400">Spent:</span>
-//      <span>400</span>
-//    </div>
-//  </div>
-//</div>

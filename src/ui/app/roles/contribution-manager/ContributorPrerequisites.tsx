@@ -6,13 +6,11 @@ import DialogPrerequisite from "~/ui/contribution/dialogs/DialogPrerequisite";
 import { PrerequisiteItem } from "~/ui/contribution/lists/PrerequisiteList";
 import PrerequisiteSelectionManager from "~/ui/contribution/selection/PrerequisiteSelectionManager";
 
-export default function ContributorPrerequisites({ escrowId, treasuryNftPolicyId }: { escrowId: string, treasuryNftPolicyId: string }) {
+export default function ContributorPrerequisites({ escrowId, treasuryNftPolicyId }: { escrowId: string, treasuryNftPolicyId?: string }) {
   const { translateCaps, translateCapsPlural } = useTerminology()
-  const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId })
+  const { contributorPolicies } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? "" })
 
   const { escrowPrerequisites } = useEscrowPrerequisites({ escrowId })
-
-
 
   return (
 
@@ -36,7 +34,6 @@ export default function ContributorPrerequisites({ escrowId, treasuryNftPolicyId
               <PrerequisiteItem prerequisite={escrowPrerequisites[0]} />
             }
           </div>
-
         ) : (
           <div className="p-3">
             {!!escrowId && (
