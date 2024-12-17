@@ -88,8 +88,8 @@ export default function CourseCard({
         ) : (
           <Button onClick={handleSaveCourse}>Save</Button>
         )}
-        {!!course.onchainInstance[0] && (
-          <MintLocalStateDialog courseTitle={course.title} courseCode={course.courseCode} courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID} />
+        {course.courseNftPolicyId && (
+          <MintLocalStateDialog courseTitle={course.title} courseCode={course.courseCode} courseNftPolicyId={course.courseNftPolicyId ?? ""} />
         )}
       </CardFooter>
     </Card>

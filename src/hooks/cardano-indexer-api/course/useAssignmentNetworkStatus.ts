@@ -1,5 +1,3 @@
-import { NETWORK } from "~/andamio.config";
-import useNetworkCourseConfig from "./useNetworkCourseConfig";
 import { api } from "~/utils/api";
 import useAssignment from "~/hooks/db/course/useAssignment";
 import { useAccessToken } from "../network/useAccessToken";
@@ -21,30 +19,29 @@ export default function useAssignmentNetworkStatus({
   } = useAssignment(courseCode, moduleCode);
 
   const { accessTokenAlias } = useAccessToken();
-  const { courseOnchain } = useNetworkCourseConfig(courseCode, NETWORK);
+
+  // TODO: 2024-12-17
+  const courseNftPolicyId = ""
 
   const { data: isAssignmentOnchain, isLoading: isLoadingAssignmentOnchain } =
     api.assignmentValidator.isCourseModuleOnchain.useQuery(
       {
-        courseCreatorNFTPolicyID: courseOnchain?.CourseCreatorNFTPolicyID ?? "",
+        courseCreatorNFTPolicyID: courseNftPolicyId ?? "",
         moduleCode: moduleCode,
       },
       {
-        enabled:
-          !!courseOnchain &&
-          !!courseOnchain.CourseCreatorNFTPolicyID &&
-          !!assignment,
+        enabled: courseNftPolicyId.length === 56 && !!assignment
       },
     );
 
   const { data: isLearnerCommitted, isLoading: isLoadingLearnerCommitted } =
     api.assignmentValidator.isLearnerCommittedToAssignment.useQuery(
       {
-        courseCreatorNFTPolicyID: courseOnchain?.CourseCreatorNFTPolicyID ?? "",
+        courseCreatorNFTPolicyID: courseNftPolicyId ?? "",
         assignmentCode: moduleCode ?? "",
         alias: accessTokenAlias ?? "",
       },
-      { enabled: !!accessTokenAlias && !!courseOnchain?.CourseCreatorNFTPolicyID },
+      { enabled: !!accessTokenAlias && !!courseNftPolicyId },
     );
 
   return {

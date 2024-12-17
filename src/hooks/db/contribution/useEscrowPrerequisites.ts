@@ -37,7 +37,7 @@ export function useEscrowPrerequisites({
               id: req.course.id,
               courseCode: req.course.courseCode,
               title: req.course.title,
-              courseCreatorNFTPolicyID: req.course.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
+              courseCreatorNFTPolicyID: req.course.courseNftPolicyId ?? "",
             },
           })),
         })) as ContributorPrerequisite[],

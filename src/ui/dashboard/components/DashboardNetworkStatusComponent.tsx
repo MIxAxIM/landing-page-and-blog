@@ -327,12 +327,7 @@ export function MyCoursesBar({
       );
       if (courses) {
         const myCourses = courses.filter((course) =>
-          course.onchainInstance.some((instance) =>
-            myOnchainCourses.some(
-              (onchainCourse) =>
-                onchainCourse === instance.CourseCreatorNFTPolicyID,
-            ),
-          ),
+          course.courseNftPolicyId
         );
         setMyCourses(myCourses);
       }

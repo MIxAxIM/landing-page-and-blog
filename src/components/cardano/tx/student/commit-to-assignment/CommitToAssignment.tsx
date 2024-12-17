@@ -1,11 +1,9 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useState } from "react";
-import { NETWORK } from "~/andamio.config";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
-import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
@@ -25,9 +23,10 @@ export default function CommitToAssignment({
   const { connected } = useWallet();
   const { accessTokenAsset } = useAccessToken();
 
-  const { courseOnchain } = useNetworkCourseConfig(courseCode, NETWORK);
+  // TODO: 2024-12-17
+  const courseNftPolicyId = false
 
-  if (!courseOnchain) return "This course is not published on the Andamio Network"
+  if (!courseNftPolicyId) return "This course is not published on the Andamio Network"
 
   return (
     <div className="flex w-full items-center justify-center rounded-md border py-3 font-mono text-sm">
@@ -42,7 +41,7 @@ export default function CommitToAssignment({
         <>
           <CommitToAssignmentButton
             userAccessTokenUnit={accessTokenAsset.unit}
-            courseNftPolicyId={courseOnchain.CourseCreatorNFTPolicyID}
+            courseNftPolicyId={""}
             assignmentCommitmentId={assignmentCommitmentId}
             assignmentCode={assignmentCode}
             networkEvidenceHash={networkEvidenceHash ?? "Assignment evidence will be submitted later"}

@@ -13,7 +13,6 @@ import { courseRouter } from "./routers/database/course/course";
 import { moduleRouter } from "./routers/database/course/module";
 import { courseVariantRouter } from "./routers/database/course/course-variant";
 import { moduleVariantRouter } from "./routers/database/course/module-variant";
-import { courseOnChainInstanceRouter } from "./routers/database/course/course-onChainInstance";
 import { sltRouter } from "./routers/database/course/slt";
 import { lessonRouter } from "./routers/database/course/lesson";
 import { assignmentRouter } from "./routers/database/course/assignment";
@@ -93,7 +92,6 @@ export const appRouter = createTRPCRouter({
   module: moduleRouter,
   courseVariant: courseVariantRouter,
   moduleVariant: moduleVariantRouter,
-  courseOnChainInstance: courseOnChainInstanceRouter,
   slt: sltRouter,
   lesson: lessonRouter,
   assignment: assignmentRouter,

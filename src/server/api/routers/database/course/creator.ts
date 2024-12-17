@@ -32,7 +32,6 @@ export const creatorRouter = createTRPCRouter({
             include: {
               modules: true,
               variants: true,
-              onchainInstance: true,
             },
           },
         },
@@ -58,7 +57,6 @@ export const creatorRouter = createTRPCRouter({
             include: {
               modules: true,
               variants: true,
-              onchainInstance: true,
             },
           },
         },

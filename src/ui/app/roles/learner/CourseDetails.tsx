@@ -44,7 +44,7 @@ export default function CourseDetails({
 
   const { accessTokenAsset, accessTokenAlias } = useAccessToken();
   const { courseStateDatum } = useCourseStateDatum(
-    course?.onchainInstance[0]?.CourseCreatorNFTPolicyID ?? "",
+    course?.courseNftPolicyId ?? "",
     accessTokenAlias ?? "",
   );
 
@@ -86,7 +86,7 @@ export default function CourseDetails({
 
   useEffect(() => {
     const _course = globalStateDatum?.TokenInfos.find(
-      (ti) => ti.LsCs == course?.onchainInstance[0]?.CourseCreatorNFTPolicyID,
+      (ti) => ti.LsCs == course?.courseNftPolicyId,
     );
     if (_course?.Minted) {
       setLearnerCourseStatus("ENROLLED");
@@ -145,12 +145,12 @@ export default function CourseDetails({
             {learnerCourseStatus === "ENROLLED" && (
               <>
                 {accessTokenAsset &&
-                  course?.onchainInstance[0]?.CourseCreatorNFTPolicyID && (
+                  course?.courseNftPolicyId && (
                     <BurnLocalStateDialog
                       courseCode={course.courseCode}
                       accessTokenAssetId={accessTokenAsset.unit}
                       courseNftPolicyId={
-                        course?.onchainInstance[0]?.CourseCreatorNFTPolicyID
+                        course?.courseNftPolicyId
                       }
                     />
                   )}
@@ -211,7 +211,7 @@ export default function CourseDetails({
               courseTokenInfo={globalStateDatum?.TokenInfos.find(
                 (ti) =>
                   ti.LsCs ===
-                  course?.onchainInstance[0]?.CourseCreatorNFTPolicyID,
+                  course?.courseNftPolicyId,
               )}
               learnerCourseStatus={learnerCourseStatus}
               key={i}

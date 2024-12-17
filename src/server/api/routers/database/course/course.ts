@@ -11,9 +11,6 @@ import {
 export const courseRouter = createTRPCRouter({
   getCourses: publicProcedure.query(({ ctx }) => {
     return ctx.db.course.findMany({
-      include: {
-        onchainInstance: true,
-      },
     });
   }),
 
@@ -35,7 +32,6 @@ export const courseRouter = createTRPCRouter({
             },
           },
           variants: true,
-          onchainInstance: true,
         },
       });
     }),
@@ -50,6 +46,54 @@ export const courseRouter = createTRPCRouter({
       return ctx.db.course.findFirst({
         where: {
           id: input.courseId,
+        },
+        include: {
+          modules: true,
+          contributors: {
+            include: {
+              user: true,
+            },
+          },
+          variants: true,
+        },
+      });
+    }),
+
+  getCourseByPolicyId: publicProcedure
+    .input(
+      z.object({
+        courseNftPolicyId: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db.course.findFirst({
+        where: {
+          id: input.courseNftPolicyId,
+        },
+        include: {
+          modules: true,
+          contributors: {
+            include: {
+              user: true,
+            },
+          },
+          variants: true,
+        },
+      });
+    }),
+
+  getCoursesByPolicyIds: publicProcedure
+    .input(
+      z.object({
+        courseNftPolicyIds: z.array(z.string()),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db.course.findMany({
+        where: {
+          id: {
+            in: input.courseNftPolicyIds,
+          },
         },
         include: {
           modules: true,
@@ -160,7 +204,6 @@ export const courseRouter = createTRPCRouter({
           },
         },
         variants: true,
-        onchainInstance: true,
       },
     });
   }),

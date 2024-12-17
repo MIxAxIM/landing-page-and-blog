@@ -5,7 +5,6 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
-import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
@@ -21,7 +20,7 @@ export default function UpdateAssignment({
   const { connected } = useWallet();
   const { accessTokenAsset } = useAccessToken();
 
-  const { courseOnchain } = useNetworkCourseConfig(courseCode, NETWORK);
+  const courseNftPolicyId = ""
 
   return (
     <div className="flex w-full items-center justify-center rounded-md border py-3 font-mono text-sm">
@@ -32,7 +31,7 @@ export default function UpdateAssignment({
         <UpdateAssignmentButton
           assignmentCommitmentId={assignmentCommitmentId}
           userAccessTokenUnit={accessTokenAsset.unit}
-          courseNftPolicyId={courseOnchain!.CourseCreatorNFTPolicyID}
+          courseNftPolicyId={courseNftPolicyId}
           evidenceHash={evidenceHash}
         />
 

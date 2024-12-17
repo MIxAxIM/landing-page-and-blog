@@ -49,13 +49,8 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
               select: {
                 id: true,
                 courseCode: true,
+                courseNftPolicyId: true,
                 title: true,
-                onchainInstance: {
-                  select: {
-                    CourseCreatorNFTPolicyID: true,
-                  },
-                  take: 1
-                },
               },
             },
           },
@@ -86,13 +81,8 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                 select: {
                   id: true,
                   courseCode: true,
+                  courseNftPolicyId: true,
                   title: true,
-                  onchainInstance: {
-                    select: {
-                      CourseCreatorNFTPolicyID: true,
-                    },
-                    take: 1
-                  },
                 },
               },
             },
@@ -123,13 +113,8 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                 select: {
                   id: true,
                   courseCode: true,
+                  courseNftPolicyId: true,
                   title: true,
-                  onchainInstance: {
-                    select: {
-                      CourseCreatorNFTPolicyID: true,
-                    },
-                    take: 1
-                  },
                 },
               },
             },
@@ -166,20 +151,8 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
                 select: {
                   id: true,
                   courseCode: true,
+                  courseNftPolicyId: true,
                   title: true,
-                  onchainInstance: {
-                    select: {
-                      CourseCreatorNFTPolicyID: true,
-                    },
-                    take: 1
-                  },
-                },
-                include: {
-                  onchainInstance: {
-                    select: {
-                      CourseCreatorNFTPolicyID: true,
-                    }
-                  },
                 },
               },
             },

@@ -167,7 +167,7 @@ export const escrowRouter = createTRPCRouter({
                         id: true,
                         courseCode: true,
                         title: true,
-                        onchainInstance: { select: { CourseCreatorNFTPolicyID: true }, take: 1 },
+                        courseNftPolicyId: true,
                       },
                     },
                   },

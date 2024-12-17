@@ -26,7 +26,7 @@ export default function Page({
     <LoadingCircle />;
   }
 
-  if (!course?.onchainInstance[0]?.CourseCreatorNFTPolicyID) {
+  if (!course?.courseNftPolicyId) {
     return (
 
       <CourseLayout>
@@ -46,12 +46,12 @@ export default function Page({
     )
   }
 
-  if (courseModule && !!course?.onchainInstance[0]?.CourseCreatorNFTPolicyID) {
+  if (courseModule && !!course?.courseNftPolicyId) {
     return (
       <PageCourseAssignmentContent
         courseCode={courseCode}
         courseModule={courseModule}
-        courseNftPolicyId={course.onchainInstance[0].CourseCreatorNFTPolicyID}
+        courseNftPolicyId={course.courseNftPolicyId}
       />
     );
   }

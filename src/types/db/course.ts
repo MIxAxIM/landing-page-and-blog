@@ -16,8 +16,6 @@ export type CourseVariant =
   RouterOutputs["courseVariant"]["getCourseVariants"][number];
 export type ModuleVariant =
   RouterOutputs["moduleVariant"]["getCourseModuleVariants"][number];
-export type CourseOnChainInstance =
-  RouterOutputs["courseOnChainInstance"]["getCourseOnchainInstances"];
 export type ModuleSLT = RouterOutputs["slt"]["getModuleSLTs"][number];
 export type Lesson = RouterOutputs["lesson"]["getModuleLessons"][number];
 export type Assignment = RouterOutputs["assignment"]["getAssignmentByModuleId"];

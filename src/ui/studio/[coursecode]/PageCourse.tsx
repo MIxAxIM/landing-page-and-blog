@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Loading from "~/components/common/loading";
 import StudioLayout from "~/components/layout/StudioLayout";
 import CourseTitle from "~/ui/studio/components/CourseTitle";
@@ -6,33 +5,20 @@ import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
 import ListCourseVariants from "../components/ListCourseVariants";
 
 import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
-import ShowCourseOnchain from "../components/ShowCourseOnchain";
-import { Network } from "@prisma/client";
-import FormFieldset from "~/components/form/form-fieldset";
-// import { type CourseVariant } from "~/types/db";
 import ModuleComponent from "../components/ModuleComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Metatags from "~/components/common/metatags";
 import ModuleImportComponent from "../components/ModuleImportComponent";
-import SelectNetwork from "~/components/cardano/common/SelectNetwork";
-import { CardanoWallet } from "@meshsdk/react";
 import TeacherSection from "~/ui/app/roles/teacher/TeacherSection";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 
 export default function PageCourse({ courseCode }: { courseCode: string }) {
   const { accessTokenAlias } = useAccessToken();
   const { course, isLoadingCourse } = useCourseByOwner(courseCode);
-  const [selectedNetwork, setSelectedNetwork] = useState<Network>("PREPROD");
   //  const [selectedVariant, setSelectedVariant] = useState<
   //  CourseVariant | undefined
   //>(undefined);
 
-  const handleNetworkSelectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const _network = event.target.value as Network;
-    setSelectedNetwork(_network);
-  };
 
   return (
     <StudioLayout>
@@ -70,34 +56,16 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
                   <ListCourseVariants course={course} />
                 </TabsContent>
                 <TabsContent value="onchain">
-                  <ShowCourseOnchain
-                    key={selectedNetwork + course.id}
-                    course={course}
-                    network={selectedNetwork}
-                  />
                   {!!accessTokenAlias && (
                     <>
                       <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={course.courseCode} key={course.id} />
                     </>
                   )}
-
                 </TabsContent>
                 <TabsContent value="import">
                   <ModuleImportComponent course={course} />
                 </TabsContent>
               </Tabs>
-              <div className="mt-10 flex w-full flex-row justify-between">
-                <FormFieldset label="Network">
-                  <SelectNetwork
-                    name="network"
-                    onChange={handleNetworkSelectionChange}
-                    options={Object.keys(Network).map((type) => ({
-                      value: type,
-                      label: type,
-                    }))}
-                  />
-                </FormFieldset>
-              </div>
             </div>
           </>
         ) : (

@@ -1,18 +1,18 @@
 import { api } from "~/utils/api";
 
-export default function useCourseByPolicyId(courseNftPolicy: string) {
+export default function useCourseByPolicyId(courseNftPolicyId: string) {
   const { data: courseInfo, isLoading: isLoadingCourseInfo } =
-    api.courseOnChainInstance.getCourseByCourseNftPolicy.useQuery(
+    api.course.getCourseByPolicyId.useQuery(
       {
-        CourseCreatorNFTPolicyID: courseNftPolicy,
+        courseNftPolicyId: courseNftPolicyId,
       },
-      { enabled: !!courseNftPolicy },
+      { enabled: !!courseNftPolicyId },
     );
 
   const { data: assignmentStats } =
     api.assignmentValidator.getCourseAssignmentStats.useQuery(
       {
-        courseCreatorNFTPolicyID: courseNftPolicy,
+        courseCreatorNFTPolicyID: courseNftPolicyId,
         courseCode: courseInfo?.courseCode ?? "",
       },
       { enabled: !!courseInfo },

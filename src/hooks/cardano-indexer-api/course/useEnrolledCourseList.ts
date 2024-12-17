@@ -1,10 +1,10 @@
 import { api } from "~/utils/api";
 
-export default function useEnrolledCourseList(courseNftPolicies: string[]) {
+export default function useEnrolledCourseList(courseNftPolicyIds: string[]) {
   const { data: courseInfos, isLoading: isLoadingCourseInfos } =
-    api.courseOnChainInstance.getCoursesByNftPolicyList.useQuery(
-      { CourseCreatorNFTPolicyIDs: courseNftPolicies },
-      { enabled: courseNftPolicies.length > 0 },
+    api.course.getCoursesByPolicyIds.useQuery(
+      { courseNftPolicyIds: courseNftPolicyIds },
+      { enabled: courseNftPolicyIds.length > 0 },
     );
   return { courseInfos, isLoadingCourseInfos };
 }
