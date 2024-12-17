@@ -61,7 +61,7 @@ import { studentTxRouter } from "./routers/transactions/student-tx-router";
 import { accessTokenTxRouter } from "./routers/transactions/access-token-router";
 import { andamioAdminTxRouter } from "./routers/transactions/andamio-admin-tx-router";
 import { courseCreatorTxRouter } from "./routers/transactions/course-creator-tx-router";
-import { projectManagerTxRouter } from "./routers/transactions/project-manager-tx-router";
+import { projectCreatorTxRouter } from "./routers/transactions/project-creator-tx-router";
 import { contributorTxRouter } from "./routers/transactions/contributor-tx-router";
 
 /**
@@ -135,7 +135,7 @@ export const appRouter = createTRPCRouter({
   studentTransactions: studentTxRouter,
   courseCreatorTransactions: courseCreatorTxRouter,
   accessTokenTransactions: accessTokenTxRouter,
-  projectManagerTransactions: projectManagerTxRouter,
+  projectCreatorTransactions: projectCreatorTxRouter,
   contributorTransactions: contributorTxRouter,
 });
 

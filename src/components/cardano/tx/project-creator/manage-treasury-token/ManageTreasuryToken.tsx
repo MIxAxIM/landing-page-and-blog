@@ -6,7 +6,7 @@ import { useWallet } from "@meshsdk/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
-export default function MintProjectToken({
+export default function ManageTreasuryToken({
   treasuryNftPolicyId,
   contributorsToAdd,
   projects,
@@ -23,21 +23,18 @@ export default function MintProjectToken({
   const { wallet } = useWallet();
   const { updateTaskStatuses } = useTask({ treasuryNftPolicyId })
 
-
-  // Any tx will have a set of outputs.
-  // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
-      { txOutputIndexes: [1], description: "Project Treasury State Token", tooltipText: "This is where project data is stored..." },
+      { txInputIndexes: [0], txOutputIndexes: [0], description: "Updated Min UTxO", tooltipText: "When you add more tasks to a Treasury, the utxo might need a bit more lovelace" },
     ],
-    andamioNetworkFee: 5000000, // How to incorporate network fee -> Dev team 2024-12-09
+    andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
   }
 
   const {
     data: unsignedTxCBOR,
     isLoading,
     error: txError
-  } = api.projectManagerTransactions.mintProjectToken.useQuery(
+  } = api.projectCreatorTransactions.manageTreasuryToken.useQuery(
     {
       userAccessTokenUnit: accessTokenAsset?.unit ?? "",
       treasuryNftPolicyId: treasuryNftPolicyId ?? "",
@@ -45,13 +42,40 @@ export default function MintProjectToken({
       projects: projects
     },
     {
-      // Don't attempt the query without inputs 
+      // Don't attempt the query without inputs
       enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
-    }
+      retry: (failureCount, error) => {
+        // Only retry up to 3 times
+        if (failureCount >= 3) return false;
 
+        // Don't retry on certain errors (you can customize this based on your API's error patterns)
+        if (error instanceof Error) {
+          const skipRetryMessages = [
+            "Invalid parameters",
+            "Unauthorized",
+            // Add other error messages that shouldn't trigger retries
+          ];
+          if (skipRetryMessages.some(msg => error.message.includes(msg))) {
+            return false;
+          }
+        }
+
+        return true;
+      },
+
+      retryDelay: (failureCount) => {
+        // Exponential backoff: 1s, 2s, 4s
+        return Math.min(1000 * (2 ** (failureCount - 1)), 4000);
+      },
+      // Cache the successful result to prevent unnecessary refetches
+      cacheTime: Infinity,
+      staleTime: Infinity,
+      // Don't refetch on window focus since this is a transaction preparation
+      refetchOnWindowFocus: false
+    }
   );
 
-  const handleStatusChange = async () => {
+  const handleStatusChange = () => {
     updateTaskStatuses({
       taskIds: taskIds,
       status: "PENDING_TX",
@@ -67,13 +91,13 @@ export default function MintProjectToken({
     );
   }
 
-  if (!wallet) return
-
   return (
     <div className="flex flex-col w-full mx-auto">
-      <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
+      {!!unsignedTxCBOR && (
+        <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
+      )}
       <TransactionContainer
-        buttonText={`Mint Project Token`}
+        buttonText={`Manage Treasury Token`}
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
@@ -81,5 +105,6 @@ export default function MintProjectToken({
       />
     </div >
   );
+
 
 }

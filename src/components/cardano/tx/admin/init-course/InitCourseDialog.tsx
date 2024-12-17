@@ -9,11 +9,11 @@ import FormInput from "~/components/form/form-input";
 import { Form } from "~/components/ui/form";
 import FormLabel from "~/components/form/form-label";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
-import InitCourseStep2 from "./InitCourseStep2";
+import InitCourse from "./InitCourse";
 
-export default function InitCourseStep2Dialog() {
+export default function InitCourseStep1Dialog() {
   const address = useAddress();
-  const [courseNftPolicyId, setCourseNftPolicyId] = useState<
+  const [creatorAliasToAdd, setCreatorAliasToAdd] = useState<
     string | undefined
   >(undefined);
 
@@ -22,62 +22,62 @@ export default function InitCourseStep2Dialog() {
   );
 
   const FormSchema = z.object({
-    courseNftPolicy: z.string().min(56, {
-      message: "Policy Id should be 56 characters",
+    creatorAlias: z.string().min(2, {
+      message: "Token name must be at least 2 characters.",
     }),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      courseNftPolicy: "",
+      creatorAlias: "",
     },
   });
 
   const { register, watch } = form;
 
-  const policyId = watch("courseNftPolicy");
+  const tokenAlias = watch("creatorAlias");
 
   function onSubmit() {
-    if (policyId.length > 1) {
-      setCourseNftPolicyId(policyId);
+    if (tokenAlias.length > 1) {
+      setCreatorAliasToAdd(tokenAlias);
     }
   }
 
   return (
     <Dialog>
-      <DialogTrigger>Step 2: Deploy Reference Scripts</DialogTrigger>
+      <DialogTrigger>Step 1: Create a New Course NFT</DialogTrigger>
       <DialogContent>
         {successTxHash ? (
           <SuccessTxModalContent
-            txName="Deploy Scripts (Step 2)"
+            txName="Mint Access Token"
             nextStepLinks={[]}
             txHash={successTxHash}
           />
         ) : (
           <>
             <h2>
-              Step 2: Deploy reference scripts
+              Step 1: Mint and Lock Course NFT
             </h2>
             {/* About this Module */}
             <h2>About</h2>
             <p className="mb-5">Feature: Tell what is happening at this step</p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormLabel>Course Policy Id:</FormLabel>
+                <FormLabel>Your Andamio Network Token Name:</FormLabel>
                 <FormInput
-                  {...register("courseNftPolicy")}
-                  name="courseNftPolicy"
-                  placeholder="Nft Policy Id from Step 1"
+                  {...register("creatorAlias")}
+                  name="creatorAlias"
+                  placeholder="Choose your token name"
                   form={form}
                 />
                 <Button>Submit</Button>
               </form>
             </Form>
-            {address && courseNftPolicyId && (
+            {address && creatorAliasToAdd && (
               <>
-                <InitCourseStep2
-                  policy={courseNftPolicyId}
+                <InitCourse
+                  alias={creatorAliasToAdd}
                   setSuccessTxHash={setSuccessTxHash}
                 />
               </>

@@ -27,7 +27,7 @@ export default function AddFunds({
     data: unsignedTxCBOR,
     isLoading,
     error: txError,
-  } = api.projectManagerTransactions.addFunds.useQuery(
+  } = api.projectCreatorTransactions.addFunds.useQuery(
     {
       treasuryNftPolicyId: treasuryNftPolicyId,
       dipositorsAddress: address ?? "",

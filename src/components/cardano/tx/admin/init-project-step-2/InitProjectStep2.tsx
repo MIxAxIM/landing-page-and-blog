@@ -1,26 +1,41 @@
+
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
+import { ContributorPrerequisite } from "~/types/db";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
+import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 import TransactionLoading from "~/components/cardano/common/TransactionLoading";
 
 export default function InitProjectStep2({
   projectNftPolicyId,
+  prerequisites,
   setSuccessTxHash,
+  treasuryId
 }: {
   projectNftPolicyId: string;
+  prerequisites: ContributorPrerequisite;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
+  treasuryId: string;
 }) {
   const { toast } = useToast();
 
   const { wallet } = useWallet();
+  const { updateTreasury, isUpdating } = useTreasury();
+  const { updatePrerequisite } = useContributorPrerequisite({})
+
+  const formattedPrereqs = prerequisites.courseRequirements.map(cm => [cm.course?.courseCreatorNFTPolicyID, cm.requiredModules])
 
   const { data: builtTxResponse } =
     api.andamioAdminTransactions.initProjectStepTwo.useQuery({
-      policy: projectNftPolicyId
+      policy: projectNftPolicyId,
+      prerequisite: JSON.stringify(formattedPrereqs),
     });
+
+  // TODO: Get a contributorPolicyId from response of init-tx-4 (or elsewhere?), then fix updatePrerequiste with a custom method that just adds contributorPolicyId
 
   async function onSubmit() {
     if (projectNftPolicyId) {
@@ -37,24 +52,24 @@ export default function InitProjectStep2({
           description: `${txId}`,
         });
         setSuccessTxHash(txId);
+        updateTreasury({ id: treasuryId, live: true })
+        updatePrerequisite({ id: prerequisites.id, contributorPolicyId: "awaiting" })
       }
     }
   }
 
-
   return (
-    <TransactionPlaceholderComponent name="InitProjectStepTwo">
+    <TransactionPlaceholderComponent name="StepFourAddPrereqs">
       {builtTxResponse ? (
         <>
           <Button onClick={onSubmit}>
-            Project Instance Step 2: Get Description
+            Project Instance Step 4: Add Prereqs
           </Button>
-          <p>This will mint a Project NFT with policy id:</p>
           <pre>{builtTxResponse.projectNftPolicyId}</pre>
-          <p>Copy this Policy Id. You will use it in steps 2 and 3.</p>
         </>
       ) : (
         <div className="flex flex-col">
+          <pre>{JSON.stringify(formattedPrereqs)}</pre>
           <TransactionLoading wallet={wallet} />
         </div>
       )}

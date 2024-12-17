@@ -1,49 +1,46 @@
-import { api } from "~/utils/api";
-import { type Dispatch, type SetStateAction } from "react";
-import TransactionContainer from "~/components/cardano/common/TransactionContainer";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
-import { useTask } from "~/hooks/db/contribution/useTask";
+import { type Dispatch, type SetStateAction } from "react";
+import { api } from "~/utils/api";
+import TransactionContainer from "~/components/cardano/common/TransactionContainer";
+import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
-export default function ManageTreasuryToken({
+export default function AcceptProject({
+  taskCommitmentId,
   treasuryNftPolicyId,
-  contributorsToAdd,
-  projects,
-  taskIds,
-  setSuccessTxHash
+  userAccessTokenUnit,
+  contributorAlias,
+  successTxHash,
+  setSuccessTxHash,
 }: {
-  treasuryNftPolicyId?: string;
-  contributorsToAdd?: string[];
-  projects: string;
-  taskIds: string[];
+  taskCommitmentId: string;
+  treasuryNftPolicyId: string;
+  userAccessTokenUnit: string;
+  contributorAlias: string;
+  successTxHash: string | undefined;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
-  const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
-  const { updateTaskStatuses } = useTask({ treasuryNftPolicyId })
+
+  const { updateTaskCommitmentStatus, taskCommitment } = useTaskCommitment({ id: taskCommitmentId });
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [
-      { txInputIndexes: [0], txOutputIndexes: [0], description: "Updated Min UTxO", tooltipText: "When you add more tasks to a Treasury, the utxo might need a bit more lovelace" },
+      { txOutputIndexes: [0], description: "Cost Desc.", tooltipText: "Tooltip text" },
     ],
-    andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
+    andamioNetworkFee: 0,
   }
 
-  const {
-    data: unsignedTxCBOR,
-    isLoading,
-    error: txError
-  } = api.projectManagerTransactions.manageTreasuryToken.useQuery(
+  const { data: unsignedTxCBOR, error: txError } = api.projectCreatorTransactions.acceptProject.useQuery(
     {
-      userAccessTokenUnit: accessTokenAsset?.unit ?? "",
-      treasuryNftPolicyId: treasuryNftPolicyId ?? "",
-      allowedContributors: contributorsToAdd ?? [],
-      projects: projects
+      userAccessTokenUnit: userAccessTokenUnit,
+      contributorAlias: contributorAlias,
+      treasuryNftPolicyId: treasuryNftPolicyId,
     },
     {
-      // Don't attempt the query without inputs
-      enabled: !!accessTokenAsset && !!treasuryNftPolicyId && !!contributorsToAdd,
+      // Don't attempt the query if we don't have an alias
+      enabled: !!treasuryNftPolicyId && !!userAccessTokenUnit && !!contributorAlias && !successTxHash,
+      // Don't retry on error since we expect some queries to fail
       retry: (failureCount, error) => {
         // Only retry up to 3 times
         if (failureCount >= 3) return false;
@@ -72,15 +69,16 @@ export default function ManageTreasuryToken({
       staleTime: Infinity,
       // Don't refetch on window focus since this is a transaction preparation
       refetchOnWindowFocus: false
-    }
-  );
+    },
 
-  const handleStatusChange = () => {
-    updateTaskStatuses({
-      taskIds: taskIds,
-      status: "PENDING_TX",
+  )
+
+  const handleStatusChange = async () => {
+    updateTaskCommitmentStatus({
+      id: taskCommitmentId,
+      status: "PENDING_TX_COMMITMENT_ACCEPTED",
     });
-  };
+  }
 
   if (txError) {
     return (
@@ -93,18 +91,16 @@ export default function ManageTreasuryToken({
 
   return (
     <div className="flex flex-col w-full mx-auto">
-      {!!unsignedTxCBOR && (
-        <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR.unsignedTxCBOR} costBreakdown={costBreakdown} />
-      )}
+      <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
       <TransactionContainer
-        buttonText={`Manage Treasury Token`}
+        buttonText={`accept contribution`}
         unsignedTxCBOR={unsignedTxCBOR}
         wallet={wallet}
         setSuccessTxHash={setSuccessTxHash}
         onTransactionSuccess={handleStatusChange}
       />
-    </div >
+    </div>
   );
-
-
 }
+
+

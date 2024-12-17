@@ -31,7 +31,7 @@ export default function DenyProject({
     andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
   }
 
-  const { data: unsignedTxCBOR, error: txError } = api.projectManagerTransactions.denyProject.useQuery({
+  const { data: unsignedTxCBOR, error: txError } = api.projectCreatorTransactions.denyProject.useQuery({
     userAccessTokenUnit: userAccessTokenUnit,
     contributorAlias: contributorAlias,
     treasuryNftPolicyId: treasuryNftPolicyId,
