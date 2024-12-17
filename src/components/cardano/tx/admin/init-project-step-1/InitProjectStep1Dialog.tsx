@@ -1,4 +1,3 @@
-
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +13,7 @@ import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import InitProjectStep1 from "./InitProjectStep1";
 
-// TODO: Add multiple aliases in one transaction - 
+// TODO: Add multiple aliases in one transaction -
 
 export default function InitProjectStep1Dialog() {
   const address = useAddress();
@@ -107,9 +106,6 @@ export default function InitProjectStep1Dialog() {
                     </FormItem>
                   )}
                 />
-
-
-
                 <Button className="mt-8">Submit</Button>
               </form>
             </Form>

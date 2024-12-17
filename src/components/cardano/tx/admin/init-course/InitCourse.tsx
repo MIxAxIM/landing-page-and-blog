@@ -5,15 +5,19 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
 import TransactionLoading from "~/components/cardano/common/TransactionLoading";
+import useCourse from "~/hooks/db/course/useCourse";
 
-export default function InitCourseStep1({
+export default function InitCourse({
   alias,
+  courseId,
   setSuccessTxHash,
 }: {
   alias: string;
+  courseId: string;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { toast } = useToast();
+  const { updateCourse } = useCourse();
 
   const { wallet } = useWallet();
 

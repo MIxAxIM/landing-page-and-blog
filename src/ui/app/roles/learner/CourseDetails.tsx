@@ -30,7 +30,7 @@ export default function CourseDetails({
   const ctx = api.useUtils();
   const { data: sessionData, update: updateSessionData } = useSession();
   const { connected } = useWallet();
-  const { course, isLoadingCourse } = useCourse(currentCourseCode);
+  const { course, isLoading: isLoadingCourse } = useCourse(currentCourseCode);
   const { courseModuleOverviews } =
     useCourseModuleWithAssignmentSummary(currentCourseCode);
   const { savedCourses } = useLearnerSavedCourses();

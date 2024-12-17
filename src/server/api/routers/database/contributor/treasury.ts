@@ -100,6 +100,9 @@ export const treasuryRouter = createTRPCRouter({
         },
         escrows: { select: { id: true, tasks: true } }
       },
+      orderBy: {
+        title: "asc",
+      }
     });
 
     const treasuriesWithAda = await Promise.all(

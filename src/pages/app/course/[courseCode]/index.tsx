@@ -8,7 +8,7 @@ import useCourse from "~/hooks/db/course/useCourse";
 export default function CoursePage() {
   const router = useRouter();
   const { courseCode } = router.query;
-  const { course, isLoadingCourse } = useCourse(courseCode as string);
+  const { course, isLoading: isLoadingCourse } = useCourse(courseCode as string);
   return (
     <div className="container mx-auto px-4 py-8">
       {isLoadingCourse && <Loading />}

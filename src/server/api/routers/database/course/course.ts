@@ -11,7 +11,11 @@ import {
 export const courseRouter = createTRPCRouter({
   getCourses: publicProcedure.query(({ ctx }) => {
     return ctx.db.course.findMany({
+      orderBy: {
+        title: 'asc'
+      }
     });
+
   }),
 
   getCourse: publicProcedure
@@ -213,7 +217,9 @@ export const courseRouter = createTRPCRouter({
       z.object({
         courseCode: z.string().min(1, "Course code is required"),
         title: z.string().min(1, "Title is required"),
-        description: z.string().min(1, "Description is required"),
+        courseNftPolicyId: z.string().optional(),
+        live: z.boolean().optional(),
+        description: z.string().optional(),
         category: z.string().optional(),
         imageUrl: z.string().optional(),
         videoUrl: z.string().optional(),

@@ -6,16 +6,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormInput from "~/components/form/form-input";
-import { Form } from "~/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import FormLabel from "~/components/form/form-label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import useCourses from "~/hooks/db/course/useCourses";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import InitCourse from "./InitCourse";
 
-export default function InitCourseStep1Dialog() {
+export default function InitCourseDialog() {
   const address = useAddress();
-  const [creatorAliasToAdd, setCreatorAliasToAdd] = useState<
-    string | undefined
-  >(undefined);
+  const { courses } = useCourses();
+  const [creatorAliasToAdd, setCreatorAliasToAdd] = useState<string | undefined>(undefined);
 
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
     undefined,
@@ -25,18 +26,23 @@ export default function InitCourseStep1Dialog() {
     creatorAlias: z.string().min(2, {
       message: "Token name must be at least 2 characters.",
     }),
+    courseId: z.string().min(1, {
+      message: "Course selection is required",
+    }),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       creatorAlias: "",
+      courseId: "",
     },
   });
 
   const { register, watch } = form;
 
   const tokenAlias = watch("creatorAlias");
+  const courseId = watch("courseId");
 
   function onSubmit() {
     if (tokenAlias.length > 1) {
@@ -46,7 +52,7 @@ export default function InitCourseStep1Dialog() {
 
   return (
     <Dialog>
-      <DialogTrigger>Step 1: Create a New Course NFT</DialogTrigger>
+      <DialogTrigger>Create a New Course NFT</DialogTrigger>
       <DialogContent>
         {successTxHash ? (
           <SuccessTxModalContent
@@ -71,13 +77,41 @@ export default function InitCourseStep1Dialog() {
                   placeholder="Choose your token name"
                   form={form}
                 />
-                <Button>Submit</Button>
+
+                <FormField
+                  control={form.control}
+                  name="courseId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Course to Publish On-Chain</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select course" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {courses?.map(course => (
+                            <SelectItem value={course.id} key={course.id}>
+                              {course.title}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <Button className="mt-8">Submit</Button>
               </form>
             </Form>
             {address && creatorAliasToAdd && (
               <>
                 <InitCourse
                   alias={creatorAliasToAdd}
+                  courseId={courseId}
                   setSuccessTxHash={setSuccessTxHash}
                 />
               </>
