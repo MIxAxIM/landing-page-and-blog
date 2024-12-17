@@ -15,8 +15,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Metatags from "~/components/common/metatags";
 import ModuleImportComponent from "../components/ModuleImportComponent";
 import SelectNetwork from "~/components/cardano/common/SelectNetwork";
+import { CardanoWallet } from "@meshsdk/react";
+import TeacherSection from "~/ui/app/roles/teacher/TeacherSection";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 
 export default function PageCourse({ courseCode }: { courseCode: string }) {
+  const { accessTokenAlias } = useAccessToken();
   const { course, isLoadingCourse } = useCourseByOwner(courseCode);
   const [selectedNetwork, setSelectedNetwork] = useState<Network>("PREPROD");
   //  const [selectedVariant, setSelectedVariant] = useState<
@@ -36,7 +40,7 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
         {course ? (
           <>
             <Metatags title={course.title} />
-            <div className="flex flex-col gap-4 sm:mx-auto sm:w-[630px] md:w-[750px] lg:w-[800px] xl:w-[950px] 2xl:w-[1100px]">
+            <div className="flex flex-col gap-4 sm:mx-auto w-11/12">
               <CourseTitle course={course} />
               <Tabs defaultValue="modules">
                 <TabsList className="my-3 w-full rounded-md border border-secondary-foreground">
@@ -50,7 +54,7 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
                     Variants
                   </TabsTrigger>
                   <TabsTrigger value="onchain" className="px-10">
-                    Andamio Network Configuration
+                    Manage Published Course and Credentials
                   </TabsTrigger>
                   <TabsTrigger value="import" className="px-10">
                     Import
@@ -71,6 +75,12 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
                     course={course}
                     network={selectedNetwork}
                   />
+                  {!!accessTokenAlias && (
+                    <>
+                      <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={course.courseCode} key={course.id} />
+                    </>
+                  )}
+
                 </TabsContent>
                 <TabsContent value="import">
                   <ModuleImportComponent course={course} />

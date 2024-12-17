@@ -4,6 +4,7 @@ import DialogCourse from "~/ui/studio/components/dialogs/DialogCourse";
 import Markdown from "react-markdown";
 import DialogCourseDelete from "./dialogs/DialogCourseDelete";
 import { useState } from "react";
+import { CardanoWallet } from "@meshsdk/react";
 
 export default function CourseTitle({ course }: { course: Course }) {
   const { data: sessionData } = useSession();
@@ -33,6 +34,7 @@ export default function CourseTitle({ course }: { course: Course }) {
               courseId={course.id}
             />
           )}
+          <CardanoWallet />
         </div>
       </div>
     </>

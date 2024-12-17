@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { type Course, type CourseOnChainInstance } from "~/types/db";
 import { useSession } from "next-auth/react";
-import DialogCourseOnChain from "./dialogs/DialogCourseOnChain";
 import { type Network } from "@prisma/client";
 import useNetworkCourseConfig from "~/hooks/cardano-indexer-api/course/useNetworkCourseConfig";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 export default function ShowCourseOnchain({
   course,
@@ -14,11 +11,6 @@ export default function ShowCourseOnchain({
   course: Course;
   network: Network;
 }) {
-  const [showDialog, setShowDialog] = useState<boolean>(false);
-
-  const [selectedOnChainInstance, setSelectedOnchainInstance] = useState<
-    CourseOnChainInstance | undefined
-  >(undefined);
 
   const { data: sessionData } = useSession();
   const isOwner = course?.createdById === sessionData?.user?.creatorId;
@@ -28,66 +20,20 @@ export default function ShowCourseOnchain({
     network,
   );
 
-  useEffect(() => {
-    if (courseOnchain) {
-      setSelectedOnchainInstance(courseOnchain);
-    }
-  }, [courseOnchain]);
-
   return (
-    <>
-      {selectedOnChainInstance && (
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <p className="text-2xl font-bold">
-              Andamio Network Configuration (Network:{" "}
-              {selectedOnChainInstance.network})
-            </p>
-            {isOwner && (
-              <div className="">
-                <Button
-                  onClick={() => {
-                    setShowDialog(true);
-                  }}
-                >
-                  Update
-                </Button>
-              </div>
-            )}
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1">
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  CourseCreatorNFTPolicyID
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.CourseCreatorNFTPolicyID}
-                </span>
-              </div>
-
-
-              <div className="my-2 items-center gap-x-2 font-mono leading-5 text-foreground">
-                <div className="text-xs font-light text-foreground">
-                  Instance ID
-                </div>
-                <span className="break-normal text-sm">
-                  {selectedOnChainInstance.id}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="bg-primary text-primary-foreground p-5 flex w-full col-span-10 justify-between">
+      {courseOnchain ? (
+        <p>
+          CourseCreatorNFTPolicyID:{" "}{courseOnchain.CourseCreatorNFTPolicyID}
+        </p>
+      ) : (
+        <div>
+          <p>Ready to publish this course on the Andamio Network?</p>
+          <Button>
+            Publish Course on the Andamio Network
+          </Button>
+        </div>
       )}
-      <div className="mt-5">
-        <DialogCourseOnChain
-          dialogOpen={showDialog}
-          setDialogOpen={setShowDialog}
-          course={course}
-          courseOnchain={selectedOnChainInstance}
-          selectedNetwork={network}
-        />
-      </div>
-    </>
+    </div>
   );
 }
