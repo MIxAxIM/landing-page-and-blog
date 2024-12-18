@@ -3,7 +3,6 @@ import { useTask } from "~/hooks/db/contribution/useTask";
 import { ComboBox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem } from "~/components/ui/Combobox";
 import { formatPosixTime } from "~/utils/time";
 import { useTerminology } from "~/contexts/terminology-context";
-import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
 import CourseCard from "~/ui/courses/components/CourseCard";
 import OnboardLearner from "~/ui/onboarding/OnboardLearner";
 import OnboardCreator from "~/ui/onboarding/OnboardCreator";
