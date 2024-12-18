@@ -47,7 +47,7 @@ const tiers = [
     id: "tier-enterprise",
     href: "#",
     email: "hello@andamio.io",
-    priceMonthly: "$995",
+    priceMonthly: "$999",
     description: "Designed for organizations with high transaction volumes.",
     features: [
       "Unlimited access to all features",
@@ -57,7 +57,7 @@ const tiers = [
     ],
     transactionFee: "2.5% on top of network fees",
     mostPopular: false,
-    productId: "prod_RDaj5nCmijjqVh",
+    productId: "prod_RQBYEpkoC8MxVn",
   },
   {
     name: "Partner Tier",
