@@ -173,7 +173,7 @@ export function RowSLT({
         sltText: slt.sltText,
       });
     }
-  }, [form, slt]);
+  }, [slt]);
 
   useEffect(() => {
     resetForm();

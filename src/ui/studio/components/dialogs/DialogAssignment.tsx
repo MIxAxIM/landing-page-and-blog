@@ -136,11 +136,11 @@ export default function DialogAssignment({
   const resetForm = useCallback(() => {
     form.reset({
       assignmentCode:
-        assignment?.assignmentCode ?? `assignment${courseModule.moduleCode}`,
+        assignment?.assignmentCode ?? `${courseModule.moduleCode}`,
       assignmentTitle: assignment?.title ?? "",
       sltIds: assignment?.slts.map((s) => s.id) ?? [],
     });
-  }, [form, assignment, courseModule]);
+  }, [assignment, courseModule]);
 
   useEffect(() => {
     resetForm();
@@ -177,6 +177,7 @@ export default function DialogAssignment({
                 label="Enter Assignment Code"
                 info="Optionally, customize the assignment code. It is used in the direct url for this assignment."
                 form={form}
+                disabled={true}
               />
 
               <FormCheckboxes

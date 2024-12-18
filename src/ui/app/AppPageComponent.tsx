@@ -8,7 +8,7 @@ import { Treasury } from "~/types/db";
 
 export default function AppPageComponent() {
   return (
-    <div className="mx-auto my-auto max-w-7xl text-center">
+    <div className="mx-auto my-auto max-w-5xl text-center">
       {/* <div className="text-2xl font-bold">Welcome to Andamio</div> */}
 
       {/*--- TODO: These messages can be customized based on user status ---*/}
@@ -102,10 +102,10 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
       key={treasury.id}
       className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
     >
-      {/* 
-      
+      {/*
+
       TO-DO
-      
+
       {Math.random() > 0.5 ? (
         <span
           className={`absolute left-2 top-2 rounded bg-red-500 px-2 py-1 text-xs font-bold text-white

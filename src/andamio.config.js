@@ -1,5 +1,5 @@
 export const NETWORK = "PREPROD";
 export const ACCESS_TOKEN_POLICY_ID =
-  "7c1687824a1fc9550960b1a6f7494cc37fef8e3e8a14dd8d1de55560";
+  "1f66718cc26fa904d6acc5603c894ec5d24e56d27622d338b014d459";
 export const GLOBAL_STATE_VALIDATOR_ADDR =
-  "addr_test1xpnd9jgwra3lgd86m6aly5lxrt8628ra7yasvlc5gpx87xcn4wzkezcynu7rm59nfp7rnnesl4fzafeqqu9k8pkpgp2qsndhqj";
+  "addr_test1xr4pcc0azj5tjssvlkamkz38da7a0u4w0auhhdhzkwu39trhyjyk0jhg85vp5w2dmjd49930qcwjv4g7semnx53gpxuswcj3pj";

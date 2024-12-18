@@ -16,6 +16,7 @@ export default function useCourseModule(moduleId: string | undefined) {
     onSuccess: () => {
       void ctx.module.getModule.invalidate();
       void ctx.module.getCourseModuleOverviews.invalidate();
+      void ctx.assignmentValidator.getCourseAssignmentStats.invalidate();
     }
   });
 

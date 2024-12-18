@@ -28,7 +28,7 @@ interface UseCourseReturn {
     category?: string;
     imageUrl?: string;
     videoUrl?: string;
-    accessTier: AccessTier;
+    accessTier?: AccessTier;
   }) => void;
   deleteCourse: (data: { id: string }) => void;
   isCreating: boolean;

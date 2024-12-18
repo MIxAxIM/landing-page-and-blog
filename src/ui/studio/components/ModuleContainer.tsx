@@ -288,9 +288,9 @@ export default function ModuleContainer({
                 change the title of the Module or the Student Learning Targets.
                 You can still update the introduction, lesson, and assignment
                 content. To manage this module, navigate to the{" "}
-                <Link href="/app/teach">
+                <Link href={`/studio/${course?.courseCode}`}>
                   <span className="font-semibold text-primary over:text-success">
-                    Andamio App
+                    Course Studio
                   </span>
                 </Link>
                 .

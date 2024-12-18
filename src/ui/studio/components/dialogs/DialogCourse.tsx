@@ -113,13 +113,13 @@ export default function DialogCourse({ course }: { course?: Course }) {
       videoUrl: course?.videoUrl ?? "",
       accessTier: course?.accessTier ?? "HIDDEN",
     });
-  }, [form, course]);
+  }, [course]);
 
   useEffect(() => {
     if (course) {
       resetForm();
     }
-  }, [course, resetForm]);
+  }, [course]);
 
   const getTitle = useCallback(() => form.getValues("title"), [form]);
 

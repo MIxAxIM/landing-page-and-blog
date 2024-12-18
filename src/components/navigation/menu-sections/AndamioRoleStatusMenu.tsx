@@ -18,21 +18,21 @@ export default function AndamioRoleStatusMenu({
           <RoleStatus
             roleName="Learner"
             userHasRole={!!sessionData?.user.learnerId}
-            roleInfoUrl="/app/learn"
+            roleInfoUrl="/dashboard"
             current={dashboardChildRoute === "learner"}
           />
           {!!sessionData?.user.creatorId && (
             <RoleStatus
               roleName="Teacher"
               userHasRole={!!sessionData?.user.creatorId}
-              roleInfoUrl="/app/teach"
+              roleInfoUrl="/studio"
               current={dashboardChildRoute === "teacher"}
             />
           )}
           <RoleStatus
             roleName={`${translateCaps('contributor')}`}
             userHasRole={true}
-            roleInfoUrl="/app/contribute"
+            roleInfoUrl="/dashboard"
             current={dashboardChildRoute === "contributor"}
           />
           <RoleStatus

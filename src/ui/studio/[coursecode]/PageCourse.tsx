@@ -58,7 +58,10 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
                 <TabsContent value="onchain">
                   {!!accessTokenAlias && (
                     <>
-                      <TeacherSection accessTokenAlias={accessTokenAlias} courseCode={course.courseCode} key={course.id} />
+                      <TeacherSection
+                        accessTokenAlias={accessTokenAlias}
+                        courseCode={course.courseCode}
+                      />
                     </>
                   )}
                 </TabsContent>

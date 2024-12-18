@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
 import TransactionLoading from "~/components/cardano/common/TransactionLoading";
 import useCourse from "~/hooks/db/course/useCourse";
+import useCourseById from "~/hooks/db/course/useCourseById";
 
 export default function InitCourse({
   alias,
@@ -18,13 +19,19 @@ export default function InitCourse({
 }) {
   const { toast } = useToast();
   const { updateCourse } = useCourse();
+  //courseCode: string;
+  //title: string;
+  //courseNftPolicyId?: string;
 
   const { wallet } = useWallet();
+  const { course } = useCourseById(courseId);
 
   const { data: builtTxResponse } =
     api.andamioAdminTransactions.initCourseStepOne.useQuery({
       aliases: [alias],
     });
+
+  if (!course) return
 
   async function onSubmit() {
     if (alias) {
@@ -41,6 +48,11 @@ export default function InitCourse({
           description: `${txId}`,
         });
         setSuccessTxHash(txId);
+        updateCourse({
+          courseCode: course?.courseCode ?? "",
+          title: course?.title ?? "",
+          courseNftPolicyId: builtTxResponse.courseNftPolicyId,
+        });
       }
     }
   }

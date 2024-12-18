@@ -38,6 +38,7 @@ export default function CommittedAssignments({
     setCombinedData(_combinedData);
   }, [listCourseAssignmentDatums, assignmentCommitmentsAwaitingApproval]);
 
+  if (!courseNftPolicy) return null;
   if (isLoadingCourseInfo) return <LoadingCircle />;
 
 

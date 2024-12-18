@@ -13,10 +13,20 @@ export default function NetworkModuleManagement({
 }: {
   courseNftPolicyId: string;
 }) {
-  const { courseInfo, assignmentStats } =
-    useCourseByPolicyId(courseNftPolicyId);
+  const { courseInfo, assignmentStats } = useCourseByPolicyId(courseNftPolicyId);
   const { courseModuleOverviews } = useCourseModuleOverviews(
     courseInfo?.courseCode ?? "",
+  );
+
+  if (!courseNftPolicyId) return (
+    <div className="bg-primary text-primary-foreground p-5 flex w-full col-span-10 justify-between">
+      <div className="max-w-5xl">
+        Here is a call to action for the Course Creator to initialize a course
+      </div>
+      <Button className="border border-white">
+        Initialize my Project on the Andamio Network
+      </Button>
+    </div>
   );
 
   return (
@@ -33,6 +43,7 @@ export default function NetworkModuleManagement({
         <Button>Edit in Course Studio</Button>
       </div>
       <h3>Manage Course Modules</h3>
+      <pre>{courseNftPolicyId}</pre>
       {courseInfo?.courseCode && (
         <Accordion type="multiple">
           {courseModuleOverviews?.map((cm) => (

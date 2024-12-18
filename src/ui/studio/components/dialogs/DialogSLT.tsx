@@ -79,7 +79,7 @@ export default function DialogSLT({
       sltText: "",
       moduleId: currentModule.id ?? "",
     });
-  }, [form, currentModule]);
+  }, [currentModule]);
 
   useEffect(() => {
     resetForm();

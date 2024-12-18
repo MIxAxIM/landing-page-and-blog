@@ -72,7 +72,7 @@ export const courseRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.db.course.findFirst({
         where: {
-          id: input.courseNftPolicyId,
+          courseNftPolicyId: input.courseNftPolicyId,
         },
         include: {
           modules: true,
@@ -234,6 +234,7 @@ export const courseRouter = createTRPCRouter({
         data: {
           title: input.title,
           description: input.description,
+          courseNftPolicyId: input.courseNftPolicyId,
           category: input.category,
           imageUrl: input.imageUrl,
           videoUrl: input.videoUrl,

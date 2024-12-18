@@ -1,16 +1,17 @@
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 import { useTerminology } from "~/contexts/terminology-context";
 import { useEffect, useState } from "react";
-import { Button } from "~/components/ui/button";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 import { ProjectImageSelect } from "~/ui/app/components/ProjectImageSelect";
+import PreviewManageEscrowComponent from "./PreviewManageEscrowComponent";
+import { Treasury } from "~/types/db";
 
 export default function ContributionManagerComponent() {
   const { translateCaps } = useTerminology()
   // db hooks
   const { treasuries } = useUserRelationships()
   const [singletonProject, setSingletonProject] = useState<boolean>(true)
-  const [currentProjectId, setCurrentProjectId] = useState<{ treasuryNftPolicyId: string, treasuryId: string, escrowId: string } | undefined>(undefined)
+  const [currentTreasury, setCurrentTreasury] = useState<Treasury | undefined>(undefined)
   // cardano hooks
 
   useEffect(() => {
@@ -18,28 +19,23 @@ export default function ContributionManagerComponent() {
       setSingletonProject(false)
     }
     if (!!treasuries.asOwner[0] && treasuries.asOwner.length === 1) {
-      setCurrentProjectId({ treasuryNftPolicyId: treasuries.asOwner[0].treasuryNftPolicyId ?? "", treasuryId: treasuries.asOwner[0].id, escrowId: treasuries.asOwner[0].escrowIds[0] ?? "" })
+      setCurrentTreasury(treasuries.asOwner[0])
     }
   }, [treasuries])
 
   return (
     <div>
       <div className="mx-auto my-2 w-full">
-        {!currentProjectId && (
-          <>
-            <div className="col-span-3 flex flex-row items-center justify-between">
-              <h1>Your Projects</h1>
-              <div className="flex flex-row items-center space-x-5">
-                <DialogInitializeProject />
-              </div>
+        <h1>Your Projects</h1>
+        <>
+          <div className="col-span-3 flex flex-row items-center justify-between">
+            <div className="flex flex-row items-center space-x-5">
+              <DialogInitializeProject />
             </div>
-          </>
-        )}
-        {!singletonProject && (
+          </div>
+        </>
+        {!singletonProject ? (
           <>
-            <div className="">
-              {!!currentProjectId && <Button onClick={() => setCurrentProjectId(undefined)}>Back</Button>}
-            </div>
             <div className="">
               {/** <h3>As {translateCaps('treasury')} Owner</h3> **/}
               <div className="grid grid-cols-2 gap-10 my-6">
@@ -65,6 +61,8 @@ export default function ContributionManagerComponent() {
             **/}
             <div className="w-full border-t border-primary my-12" />
           </>
+        ) : (
+          <PreviewManageEscrowComponent escrowId={currentTreasury?.escrow?.id ?? ""} />
         )}
       </div>
     </div>

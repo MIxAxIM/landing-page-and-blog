@@ -229,7 +229,7 @@ export default function DialogModule({
       description: currentCourseModule?.description ?? "",
       releaseDate: currentCourseModule?.releaseDate ?? undefined,
     });
-  }, [form, currentCourseModule, moduleCode]);
+  }, [currentCourseModule, moduleCode]);
 
   useEffect(() => {
     resetForm();
