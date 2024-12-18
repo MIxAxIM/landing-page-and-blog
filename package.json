@@ -16,6 +16,8 @@
     "next:lint": "next lint",
     "start": "next start",
     "stripe:sync": "tsx scripts/stripe-sync.ts",
+    "stripe:diagnostics": "tsx scripts/diagnose-stripe-data.ts",
+    "stripe:delete": "tsx scripts/stripe-delete-data.ts",
     "update-tasks": "tsx scripts/update-task-status.ts",
     "migrate-assignment-commitments": "tsx scripts/migrate-assignment-commitments.ts"
   },
