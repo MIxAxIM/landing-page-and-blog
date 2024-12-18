@@ -18,10 +18,12 @@ import { useSession } from "next-auth/react";
 export default function CommitToAssignmentDialog({
   courseCode,
   moduleCode,
+  courseNftPolicyId,
   networkEvidenceHash,
 }: {
   courseCode: string;
   moduleCode: string;
+  courseNftPolicyId: string;
   networkEvidenceHash: string;
 }) {
   const { connected } = useWallet();
@@ -32,6 +34,7 @@ export default function CommitToAssignmentDialog({
     useAssignmentNetworkStatus({
       courseCode: courseCode,
       moduleCode: moduleCode,
+      courseNftPolicyId: courseNftPolicyId
     });
 
   const { assignmentCommitmentsByCourse } = useAssignmentCommitment({
@@ -86,6 +89,7 @@ export default function CommitToAssignmentDialog({
                     assignmentCommitmentId={assignmentCommitmentsByCourse[0]?.id ?? ""}
                     isCommitted={isLearnerCommitted ?? false}
                     networkEvidenceHash={networkEvidenceHash}
+                    courseNftPolicyId={courseNftPolicyId}
                   />
                 )}
               </div>

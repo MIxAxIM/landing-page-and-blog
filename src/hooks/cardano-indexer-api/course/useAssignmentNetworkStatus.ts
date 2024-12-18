@@ -7,9 +7,11 @@ import { useAccessToken } from "../network/useAccessToken";
 export default function useAssignmentNetworkStatus({
   courseCode,
   moduleCode,
+  courseNftPolicyId,
 }: {
   courseCode: string;
   moduleCode: string;
+  courseNftPolicyId: string;
 }) {
   const {
     assignment,
@@ -20,9 +22,6 @@ export default function useAssignmentNetworkStatus({
 
   const { accessTokenAlias } = useAccessToken();
 
-  // TODO: 2024-12-17
-  const courseNftPolicyId = ""
-
   const { data: isAssignmentOnchain, isLoading: isLoadingAssignmentOnchain } =
     api.assignmentValidator.isCourseModuleOnchain.useQuery(
       {
@@ -30,7 +29,7 @@ export default function useAssignmentNetworkStatus({
         moduleCode: moduleCode,
       },
       {
-        enabled: courseNftPolicyId.length === 56 && !!assignment
+        enabled: courseNftPolicyId?.length === 56 && !!assignment
       },
     );
 

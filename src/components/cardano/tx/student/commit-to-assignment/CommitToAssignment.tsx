@@ -13,18 +13,17 @@ export default function CommitToAssignment({
   assignmentCommitmentId,
   isCommitted,
   networkEvidenceHash,
+  courseNftPolicyId,
 }: {
   courseCode: string;
   assignmentCode: string;
   assignmentCommitmentId: string;
   isCommitted: boolean;
   networkEvidenceHash?: string;
+  courseNftPolicyId: string;
 }) {
   const { connected } = useWallet();
   const { accessTokenAsset } = useAccessToken();
-
-  // TODO: 2024-12-17
-  const courseNftPolicyId = false
 
   if (!courseNftPolicyId) return "This course is not published on the Andamio Network"
 
@@ -41,7 +40,7 @@ export default function CommitToAssignment({
         <>
           <CommitToAssignmentButton
             userAccessTokenUnit={accessTokenAsset.unit}
-            courseNftPolicyId={""}
+            courseNftPolicyId={courseNftPolicyId}
             assignmentCommitmentId={assignmentCommitmentId}
             assignmentCode={assignmentCode}
             networkEvidenceHash={networkEvidenceHash ?? "Assignment evidence will be submitted later"}
@@ -106,6 +105,10 @@ export function CommitToAssignmentButton({
 
   return (
     <div className="flex flex-col w-full mx-auto">
+      <pre>userAccessTokenUnit: {userAccessTokenUnit}</pre>
+      <pre>courseNftPolicyId: {courseNftPolicyId}</pre>
+      <pre>assignmentCode: {assignmentCode}</pre>
+      <pre>assignmentInfo: {networkEvidenceHash}</pre>
       <TransactionCostDetails unsignedTxCBOR={unsignedTxCBOR?.unsignedTxCBOR ?? undefined} costBreakdown={costBreakdown} />
       <TransactionContainer
         buttonText={`Commit to Assignment`}

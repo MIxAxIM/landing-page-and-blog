@@ -63,7 +63,7 @@ export default function InitProjectStep2({
       {builtTxResponse ? (
         <>
           <Button onClick={onSubmit}>
-            Project Instance Step 4: Add Prereqs
+            Project Instance Step 2: Add Prereqs
           </Button>
           <pre>{builtTxResponse.projectNftPolicyId}</pre>
         </>

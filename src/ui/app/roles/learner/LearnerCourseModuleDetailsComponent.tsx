@@ -33,12 +33,14 @@ export default function LearnerCourseModuleDetailsComponent({
   courseStateDatum,
   courseTokenInfo,
   learnerCourseStatus,
+  courseNftPolicyId,
 }: {
   alias: string;
   courseModule: CourseModuleWithAssignmentSummary;
   courseStateDatum: DecodedCourseStateDatum | undefined;
   courseTokenInfo: DecodedTokenInfo | undefined;
   learnerCourseStatus: "NEVER_ENROLLED" | "ENROLLED" | "WAS_ENROLLED";
+  courseNftPolicyId: string;
 }) {
   const { data: sessionData } = useSession();
   const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false);
@@ -53,6 +55,7 @@ export default function LearnerCourseModuleDetailsComponent({
   const { isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: courseModule.originalCourse.courseCode,
     moduleCode: courseModule.moduleCode,
+    courseNftPolicyId: courseNftPolicyId,
   });
 
   const { assignmentDatum } = useAssignmentDatums(

@@ -19,6 +19,11 @@ type UpdatePrerequisiteInput = {
   courseRequirements?: (CourseRequirementInput & { id?: string })[];
 };
 
+type UpdatePrerequisitePolicyInput = {
+  id: string;
+  contributorPolicyId: string;
+};
+
 interface UseContributorPrerequisiteReturn {
   prerequisite: ContributorPrerequisite | null | undefined;
   prerequisites: ContributorPrerequisite[];
@@ -27,6 +32,7 @@ interface UseContributorPrerequisiteReturn {
   isLoading: boolean;
   createPrerequisite: (data: CreatePrerequisiteInput) => void;
   updatePrerequisite: (data: UpdatePrerequisiteInput) => void;
+  updatePrerequisitePolicy: (data: UpdatePrerequisitePolicyInput) => void;
   deletePrerequisite: (id: string) => void;
   isCreating: boolean;
   isUpdating: boolean;
@@ -178,6 +184,27 @@ export function useContributorPrerequisite(
       },
     });
 
+
+  const updatePrerequisitePolicyMutation =
+    api.contributorPrerequisite.updatePrerequisitePolicy.useMutation({
+      onSuccess: async () => {
+        toast.success("Prerequisite updated successfully");
+        await refreshQueries();
+      },
+      onError: (error) => {
+        const zodErrors = error.data?.zodError?.fieldErrors;
+        if (zodErrors) {
+          const errorMessages = Object.entries(zodErrors)
+            .map(([field, errors]) => `${field}: ${errors?.join(", ")}`)
+            .join("\n");
+          toast.error(`Validation failed:\n${errorMessages}`);
+        } else {
+          toast.error(error.message || "Failed to update prerequisite");
+        }
+      },
+    });
+
+
   const deletePrerequisiteMutation =
     api.contributorPrerequisite.deletePrerequisite.useMutation({
       onSuccess: async () => {
@@ -197,6 +224,7 @@ export function useContributorPrerequisite(
     isLoading,
     createPrerequisite: createPrerequisiteMutation.mutate,
     updatePrerequisite: updatePrerequisiteMutation.mutate,
+    updatePrerequisitePolicy: updatePrerequisitePolicyMutation.mutate,
     deletePrerequisite: deletePrerequisiteMutation.mutate,
     isCreating: createPrerequisiteMutation.isLoading,
     isUpdating: updatePrerequisiteMutation.isLoading,

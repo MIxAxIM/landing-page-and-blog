@@ -28,6 +28,7 @@ export default function CourseModuleAccordionItem({
   const { isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: courseCode,
     moduleCode: cm.moduleCode,
+    courseNftPolicyId: courseNftPolicyId,
   });
   const { isChecking, moduleRefUtxos } = useModuleRefCheck(cm, courseNftPolicyId);
 

@@ -38,6 +38,11 @@ const updatePrerequisiteSchema = z.object({
     .optional(),
 });
 
+const updatePrerequisitePolicySchema = z.object({
+  id: z.string().min(1),
+  contributorPolicyId: z.string().length(56),
+});
+
 export const contributorPrerequisiteRouter = createTRPCRouter({
   // Public procedures
   getPrerequisites: publicProcedure.query(({ ctx }) => {
@@ -253,6 +258,7 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
               where: { id: input.id },
               data: {
                 title: input.title,
+                contributorPolicyId: input.contributorPolicyId,
                 courseRequirements: {
                   upsert: input.courseRequirements.map((req) => ({
                     where: {
@@ -289,6 +295,17 @@ export const contributorPrerequisiteRouter = createTRPCRouter({
         });
 
       }
+    }),
+
+  updatePrerequisitePolicy: protectedProcedure
+    .input(updatePrerequisitePolicySchema)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.contributorPrerequisite.update({
+        where: { id: input.id },
+        data: {
+          contributorPolicyId: input.contributorPolicyId
+        }
+      });
     }),
 
   deletePrerequisite: protectedProcedure

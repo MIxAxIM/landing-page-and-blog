@@ -14,6 +14,7 @@ import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskS
 import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
 import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
+import { usePrerequisitePolicyCheck } from "~/hooks/cardano-indexer-api/polling/usePrerequisitePolicyCheck";
 
 // TODO: 2024-12-17 - set up access control for this component
 // - As a Contribution, I want to view a list of Tasks, and click to a link to details
@@ -27,6 +28,7 @@ export default function ManageEscrowComponent({
   escrowId: string;
   treasuryNftPolicyId?: string | null;
 }) {
+  usePrerequisitePolicyCheck(treasuryNftPolicyId ?? "")
 
   const { escrow } = useEscrow({ id: escrowId });
 

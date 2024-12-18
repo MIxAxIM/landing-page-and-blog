@@ -18,11 +18,13 @@ export default function UpdateAssignmentDialog({
   courseCode,
   assignmentCode,
   networkEvidenceHash,
+  courseNftPolicyId,
 }: {
   assignmentCommitmentId: string;
   courseCode: string;
   assignmentCode: string;
   networkEvidenceHash: string;
+  courseNftPolicyId: string;
 }) {
   const { connected } = useWallet();
 
@@ -31,6 +33,7 @@ export default function UpdateAssignmentDialog({
     useAssignmentNetworkStatus({
       courseCode: courseCode,
       moduleCode: assignmentCode,
+      courseNftPolicyId: courseNftPolicyId,
     });
 
   return (

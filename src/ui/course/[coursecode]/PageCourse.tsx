@@ -133,6 +133,7 @@ export default function PageCourse({
               courseCode={_currentCourseVariant.courseCode}
               _courseVariant={_courseVariant}
               learnerLessons={learnerLessons ? learnerLessons : []}
+              courseNftPolicyId={_currentCourseVariant.courseNftPolicyId}
             />
           </div>
         </div>
@@ -158,10 +159,12 @@ function ListModules({
   courseCode,
   _courseVariant,
   learnerLessons,
+  courseNftPolicyId,
 }: {
   courseCode: string;
   _courseVariant: CourseVariant | undefined;
   learnerLessons: string[];
+  courseNftPolicyId: string;
 }) {
   const { courseModuleOverviews, isLoadingCourseModules } =
     useCourseModuleOverviews(courseCode);
@@ -182,6 +185,7 @@ function ListModules({
           courseCode={courseCode}
           _courseVariant={_courseVariant}
           learnerLessons={learnerLessons}
+          courseNftPolicyId={courseNftPolicyId}
         />
       ))}
     </>
@@ -193,16 +197,19 @@ function ModuleContainer({
   courseCode,
   _courseVariant,
   learnerLessons,
+  courseNftPolicyId,
 }: {
   module: CourseModuleOverview;
   courseCode: string;
   _courseVariant: CourseVariant | undefined;
   learnerLessons: string[];
+  courseNftPolicyId: string;
 }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false);
   const { isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: courseCode,
     moduleCode: module.moduleCode,
+    courseNftPolicyId: courseNftPolicyId,
   });
   // Todo: When ready to implement variants, we can change this to a useModuleVariants hook:
   const { data: moduleVariants } = api.moduleVariant.getModuleVariants.useQuery(

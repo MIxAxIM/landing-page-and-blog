@@ -38,6 +38,7 @@ export default function PageCourseAssignmentContent({
   const { assignment, isLoadingAssignment } = useAssignmentNetworkStatus({
     courseCode: courseCode,
     moduleCode: courseModule.moduleCode,
+    courseNftPolicyId: courseNftPolicyId
   });
 
   const { isCreator } = useValidateCreator(sessionData, courseCode);
@@ -94,6 +95,7 @@ function Page({
   const { assignment, isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: courseCode,
     moduleCode: courseModule.moduleCode,
+    courseNftPolicyId: courseNftPolicyId,
   });
 
   useEffect(() => {

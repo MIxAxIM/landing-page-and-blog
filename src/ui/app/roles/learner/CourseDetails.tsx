@@ -199,6 +199,7 @@ export default function CourseDetails({
       <div className="flex min-w-full flex-col">
         <h2>{course?.title} Outline</h2>
         <h2>{course?.description}</h2>
+        <p>Course NFT: {course?.courseNftPolicyId}</p>
         {courseModuleOverviews
           ?.sort((a, b) => {
             return a.moduleCode.localeCompare(b.moduleCode);
@@ -214,6 +215,7 @@ export default function CourseDetails({
                   course?.courseNftPolicyId,
               )}
               learnerCourseStatus={learnerCourseStatus}
+              courseNftPolicyId={course?.courseNftPolicyId ?? ""}
               key={i}
             />
           ))}

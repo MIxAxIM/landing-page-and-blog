@@ -85,6 +85,7 @@ export default function ModuleContainer({
   const { isAssignmentOnchain } = useAssignmentNetworkStatus({
     courseCode: course?.courseCode ?? "",
     moduleCode: currentModule.moduleCode,
+    courseNftPolicyId: course?.courseNftPolicyId ?? "",
   });
 
   const { mutate: publishModuleContent, isLoading: isLoadingPublish } =

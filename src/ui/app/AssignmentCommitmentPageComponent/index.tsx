@@ -127,6 +127,7 @@ export default function AssignmentCommitmentPageComponent({
               courseCode={courseCode}
               assignmentCode={moduleCode}
               networkEvidenceHash={evidenceHash ?? ""}
+              courseNftPolicyId={courseNftPolicyId}
             />
             <LeaveAssignmentDialog
               assignmentCommitmentId={currentAssignmentCommitment?.id}
@@ -138,6 +139,7 @@ export default function AssignmentCommitmentPageComponent({
             <CommitToAssignmentDialog
               courseCode={courseCode}
               moduleCode={moduleCode}
+              courseNftPolicyId={courseNftPolicyId}
               networkEvidenceHash={evidenceHash ?? ""}
             />
 
