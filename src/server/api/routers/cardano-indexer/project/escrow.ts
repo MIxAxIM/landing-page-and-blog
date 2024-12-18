@@ -51,7 +51,7 @@ export type DecodedEscrowUtxo = {
   datum: {
     hash: string;
     projectData: {
-      taskHash: string;
+      arbitraryHash: string;
       expirationTime: number;
       lovelace: number;
       additionalTokens: any[];
@@ -92,7 +92,7 @@ export const escrowValidatorRouter = createTRPCRouter({
             datum: {
               hash: utxo.datum.hash,
               projectData: {
-                taskHash: projectDataFields[0]?.bytes ?? "",
+                arbitraryHash: projectDataFields[0]?.bytes ?? "",
                 expirationTime: projectDataFields[1]?.int ?? 0,
                 lovelace: projectDataFields[2]?.int ?? 0,
                 additionalTokens: projectDataFields[3]?.list ?? [],
@@ -140,7 +140,7 @@ export const escrowValidatorRouter = createTRPCRouter({
             datum: {
               hash: utxo.datum.hash,
               projectData: {
-                taskHash: projectDataFields[0]?.bytes ?? "",
+                arbitraryHash: projectDataFields[0]?.bytes ?? "",
                 expirationTime: projectDataFields[1]?.int ?? 0,
                 lovelace: projectDataFields[2]?.int ?? 0,
                 additionalTokens: projectDataFields[3]?.list ?? [],

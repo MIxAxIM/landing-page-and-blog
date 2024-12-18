@@ -5,18 +5,15 @@ import { TaskStatus } from "@prisma/client";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
 import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
-import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { ProjectDatum, Task, type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
-import DialogDeleteTask from "../dialogs/DialogDeleteTask";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { Card } from "~/components/ui/card";
 import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
-import DialogTaskSimple from "../dialogs/DialogTaskSimple";
 
 export default function ProjectTaskContributionList({
   escrow,
@@ -102,7 +99,7 @@ export default function ProjectTaskContributionList({
   }, []);
 
   const validateNetworkTask = (task: Task) => {
-    return networkTasks?.find((networkTask) => networkTask.project_hash === task.hash);
+    return networkTasks?.find((networkTask) => networkTask.project_hash === task.taskHash);
   }
 
   return (

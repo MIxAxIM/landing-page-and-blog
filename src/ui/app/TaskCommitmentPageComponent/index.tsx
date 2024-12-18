@@ -46,7 +46,7 @@ export default function TaskCommitmentPageComponent({
 
   useEffect(() => {
     if (!!tasks && !!tasks[0]) {
-      const _task = tasks.find(task => task.hash === projectHash)
+      const _task = tasks.find(task => task.taskHash === projectHash)
       setCurrentTask(_task)
     }
   }, [tasks, projectHash])

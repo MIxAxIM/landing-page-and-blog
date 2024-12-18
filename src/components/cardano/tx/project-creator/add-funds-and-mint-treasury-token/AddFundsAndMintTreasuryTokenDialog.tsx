@@ -39,7 +39,7 @@ export default function AddFundsAndMintTreasuryTokenDialog(
     return (
       [
         {
-          pdProjectContent_: t.taskHash,
+          pdProjectContent_: t.arbitraryHash,
           pdExpirationTime_: parseInt(t.expirationTime),
           pdLovelaceAmount_: parseInt(t.lovelace),
           pdTokens_: [],

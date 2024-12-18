@@ -35,7 +35,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
 
     return utxos.map((utxo) => {
       const dbTC = taskCommitmentsByTreasury.find(
-        (tc) => stringToHex(tc?.task.taskHash ?? "") === utxo.datum.projectData.taskHash
+        (tc) => stringToHex(tc?.task.arbitraryHash ?? "") === utxo.datum.projectData.arbitraryHash
       );
 
       return {
@@ -44,7 +44,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
         taskCommitmentId: dbTC?.id,
         taskId: dbTC?.task.id,
         taskTitle: dbTC?.task.title,
-        hash: dbTC?.task.hash,
+        hash: dbTC?.task.taskHash,
         evidence: dbTC?.evidence,
       };
     });
@@ -84,7 +84,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                   {formatDate(tx.datum.projectData.expirationTime)}
                 </TableCell>
                 <TableCell>
-                  <CopyableTruncatedHash hash={hexToString(tx.datum.projectData.taskHash)} />
+                  <CopyableTruncatedHash hash={hexToString(tx.datum.projectData.arbitraryHash)} />
                 </TableCell>
                 <TableCell>
                   <div className="flex w-full gap-x-2 items-center h-full">

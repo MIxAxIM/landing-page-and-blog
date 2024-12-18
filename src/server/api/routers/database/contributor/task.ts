@@ -160,7 +160,7 @@ export const taskRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const task = await ctx.db.task.findFirst({
         where: {
-          hash: input,
+          taskHash: input,
         },
         include: {
           escrow: {
@@ -318,14 +318,14 @@ export const taskRouter = createTRPCRouter({
         input.status === TaskStatus.APPROVED
       ) {
         // NOTE: We can customize the hash generation here
-        const taskHash = generateTaskHash({
+        const arbitraryHash = generateTaskHash({
           title: task.title,
           description: task.description,
           acceptanceCriteria: task.acceptanceCriteria,
         });
 
-        const hash = hashProjectData({
-          pdProjectContent_: taskHash,
+        const _hash = hashProjectData({
+          pdProjectContent_: arbitraryHash,
           pdExpirationTime_: task.expirationTime,
           pdLovelaceAmount_: task.lovelace,
           pdTokens_: [],
@@ -335,9 +335,9 @@ export const taskRouter = createTRPCRouter({
           where: { id: input.id },
           data: {
             status: input.status,
-            hash,
-            taskHash,
-          },
+            taskHash: _hash,
+            arbitraryHash,
+          }
         });
       }
 
@@ -350,7 +350,7 @@ export const taskRouter = createTRPCRouter({
           where: { id: input.id },
           data: {
             status: input.status,
-            hash: null,
+            taskHash: null,
           },
         });
       }
@@ -387,7 +387,7 @@ export const taskRouter = createTRPCRouter({
         where: { id: input },
         data: {
           status: TaskStatus.DRAFT,
-          hash: null,
+          taskHash: null,
         },
       });
     }),

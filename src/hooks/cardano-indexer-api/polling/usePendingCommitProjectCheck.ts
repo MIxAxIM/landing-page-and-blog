@@ -38,8 +38,8 @@ export function usePendingCommitProjectCheck(treasuryNftPolicyId: string) {
     setIsChecking(true);
 
     for (const commitment of pendingCommitments) {
-      if (commitment.task.taskHash && escrowUtxos.find(
-        escrow => escrow.datum.projectData.taskHash === stringToHex(commitment.task.taskHash ?? "")
+      if (commitment.task.arbitraryHash && escrowUtxos.find(
+        escrow => escrow.datum.projectData.arbitraryHash === stringToHex(commitment.task.arbitraryHash ?? "")
       )) {
         updateTaskCommitmentStatus({
           id: commitment.id,

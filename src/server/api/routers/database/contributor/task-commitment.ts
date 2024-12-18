@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { TaskCommitmentStatus, TaskStatus } from "@prisma/client";
+import { TaskCommitmentStatus } from "@prisma/client";
 
 import {
   createTRPCRouter,
@@ -181,7 +181,7 @@ export const taskCommitmentRouter = createTRPCRouter({
       return ctx.db.taskCommitment.findMany({
         where: {
           task: {
-            hash: input
+            taskHash: input
           }
         },
         include: {

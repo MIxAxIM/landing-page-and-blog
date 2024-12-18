@@ -34,8 +34,8 @@ export type Task = {
   description: string;
   acceptanceCriteria: string[];
   status: TaskStatus;
+  arbitraryHash: string | null;
   taskHash: string | null;
-  hash: string | null;
   lovelace: string;
   expirationTime: string;
   escrowId: string;
@@ -79,8 +79,8 @@ export type TaskCommitment = {
     acceptanceCriteria: string[];
     numAllowedCommitments: number;
     status: TaskStatus;
+    arbitraryHash: string | null;
     taskHash: string | null;
-    hash: string | null;
     lovelace: string;
     tokens?: {
       assetId: string;

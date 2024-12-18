@@ -296,7 +296,7 @@ function TaskCard({
   useEffect(() => {
     if (tasks && tasks.length > 0) {
       tasks.find((task) => {
-        if (task.hash === (project ? project?.project_hash : task_hash)) {
+        if (task.taskHash === (project ? project?.project_hash : task_hash)) {
           setTask(task);
           return true;
         }

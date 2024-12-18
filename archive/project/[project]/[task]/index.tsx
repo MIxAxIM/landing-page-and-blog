@@ -4,16 +4,12 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Loading from "~/components/common/loading";
-import RenderEditor from "~/components/editor/components/render/RenderEditor";
-import ContentEditorSm from "~/components/editor/ContentEditor/editor-sm";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { Button } from "~/components/ui/button";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
-import useTaskCommitmentEditor from "~/ui/contribution/useTaskCommitmentEditor";
 import MenuBar from "~/ui/landing/MenuBar";
-import { blake2b } from "blakejs";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
@@ -42,7 +38,7 @@ export default function ProjectPage() {
   useEffect(() => {
     if (projectDatum && tasks && tasks.length > 0) {
       tasks.find((task) => {
-        if (task.hash === projectDatum.project_hash) {
+        if (task.taskHash === projectDatum.project_hash) {
           setTaskInfo(task);
           return true;
         }

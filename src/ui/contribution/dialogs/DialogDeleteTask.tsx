@@ -27,11 +27,11 @@ const TaskDisplay = ({ task }: { task: Task }) => {
           ))}
         </ul>
       </div>
-      {task.hash && (
+      {task.taskHash && (
         <div>
           <h3>Content Hash</h3>
           <code className="block break-all rounded bg-muted p-2 text-xs">
-            {task.hash}
+            {task.taskHash}
           </code>
         </div>
       )}

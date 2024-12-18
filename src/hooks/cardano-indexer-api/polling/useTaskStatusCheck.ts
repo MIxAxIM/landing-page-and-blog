@@ -33,7 +33,7 @@ export function useTaskStatusCheck(treasuryNftPolicyId: string) {
     // The task hash was calculated when the tx was submitted on-chain
     // If we can find it in the on-chain data, we can update the task status to ON_CHAIN in the DB
     for (const task of pendingTaskTxs) {
-      if (task.hash && treasuryInfo.projects.some(p => p.project_hash === task.hash)) {
+      if (task.taskHash && treasuryInfo.projects.some(p => p.project_hash === task.taskHash)) {
         updateTaskStatus({
           id: task.id,
           status: TaskStatus.ON_CHAIN

@@ -104,7 +104,7 @@ export default function ProjectTaskManagementList({
   }, []);
 
   const validateNetworkTask = (task: Task) => {
-    return networkTasks?.find((networkTask) => networkTask.project_hash === task.hash);
+    return networkTasks?.find((networkTask) => networkTask.project_hash === task.taskHash);
   }
 
   return (
@@ -232,7 +232,7 @@ export default function ProjectTaskManagementList({
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
-                            <Link href={`/app/project/${treasuryNftPolicyId}/${task.hash}`}>
+                            <Link href={`/app/project/${treasuryNftPolicyId}/${task.taskHash}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>
                           )}

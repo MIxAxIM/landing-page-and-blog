@@ -37,7 +37,7 @@ export default function CommitProjectDialog({
   // TODO:
   // What goes on-chain does not match task.tashHash - ask Adrian why?
   const apiProject = {
-    pdProjectContent_: task?.taskHash ?? "",
+    pdProjectContent_: task?.arbitraryHash ?? "",
     pdExpirationTime_: parseInt(task?.expirationTime ?? "0"),
     pdLovelaceAmount_: parseInt(task?.lovelace ?? "0"),
     pdTokens_: [],
