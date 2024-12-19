@@ -1,14 +1,10 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Markdown from "react-markdown";
-import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import Loading from "~/components/common/loading";
 import useCourse from "~/hooks/db/course/useCourse";
 
-export default function CoursePage() {
-  const router = useRouter();
-  const { courseCode } = router.query;
-  const { course, isLoading: isLoadingCourse } = useCourse(courseCode as string);
+export default function CoursePreviewComponent({ courseCode }: { courseCode: string }) {
+  const { course, isLoading: isLoadingCourse } = useCourse(courseCode);
   return (
     <div className="container mx-auto px-4 py-8">
       {isLoadingCourse && <Loading />}
@@ -54,7 +50,7 @@ export default function CoursePage() {
             <button className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
               Enroll Now
             </button>
-            <Link href={`/course/${courseCode as string}`} passHref>
+            <Link href={`/course/${courseCode}`} passHref>
               <button className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
                 Take a Peak
               </button>

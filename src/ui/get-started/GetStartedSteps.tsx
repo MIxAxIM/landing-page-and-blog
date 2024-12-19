@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { api } from "~/utils/api";
-import ViewCoursesButton from "../landing/ViewCoursesButton";
 import { BoxIcon, CheckCircledIcon } from "@radix-ui/react-icons";
 import { Suspense } from "react";
 import Loading from "~/components/common/loading";
+import ViewCoursesButton from "../landing/ViewCoursesButton";
 
 export default function GetStartedSteps() {
   const { data: sessionData } = useSession();
@@ -55,7 +55,7 @@ export default function GetStartedSteps() {
             </CardHeader>
             <CardContent>
               <p className="prose mx-auto text-left text-lg leading-8">
-                Anyone can <Link href="/courses">browse courses for free</Link>{" "}
+                Anyone can <Link href="/course">browse course for free</Link>{" "}
                 on Andamio. To start interacting with the platform, you must
                 create an account. To create an account, log in with Discord.
               </p>
@@ -172,8 +172,8 @@ export default function GetStartedSteps() {
                   <p className="prose mx-auto mb-2 text-lg font-semibold leading-8">
                     Keep Learning:
                   </p>
-                  <Link href="/courses">
-                    <Button>Explore All Courses on Andamio</Button>
+                  <Link href="/course">
+                    <Button>Explore All course on Andamio</Button>
                   </Link>
                 </div>
                 <div className="mb-5 text-center">

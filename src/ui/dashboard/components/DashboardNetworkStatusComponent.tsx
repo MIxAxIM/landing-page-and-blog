@@ -18,7 +18,6 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import classNames from "~/utils/classnames";
 import {
   AggregateUserInfoResponse,
-  DecodedGlobalStateDatum,
 } from "@andamiojs/datum-utils";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/ContributionManagerComponent";
@@ -26,9 +25,6 @@ import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/Co
 // TODO: How to handle creator course policies?
 
 export default function DashboardNetworkStatusComponent() {
-  const { connected } = useWallet();
-  const { accessTokenAlias } = useAccessToken();
-  const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "");
 
   return <TabsDemo />;
   // return (
@@ -64,8 +60,8 @@ export default function DashboardNetworkStatusComponent() {
   //               <p className="mb-2">
   //                 Explore Andamio course list and try enrolling in one.
   //               </p>
-  //               <Link href="/courses">
-  //                 <Button>View Courses</Button>
+  //               <Link href="/course">
+  //                 <Button>View course</Button>
   //               </Link>
   //             </div>
   //           )}
@@ -74,9 +70,9 @@ export default function DashboardNetworkStatusComponent() {
   //             <p className="my-3 text-lg font-bold">Keep Learning</p>
   //             <p>
   //               You are enrolled in {globalStateDatum.TokenInfos.length}{" "}
-  //               courses. Select{" "}
+  //               course. Select{" "}
   //               <Link href="/dashboard/learner">
-  //                 <span className="hover:text-success">My Courses</span>
+  //                 <span className="hover:text-success">My course</span>
   //               </Link>{" "}
   //               to view course status.
   //             </p>
@@ -88,7 +84,7 @@ export default function DashboardNetworkStatusComponent() {
   //       <div className="col-span-1">
   //         <div className="grid grid-cols-1 gap-y-10">
   //           <DashboardDataComponent
-  //             title="Courses Enrolled"
+  //             title="course Enrolled"
   //             data={globalStateDatum?.TokenInfos.length.toString() ?? ""}
   //           />
   //           <DashboardDataComponent
@@ -108,16 +104,16 @@ export default function DashboardNetworkStatusComponent() {
 //  <div>
 //    <p className="my-3 text-lg font-bold">Build your course(s)</p>
 //    <p>
-//      You are a Teacher in {creatorCoursePolicies.length} courses.
+//      You are a Teacher in {creatorCoursePolicies.length} course.
 //      Select <span className="font-semibold">Teacher Dashboard</span>{" "}
-//      manage courses.
+//      manage course.
 //    </p>
 //  </div>
 //)}
 //
 //{!!creatorCoursePolicies && creatorCoursePolicies.length > 0 && (
 //  <DashboardDataComponent
-//    title="Courses Owned"
+//    title="course Owned"
 //    data={creatorCoursePolicies?.length.toString() ?? ""}
 //  />
 //)}
@@ -248,7 +244,7 @@ export function TabsDemo() {
 export function Profile() {
   const { data: sessionData } = useSession();
   return (
-    <div className="explore-courses-bar flex justify-start px-10">
+    <div className="explore-course-bar flex justify-start px-10">
       <div className="category grid grid-cols-2 items-center gap-4">
         <div className="flex max-w-fit justify-center">
           <img
@@ -275,7 +271,7 @@ export function Overview({
   isLoadingAggregateUserInfo: boolean;
 }) {
   return (
-    <div className="explore-courses-bar">
+    <div className="explore-course-bar">
       <div className="category">
         {isLoadingAggregateUserInfo ? (
           <Loading />
@@ -288,10 +284,10 @@ export function Overview({
             <div className="flex flex-col gap-y-4">
               <div>
                 <h3>
-                  Courses Enrolled: {aggregateUserInfo?.courses.ongoing.length}
+                  course Enrolled: {aggregateUserInfo?.courses.ongoing.length}
                 </h3>
                 <h3>
-                  Courses Completed:{" "}
+                  course Completed:{" "}
                   {aggregateUserInfo?.courses.completed.length}
                 </h3>
               </div>
@@ -335,7 +331,7 @@ export function MyCoursesBar({
   }, [aggregateUserInfo, isLoadingCourses, courses]);
 
   return (
-    <div className="explore-courses-bar">
+    <div className="explore-course-bar">
       <h2 className="mb-4 flex justify-between">
         <div className="text-4xl font-bold">My Courses</div>
         <div></div>
@@ -350,7 +346,7 @@ export function MyCoursesBar({
               myCourses.length === 0 ? (
               <div className="flex h-40 w-full items-center justify-center rounded-lg bg-gray-800 text-white shadow-md">
                 <p>You have not enrolled in any courses yet.</p>
-                <Link href="/courses" passHref>
+                <Link href="/course" passHref>
                   <Button className="ml-4">Explore Courses</Button>
                 </Link>
               </div>
@@ -396,12 +392,12 @@ export function MyProjectsBar({
 
   useEffect(() => {
     if (aggregateUserInfo) {
-      const myOnchainCourses = aggregateUserInfo.projects.ongoing.map(
+      const myOnchaincourse = aggregateUserInfo.projects.ongoing.map(
         (project) => project.policy,
       );
       if (treasuries) {
         const myProjects = treasuries.filter((treasury) =>
-          myOnchainCourses.some(
+          myOnchaincourse.some(
             (onchainCourse) => onchainCourse === treasury.treasuryNftPolicyId,
           ),
         );

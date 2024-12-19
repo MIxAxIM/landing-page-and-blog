@@ -1,10 +1,10 @@
-import useCourses from "~/hooks/db/course/useCourses";
 import Loading from "~/components/common/loading";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Link from "next/link";
 import SearchAndamio from "~/components/search/SearchAndamio";
 import { Treasury } from "~/types/db";
+import useCourses from "~/hooks/db/course/useCourses";
 
 export default function AppPageComponent() {
   return (
@@ -24,19 +24,19 @@ export default function AppPageComponent() {
       <SearchAndamio />
       {/* <QuickActionButtons /> */}
 
-      <ExploreCoursesBar />
+      <ExplorecourseBar />
       <ExploreProjectsBar />
     </div>
   );
 }
 
-export function ExploreCoursesBar() {
+export function ExplorecourseBar() {
   const { courses, isLoadingCourses } = useCourses();
   return (
-    <div className="explore-courses-bar">
+    <div className="explore-course-bar">
       <h2 className="mb-4 flex justify-between">
-        <div className="text-4xl font-bold">Explore Courses</div>
-        <Link href="/courses" className="text-base font-bold">See All</Link>
+        <div className="text-4xl font-bold">Explore course</div>
+        <Link href="/course" className="text-base font-bold">See All</Link>
       </h2>
       <div className="category">
         <ScrollArea className="w-full">
