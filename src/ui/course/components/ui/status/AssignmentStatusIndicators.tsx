@@ -131,7 +131,7 @@ const StatusIcon = ({
 };
 
 interface AssignmentCommitmentStatusIndicatorProps {
-  privateStatus: AssignmentPrivateStatus;
+  privateStatus?: AssignmentPrivateStatus;
   networkStatus?: AssignmentNetworkStatus;
   className?: string;
   showLabel?: boolean;
@@ -143,13 +143,13 @@ export function AssignmentCommitmentStatusIndicator({
   className,
   showLabel = false,
 }: AssignmentCommitmentStatusIndicatorProps) {
-  const config = networkStatus ? networkStatusConfig[networkStatus] : privateStatusConfig[privateStatus];
+  const config = networkStatus ? networkStatusConfig[networkStatus] : privateStatusConfig[privateStatus ?? "NOT_STARTED"];
   const status = networkStatus || privateStatus;
 
   return (
     <div className="flex items-center gap-2">
       <StatusIcon config={config} className={className} />
-      {showLabel && (
+      {showLabel && status && (
         <span className={cn("text-xs font-medium", config.color)}>
           {status.charAt(0) + status.slice(1).toLowerCase().replace(/_/g, ' ')}
         </span>

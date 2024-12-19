@@ -25,7 +25,7 @@ export default function CommittedAssignments({
   const { listCourseAssignmentDatums } = useAssignmentDatums(courseNftPolicy);
   const { accessTokenAsset } = useAccessToken();
   const { courseInfo, isLoadingCourseInfo } = useCourseByPolicyId(courseNftPolicy);
-  const { assignmentCommitmentsAwaitingApproval } = useAssignmentCommitment({
+  const { assignmentCommitmentsAwaitingApproval, assignmentCommitmentsByCourse } = useAssignmentCommitment({
     courseCode: courseInfo?.courseCode
   });
 
@@ -43,11 +43,8 @@ export default function CommittedAssignments({
 
 
   return (
-    <div className="my-5 flex w-full flex-col border-t border-accent pt-5">
-      {showCourseDetails && !!courseInfo && (
-        <h2>{courseInfo.title}</h2>
-      )}
-      <h3>Review Student Assignments</h3>
+    <div className="my-5 flex w-full flex-col border-t border-accent pt-5" key={courseNftPolicy}>
+      <h2>Review Student Assignments</h2>
 
       <div className="flex flex-col w-full">
         {combinedData?.map((assignment) => (
@@ -117,6 +114,15 @@ export default function CommittedAssignments({
           </Card>
         ))}
       </div>
+      <h2>Completed Assignments</h2>
+      {assignmentCommitmentsByCourse?.map((commitment) => (
+        <Card key={commitment.id}>
+          <div className="flex flex-row w-full items-center justify-between">
+            <p>{commitment.assignment.title}: {commitment.networkEvidenceHash}</p>
+            <AssignmentCommitmentStatusIndicator networkStatus={commitment.networkStatus} showLabel={true} />
+          </div>
+        </Card>
+      ))}
     </div>
   );
 }

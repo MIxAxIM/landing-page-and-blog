@@ -108,9 +108,15 @@ export function useAssignmentCommitment({
     { enabled: !!courseCode }
   );
 
+  // NOTE: If we cannot see a list of assignment to be approved, look here. Is polling hook effectively updating AssignmentNetworkStatus?
   useEffect(() => {
     if (assignmentCommitmentsByCourse && assignmentCommitmentsByCourse.length > 0) {
-      const _ac = assignmentCommitmentsByCourse.filter(ac => ac.networkStatus == AssignmentNetworkStatus.PENDING_APPROVAL);
+      const _ac = assignmentCommitmentsByCourse.filter(ac => (
+        ac.networkStatus == AssignmentNetworkStatus.PENDING_APPROVAL ||
+        ac.networkStatus == AssignmentNetworkStatus.PENDING_TX_ADD_INFO ||
+        ac.networkStatus == AssignmentNetworkStatus.PENDING_TX_COMMITMENT_MADE ||
+        ac.networkStatus == AssignmentNetworkStatus.PENDING_TX_ASSIGNMENT_ACCEPTED
+      ));
       setAssginmentCommitmentsAwaitingApproval(_ac);
     }
   }, [assignmentCommitmentsByCourse]);
