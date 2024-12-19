@@ -176,9 +176,6 @@ export default function CourseDetails({
           </div>
           <div className="flex flex-row items-center gap-4">
             {!connected && <CardanoWallet />}
-            <Link href={`/course/${course?.courseCode}`}>
-              <Button size="xl">Open Course</Button>
-            </Link>
           </div>
         </div>
       </div>

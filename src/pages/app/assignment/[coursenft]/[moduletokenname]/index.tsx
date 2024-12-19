@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import { z } from "zod";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
+import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import useCourseByPolicyId from "~/hooks/cardano-indexer-api/course/useCourseByPolicyId";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import AssignmentCommitmentPageComponent from "~/ui/app/AssignmentCommitmentPageComponent";
-import MenuBar from "~/ui/landing/MenuBar";
+//import AssignmentContent from "~/ui/app/AssignmentCommitmentPageComponent/AssignmentContent";
 
 const assignmentCommitmentParamsSchema = z.object({
   coursenft: z.string().min(1),
@@ -34,14 +35,19 @@ export default function AssignmentCommitmentPage() {
 
   return (
     <DesktopOnlyLayout>
-      <MenuBar />
-      {!!accessTokenAlias ? (
-        <AssignmentCommitmentPageComponent courseCode={courseInfo.courseCode} moduleCode={moduletokenname} courseNftPolicyId={coursenft} />
-      ) : (
-        <ConnectWalletCard message={"Please connect a wallet"} />
-      )}
+      <AppLayout>
+        <div className="w-5/6 mx-auto my-24">
+          <h3>
+            Todo: Consider adding Assignment Content here - explore user stories that de-emphasize the  use of lesson content
+          </h3>
+          {!!accessTokenAlias ? (
+            <AssignmentCommitmentPageComponent courseCode={courseInfo.courseCode} moduleCode={moduletokenname} courseNftPolicyId={coursenft} />
+          ) : (
+            <ConnectWalletCard message={"Please connect a wallet"} />
+          )}
+        </div>
+      </AppLayout>
     </DesktopOnlyLayout >
-
   )
 }
 
