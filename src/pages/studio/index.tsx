@@ -1,7 +1,5 @@
 import { useSession } from "next-auth/react";
 import Loading from "~/components/common/loading";
-import PageStudio from "~/ui/studio/PageStudio";
-import ContactSales from "~/ui/studio/ContactSales";
 import Metatags from "~/components/common/metatags";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 
@@ -16,8 +14,8 @@ export default function Page() {
           <Loading />
         </div>
       )}
-      {sessionData && sessionData.user.creatorId && <PageStudio />}
-      {sessionData && !sessionData.user.creatorId && <ContactSales />}
+      <h1>Welcome to Andamio Studio</h1>
+      <h3>How to start building</h3>
     </DesktopOnlyLayout>
   );
 }

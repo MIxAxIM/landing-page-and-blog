@@ -1,11 +1,10 @@
 import AppLayout from "~/components/layout/AppLayout";
-import ContributionManagerComponent from "./roles/contribution-manager/ContributionManagerComponent";
 import { useSession } from "next-auth/react";
 import PublicTreasuryListComponent from "../contribution/lists/PublicTreasuryListComponent";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect } from "react";
 
-export default function ProjectsPageComponent() {
+export default function PublicProjectsPageComponent() {
   const { data: sessionData } = useSession()
   const { enableContributor } = useRoles()
 
@@ -18,9 +17,6 @@ export default function ProjectsPageComponent() {
   return (
     <AppLayout>
       <div className="mx-auto my-24 w-5/6 space-y-5">
-        {sessionData?.user.contributionManagerId && (
-          <ContributionManagerComponent />
-        )}
         <PublicTreasuryListComponent />
       </div>
     </AppLayout>

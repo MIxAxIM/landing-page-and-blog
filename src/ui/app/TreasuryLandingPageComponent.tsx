@@ -5,16 +5,26 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
+import { useSession } from "next-auth/react";
+import { useRoles } from "~/hooks/app/useRoles";
 
 export default function TreasuryLandingPageComponent({
   treasuryNftPolicyId,
 }: {
   treasuryNftPolicyId: string;
 }) {
+  const { data: sessionData } = useSession()
   const { accessTokenAlias } = useAccessToken()
   const { aggregateUserInfo } = useAggregateUserInfo()
   const [isManager, setIsManager] = useState<boolean>(false)
   const [isContributor, setIsContributor] = useState<boolean>(false)
+  const { enableContributor } = useRoles()
+
+  useEffect(() => {
+    if (sessionData?.user && !sessionData.user.learnerId) {
+      void enableContributor();
+    }
+  }, [sessionData, enableContributor]);
 
   useEffect(() => {
     if (aggregateUserInfo?.alias === accessTokenAlias) {

@@ -29,13 +29,14 @@ import {
 import Metatags from "~/components/common/metatags";
 import Markdown from "react-markdown";
 import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import CourseLayout from "~/components/layout/CourseLayout";
 import CourseDetails from "~/ui/app/roles/learner/CourseDetails";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import { useLearnerAssignmentStatuses } from "~/hooks/db/course/useLearnerAssignmentStatuses";
+import { useRoles } from "~/hooks/app/useRoles";
 
 export default function PageCourse({
   courseCode,
@@ -45,6 +46,7 @@ export default function PageCourse({
   courseId?: string;
 }) {
   const { data: sessionData } = useSession();
+  const { enableLearner } = useRoles()
 
   const learnerLessons = sessionData?.user.lessonIds;
 
@@ -85,6 +87,12 @@ export default function PageCourse({
     return { _currentCourseVariant, _courseVariant };
   }
   const { _currentCourseVariant, _courseVariant } = getCourse();
+
+  useEffect(() => {
+    if (sessionData?.user && !sessionData.user.learnerId) {
+      void enableLearner();
+    }
+  }, [sessionData, enableLearner]);
 
   if (_currentCourseVariant === undefined) return <></>;
 

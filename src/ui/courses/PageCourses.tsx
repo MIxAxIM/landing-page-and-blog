@@ -5,11 +5,12 @@ import MenuBar from "../landing/MenuBar";
 import { useWallet, useWalletList } from "@meshsdk/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-// import FeaturedCourses from "./components/FeaturedCourses";
+import { useRoles } from "~/hooks/app/useRoles";
 
 export default function PageCourses() {
   const { data: sessionData } = useSession();
   const wallets = useWalletList();
+  const { enableLearner } = useRoles()
 
   const [walletOption, setWalletOption] = useState<string | undefined>(
     undefined,
@@ -22,6 +23,12 @@ export default function PageCourses() {
   }, [wallets]);
 
   const { connected, connect } = useWallet();
+
+  useEffect(() => {
+    if (sessionData?.user && !sessionData.user.learnerId) {
+      void enableLearner();
+    }
+  }, [sessionData, enableLearner]);
 
   return (
     <>
