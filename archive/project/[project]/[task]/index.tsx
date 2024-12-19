@@ -102,7 +102,7 @@ export default function ProjectPage() {
       </div>
 
       <div className="flex items-center justify-center p-1">
-        <h3>Enter Submission Details</h3>
+        <h3>Share Evidence of Completion + Commit to Task</h3>
       </div>
 
       {/** !!editor && <ContentEditorSm editor={editor} editable={!lock} /> **/}

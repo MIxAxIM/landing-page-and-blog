@@ -9,7 +9,7 @@ export function BrowseCoursesSideMenu({ current }: { current: boolean }) {
   return (
     <li key="courses">
       <Link
-        href="/courses"
+        href="/course"
         className={classNames(
           current
             ? "bg-accent text-accent-foreground"

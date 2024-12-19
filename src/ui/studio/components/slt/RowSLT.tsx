@@ -215,7 +215,7 @@ export function RowSLT({
           {!editSltText && (
             <div className="col-span-2 col-start-11 flex items-center justify-end gap-1 px-8 lg:gap-3 xl:col-span-3 xl:col-start-10">
               <Link
-                href={`/studio/${courseCode}/${module.moduleCode}/lesson/${slt.moduleIndex}`}
+                href={`/studio/course/${courseCode}/${module.moduleCode}/lesson/${slt.moduleIndex}`}
                 className=""
               >
                 <Button intent="ghost" size="icon">

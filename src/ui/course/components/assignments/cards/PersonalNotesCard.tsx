@@ -13,18 +13,28 @@ export default function PersonalNotesCard({
 }) {
   if (!!assignment) {
     return (
-      <Card className="border border-primary shadow-md">
-        <CardHeader className="flex w-full flex-row items-center justify-between">
-          <h2> Personal Assignment Notes</h2>
-          {currentCommitment?.status && (
-            <AssignmentBadges status={currentCommitment.status} />
-          )}
-        </CardHeader>
-        <CardContent>
-          {currentCommitment && (
+      <Card>
+        <div className="flex flex-row w-full items-center justify-between">
+          <div>
+            <h2> Personal Assignment Notes</h2>
+          </div>
+          <div>
+            {currentCommitment?.status && (
+              <AssignmentBadges status={currentCommitment.status} />
+            )}
+          </div>
+          <div>
+            <DialogAssignmentLearnerStatus
+              assignmentId={assignment.id}
+              assignmentCommitment={currentCommitment}
+            />
+          </div>
+        </div>
+        {currentCommitment?.learnerNotes && (
+          <CardContent>
             <>
               <>
-                <div className="my-5">
+                <div className="my-2">
                   {currentCommitment.learnerNotes && (
                     <div className="bg-background p-3 text-foreground">
                       <p>{currentCommitment.learnerNotes}</p>
@@ -33,14 +43,8 @@ export default function PersonalNotesCard({
                 </div>
               </>
             </>
-          )}
-          <div className="flex flex-col justify-center gap-3">
-            <DialogAssignmentLearnerStatus
-              assignmentId={assignment.id}
-              assignmentCommitment={currentCommitment}
-            />
-          </div>
-        </CardContent>
+          </CardContent>
+        )}
       </Card>
     );
   }

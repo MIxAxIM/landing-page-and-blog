@@ -209,7 +209,7 @@ export function TabsDemo() {
             <Card>
               <CardContent className="space-y-4">
                 <Link
-                  href="/studio"
+                  href="/studio/course"
                   className={classNames("flex flex-row items-center gap-x-3")}
                 >
                   <PencilSquareIcon

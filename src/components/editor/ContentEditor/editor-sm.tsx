@@ -28,11 +28,11 @@ export default function ContentEditorSm({
 
   return (
     <div
-      className="mx-2 h-96 w-full overflow-y-auto border"
+      className="mx-2 w-full overflow-y-auto border"
       onClick={handleClick}
     >
       <div className="mx-auto my-4">
-        <div className={`m-5 mx-auto flex min-h-[90vh] w-11/12 flex-col pb-5 shadow-xl ${editable ? 'bg-white' : 'bg-slate-300'}`}>
+        <div className={`m-5 mx-auto flex w-11/12 flex-col pb-5 shadow-xl ${editable ? 'bg-white' : 'bg-slate-300'}`}>
           <div className="flex w-full p-5 lg:p-8">
             <AndamioBubbleMenu editor={editor} />
             <EditorContent editor={editor} />

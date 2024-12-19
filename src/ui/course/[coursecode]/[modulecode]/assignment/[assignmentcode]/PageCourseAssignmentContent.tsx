@@ -132,10 +132,6 @@ function Page({
         {editor}
 
         <div className="mt-10 grid grid-cols-1 gap-5">
-          <PersonalNotesCard
-            currentCommitment={currentCommitment}
-            assignment={assignment}
-          />
 
           {isAssignmentOnchain && (
             <>
@@ -150,6 +146,10 @@ function Page({
               )}
             </>
           )}
+          <PersonalNotesCard
+            currentCommitment={currentCommitment}
+            assignment={assignment}
+          />
         </div>
       </>
     );

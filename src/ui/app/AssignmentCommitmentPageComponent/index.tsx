@@ -12,6 +12,7 @@ import useAssignment from "~/hooks/db/course/useAssignment";
 import { AssignmentCommitmentStatusIndicator } from "~/ui/course/components/ui/status/AssignmentStatusIndicators";
 import { useAssignmentCommitmentStatusCheck } from "~/hooks/cardano-indexer-api/polling/useAssignmentCommitmentStatusCheck";
 import LeaveAssignmentDialog from "~/components/cardano/tx/student/leave-assignment/LeaveAssignmentDialog";
+import { Card } from "~/components/ui/card";
 
 export default function AssignmentCommitmentPageComponent({
   courseCode,
@@ -57,49 +58,26 @@ export default function AssignmentCommitmentPageComponent({
   }, [currentAssignmentCommitment])
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center">
-        <div
-          className="mt-2 max-w-fit transform rounded-lg bg-white p-4 shadow-md transition-transform"
-        >
-          <h3 className="font-bold">Task Details</h3>
-          <AssignmentCommitmentStatusIndicator
-            privateStatus={currentAssignmentCommitment?.privateStatus ?? "IN_PROGRESS"}
-            networkStatus={currentAssignmentCommitment?.networkStatus}
-            showLabel={true}
-          />
-          <div className="max-w-fit grid grid-cols-3">
-            {currentAssignment && (
-              <div>
-                <p className="text-xs text-slate-500">Assignment Title: {currentAssignment.title}</p>
-                <p className="text-xs text-slate-500">Assignment Title: {currentAssignment?.description}</p>
-              </div>
-            )}
-            <div>
-              <p>Task Status</p>
-              {!!currentAssignmentCommitment && (
-                <div>TODO: Assignment Status Indicator goes here</div>
-              )}
-            </div>
-            <div>
-              {!accessTokenAlias && <CardanoWallet />}
-              <div>
-                {!!assignmentDatum ? (
-                  <pre>{JSON.stringify(assignmentDatum, null, 2)}</pre>
-                ) : (
-                  <p>No Assignment Info</p>
-                )}
-              </div>
-            </div>
+    <Card>
+      <div className="flex flex-row items-center justify-center">
+        <div className="max-w-fit grid grid-cols-3">
+          <div>
+            {!accessTokenAlias && <CardanoWallet />}
           </div>
         </div>
       </div>
 
       <div className="flex flex-col items-center justify-center p-1">
-        <h3>Enter Submission Details</h3>
+        <div className="flex flex-row w-full items-center justify-between">
+          <h3>Share Evidence and Commit to this Assignment</h3>
+          <AssignmentCommitmentStatusIndicator
+            privateStatus={currentAssignmentCommitment?.privateStatus ?? "IN_PROGRESS"}
+            networkStatus={currentAssignmentCommitment?.networkStatus}
+            showLabel={true}
+          />
+        </div>
         {currentAssignmentCommitment ? (
           <>
-            <p>HAS CURRENT ASSIGNMENT</p>
             <AssignmentEvidenceEditor
               assignmentCommitment={currentAssignmentCommitment}
               lock={lock}
@@ -110,7 +88,6 @@ export default function AssignmentCommitmentPageComponent({
           </>
         ) : (
           <>
-            <p>NO CURRENT ASSIGNMENT</p>
             <AssignmentEvidenceEditor
               assignmentId={assignment?.id ?? ""}
               lock={lock}
@@ -120,7 +97,7 @@ export default function AssignmentCommitmentPageComponent({
             />
           </>
         )}
-        {!!assignmentDatum && !!currentAssignmentCommitment?.id ? (
+        {(currentAssignmentCommitment?.networkStatus != "PENDING_APPROVAL") && !!assignmentDatum && !!currentAssignmentCommitment?.id ? (
           <div className="flex flex-row justify-between items-center w-1/2 mx-auto">
             <UpdateAssignmentDialog
               assignmentCommitmentId={currentAssignmentCommitment?.id}
@@ -147,7 +124,7 @@ export default function AssignmentCommitmentPageComponent({
         )}
       </div>
 
-    </div>
+    </Card>
 
   )
 }
