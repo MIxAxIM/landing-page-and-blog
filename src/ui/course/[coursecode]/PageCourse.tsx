@@ -32,6 +32,10 @@ import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews
 import { useState } from "react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import CourseLayout from "~/components/layout/CourseLayout";
+import CourseDetails from "~/ui/app/roles/learner/CourseDetails";
+import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
+import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
+import { useLearnerAssignmentStatuses } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 
 export default function PageCourse({
   courseCode,
@@ -46,6 +50,10 @@ export default function PageCourse({
 
   const { course: courseById } = useCourseById(courseId);
   const { course: courseByCode } = useCourse(courseCode);
+
+  const { accessTokenAlias } = useAccessToken();
+  const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "");
+  const { learnerAssignments } = useLearnerAssignmentStatuses();
 
   const course = courseById ?? courseByCode;
 
@@ -136,6 +144,13 @@ export default function PageCourse({
               courseNftPolicyId={_currentCourseVariant.courseNftPolicyId}
             />
           </div>
+          {courseCode && (
+            <CourseDetails
+              globalStateDatum={globalStateDatum}
+              currentCourseCode={courseCode}
+              learnerAssignments={learnerAssignments}
+            />
+          )}
         </div>
 
         {/* <div className="flex gap-4">

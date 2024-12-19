@@ -127,19 +127,6 @@ export default function CourseDetails({
   return (
     <div className="mx-auto w-full" key={course?.id}>
       <div className=" flex min-h-[150px] w-full flex-col">
-        <div className="mb-12 flex w-full flex-row items-center justify-between">
-          <h1>{course?.title}</h1>
-          {course?.imageUrl && (
-            <div className="flex items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={course.imageUrl}
-                className="max-h-[100px]"
-                alt="course image"
-              />
-            </div>
-          )}
-        </div>
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex flex-row gap-3">
             {learnerCourseStatus === "ENROLLED" && (
