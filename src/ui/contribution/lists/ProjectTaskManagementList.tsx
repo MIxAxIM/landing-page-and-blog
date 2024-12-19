@@ -232,7 +232,7 @@ export default function ProjectTaskManagementList({
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
-                            <Link href={`/app/project/${treasuryNftPolicyId}/${task.taskHash}`}>
+                            <Link href={`/project/${treasuryNftPolicyId}/${task.taskHash}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>
                           )}

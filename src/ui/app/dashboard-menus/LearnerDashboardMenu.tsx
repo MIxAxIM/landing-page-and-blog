@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import SavedCourses from "~/ui/app/roles/learner/SavedCourses";
@@ -9,18 +8,13 @@ import { CardanoWallet } from "@meshsdk/react";
 export default function LearnerDashboardMenu() {
   const { accessTokenAlias } = useAccessToken();
   const { globalStateDatum } = useGlobalStateDatum(accessTokenAlias ?? "");
-  const router = useRouter();
-
-  const isAssignmentRoute = router.asPath.includes(
-    "dashboard/learner/assignments",
-  );
 
   return (
     <div className="grid min-h-28 w-full grid-cols-6 items-center gap-5 bg-primary text-primary-foreground">
       <div className="col-start-1 text-center">
-        <Link href="/dashboard/learner">
+        <Link href="/dashboard">
           <div className={`cursor-pointer p-2 font-semibold`}>
-            Learner Dashboard Home
+            Dashboard
           </div>
         </Link>
       </div>
@@ -35,11 +29,9 @@ export default function LearnerDashboardMenu() {
         <SavedCourses />
       </div>
       <div className="col-start-6 text-center">
-        <Link href="/dashboard/learner/assignments">
-          <div
-            className={`cursor-pointer p-2 font-semibold ${isAssignmentRoute ? "bg-accent" : "bg-primary text-primary-foreground"}`}
-          >
-            All Assignment Notes
+        <Link href="/course">
+          <div className={`cursor-pointer p-2 font-semibold`}>
+            Browse More Courses
           </div>
         </Link>
       </div>

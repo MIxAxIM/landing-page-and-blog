@@ -12,7 +12,7 @@ export default function IntroductionContainer({
   return (
     <Card intent="module" size="wide">
       <div>Introduction</div>
-      <Link href={`/studio/${courseCode}/${moduleCode}/intro`}>Edit</Link>
+      <Link href={`/studio/course/${courseCode}/${moduleCode}/intro`}>Edit</Link>
     </Card>
   );
 }

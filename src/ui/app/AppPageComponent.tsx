@@ -78,7 +78,7 @@ export function ExploreProjectsBar() {
     <div className="explore-projects-bar">
       <h2 className="mb-4 flex justify-between">
         <div className="text-4xl font-bold">Explore Projects</div>
-        <Link href="/projects" className="text-base font-bold">See All</Link>
+        <Link href="/project" className="text-base font-bold">See All</Link>
       </h2>
       <ScrollArea className="w-full">
         <div className="flex space-x-4 pb-4">

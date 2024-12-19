@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { type Treasury } from "~/types/db";
 import SelectTreasuryToManage from "~/ui/contribution/selection/SelectTreasuryToManage";
 
@@ -9,13 +8,6 @@ export default function ContributionManagerDashboardMenu({
 }) {
   return (
     <div className="grid min-h-28 w-full grid-cols-6 items-center gap-5 bg-primary text-primary-foreground">
-      <div className="col-start-1 text-center">
-        <Link href="/dashboard/contribution-manager">
-          <div className={`cursor-pointer p-2 font-semibold`}>
-            Contribution Manager Dashboard Home
-          </div>
-        </Link>
-      </div>
       <div className="col-span-2 col-start-2 text-center">
         <SelectTreasuryToManage treasuryInfos={treasuryInfos} />
       </div>

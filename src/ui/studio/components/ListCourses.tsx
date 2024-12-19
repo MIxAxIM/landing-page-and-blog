@@ -2,7 +2,6 @@ import Loading from "~/components/common/loading";
 import CourseButtonCard from "./course/CourseButtonCard";
 import { Card } from "~/components/ui/card";
 import Link from "next/link";
-import { Button } from "~/components/ui/button";
 import useUserRelationships from "~/hooks/app/useUserRelationships";
 
 export default function ListCourses() {
@@ -23,7 +22,7 @@ export default function ListCourses() {
                   <CourseButtonCard
                     key={course.id}
                     course={course}
-                    link={`/studio/${course.courseCode}`}
+                    link={`/studio/course/${course.courseCode}`}
                   />
                 );
               })}
@@ -34,14 +33,11 @@ export default function ListCourses() {
                 You do not have any courses yet
               </h1>
               <p className="pb-5">
-                To build courses in Andamio, you must first complete the{" "}
+                Learn to use Andamio in{" "}
                 <Link href="/course/andamio101">
-                  <span className="link">Andamio 101 Course</span>.
+                  <span className="link">Andamio 101</span>.
                 </Link>
               </p>
-              <Link href="/course/andamio101">
-                <Button>Get Started</Button>
-              </Link>
             </Card>
           )}
         </>

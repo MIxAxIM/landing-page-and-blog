@@ -102,7 +102,7 @@ export default function CourseModuleAccordionItem({
               </>
             )}
             <div className="mt-5 flex flex-col items-center gap-5 md:flex-row">
-              <Link href={`/studio/${cm.originalCourse.courseCode}`}>
+              <Link href={`/studio/course/${cm.originalCourse.courseCode}`}>
                 <Button>Edit in Course Studio</Button>
               </Link>
               <Link

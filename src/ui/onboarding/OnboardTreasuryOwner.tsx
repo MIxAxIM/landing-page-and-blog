@@ -39,7 +39,7 @@ function NextStep() {
   const { translateCaps } = useTerminology()
   return (
     <div>
-      <Link href={`/app/projects/`}>View your project</Link>
+      <Link href={`/studio/project`}>View your project</Link>
       <p>create a {translateCaps('task')} the network</p>
     </div>
 
@@ -51,7 +51,7 @@ function Completed() {
   return (
     <div className="flex flex-col space-y-4 my-4">
       <p>Great work! You have completed the tutorial.</p>
-      <Link href={`/app/projects/`}>
+      <Link href={`/studio/project`}>
         <Button>View my {translateCapsPlural('treasury')}</Button>
       </Link>
     </div>

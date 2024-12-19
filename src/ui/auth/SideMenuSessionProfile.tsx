@@ -26,10 +26,7 @@ export default function SideMenuSessionProfile() {
             <Link href="/dashboard">Dashboard</Link>
           </button>
           <button className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none">
-            <Link href="/studio">Course Studio</Link>
-          </button>
-          <button className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none">
-            <Link href="/course">All course</Link>
+            <Link href="/studio">Andamio Studio</Link>
           </button>
           <button
             onClick={() => void signOut({ callbackUrl: "/" })}

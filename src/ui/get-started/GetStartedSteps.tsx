@@ -55,7 +55,7 @@ export default function GetStartedSteps() {
             </CardHeader>
             <CardContent>
               <p className="prose mx-auto text-left text-lg leading-8">
-                Anyone can <Link href="/course">browse course for free</Link>{" "}
+                Anyone can <Link href="/course">browse Courses for free</Link>{" "}
                 on Andamio. To start interacting with the platform, you must
                 create an account. To create an account, log in with Discord.
               </p>
@@ -173,7 +173,7 @@ export default function GetStartedSteps() {
                     Keep Learning:
                   </p>
                   <Link href="/course">
-                    <Button>Explore All course on Andamio</Button>
+                    <Button>Explore All Courses on Andamio</Button>
                   </Link>
                 </div>
                 <div className="mb-5 text-center">

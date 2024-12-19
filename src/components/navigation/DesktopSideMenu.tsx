@@ -82,9 +82,6 @@ export default function DesktopSideMenu({
             {!isStudioContentRoute && (
               <>
                 {/* Top level routes: Studio, Dashboard and Courses */}
-                <Link href="/app">
-                  <div className=" mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">App</div>
-                </Link>
                 <AndamioRoleStatusMenu dashboardChildRoute={dashboardChildRoute ?? ""} />
                 <li className="mb-7">
                   <ul role="list" className="space-y-1">
@@ -97,8 +94,11 @@ export default function DesktopSideMenu({
                       dashboardChildRoute={dashboardChildRoute ?? ""}
                     />
                     {/* Studio */}
-                    <Link href="/app">
+                    <Link href="/course">
                       <div className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Courses</div>
+                    </Link>
+                    <Link href="/project">
+                      <div className="mt-12 mb-3 pb-3 border-b border-primary pl-2 font-bold hover:cursor-pointer">Projects</div>
                     </Link>
                     {isCreator && (
                       <CourseStudioLinkItem

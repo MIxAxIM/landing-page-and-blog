@@ -18,12 +18,14 @@ import { ChatContainer } from "~/components/chat/chat-container";
 export default function ProjectTaskContributionList({
   escrow,
   treasuryId,
+  treasuryNftPolicyId,
   showFilters = true,
   className = "",
   networkTasks,
 }: {
   escrow: Escrow;
   treasuryId: string;
+  treasuryNftPolicyId: string;
   showFilters?: boolean;
   className?: string;
   networkTasks?: ProjectDatum[]
@@ -209,7 +211,7 @@ export default function ProjectTaskContributionList({
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
-                            <Link href={`/app/contribute/task/${task.id}`}>
+                            <Link href={`/project/${treasuryNftPolicyId}/${task.taskHash}`}>
                               <Button size="dialog">View Public Task</Button>
                             </Link>
                           )}

@@ -130,7 +130,7 @@ export default function ContentEditorMenuBar({
             <MenubarSeparator />
             <MenubarItem>
               {" "}
-              <Link href={`/studio/${course.courseCode}`}>Course Page</Link>
+              <Link href={`/studio/course/${course.courseCode}`}>Course Page</Link>
             </MenubarItem>
           </MenubarContent>
         </MenubarMenu>
@@ -160,7 +160,7 @@ export default function ContentEditorMenuBar({
         </MenubarMenu>
         <MenubarMenu>
           <MenubarTrigger>
-            <Link href={`/studio/${course.courseCode}`}>
+            <Link href={`/studio/course/${course.courseCode}`}>
               Back to Course Outline
             </Link>
           </MenubarTrigger>

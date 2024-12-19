@@ -44,7 +44,7 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
         taskCommitmentId: dbTC?.id,
         taskId: dbTC?.task.id,
         taskTitle: dbTC?.task.title,
-        hash: dbTC?.task.taskHash,
+        taskHash: dbTC?.task.taskHash,
         evidence: dbTC?.evidence,
       };
     });
@@ -100,11 +100,11 @@ export default function EscrowUtxoTable({ utxos, treasuryNftPolicyId }: { utxos:
                       contributorAlias={tx.contributorAlias}
                       userAccessTokenUnit={accessTokenAsset?.unit ?? ""}
                     />
-                    <Link href={`/app/project/${treasuryNftPolicyId}/${tx.taskId}`}>
+                    <Link href={`/project/${treasuryNftPolicyId}/${tx.taskHash}`}>
                       <Button size="sm">View Conversation</Button>
                     </Link>
                     <Button size="sm">View Public Task Page</Button>
-                    <Link href={`/app/project/${treasuryNftPolicyId}/${tx.hash}/${tx.contributorAlias}`}>
+                    <Link href={`/project/${treasuryNftPolicyId}/${tx.taskHash}/${tx.contributorAlias}`}>
                       <Button size="sm">View Current Commitment</Button>
                     </Link>
 
