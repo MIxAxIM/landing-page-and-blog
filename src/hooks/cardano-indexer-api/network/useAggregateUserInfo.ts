@@ -10,8 +10,11 @@ export default function useAggregateUserInfo() {
     error: errorAggregateUserInfo,
   } = api.aggregate.getUserInfo.useQuery({ alias: accessTokenAlias ?? "" }, { enabled: !!accessTokenAlias });
 
+  const { data: qualifiedTreasuryNftPolicyIds } = api.aggregate.getQualifiedTreasuries.useQuery({ alias: accessTokenAlias ?? "" }, { enabled: !!accessTokenAlias });
+
   return {
     aggregateUserInfo,
+    qualifiedTreasuryNftPolicyIds,
     isLoadingAggregateUserInfo,
     isErrorAggregateUserInfo,
     errorAggregateUserInfo,

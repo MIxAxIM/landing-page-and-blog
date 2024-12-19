@@ -1,25 +1,38 @@
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
-import { useTerminology } from "~/contexts/terminology-context";
 import MintProjectStateDialog from "~/components/cardano/tx/contributor/mint-project-state/MintProjectStateDialog";
 import { ProjectImageSelect } from "~/ui/app/components/ProjectImageSelect";
+import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 
+// Does user have prerequisites for each Project?
+// 1. get aggregateUserInfo
+// 2. compare the prerequisites for each project to aggregateUserInfo
+// 3. implement in ProjectImage select? How to do so with overwhelming number of aggregateInfo queries? Build a router to handle this?
+//
+//
+//
+// Show as a status
+// Show / hide MintProjectStateDialog
 export default function PublicTreasuryListComponent() {
   const { publishedTreasuries, isLoadingTreasuries } = useTreasuries();
-  const { translateCaps } = useTerminology();
+  const { qualifiedTreasuryNftPolicyIds } = useAggregateUserInfo()
 
   return (
     <div className="w-full">
       <h1>All Public Projects</h1>
       <div className="grid grid-cols-3 gap-10 my-10">
         {isLoadingTreasuries && "loading"}
-        {publishedTreasuries?.map((treasury) => (
-          <div key={treasury.id} className="flex flex-col gap-y-4 items-center justify-center">
-            <ProjectImageSelect treasury={treasury} escrowId={treasury.escrowIds[0]} />
-            {!!treasury.treasuryNftPolicyId && (
-              <MintProjectStateDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} />
-            )}
-          </div>
-        ))}
+        {publishedTreasuries?.map((treasury) => {
+          const isQualified = !!treasury.treasuryNftPolicyId && qualifiedTreasuryNftPolicyIds?.includes(treasury.treasuryNftPolicyId)
+
+          return (
+            <div key={treasury.id} className="flex flex-col gap-y-4 items-start align-top">
+              <ProjectImageSelect treasury={treasury} escrowId={treasury.escrowIds[0]} isQualified={isQualified} />
+              {isQualified && (
+                <MintProjectStateDialog treasuryNftPolicyId={treasury.treasuryNftPolicyId ?? ""} />
+              )}
+            </div>
+          )
+        })}
       </div>
     </div>
   );

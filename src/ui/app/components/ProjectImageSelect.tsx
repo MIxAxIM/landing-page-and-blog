@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { Treasury } from "~/types/db";
 
-export function ProjectImageSelect({ treasury, escrowId }: { treasury: Treasury, escrowId?: string }) {
-  let url = `/app/projects/preview/${escrowId}`
+export function ProjectImageSelect({
+  treasury,
+  escrowId,
+  isQualified,
+}: {
+  treasury: Treasury,
+  escrowId?: string
+  isQualified?: boolean
+}) {
+  let url = `/studio/project/preview/${escrowId}`
 
   if (treasury.treasuryNftPolicyId) {
-    url = `/app/project/${treasury.treasuryNftPolicyId}`
+    url = `/project/${treasury.treasuryNftPolicyId}`
   }
 
   return (
@@ -19,6 +27,15 @@ export function ProjectImageSelect({ treasury, escrowId }: { treasury: Treasury,
           ) : (
             <span className="absolute left-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold">
               not published
+            </span>
+          )}
+          {!!isQualified ? (
+            <span className="absolute right-2 top-2 rounded bg-success text-success-foreground px-2 py-1 text-xs font-bold">
+              you are qualified
+            </span>
+          ) : (
+            <span className="absolute right-2 top-2 rounded bg-warning text-warning-foreground px-2 py-1 text-xs font-bold">
+              not yet qualified
             </span>
           )}
           <img

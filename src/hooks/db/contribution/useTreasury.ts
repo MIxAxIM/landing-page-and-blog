@@ -8,6 +8,8 @@ import { useRoles } from "~/hooks/app/useRoles";
 interface UseTreasuryReturn {
   treasury: Treasury | null | undefined;
   isLoading: boolean;
+  treasuryByPolicyId: Treasury | null | undefined;
+  isLoadingTreasuryByPolicyId: boolean;
   treasuryAmountsByStatus: TreasuryAmountsByStatus | null | undefined;
   isLoadingTreasuryAmountsByStatus: boolean;
   createTreasury: (data: {
@@ -51,7 +53,12 @@ export function useTreasury(id?: string): UseTreasuryReturn {
   // Query for getting treasury data
   const { data: treasury, isLoading } = api.treasury.getTreasuryById.useQuery(
     id ?? "",
-    { enabled: !!id },
+    { enabled: !!id && id.length != 56 },
+  );
+
+  const { data: treasuryByPolicyId, isLoading: isLoadingTreasuryByPolicyId } = api.treasury.getTreasuryByPolicyId.useQuery(
+    id ?? "",
+    { enabled: !!id && id.length == 56 },
   );
 
   const { data: treasuryAmountsByStatus, isLoading: isLoadingTreasuryAmountsByStatus } = api.treasury.getTreasuryAmountsByStatus.useQuery(
@@ -137,6 +144,8 @@ export function useTreasury(id?: string): UseTreasuryReturn {
   return {
     treasury,
     isLoading,
+    treasuryByPolicyId,
+    isLoadingTreasuryByPolicyId,
     treasuryAmountsByStatus,
     isLoadingTreasuryAmountsByStatus,
     createTreasury: createTreasuryMutation.mutate,

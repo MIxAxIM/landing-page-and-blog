@@ -129,6 +129,23 @@ export const treasuryRouter = createTRPCRouter({
       return transformTreasuryWithTotals(treasury, ctx);
     }),
 
+  getTreasuryByPolicyId: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const treasury = await ctx.db.treasury.findUnique({
+        where: { treasuryNftPolicyId: input },
+        include: {
+          _count: {
+            select: { escrows: true },
+          },
+        },
+      });
+
+      if (!treasury) return null;
+
+      return transformTreasuryWithTotals(treasury, ctx);
+    }),
+
   getTreasuryAmountsByStatus: publicProcedure
     .input(z.object({
       id: z.string()

@@ -14,17 +14,14 @@ import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
+import { useTask } from "~/hooks/db/contribution/useTask";
 
 export default function ProjectTaskContributionList({
-  escrow,
-  treasuryId,
   treasuryNftPolicyId,
   showFilters = true,
   className = "",
   networkTasks,
 }: {
-  escrow: Escrow;
-  treasuryId: string;
   treasuryNftPolicyId: string;
   showFilters?: boolean;
   className?: string;
@@ -33,6 +30,8 @@ export default function ProjectTaskContributionList({
   type StatusFilter =
     | { type: 'task', status: TaskStatus }
     | { type: 'commitment', status: ConsolidatedCommitmentStatus };
+
+  const { tasks } = useTask({ treasuryNftPolicyId: treasuryNftPolicyId });
 
   // Initialize with all task statuses and all commitment statuses
   const [selectedStatuses, setSelectedStatuses] = useState<StatusFilter[]>([
@@ -55,7 +54,7 @@ export default function ProjectTaskContributionList({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter and sort tasks
-  const filteredTasks = escrow.tasks?.filter((task) => {
+  const filteredTasks = tasks?.filter((task) => {
     // Check if task status is selected
     const isTaskStatusSelected = selectedStatuses.some(
       s => s.type === 'task' && s.status === task.status
@@ -134,8 +133,8 @@ export default function ProjectTaskContributionList({
               <Accordion type="single" collapsible>
                 <AccordionItem value={task.id} key={task.id}>
                   <AccordionTrigger>
-                    <div className="grid grid-cols-9 w-full items-center justify-between text-left">
-                      <div className="col-span-3 flex flex-row gap-x-4 items-center">
+                    <div className="grid grid-cols-8 w-full items-center justify-between text-left">
+                      <div className="col-span-4 flex flex-row gap-x-4 items-center">
                         <div className={`rounded-full bg-primary h-4 w-4`} />
                         <div className="text-lg">
                           {task.title}
