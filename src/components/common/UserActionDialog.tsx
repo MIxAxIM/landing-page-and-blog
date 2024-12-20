@@ -22,6 +22,7 @@ export default function UserActionDialog() {
   const { aggregateUserInfo } = useAggregateUserInfo()
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [taskRoute, setTaskRoute] = useState<string | null>(null);
 
   // TODO:
   // Options to get this data:
@@ -29,17 +30,27 @@ export default function UserActionDialog() {
   // - If not can map over Treasuries in aggregateUserInfo, looking for a task that can be claimed (inefficient)
   // - Or, could process the results of /contributor-state/utxos in the TRPC endpoint
 
+  useEffect(() => {
+    if (!!aggregateUserInfo) {
+      const rewards = aggregateUserInfo.projects.ongoing.filter(project => project.commitment?.status === "APPROVED")
+      if (rewards.length > 0) {
+        setIsOpen(true);
+        setTaskRoute(`/project/${rewards[0]?.policy}/${rewards[0]?.commitment?.task_hash}`);
+      }
+    }
+  }, [aggregateUserInfo])
+
   if (!sessionData || !aggregateUserInfo) return;
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen && !!taskRoute}>
       <DialogContent>
         <DialogHeader className="font-bold">
           You have rewards to claim!
         </DialogHeader>
         <div>
           <p>You are currently working on {aggregateUserInfo.projects.ongoing.length} projects.</p>
-          <Link href="#">
+          <Link href={taskRoute ?? "/project"}>
             <Button onClick={() => setIsOpen(false)}>
               View Task and Claim Rewards
             </Button>
