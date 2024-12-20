@@ -113,13 +113,13 @@ export default function AssignmentCommitmentComponent({
           </div>
         )}
 
-        {currentAssignmentCommitment?.networkStatus === "PENDING_TX_COMMITMENT_MADE" && (
+        {lock && currentAssignmentCommitment?.networkStatus === "AWAITING_EVIDENCE" && (
           <>
             <CommitToAssignmentDialog
               courseCode={courseCode}
               moduleCode={moduleCode}
               courseNftPolicyId={courseNftPolicyId}
-              networkEvidenceHash={evidenceHash ?? ""}
+              networkEvidenceHash={evidenceHash ?? currentAssignmentCommitment?.networkEvidenceHash ?? ""}
             />
           </>
         )}

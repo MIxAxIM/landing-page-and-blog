@@ -33,7 +33,7 @@ export default function AssignmentEvidenceEditor({
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
-    if (lock) {
+    if (lock || assignmentCommitment?.networkStatus === "AWAITING_EVIDENCE") {
       const data = editor?.getJSON();
       if (data) {
         const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
@@ -51,7 +51,7 @@ export default function AssignmentEvidenceEditor({
           createAssignmentCommitment({
             assignmentId: assignmentId ?? "",
             networkEvidence: data,
-            networkStatus: !!data ? "PENDING_TX_ADD_INFO" : "PENDING_TX_COMMITMENT_MADE",
+            networkStatus: "AWAITING_EVIDENCE",
             learnerId: session?.user.learnerId ?? "",
           })
         }
@@ -68,7 +68,9 @@ export default function AssignmentEvidenceEditor({
   }
 
   const editableStatuses: AssignmentNetworkStatus[] = [
+    "AWAITING_EVIDENCE",
     "PENDING_TX_COMMITMENT_MADE",
+    "PENDING_TX_ADD_INFO",
     "ASSIGNMENT_DENIED",
     "ASSIGNMENT_LEFT"
   ]

@@ -13,6 +13,10 @@ const isValidNetworkStatusTransition = (
   newStatus: AssignmentNetworkStatus,
 ) => {
   const allowedTransitions: Record<AssignmentNetworkStatus, AssignmentNetworkStatus[]> = {
+    AWAITING_EVIDENCE: [
+      AssignmentNetworkStatus.PENDING_TX_COMMITMENT_MADE,
+      AssignmentNetworkStatus.PENDING_TX_ADD_INFO,
+    ],
     PENDING_TX_COMMITMENT_MADE: [
       AssignmentNetworkStatus.PENDING_TX_COMMITMENT_MADE,
       AssignmentNetworkStatus.PENDING_TX_ADD_INFO,
@@ -29,7 +33,11 @@ const isValidNetworkStatusTransition = (
     PENDING_TX_ASSIGNMENT_ACCEPTED: [AssignmentNetworkStatus.ASSIGNMENT_ACCEPTED],
     ASSIGNMENT_ACCEPTED: [AssignmentNetworkStatus.PENDING_TX_CLAIM_CREDENTIAL],
     PENDING_TX_ASSIGNMENT_DENIED: [AssignmentNetworkStatus.ASSIGNMENT_DENIED],
-    ASSIGNMENT_DENIED: [AssignmentNetworkStatus.PENDING_TX_ADD_INFO, AssignmentNetworkStatus.PENDING_TX_LEAVE_ASSIGNMENT],
+    ASSIGNMENT_DENIED: [
+      AssignmentNetworkStatus.PENDING_TX_ADD_INFO,
+      AssignmentNetworkStatus.PENDING_TX_LEAVE_ASSIGNMENT,
+      AssignmentNetworkStatus.AWAITING_EVIDENCE
+    ],
     PENDING_TX_LEAVE_ASSIGNMENT: [AssignmentNetworkStatus.ASSIGNMENT_LEFT],
     ASSIGNMENT_LEFT: [AssignmentNetworkStatus.PENDING_TX_ADD_INFO],
     PENDING_TX_CLAIM_CREDENTIAL: [AssignmentNetworkStatus.CREDENTIAL_CLAIMED],

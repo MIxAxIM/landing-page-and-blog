@@ -52,6 +52,11 @@ const privateStatusConfig = {
 
 // Configuration for network status icons and styling
 const networkStatusConfig = {
+  [AssignmentNetworkStatus.AWAITING_EVIDENCE]: {
+    icon: TimerIcon,
+    color: "text-yellow-800",
+    background: "bg-yellow-100",
+  },
   [AssignmentNetworkStatus.PENDING_TX_COMMITMENT_MADE]: {
     icon: TimerIcon,
     color: "text-yellow-800",
