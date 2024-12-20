@@ -759,6 +759,8 @@ model Task {
 }
 
 enum TaskCommitmentStatus {
+  AWAITING_EVIDENCE
+
   PENDING_TX_COMMITMENT_MADE
   COMMITMENT_MADE
 
@@ -792,7 +794,7 @@ model TaskCommitment {
   contributorId String
   contributor   Contributor @relation(fields: [contributorId], references: [id])
 
-  status TaskCommitmentStatus @default(PENDING_APPROVAL)
+  status TaskCommitmentStatus @default(AWAITING_EVIDENCE)
 
   evidence Json?
 
