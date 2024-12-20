@@ -1,3 +1,4 @@
+import { TaskCommitmentStatus } from "@prisma/client";
 import { blake2b } from "blakejs";
 import { Lock } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -27,6 +28,7 @@ export default function TaskEvidenceEditor({
   const { editor } = useTaskCommitmentEditor({ taskCommitment: taskCommitment, editable: !lock });
   const { createTaskCommitment, updateTaskCommitmentEvidence } = useTaskCommitment({});
   const { data: session } = useSession();
+  const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
     if (lock) {
@@ -41,11 +43,11 @@ export default function TaskEvidenceEditor({
           })
 
         }
-        else {
+        else if (taskId) {
           createTaskCommitment({
-            taskId: taskId ?? "",
+            taskId: taskId,
             evidence: data,
-            status: !!data ? "PENDING_TX_ADD_INFO" : "PENDING_TX_COMMITMENT_MADE",
+            status: "AWAITING_EVIDENCE",
             contributorId: session?.user.contributorId ?? "",
           })
         }
@@ -61,31 +63,54 @@ export default function TaskEvidenceEditor({
     setLock(true);
   }
 
+
+  const editableStatuses: TaskCommitmentStatus[] = [
+    "AWAITING_EVIDENCE",
+    "COMMITMENT_DENIED",
+    "UNLOCKED_BY_CONTRIBUTOR"
+  ]
+
+  useEffect(() => {
+    if (!!taskCommitment?.status && editableStatuses.includes(taskCommitment?.status)) {
+      setIsEditable(true);
+    }
+    else if (!taskCommitment) {
+      setIsEditable(true);
+    }
+    else {
+      setIsEditable(false);
+    }
+
+  }, [taskCommitment])
+
+
   return (
     <>
       {!!editor && <ContentEditorSm editor={editor} editable={!lock} />}
       {lock && evidenceHash && (
-        <div className="flex items-center justify-center">
+        <div className="flex w-full items-center justify-center">
           <h5>
             Data Hash: <b>{evidenceHash}</b>
           </h5>
         </div>
       )}
       <div className="flex p-4 items-center justify-center gap-3">
-        <div>
-          <Button
-            className={`rounded-md text-white ${lock ? "bg-slate-500" : "bg-blue-500"}`}
-            onClick={lockEditor}
-          >
-            {lock ? (
-              <>
-                <Lock />" Unlock"
-              </>
-            ) : (
-              "Lock"
-            )}
-          </Button>
-        </div>
+        {isEditable && (
+          <div>
+            <Button
+              className={`rounded-md text-white ${lock ? "bg-slate-500" : "bg-blue-500"}`}
+              onClick={lockEditor}
+            >
+              {lock ? (
+                <>
+                  <Lock />" Unlock"
+                </>
+              ) : (
+                "Lock"
+              )}
+            </Button>
+          </div>
+        )}
       </div>
 
     </>

@@ -28,7 +28,7 @@ export default function AssignmentEvidenceEditor({
   // easier to build the editor after we know the task id!
   const { editor } = useTaskCommitmentEditor({ assignmentCommitment: assignmentCommitment, editable: !lock });
   // TODO: create useAssignmentCommitment hook
-  const { updateNetworkEvidence, createAssignmentCommitment } = useAssignmentCommitment({})
+  const { createAssignmentCommitment, updateNetworkEvidence } = useAssignmentCommitment({})
   const { data: session } = useSession();
   const [isEditable, setIsEditable] = useState(false);
 

@@ -9,6 +9,7 @@ import TaskStatusIndicator from "~/ui/contribution/status/TaskStatusIndicator";
 import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import { Card } from "~/components/ui/card";
 
 export default function TaskCommitmentComponent({
   treasuryNftPolicyId,
@@ -50,79 +51,88 @@ export default function TaskCommitmentComponent({
     }
   }, [tasks, projectHash])
 
+  useEffect(() => {
+    if (currentTaskCommitment?.status != "AWAITING_EVIDENCE") {
+      setLock(true)
+    }
+  }, [currentTaskCommitment])
+
   return (
-    <div className="border-t border-primary my-10 py-10">
-      <h1 className="text-center">Commit to this Task</h1>
-      <div className="flex flex-col items-center justify-center">
-        <div
-          className="mt-2 transform rounded-lg bg-white p-4 shadow-md transition-transform"
-        >
-          <h3 className="font-bold">Task Details</h3>
-          <div className="max-w-fit grid grid-cols-3">
+    <div className="flex flex-col mx-auto mb-24 w-full space-y-10">
+      <div>
+        {!accessTokenAlias && <CardanoWallet />}
+      </div>
+
+
+      <div className="grid grid-cols-4 w-full gap-4">
+
+        <div className="col-span-4 flex flex-row items-center justify-between w-full">
+          <h3>Share Evidence and Commit to this Task</h3>
+          {!!currentTask && (
+            <TaskStatusIndicator
+              status={currentTask.status}
+              numAllowedCommitments={currentTask.numAllowedCommitments}
+              taskCommitments={currentTask.taskCommitments}
+              showLabel
+            />
+          )}
+        </div>
+
+
+        <Card className="col-span-4 flex flex-col justify-between items-center w-full">
+          <div>
+            {!accessTokenAlias && <CardanoWallet />}
             <div>
-              <p className="text-xs text-slate-500">{currentTask?.title}</p>
-              <p className="text-xs text-slate-500">{parseInt(currentTask?.lovelace ?? "0") / 1000000}</p>
-              <p className="text-xs text-slate-500">{currentTask?.description}</p>
-            </div>
-            <div>
-              <p>Task Status</p>
-              {!!currentTask && (
-                <TaskStatusIndicator
-                  status={currentTask.status}
-                  numAllowedCommitments={currentTask.numAllowedCommitments}
-                  taskCommitments={currentTask.taskCommitments}
-                  showLabel
-                />
-              )}
-            </div>
-            <div>
-              {!accessTokenAlias && <CardanoWallet />}
-              <div>
-                {decodedEscrowDatum?.contributorAlias === alias ? ("There is a current commitment here") : ("Not a current commitment")}
-              </div>
+              {decodedEscrowDatum?.contributorAlias === alias && ("You are committed to this task")}
             </div>
           </div>
-        </div>
-      </div>
+        </Card>
 
-      <div className="flex flex-col items-center justify-center p-1">
-        <h3>Enter Submission Details</h3>
-        {currentTaskCommitment ? (
-          <>
-            <TaskEvidenceEditor
-              taskCommitment={currentTaskCommitment}
-              lock={lock}
-              setLock={setLock}
-              evidenceHash={evidenceHash}
-              setEvidenceHash={setEvidenceHash}
-            />
-          </>
-        ) : (
-          <>
-            <TaskEvidenceEditor
-              taskId={currentTask?.id ?? ""}
-              lock={lock}
-              setLock={setLock}
-              evidenceHash={evidenceHash}
-              setEvidenceHash={setEvidenceHash}
-            />
-          </>
-        )}
-        {decodedEscrowDatum ? (
-          <>
-            <AddInfoDialog
-              treasuryNftPolicyId={treasuryNftPolicyId}
-              taskCommitmentId={currentTaskCommitment?.id ?? ""}
-              evidenceInfoString={evidenceHash}
-            />
-          </>
-        ) : (
-          <>
-            <CommitProjectDialog treasuryNftPolicyId={treasuryNftPolicyId ?? ""} taskCommitmentId={currentTaskCommitment?.id} taskId={currentTask?.id ?? ""} disabled={false} />
-          </>
-        )}
-      </div>
+        <Card className="col-span-4 flex flex-col justify-between items-center w-full">
+          <h3>Enter Submission Details</h3>
+          {currentTaskCommitment ? (
+            <>
+              <TaskEvidenceEditor
+                taskCommitment={currentTaskCommitment}
+                lock={lock}
+                setLock={setLock}
+                evidenceHash={evidenceHash}
+                setEvidenceHash={setEvidenceHash}
+              />
+            </>
+          ) : (
+            <>
+              <TaskEvidenceEditor
+                taskId={currentTask?.id ?? ""}
+                lock={lock}
+                setLock={setLock}
+                evidenceHash={evidenceHash}
+                setEvidenceHash={setEvidenceHash}
+              />
+            </>
+          )}
+          {decodedEscrowDatum && currentTaskCommitment?.status === "AWAITING_EVIDENCE" && (
+            <>
+              <AddInfoDialog
+                treasuryNftPolicyId={treasuryNftPolicyId}
+                taskCommitmentId={currentTaskCommitment?.id ?? ""}
+                evidenceInfoString={evidenceHash}
+              />
+            </>
+          )}
+          {lock && currentTaskCommitment?.status === "AWAITING_EVIDENCE" && (
+            <>
+              <CommitProjectDialog
+                treasuryNftPolicyId={treasuryNftPolicyId ?? ""}
+                taskCommitmentId={currentTaskCommitment?.id} taskId={currentTask?.id ?? ""}
+                disabled={false}
+                info={evidenceHash}
+              />
+            </>
+          )}
+        </Card>
 
+      </div>
     </div>
 
   )

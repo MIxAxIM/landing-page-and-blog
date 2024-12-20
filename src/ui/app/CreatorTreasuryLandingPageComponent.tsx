@@ -18,13 +18,13 @@ export default function CreatorTreasuryLandingPageComponent({
   const { aggregateUserInfo } = useAggregateUserInfo()
   const [isManager, setIsManager] = useState<boolean>(false)
   const [isContributor, setIsContributor] = useState<boolean>(false)
-  const { enableContributor } = useRoles()
+  const { enableContributionManager } = useRoles()
 
   useEffect(() => {
-    if (sessionData?.user && !sessionData.user.learnerId) {
-      void enableContributor();
+    if (sessionData?.user && !sessionData.user.contributionManagerId) {
+      void enableContributionManager();
     }
-  }, [sessionData, enableContributor]);
+  }, [sessionData, enableContributionManager]);
 
   useEffect(() => {
     if (aggregateUserInfo?.alias === accessTokenAlias) {

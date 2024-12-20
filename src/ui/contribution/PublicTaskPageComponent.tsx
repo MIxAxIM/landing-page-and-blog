@@ -28,84 +28,82 @@ export default function PublicTaskPageComponent({ projectHash }: { projectHash: 
   if (!task) return "Cannot find task"
 
   return (
-    <>
-      <div className="mx-auto my-24 max-w-5xl space-y-10">
-        <div className="flex flex-row items-center justify-between">
-          <h1>{task.title}</h1>
-        </div>
-        <TaskStatusIndicator
-          status={task?.status}
-          numAllowedCommitments={task.numAllowedCommitments}
-          taskCommitments={task.taskCommitments}
-          showLabel
-        />
-        <p className="prose text-lg">
-          This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
-        </p>
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="col-span-2 flex flex-row justify-between items-center">
-            <div>
-              <p className="prose">Ada Reward: {parseInt(task.lovelace) / 1000000}</p>
-            </div>
-            <div>
-              <p className="prose">
-                Available Until: {formatPosixTime(task.expirationTime)}
-              </p>
-            </div>
-            <div>
-              {
-                taskCommitments[0] && (
-                  <GetRewardsDialog treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""} taskCommitmentId={taskCommitments[0].id} />
-                )
-              }
-            </div>
-            <div>
-              Number of Commitments Allowed: {task.numAllowedCommitments}
-            </div>
-          </Card>
-          <Card>
-            <p className="mb-3 font-bold">Description</p>
-            <p className="prose">{task.description}</p>
-            <p className="my-3 font-bold">{translateCaps('acceptanceCriteria')}</p>
-            <ul className="prose ml-5 list-decimal">
-              {task.acceptanceCriteria.map((ac, i) => (
-                <li key={i}>{ac}</li>
-              ))}
-            </ul>
-          </Card>
-          <Card>
-            {escrowPrerequisites?.map((ep, i) => (
-              <Link
-                key={i}
-                href={`/course/${ep.courseRequirements[0]?.courseCode}`}
-              >
-                <div
-                  className="flex flex-row items-center gap-10"
-                >
-                  <BookIcon size={48} className="text-success" />
-                  <PrerequisiteItem prerequisite={ep} />
-                </div>
-              </Link>
-            ))}
-            <p className="prose text-sm">
-              To be eligble to contribute to this task, you must complete this prerequisite.
+    <div className="flex flex-col mx-auto my-24 w-full space-y-10">
+      <div className="flex flex-row items-center justify-between">
+        <h1>{task.title}</h1>
+      </div>
+      <TaskStatusIndicator
+        status={task?.status}
+        numAllowedCommitments={task.numAllowedCommitments}
+        taskCommitments={task.taskCommitments}
+        showLabel
+      />
+      <p className="prose text-lg">
+        This is a task in the <span className="font-bold text-primary">{task.escrow?.title}</span> project at <span className="font-bold text-primary">{treasury?.title}</span>.
+      </p>
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="col-span-2 flex flex-row justify-between items-center">
+          <div>
+            <p className="prose">Ada Reward: {parseInt(task.lovelace) / 1000000}</p>
+          </div>
+          <div>
+            <p className="prose">
+              Available Until: {formatPosixTime(task.expirationTime)}
             </p>
-          </Card>
-          <Card className="col-span-2">
-            <div className="rounded-md text-foreground">
-              <h3>
-                Discuss this task with the Andamio Community
-              </h3>
-              <ChatContainer roomId={task.id} />
-            </div>
-          </Card>
-        </div >
-
-
-
-
+          </div>
+          <div>
+            {
+              taskCommitments[0] && (
+                <GetRewardsDialog treasuryNftPolicyId={treasury?.treasuryNftPolicyId ?? ""} taskCommitmentId={taskCommitments[0].id} />
+              )
+            }
+          </div>
+          <div>
+            Number of Commitments Allowed: {task.numAllowedCommitments}
+          </div>
+        </Card>
+        <Card>
+          <p className="mb-3 font-bold">Description</p>
+          <p className="prose">{task.description}</p>
+          <p className="my-3 font-bold">{translateCaps('acceptanceCriteria')}</p>
+          <ul className="prose ml-5 list-decimal">
+            {task.acceptanceCriteria.map((ac, i) => (
+              <li key={i}>{ac}</li>
+            ))}
+          </ul>
+        </Card>
+        <Card>
+          {escrowPrerequisites?.map((ep, i) => (
+            <Link
+              key={i}
+              href={`/course/${ep.courseRequirements[0]?.courseCode}`}
+            >
+              <div
+                className="flex flex-row items-center gap-10"
+              >
+                <BookIcon size={48} className="text-success" />
+                <PrerequisiteItem prerequisite={ep} />
+              </div>
+            </Link>
+          ))}
+          <p className="prose text-sm">
+            To be eligble to contribute to this task, you must complete this prerequisite.
+          </p>
+        </Card>
+        <Card className="col-span-2">
+          <div className="rounded-md text-foreground">
+            <h3>
+              Discuss this task with the Andamio Community
+            </h3>
+            <ChatContainer roomId={task.id} />
+          </div>
+        </Card>
       </div >
-    </>
+
+
+
+
+    </div >
   );
 }
 

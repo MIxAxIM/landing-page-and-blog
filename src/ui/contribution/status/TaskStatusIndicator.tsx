@@ -48,6 +48,11 @@ const taskStatusConfig = {
 };
 
 const commitmentStatusConfig = {
+  [TaskCommitmentStatus.AWAITING_EVIDENCE]: {
+    icon: TimerIcon,
+    color: "text-indigo-800",
+    background: "bg-indigo-200",
+  },
   [TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE]: {
     icon: TimerIcon,
     color: "text-yellow-800",

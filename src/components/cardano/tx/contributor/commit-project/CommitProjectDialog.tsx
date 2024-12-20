@@ -12,7 +12,6 @@ import { useWallet } from "@meshsdk/react";
 import Link from "next/link";
 import CommitProject from "./CommitProject";
 import { useState } from "react";
-import { ProjectData } from "@andamiojs/datum-utils";
 import { useTask } from "~/hooks/db/contribution/useTask";
 
 export default function CommitProjectDialog({
@@ -34,8 +33,6 @@ export default function CommitProjectDialog({
   );
   const { task } = useTask({ id: taskId });
 
-  // TODO:
-  // What goes on-chain does not match task.tashHash - ask Adrian why?
   const apiProject = {
     pdProjectContent_: task?.arbitraryHash ?? "",
     pdExpirationTime_: parseInt(task?.expirationTime ?? "0"),
@@ -56,7 +53,7 @@ export default function CommitProjectDialog({
             size="dialog"
             className="mx-auto"
           >
-            Commit to Task
+            Commit to Task with {info}
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
@@ -85,11 +82,10 @@ export default function CommitProjectDialog({
                 "Enter Assignment Info, then press Commit to sign a transaction."}
 
               <CommitProject
-                taskId={taskId}
                 taskCommitmentId={taskCommitmentId}
                 treasuryNftPolicyId={treasuryNftPolicyId}
                 project={JSON.stringify(apiProject)}
-                info={"Testing!"}
+                info={info}
                 successTxHash={successTxHash}
                 setSuccessTxHash={setSuccessTxHash}
               />

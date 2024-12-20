@@ -4,6 +4,7 @@ import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
+import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
 import TaskCommitmentComponent from "~/ui/project/TaskCommitmentComponent";
 
@@ -14,6 +15,8 @@ const taskCommitmentParamsSchema = z.object({
 
 export default function ProjectTaskCommitmentPage() {
   const router = useRouter();
+  const { qualifiedTreasuryNftPolicyIds } = useAggregateUserInfo()
+  const { accessTokenAlias } = useAccessToken()
 
   if (!router.isReady) {
     return <div>Loading...</div>; // Or your preferred loading component
@@ -24,20 +27,18 @@ export default function ProjectTaskCommitmentPage() {
     router.push('/404');
     return null;
   }
-
   const { treasurynft, projecthash } = result.data;
-  const { accessTokenAlias } = useAccessToken()
 
   return (
     <DesktopOnlyLayout>
       <AppLayout>
-        <PublicTaskPageComponent projectHash={projecthash} />
-        <div className="max-w-5xl mx-auto mb-24">
-          {!!accessTokenAlias ? (
+        <div className="w-2/3 mx-auto">
+          {!!(qualifiedTreasuryNftPolicyIds?.includes(treasurynft)) ? (
             <TaskCommitmentComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={accessTokenAlias} />
           ) : (
             <ConnectWalletCard message={"Please connect a wallet"} />
           )}
+          <PublicTaskPageComponent projectHash={projecthash} />
         </div>
       </AppLayout>
     </DesktopOnlyLayout >

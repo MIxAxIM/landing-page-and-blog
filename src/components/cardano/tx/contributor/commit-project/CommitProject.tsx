@@ -5,11 +5,8 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import { useWallet } from "@meshsdk/react";
 import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
-import { useSession } from "next-auth/react";
 
-// TODO: Get tx costs
 export default function CommitProject({
-  taskId,
   taskCommitmentId,
   treasuryNftPolicyId,
   project,
@@ -17,7 +14,6 @@ export default function CommitProject({
   successTxHash,
   setSuccessTxHash,
 }: {
-  taskId?: string;
   taskCommitmentId?: string;
   treasuryNftPolicyId: string;
   project: string;
@@ -27,9 +23,8 @@ export default function CommitProject({
 }) {
   const { accessTokenAsset } = useAccessToken();
   const { wallet } = useWallet();
-  const { data: sessionData } = useSession()
 
-  const { createTaskCommitment, updateTaskCommitmentStatus } = useTaskCommitment({})
+  const { updateTaskCommitmentStatus } = useTaskCommitment({})
 
   // Any tx will have a set of outputs.
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions
@@ -88,23 +83,19 @@ export default function CommitProject({
     }
   );
 
-  // TODO: Implement PENDING_TX_ADD_INFO when editor passes content
   const handleStatusChange = async () => {
     if (!!info && !!taskCommitmentId) {
       updateTaskCommitmentStatus({
         id: taskCommitmentId,
         status: "PENDING_TX_ADD_INFO",
       })
-    }
-    else if (!!taskId) {
-      createTaskCommitment({
-        taskId: taskId,
-        contributorId: sessionData?.user?.contributorId ?? "",
+    } else if (!info && !!taskCommitmentId) {
+      updateTaskCommitmentStatus({
+        id: taskCommitmentId,
         status: "PENDING_TX_COMMITMENT_MADE",
-      });
+      })
     }
   };
-
 
   if (txError) {
     return (

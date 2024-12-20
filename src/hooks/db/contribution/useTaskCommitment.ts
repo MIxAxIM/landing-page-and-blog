@@ -6,7 +6,7 @@ import { type TaskCommitment } from "~/types/db";
 type CreateTaskCommitmentInput = {
   taskId: string;
   contributorId: string;
-  status: "PENDING_TX_COMMITMENT_MADE" | "PENDING_TX_ADD_INFO";
+  status: "AWAITING_EVIDENCE";
   evidence?: Record<string, unknown>;
 };
 

@@ -27,6 +27,10 @@ const isValidStatusTransition = (
   newStatus: TaskCommitmentStatus,
 ) => {
   const allowedTransitions: Record<TaskCommitmentStatus, TaskCommitmentStatus[]> = {
+    AWAITING_EVIDENCE: [
+      TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE,
+      TaskCommitmentStatus.PENDING_TX_ADD_INFO
+    ],
     PENDING_TX_COMMITMENT_MADE: [TaskCommitmentStatus.PENDING_TX_COMMITMENT_MADE, TaskCommitmentStatus.COMMITMENT_MADE],
     COMMITMENT_MADE: [
       TaskCommitmentStatus.PENDING_TX_ADD_INFO,
@@ -42,10 +46,10 @@ const isValidStatusTransition = (
       TaskCommitmentStatus.PENDING_TX_COMMITMENT_ACCEPTED
     ],
     PENDING_TX_COMMITMENT_REFUSED: [TaskCommitmentStatus.COMMITMENT_REFUSED],
-    COMMITMENT_REFUSED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+    COMMITMENT_REFUSED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO, TaskCommitmentStatus.AWAITING_EVIDENCE],
 
     PENDING_TX_COMMITMENT_DENIED: [TaskCommitmentStatus.COMMITMENT_DENIED],
-    COMMITMENT_DENIED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO],
+    COMMITMENT_DENIED: [TaskCommitmentStatus.PENDING_TX_ADD_INFO, TaskCommitmentStatus.AWAITING_EVIDENCE],
 
     PENDING_TX_COMMITMENT_ACCEPTED: [TaskCommitmentStatus.COMMITMENT_ACCEPTED],
     COMMITMENT_ACCEPTED: [TaskCommitmentStatus.ARCHIVED, TaskCommitmentStatus.PENDING_TX_GET_REWARDS],
@@ -54,7 +58,7 @@ const isValidStatusTransition = (
     REWARDS_CLAIMED: [TaskCommitmentStatus.ARCHIVED],
 
     PENDING_TX_UNLOCKED_BY_CONTRIBUTOR: [TaskCommitmentStatus.UNLOCKED_BY_CONTRIBUTOR],
-    UNLOCKED_BY_CONTRIBUTOR: [],
+    UNLOCKED_BY_CONTRIBUTOR: [TaskCommitmentStatus.AWAITING_EVIDENCE],
 
     ARCHIVED: [],
   };

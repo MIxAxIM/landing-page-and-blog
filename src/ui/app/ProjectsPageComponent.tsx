@@ -10,7 +10,7 @@ export default function ProjectsPageComponent() {
   const { enableContributor } = useRoles()
 
   useEffect(() => {
-    if (sessionData?.user && !sessionData.user.learnerId) {
+    if (sessionData?.user && !sessionData.user.contributorId) {
       void enableContributor();
     }
   }, [sessionData, enableContributor]);
