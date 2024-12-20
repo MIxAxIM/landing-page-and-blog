@@ -16,7 +16,7 @@ export default function Page() {
         <Metatags title="Studio" />
         <div className="mx-auto w-3/4 my-24">
           {status === "loading" && (
-            <div className="mx-auto mt-32 min-h-[50vh] max-w-7xl px-6 sm:mt-56 lg:px-8">
+            <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
               <Loading />
             </div>
           )}
