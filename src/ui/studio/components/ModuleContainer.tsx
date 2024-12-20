@@ -275,7 +275,7 @@ export default function ModuleContainer({
             <>
               {assignment && (
                 <Link
-                  href={`/studio/${course?.courseCode}/${currentModule.moduleCode}/assignment/${assignment.assignmentCode}`}
+                  href={`/studio/course/${course?.courseCode}/${currentModule.moduleCode}/assignment/${assignment.assignmentCode}`}
                 >
                   <AssignmentContainer assignment={assignment} />
                 </Link>
@@ -321,7 +321,7 @@ export default function ModuleContainer({
                   <p>
                     All Content is Live at{" "}
                     <Link
-                      href={`/course/${course?.courseCode}/${currentModule.moduleCode}`}
+                      href={`/studio/course/${course?.courseCode}/${currentModule.moduleCode}`}
                       className="cursor-pointer font-semibold text-primary"
                     >
                       andamio.io/course/{course?.courseCode}/

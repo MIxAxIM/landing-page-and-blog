@@ -4,7 +4,6 @@ import { Button } from "~/components/ui/button";
 import useCourse from "~/hooks/db/course/useCourse";
 import { type LearnerAssignment } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 import AssignmentsSection from "./AssignmentSection";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";

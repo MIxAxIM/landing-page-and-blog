@@ -25,7 +25,7 @@ export function CourseStudioLinkItem({
       )}
     >
       <Link
-        href="/studio"
+        href="/studio/course"
         className={classNames(
           current ? "mb-2" : "",
           "flex flex-row items-center gap-x-3",

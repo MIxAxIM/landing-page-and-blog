@@ -22,7 +22,7 @@ import PersonalNotesCard from "~/ui/course/components/assignments/cards/Personal
 import { useWallet } from "@meshsdk/react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
-import AssignmentCommitmentPageComponent from "~/ui/app/AssignmentCommitmentPageComponent";
+import AssignmentCommitmentComponent from "~/ui/course/AssignmentCommitmentComponent";
 
 export default function PageCourseAssignmentContent({
   courseCode,
@@ -136,7 +136,7 @@ function Page({
           {isAssignmentOnchain && (
             <>
               {connected ? (
-                <AssignmentCommitmentPageComponent
+                <AssignmentCommitmentComponent
                   courseCode={courseCode}
                   moduleCode={courseModule.moduleCode}
                   courseNftPolicyId={courseNftPolicyId}

@@ -25,7 +25,7 @@ export default function AndamioRoleStatusMenu({
             <RoleStatus
               roleName="Teacher"
               userHasRole={!!sessionData?.user.creatorId}
-              roleInfoUrl="/studio"
+              roleInfoUrl="/studio/course"
               current={dashboardChildRoute === "teacher"}
             />
           )}
@@ -38,7 +38,7 @@ export default function AndamioRoleStatusMenu({
           <RoleStatus
             roleName={`${translateCaps('contributionManager')}`}
             userHasRole={true}
-            roleInfoUrl="/app/projects"
+            roleInfoUrl="/studio/project"
             current={dashboardChildRoute === "contribution-manager"}
           />
           <RoleStatus
@@ -50,7 +50,7 @@ export default function AndamioRoleStatusMenu({
           <RoleStatus
             roleName={`${translateCaps('prerequisite')} Studio`}
             userHasRole={true}
-            roleInfoUrl="/app/prerequisite-minter"
+            roleInfoUrl="/studio"
           />
           <RoleStatus
             roleName={`Andamio Admin (private)`}

@@ -14,7 +14,7 @@ import { useAssignmentCommitmentStatusCheck } from "~/hooks/cardano-indexer-api/
 import LeaveAssignmentDialog from "~/components/cardano/tx/student/leave-assignment/LeaveAssignmentDialog";
 import { Card } from "~/components/ui/card";
 
-export default function AssignmentCommitmentPageComponent({
+export default function AssignmentCommitmentComponent({
   courseCode,
   moduleCode,
   courseNftPolicyId
@@ -97,7 +97,7 @@ export default function AssignmentCommitmentPageComponent({
             />
           </>
         )}
-        {(currentAssignmentCommitment?.networkStatus != "PENDING_APPROVAL") && !!assignmentDatum && !!currentAssignmentCommitment?.id ? (
+        {(currentAssignmentCommitment?.networkStatus != "PENDING_APPROVAL") && !!assignmentDatum && !!currentAssignmentCommitment?.id && (
           <div className="flex flex-row justify-between items-center w-1/2 mx-auto">
             <UpdateAssignmentDialog
               assignmentCommitmentId={currentAssignmentCommitment?.id}
@@ -111,7 +111,9 @@ export default function AssignmentCommitmentPageComponent({
               courseNftPolicyId={courseNftPolicyId}
             />
           </div>
-        ) : (
+        )}
+
+        {currentAssignmentCommitment?.networkStatus === "PENDING_TX_COMMITMENT_MADE" && (
           <>
             <CommitToAssignmentDialog
               courseCode={courseCode}
@@ -119,7 +121,6 @@ export default function AssignmentCommitmentPageComponent({
               courseNftPolicyId={courseNftPolicyId}
               networkEvidenceHash={evidenceHash ?? ""}
             />
-
           </>
         )}
       </div>
