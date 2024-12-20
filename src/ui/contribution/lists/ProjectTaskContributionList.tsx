@@ -15,6 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 
 export default function ProjectTaskContributionList({
   treasuryNftPolicyId,
@@ -32,6 +33,7 @@ export default function ProjectTaskContributionList({
     | { type: 'commitment', status: ConsolidatedCommitmentStatus };
 
   const { tasks } = useTask({ treasuryNftPolicyId: treasuryNftPolicyId });
+  const { treasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   // Initialize with all task statuses and all commitment statuses
   const [selectedStatuses, setSelectedStatuses] = useState<StatusFilter[]>([
@@ -99,8 +101,8 @@ export default function ProjectTaskContributionList({
     }));
   }, []);
 
-  const validateNetworkTask = (task: Task) => {
-    return networkTasks?.find((networkTask) => networkTask.project_hash === task.taskHash);
+  const validateNetworkTask = (taskHash: string) => {
+    return treasuryInfo?.projects?.find((networkTask) => networkTask.project_hash === taskHash);
   }
 
   return (
@@ -183,7 +185,7 @@ export default function ProjectTaskContributionList({
                           </ul>
                         </div>
                         <h3>Network Status</h3>
-                        {!!validateNetworkTask(task) ? (
+                        {!!task && task.taskHash && !!validateNetworkTask(task.taskHash) && (
                           <>
                             <Popover>
                               <PopoverTrigger asChild>
@@ -193,25 +195,14 @@ export default function ProjectTaskContributionList({
                                 This task is validated on the Andamio Network, and you can commit to it.
                               </PopoverContent>
                             </Popover>
-                            <p className="prose"># Commitments Allowed: {validateNetworkTask(task)?.commitment_allowed}</p>
-                            <p className="prose text-xs">Project Hash on Andamio Network: {validateNetworkTask(task)?.project_hash}</p>
-                          </>
-                        ) : (
-                          <>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <ExclamationTriangleIcon className="h-12 w-12 text-secondary" />
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                This task is not yet validated on the Andamio Network.
-                              </PopoverContent>
-                            </Popover>
+                            <p className="prose"># Commitments Allowed: {validateNetworkTask(task.taskHash)?.commitment_allowed}</p>
+                            <p className="prose text-xs">Project Hash on Andamio Network: {validateNetworkTask(task.taskHash)?.project_hash}</p>
                           </>
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
                             <Link href={`/project/${treasuryNftPolicyId}/${task.taskHash}`}>
-                              <Button size="dialog">View Public Task</Button>
+                              <Button size="dialog">View Task Details</Button>
                             </Link>
                           )}
                         </div>
@@ -230,6 +221,6 @@ export default function ProjectTaskContributionList({
           ))
         )}
       </div>
-    </div>
+    </div >
   );
 }
