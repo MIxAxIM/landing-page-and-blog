@@ -55,7 +55,7 @@ export function MyProjectsBar({
             treasuries &&
             myProjects.map((treasury: any) => (
               <Link
-                href={`/app/project/${treasury.id}`}
+                href={`/project/${treasury.treasuryNftPolicyId}`}
                 passHref
                 key={treasury.id}
                 className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
