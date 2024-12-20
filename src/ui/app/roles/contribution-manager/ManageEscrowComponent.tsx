@@ -16,10 +16,6 @@ import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
 import { usePrerequisitePolicyCheck } from "~/hooks/cardano-indexer-api/polling/usePrerequisitePolicyCheck";
 
-// TODO: 2024-12-17 - set up access control for this component
-// - As a Contribution, I want to view a list of Tasks, and click to a link to details
-// - As a Manager, I have all the functionality currently on this component
-// - Likely better to jump up to parent to implement this
 
 export default function ManageEscrowComponent({
   escrowId,

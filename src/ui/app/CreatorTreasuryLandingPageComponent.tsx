@@ -8,7 +8,7 @@ import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent
 import { useSession } from "next-auth/react";
 import { useRoles } from "~/hooks/app/useRoles";
 
-export default function TreasuryLandingPageComponent({
+export default function CreatorTreasuryLandingPageComponent({
   treasuryNftPolicyId,
 }: {
   treasuryNftPolicyId: string;
