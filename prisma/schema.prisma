@@ -427,6 +427,7 @@ enum AssignmentStatus {
 }
 
 enum AssignmentNetworkStatus {
+  AWAITING_EVIDENCE
   PENDING_TX_COMMITMENT_MADE
   PENDING_TX_ADD_INFO
   PENDING_APPROVAL
@@ -456,7 +457,7 @@ model AssignmentCommitment {
   privateStatus   AssignmentPrivateStatus @default(SAVE_FOR_LATER)
   privateEvidence Json?
 
-  networkStatus       AssignmentNetworkStatus @default(PENDING_TX_COMMITMENT_MADE)
+  networkStatus       AssignmentNetworkStatus @default(AWAITING_EVIDENCE)
   networkEvidence     Json?
   networkEvidenceHash String?
 
