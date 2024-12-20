@@ -5,15 +5,21 @@ export function ProjectImageSelect({
   treasury,
   escrowId,
   isQualified,
+  studioView
 }: {
   treasury: Treasury,
   escrowId?: string
   isQualified?: boolean
+  studioView?: boolean
 }) {
   let url = `/studio/project/preview/${escrowId}`
 
   if (treasury.treasuryNftPolicyId) {
     url = `/project/${treasury.treasuryNftPolicyId}`
+  }
+
+  if (studioView && treasury.treasuryNftPolicyId) {
+    url = `/studio/project/${treasury.treasuryNftPolicyId}`
   }
 
   return (

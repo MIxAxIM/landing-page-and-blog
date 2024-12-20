@@ -50,16 +50,9 @@ export default function CreatorTreasuryLandingPageComponent({
         {isManager && (
           <ManageEscrowComponent escrowId={treasuryEscrows.escrows[0].id} treasuryNftPolicyId={treasuryNftPolicyId} />
         )}
-        {isContributor && (
+        {!isManager && (
           <div>
-            <h2>You are currently a contributor to this Project</h2>
-            <PlaceholderComponent name="Contributor Project View" />
-          </div>
-        )}
-        {!isManager && !isContributor && (
-          <div>
-            <h2>Public Project View</h2>
-            <PlaceholderComponent name="Without enrolling in a project, what can the visitor see?" />
+            <PlaceholderComponent name="You do not have access to this project" />
           </div>
         )}
       </div>

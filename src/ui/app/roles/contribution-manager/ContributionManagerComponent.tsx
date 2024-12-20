@@ -41,7 +41,7 @@ export default function ContributionManagerComponent() {
               <div className="grid grid-cols-2 gap-10 my-6">
                 {treasuries.asOwner.map((treasury) => (
                   <div key={treasury.id}>
-                    <ProjectImageSelect treasury={treasury} escrowId={treasury.escrowIds[0]} />
+                    <ProjectImageSelect treasury={treasury} escrowId={treasury.escrowIds[0]} studioView={true} />
                   </div>
 
                 ))}
