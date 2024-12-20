@@ -4,8 +4,8 @@ import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import TaskCommitmentPageComponent from "~/ui/app/TaskCommitmentPageComponent";
 import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
+import TaskCommitmentComponent from "~/ui/project/TaskCommitmentComponent";
 
 const taskCommitmentParamsSchema = z.object({
   treasurynft: z.string().min(1),
@@ -34,7 +34,7 @@ export default function ProjectTaskCommitmentPage() {
         <PublicTaskPageComponent projectHash={projecthash} />
         <div className="max-w-5xl mx-auto mb-24">
           {!!accessTokenAlias ? (
-            <TaskCommitmentPageComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={accessTokenAlias} />
+            <TaskCommitmentComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={accessTokenAlias} />
           ) : (
             <ConnectWalletCard message={"Please connect a wallet"} />
           )}

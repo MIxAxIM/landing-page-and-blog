@@ -1,9 +1,8 @@
-
 import { useRouter } from "next/router";
 import { z } from "zod";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import TaskCommitmentPageComponent from "~/ui/app/TaskCommitmentPageComponent";
 import MenuBar from "~/ui/landing/MenuBar";
+import TaskCommitmentComponent from "~/ui/project/TaskCommitmentComponent";
 
 const taskCommitmentParamsSchema = z.object({
   treasurynft: z.string().min(1),
@@ -29,7 +28,7 @@ export default function ProjectTaskCommitmentPageWithAlias() {
   return (
     <DesktopOnlyLayout>
       <MenuBar />
-      <TaskCommitmentPageComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={alias} />
+      <TaskCommitmentComponent treasuryNftPolicyId={treasurynft} projectHash={projecthash} alias={alias} />
     </DesktopOnlyLayout >
 
   )

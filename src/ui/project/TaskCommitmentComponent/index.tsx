@@ -1,4 +1,3 @@
-
 import { CardanoWallet } from "@meshsdk/react";
 import { useEffect, useState } from "react";
 import AddInfoDialog from "~/components/cardano/tx/contributor/add-info/AddInfoDialog";
@@ -11,7 +10,7 @@ import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";
 
-export default function TaskCommitmentPageComponent({
+export default function TaskCommitmentComponent({
   treasuryNftPolicyId,
   projectHash,
   alias,
