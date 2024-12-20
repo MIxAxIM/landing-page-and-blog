@@ -125,7 +125,7 @@ const commitmentStatusConfig = {
   },
   [TaskCommitmentStatus.ARCHIVED]: {
     icon: ArchiveIcon,
-    color: "text-gray-100",
+    color: "text-gray-800",
     background: "bg-gray-800",
   },
 };

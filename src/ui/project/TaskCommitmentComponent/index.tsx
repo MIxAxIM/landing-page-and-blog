@@ -10,6 +10,7 @@ import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { Card } from "~/components/ui/card";
+import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
 
 export default function TaskCommitmentComponent({
   treasuryNftPolicyId,
@@ -65,7 +66,6 @@ export default function TaskCommitmentComponent({
 
 
       <div className="grid grid-cols-4 w-full gap-4">
-
         <div className="col-span-4 flex flex-row items-center justify-between w-full">
           <h3>Share Evidence and Commit to this Task</h3>
           {!!currentTask && (
@@ -79,14 +79,22 @@ export default function TaskCommitmentComponent({
         </div>
 
 
-        <Card className="col-span-4 flex flex-col justify-between items-center w-full">
-          <div>
+        {decodedEscrowDatum?.contributorAlias === alias && (
+          <Card className="col-span-4 flex flex-col justify-between items-center w-full">
             {!accessTokenAlias && <CardanoWallet />}
             <div>
-              {decodedEscrowDatum?.contributorAlias === alias && ("You are committed to this task")}
+              <p>
+                You are committed to this task
+              </p>
+              {!!currentTaskCommitment && (
+                <div>
+                  <GetRewardsDialog
+                    treasuryNftPolicyId={treasuryNftPolicyId} taskCommitmentId={currentTaskCommitment.id} />
+                </div>
+              )}
             </div>
-          </div>
-        </Card>
+          </Card>
+        )}
 
         <Card className="col-span-4 flex flex-col justify-between items-center w-full">
           <h3>Enter Submission Details</h3>

@@ -8,50 +8,50 @@ import { useAccessToken } from '../network/useAccessToken';
 // Build a router endpoint for this...?
 
 export function usePendingGetRewards(treasuryNftPolicyId: string) {
-	const [isChecking, setIsChecking] = useState(false);
-	const ctx = api.useUtils();
-	const { accessTokenAlias } = useAccessToken()
+  const [isChecking, setIsChecking] = useState(false);
+  const ctx = api.useUtils();
+  const { accessTokenAlias } = useAccessToken()
 
-	// Get all Commitments for current treasury
-	const { data: pendingRewardsToClaim, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({
-		treasuryNftPolicyId: treasuryNftPolicyId,
-		status: TaskCommitmentStatus.PENDING_TX_GET_REWARDS
-	});
+  // Get all Commitments for current treasury
+  const { data: pendingRewardsToClaim, isLoading } = api.taskCommitment.getTaskCommitmentsByTreasury.useQuery({
+    treasuryNftPolicyId: treasuryNftPolicyId,
+    status: TaskCommitmentStatus.PENDING_TX_GET_REWARDS
+  });
 
-	// Task Commitment Status mutation
-	const { updateTaskCommitmentStatus } = useTaskCommitment({});
+  // Task Commitment Status mutation
+  const { updateTaskCommitmentStatus } = useTaskCommitment({});
 
-	// Source of cardano on-chain data -> Escrow UTxOs
-	const { data: contribAssets } = api.contributorState.getContributorStateAssetsByAlias.useQuery(
-		{ treasuryNftPolicyId: treasuryNftPolicyId, alias: accessTokenAlias ?? "" },
-		{
-			enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 && !!pendingRewardsToClaim && pendingRewardsToClaim.length > 0,
-			refetchInterval: 10000,
-			onSuccess: async () => {
-				await Promise.all([
-					ctx.taskCommitment.getTaskCommitmentsByTreasury.invalidate({ treasuryNftPolicyId }),
-					ctx.treasuryValidator.getTreasuryInfo.invalidate({ treasuryNftPolicyId }),
-				])
-			}
-		}
-	);
+  // Source of cardano on-chain data -> Escrow UTxOs
+  const { data: contribAssets } = api.contributorState.getContributorStateAssetsByAlias.useQuery(
+    { treasuryNftPolicyId: treasuryNftPolicyId, alias: accessTokenAlias ?? "" },
+    {
+      enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 && !!pendingRewardsToClaim && pendingRewardsToClaim.length > 0,
+      refetchInterval: 10000,
+      onSuccess: async () => {
+        await Promise.all([
+          ctx.taskCommitment.getTaskCommitmentsByTreasury.invalidate({ treasuryNftPolicyId }),
+          ctx.treasuryValidator.getTreasuryInfo.invalidate({ treasuryNftPolicyId }),
+        ])
+      }
+    }
+  );
 
-	useEffect(() => {
-		if (!contribAssets || !pendingRewardsToClaim) return;
+  useEffect(() => {
+    if (!contribAssets || !pendingRewardsToClaim) return;
 
-		setIsChecking(true);
+    setIsChecking(true);
 
-		for (const commitment of pendingRewardsToClaim) {
-			// if we cannot find an escrow utxo, assume that commitment was accepted 
-			// -> remember that the only way db changes to PENDING_TX_COMMITMENT_ACCEPTED is a successful tx
-			if (contribAssets && !!contribAssets[1] && contribAssets[1].amount === "2") {
-				updateTaskCommitmentStatus({
-					id: commitment.id,
-					status: TaskCommitmentStatus.REWARDS_CLAIMED
-				});
-			}
-		}
-	}, [contribAssets, pendingRewardsToClaim, updateTaskCommitmentStatus]);
+    for (const commitment of pendingRewardsToClaim) {
+      // if we cannot find an escrow utxo, assume that commitment was accepted
+      // -> remember that the only way db changes to PENDING_TX_COMMITMENT_ACCEPTED is a successful tx
+      if (contribAssets && !!contribAssets[1] && contribAssets[1].amount === "2") {
+        updateTaskCommitmentStatus({
+          id: commitment.id,
+          status: TaskCommitmentStatus.REWARDS_CLAIMED
+        });
+      }
+    }
+  }, [contribAssets, pendingRewardsToClaim, updateTaskCommitmentStatus]);
 
-	return { isChecking, isLoading };
+  return { isChecking, isLoading };
 }

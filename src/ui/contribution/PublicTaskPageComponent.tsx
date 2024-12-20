@@ -12,6 +12,8 @@ import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/Ge
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { useSession } from "next-auth/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
+import { usePendingGetRewards } from "~/hooks/cardano-indexer-api/polling/usePendingGetRewards";
+import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck";
 
 
 export default function PublicTaskPageComponent({ projectHash }: { projectHash: string }) {
@@ -24,6 +26,8 @@ export default function PublicTaskPageComponent({ projectHash }: { projectHash: 
   const { escrowPrerequisites } = useEscrowPrerequisites({
     escrowId: task?.escrow?.id,
   });
+  usePendingGetRewards(treasury?.treasuryNftPolicyId ?? "");
+  usePendingCommitProjectCheck(treasury?.treasuryNftPolicyId ?? "");
 
   if (!task) return "Cannot find task"
 
