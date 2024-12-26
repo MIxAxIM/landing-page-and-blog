@@ -11,11 +11,11 @@ import { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import classNames from "~/utils/classnames";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
-import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/ContributionManagerComponent";
 import { MyCoursesBar } from "./MyCoursesBar";
 import { MyProjectsBar } from "./MyProjectsBar";
 import { Profile } from "./Profile";
 import { Overview } from "./Overview";
+import ContributionManagerComponent from "~/ui/studio/project/ContributionManagerComponent";
 
 export function TabsDemo() {
   const [showOverlay, setShowOverlay] = useState(true);

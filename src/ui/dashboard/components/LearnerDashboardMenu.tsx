@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
-import SavedCourses from "~/ui/app/roles/learner/SavedCourses";
-import AndamioNetworkCourses from "~/ui/app/roles/learner/AndamioNetworkCourses";
 import { CardanoWallet } from "@meshsdk/react";
+import AndamioNetworkCourses from "./AndamioNetworkCourses";
+import SavedCourses from "~/ui/dashboard/components/SavedCourses";
 
 export default function LearnerDashboardMenu() {
   const { accessTokenAlias } = useAccessToken();

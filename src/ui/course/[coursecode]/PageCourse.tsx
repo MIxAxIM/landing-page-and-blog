@@ -32,11 +32,11 @@ import useCourseModuleOverviews from "~/hooks/db/course/useCourseModuleOverviews
 import { useEffect, useState } from "react";
 import useAssignmentNetworkStatus from "~/hooks/cardano-indexer-api/course/useAssignmentNetworkStatus";
 import CourseLayout from "~/components/layout/CourseLayout";
-import CourseDetails from "~/ui/app/roles/learner/CourseDetails";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import { useLearnerAssignmentStatuses } from "~/hooks/db/course/useLearnerAssignmentStatuses";
 import { useRoles } from "~/hooks/app/useRoles";
+import CourseDetails from "../components/ui/CourseDetails";
 
 export default function PageCourse({
   courseCode,

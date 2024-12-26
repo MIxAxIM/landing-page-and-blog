@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { z } from "zod";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import CreatorTreasuryLandingPageComponent from "~/ui/app/CreatorTreasuryLandingPageComponent";
+import StudioProjectPage from "~/ui/studio/project/StudioProjectPageComponent";
 
 const projectPageParamsSchema = z.object({
   treasurynft: z.string().length(56),
@@ -24,7 +24,7 @@ export default function ProjectTreasuryStudioPage() {
 
   return (
     <DesktopOnlyLayout>
-      <CreatorTreasuryLandingPageComponent treasuryNftPolicyId={treasurynft} />
+      <StudioProjectPage treasuryNftPolicyId={treasurynft} />
     </DesktopOnlyLayout >
 
   )

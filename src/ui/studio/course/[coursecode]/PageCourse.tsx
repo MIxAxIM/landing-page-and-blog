@@ -1,7 +1,7 @@
 import Loading from "~/components/common/loading";
 import StudioLayout from "~/components/layout/StudioLayout";
-import CourseTitle from "~/ui/studio/components/CourseTitle";
-import ListCourseManagers from "~/ui/studio/components/ListCourseManagers";
+import CourseTitle from "~/ui/studio/course/components/CourseTitle";
+import ListCourseManagers from "~/ui/studio/course/components/ListCourseManagers";
 import ListCourseVariants from "../components/ListCourseVariants";
 
 import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
@@ -9,8 +9,8 @@ import ModuleComponent from "../components/ModuleComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Metatags from "~/components/common/metatags";
 import ModuleImportComponent from "../components/ModuleImportComponent";
-import TeacherSection from "~/ui/app/roles/teacher/TeacherSection";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
+import TeacherSection from "../components/TeacherSection";
 
 export default function PageCourse({ courseCode }: { courseCode: string }) {
   const { accessTokenAlias } = useAccessToken();

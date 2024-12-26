@@ -3,7 +3,7 @@ import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import SideMenu from "~/components/navigation/SideMenu";
-import PageModuleIntroContent from "~/ui/studio/[coursecode]/[modulecode]/intro/PageModuleIntroContent";
+import PageModuleIntroContent from "~/ui/studio/course/[coursecode]/[modulecode]/intro/PageModuleIntroContent";
 import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 
 interface IntroductionStudioPageProps {

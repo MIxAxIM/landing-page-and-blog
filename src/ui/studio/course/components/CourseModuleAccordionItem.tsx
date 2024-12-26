@@ -11,10 +11,10 @@ import { Badge } from "~/components/ui/badge";
 import { useState } from "react";
 import Link from "next/link";
 import MintModuleTokensDialog from "~/components/cardano/tx/course-creator/mint-module-tokens/MintModuleTokensDialog";
-import SelectCourseModuleStatus from "~/ui/studio/components/SelectCourseModuleStatus";
 import { useModuleRefCheck } from "~/hooks/cardano-indexer-api/polling/useModuleRefCheck";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import ModuleStatusIndicator from "~/ui/course/status/ModuleStatusIndicator";
+import SelectCourseModuleStatus from "~/ui/studio/course/components/SelectCourseModuleStatus";
 
 export default function CourseModuleAccordionItem({
   courseCode,

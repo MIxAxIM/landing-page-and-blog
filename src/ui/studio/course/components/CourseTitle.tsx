@@ -1,6 +1,6 @@
 import { type Course } from "~/types/db";
 import { useSession } from "next-auth/react";
-import DialogCourse from "~/ui/studio/components/dialogs/DialogCourse";
+import DialogCourse from "~/ui/studio/course/components/dialogs/DialogCourse";
 import Markdown from "react-markdown";
 import DialogCourseDelete from "./dialogs/DialogCourseDelete";
 import { useState } from "react";

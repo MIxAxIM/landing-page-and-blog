@@ -10,7 +10,7 @@ import {
 } from "~/types/db";
 import CourseLayout from "~/components/layout/CourseLayout";
 import ModuleLayout from "~/components/layout/ModuleLayout";
-import SltList from "~/ui/studio/components/assignment-dashboard/slt-list";
+import SltList from "~/ui/studio/course/components/assignment-dashboard/slt-list";
 import { useEffect, useState } from "react";
 
 import RenderEditor from "~/components/editor/components/render/RenderEditor";

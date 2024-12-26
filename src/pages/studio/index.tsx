@@ -3,9 +3,8 @@ import Loading from "~/components/common/loading";
 import Metatags from "~/components/common/metatags";
 import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import CreatorCourseListMenu from "~/components/navigation/menu-sections/CreatorCourseListMenu";
-import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/ContributionManagerComponent";
-import ListCourses from "~/ui/studio/components/ListCourses";
+import ListCourses from "~/ui/studio/course/components/ListCourses";
+import ContributionManagerComponent from "~/ui/studio/project/ContributionManagerComponent";
 
 export default function Page() {
   const { data: sessionData, status } = useSession();

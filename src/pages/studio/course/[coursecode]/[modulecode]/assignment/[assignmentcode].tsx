@@ -4,9 +4,9 @@ import useAssignment from "~/hooks/db/course/useAssignment";
 import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import SideMenu from "~/components/navigation/SideMenu";
-import PageCourseAssignmentContent from "~/ui/studio/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 import StudioLayout from "~/components/layout/StudioLayout";
+import PageCourseAssignmentContent from "~/ui/studio/course/[coursecode]/[modulecode]/assignment/[assignmentcode]/PageCourseAssignmentContent";
 
 export default function AssignmentStudioPage({
   courseCode,

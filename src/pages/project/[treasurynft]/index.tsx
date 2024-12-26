@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { z } from "zod";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import PublicTreasuryLandingPageComponent from "~/ui/app/PublicTreasuryLandingPageComponent";
+import PublicTreasuryLandingPageComponent from "~/ui/project/PublicTreasuryLandingPageComponent";
 
 const projectPageParamsSchema = z.object({
   treasurynft: z.string().length(56),

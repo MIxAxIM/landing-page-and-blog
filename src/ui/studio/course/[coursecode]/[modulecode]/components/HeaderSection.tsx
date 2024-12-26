@@ -8,8 +8,8 @@ import {
 } from "~/types/db";
 
 import { type FieldValues } from "react-hook-form";
-import ControlPanel from "~/ui/studio/components/form-sections/ControlPanel";
-import CardSLT from "~/ui/studio/components/slt/CardSLT";
+import ControlPanel from "~/ui/studio/course/components/form-sections/ControlPanel";
+import CardSLT from "~/ui/studio/course/components/slt/CardSLT";
 import { ToggleEditableField } from "~/components/ui/toggle-editable-field";
 import ContentEditorMenuBar from "./ContentEditorMenuBar";
 import { type Editor } from "@tiptap/react";

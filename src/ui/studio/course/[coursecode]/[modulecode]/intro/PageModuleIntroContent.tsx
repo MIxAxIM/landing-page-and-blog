@@ -1,4 +1,4 @@
-import type { Course, CourseModuleOverview, ModuleSLT } from "~/types/db";
+import type { Course, CourseModuleOverview } from "~/types/db";
 import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { api } from "~/utils/api";
 import { useCallback, useEffect, useState } from "react";
@@ -9,80 +9,62 @@ import { useForm } from "react-hook-form";
 import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 import { Form } from "~/components/ui/form";
 
-import HeaderSection from "../../components/HeaderSection";
-import { DialogGetLessonPlan } from "../../components/coach/DialogGetLessonPlan";
+import HeaderSection from "../components/HeaderSection";
+
 import { useCourseStore } from "~/lib/zustand/course";
-import useLessonEditor from "~/ui/studio/hooks/useLessonEditor";
+import useIntroEditor from "~/ui/studio/course/hooks/useIntroEditor";
 import ContentEditor from "~/components/editor/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";
-import VideoPlayer from "~/components/media/VideoPlayer";
 
-export default function PageCourseLessonContent({
+export default function PageModuleIntroContent({
   course,
   courseModule,
-  moduleIndex,
-  slt,
 }: {
   course: Course;
   courseModule: CourseModuleOverview;
-  moduleIndex: number;
-  slt: ModuleSLT;
 }) {
-  const courseCode = course?.courseCode ?? "";
-  const moduleCode = courseModule.moduleCode;
+  const courseCode = course?.courseCode;
+  const { editor, introduction, isLoadingIntro, refetchIntro, ctx } =
+    useIntroEditor(courseModule.id);
 
   const router = useRouter();
 
-  const { editor, lesson, refetchLesson, isLoadingLesson, ctx } =
-    useLessonEditor(courseCode, moduleCode, moduleIndex);
+  const [editIntroduction, setEditIntroduction] = useState<boolean>(false);
+  const [isCreatingIntroduction, setIsCreatingIntroduction] = useState(false);
 
-  const [editLesson, setEditLesson] = useState<boolean>(false);
-  const [isCreatingLesson, setIsCreatingLesson] = useState(false);
-
-  const { mutate: lessonCreate, isLoading: isLoadingCreate } =
-    api.lesson.create.useMutation({
+  const { mutate: introCreate, isLoading: isLoadingIntroCreate } =
+    api.introduction.create.useMutation({
       onSuccess: async () => {
-        toast.success("Lesson Created: Ready to Write?");
-        await refetchLesson();
-        void ctx.slt.getModuleSLTs.invalidate({
-          courseCode: courseCode,
-          moduleCode: moduleCode,
-        });
         void ctx.module.getCourseModuleOverviews.invalidate({
-          courseCode: course?.courseCode,
-        });
-        void ctx.lesson.getLesson.invalidate({
-          moduleCode: moduleCode,
-          moduleIndex: moduleIndex,
           courseCode: courseCode,
         });
+        await refetchIntro();
+        toast.success("Module Introduction created!");
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors;
         if (errorMessage) {
-          toast.error("Some inputs are missing or invalid");
+          toast.error("Could not create introduction");
         } else {
-          toast.error("Lesson could not be created. Please try again.");
+          toast.error("Introduction ID taken. Please try again.");
         }
       },
     });
 
   const { mutate: update, isLoading: isLoadingUpdate } =
-    api.lesson.update.useMutation({
+    api.introduction.update.useMutation({
       onSuccess: async () => {
-        toast.success("Content updated!");
-        setEditLesson(false);
-        await refetchLesson();
-        void ctx.lesson.getLesson.invalidate({
-          moduleCode: moduleCode,
-          moduleIndex: moduleIndex,
+        setEditIntroduction(false);
+        void ctx.introduction.getIntroduction.invalidate({
+          moduleId: courseModule.id,
+        });
+        void ctx.module.getCourseModuleOverviews.invalidate({
           courseCode: courseCode,
         });
-        void ctx.lesson.getModuleLessons.invalidate({
-          moduleCode: moduleCode,
-        });
+        await refetchIntro();
+        toast.success("Introduction updated!");
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors;
@@ -94,13 +76,13 @@ export default function PageCourseLessonContent({
       },
     });
 
-  const handleCreateLesson = () => {
-    if (module) {
-      const _lesson = {
+  const handleCreateIntro = () => {
+    if (courseModule) {
+      const _intro = {
         moduleId: courseModule.id,
-        sltId: slt.id,
+        title: `Introduction to Module ${courseModule.moduleCode}`,
       };
-      lessonCreate(_lesson);
+      introCreate(_intro);
     }
   };
 
@@ -108,7 +90,7 @@ export default function PageCourseLessonContent({
     title: z
       .string()
       .min(1, {
-        message: "Make sure to give this Lesson a title",
+        message: "Make sure to give this Assignment a title",
       })
       .max(60, { message: "Title must be less than 60 characters" }),
     description: z.string().optional(),
@@ -127,72 +109,52 @@ export default function PageCourseLessonContent({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!lesson) return;
+    if (!introduction) return;
 
-    const _lesson = {
-      id: lesson.id,
-      sltId: slt.id,
-      title: data.title ?? "",
+    const _introduction = {
+      id: introduction.id,
+      title: data.title,
       description: data.description ?? "",
+      imageUrl: introduction.imageUrl ?? "",
       videoUrl: data.videoUrl ?? "",
       contentJson: editor?.getJSON(),
       live: data.live,
     };
-    update(_lesson);
+    update(_introduction);
   }
 
   function onCancel() {
-    setEditLesson(false);
+    setEditIntroduction(false);
     if (
-      lesson &&
-      lesson.contentJson &&
-      typeof lesson.contentJson === "object" &&
-      !!editor
+      introduction &&
+      introduction.contentJson &&
+      typeof introduction.contentJson === "object"
     ) {
-      editor.commands.setContent(lesson.contentJson);
+      editor?.commands.setContent(introduction.contentJson);
     }
   }
 
-  const setEditorContent = useCallback(() => {
-    if (
-      !!editor &&
-      !isLoadingUpdate &&
-      lesson?.contentJson &&
-      typeof lesson?.contentJson === "object"
-    ) {
-      editor.commands.setContent(lesson.contentJson);
-    }
-  }, [editor, lesson, isLoadingUpdate]);
-
-  useEffect(() => {
-    if (editor?.isFocused) {
-      setEditLesson(true);
-    }
-  }, [editor?.isFocused]);
-
   const resetForm = useCallback(() => {
-    if (lesson) {
+    if (introduction) {
       form.reset({
-        title: lesson?.title ?? "",
-        description: lesson?.description ?? "",
-        videoUrl: lesson?.videoUrl ?? "",
-        live: lesson?.live ? lesson?.live : false,
+        title: introduction.title ?? "",
+        description: introduction.description ?? "",
+        videoUrl: introduction.videoUrl ?? "",
+        live: introduction.live ? introduction.live : false,
       });
     }
-  }, [form, lesson]);
+  }, [form, introduction]);
 
-  useEffect(() => {
-    if (editor?.isFocused) {
-      setEditLesson(true);
+  const setEditorContent = useCallback(() => {
+    if (
+      introduction &&
+      !isLoadingUpdate &&
+      introduction.contentJson &&
+      typeof introduction.contentJson === "object"
+    ) {
+      editor?.commands.setContent(introduction.contentJson);
     }
-  }, [editor?.isFocused]);
-
-  useEffect(() => {
-    if (lesson) {
-      resetForm();
-      setEditorContent();
-    }
-  }, [lesson, setEditorContent, resetForm]);
+  }, [editor, introduction, isLoadingUpdate]);
 
   /**
    * START OF
@@ -201,7 +163,6 @@ export default function PageCourseLessonContent({
 
   const updateLessonEdit = useCourseStore((state) => state.updateLessonEdit);
   const [getLessonPlanDialogOpen, setGetLessonPlanDialogOpen] = useState(false);
-
   const setNewEditorContent = useCallback(() => {
     if (updateLessonEdit && !!editor) {
       const _json: JSONContent = editor.getJSON();
@@ -214,6 +175,26 @@ export default function PageCourseLessonContent({
       }
     }
   }, [updateLessonEdit, editor]);
+
+  useEffect(() => {
+    if (editor?.isFocused) {
+      setEditIntroduction(true);
+    }
+  }, [editor?.isFocused]);
+
+  useEffect(() => {
+    if (introduction) {
+      resetForm();
+      setEditorContent();
+    }
+  }, [
+    introduction,
+    isLoadingIntro,
+    isLoadingUpdate,
+    resetForm,
+    setEditorContent,
+  ]);
+
   useEffect(() => {
     setNewEditorContent();
   }, [updateLessonEdit, setNewEditorContent]);
@@ -225,7 +206,7 @@ export default function PageCourseLessonContent({
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (editLesson) {
+      if (editIntroduction) {
         const confirmationMessage =
           "You have unsaved changes. Are you sure you want to leave?";
         e.returnValue = confirmationMessage; // Standard for most browsers
@@ -238,13 +219,13 @@ export default function PageCourseLessonContent({
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [editLesson]);
+  }, [editIntroduction]);
 
   // Handle Next.js router events
   useEffect(() => {
     const handleRouteChange = () => {
       if (
-        editLesson &&
+        editIntroduction &&
         !confirm("You have unsaved changes. Are you sure you want to leave?")
       ) {
         // If the user cancels, stop the navigation
@@ -258,21 +239,25 @@ export default function PageCourseLessonContent({
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [editLesson, router]);
+  }, [editIntroduction, router]);
 
-  if (lesson === undefined || lesson === null) {
-    if (isLoadingCreate) {
-      return <LoadingContentEditor>Building a Lesson</LoadingContentEditor>;
-    } else if (!isCreatingLesson && !isLoadingLesson) {
-      setIsCreatingLesson(true);
-      handleCreateLesson();
+  if (introduction === undefined || introduction === null) {
+    if (isLoadingIntroCreate) {
+      return (
+        <LoadingContentEditor>
+          Loading Introduction {courseModule.moduleCode} in Andamio Editor
+        </LoadingContentEditor>
+      );
+    } else if (!isCreatingIntroduction && !isLoadingIntro) {
+      setIsCreatingIntroduction(true);
+      handleCreateIntro();
     }
   }
 
-  if (lesson) {
+  if (introduction) {
     return (
       <>
-        <Metatags title={lesson.title ?? undefined} />
+        <Metatags title={introduction.title} />
         <div className="ml-80 flex flex-col">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -283,36 +268,25 @@ export default function PageCourseLessonContent({
                       form={form}
                       course={course}
                       courseModule={courseModule}
-                      editContent={editLesson}
-                      setEditContent={setEditLesson}
+                      editContent={editIntroduction}
+                      setEditContent={setEditIntroduction}
                       isLoadingUpdate={isLoadingUpdate}
                       onCancel={onCancel}
                       onSubmit={form.handleSubmit(onSubmit)}
-                      slt={slt}
-                      courseContent={lesson}
-                      intent="lesson"
+                      courseContent={introduction}
+                      intent="introduction"
                       setGetLessonPlanDialogOpen={setGetLessonPlanDialogOpen}
                       editor={editor}
                     />
-                    {lesson.videoUrl && (
-                      <div className="my-5 flex w-11/12 flex-row items-center justify-end gap-5">
-                        <p>This Lesson has a Video:</p>
-                        <VideoPlayer videoId={lesson.videoUrl} />
-                      </div>
-                    )}
                     <ContentEditor editor={editor} />
                   </>
                 )}
               </div>
             </form>
           </Form>
-          <LightDarkToggle />
-          <DialogGetLessonPlan
-            open={getLessonPlanDialogOpen}
-            setOpen={setGetLessonPlanDialogOpen}
-            slt={slt}
-          />
         </div>
+        {getLessonPlanDialogOpen && "Andamio AI"}
+        <LightDarkToggle />
       </>
     );
   }

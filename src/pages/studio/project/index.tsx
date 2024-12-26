@@ -1,12 +1,11 @@
 import { useSession } from "next-auth/react";
 import Loading from "~/components/common/loading";
-import ContactSales from "~/ui/studio/ContactSales";
 import Metatags from "~/components/common/metatags";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect } from "react";
-import ContributionManagerComponent from "~/ui/app/roles/contribution-manager/ContributionManagerComponent";
 import AppLayout from "~/components/layout/AppLayout";
+import ContributionManagerComponent from "~/ui/studio/project/ContributionManagerComponent";
 
 export default function StudioProjectLandingPage() {
   const { data: sessionData, status } = useSession();
@@ -33,7 +32,6 @@ export default function StudioProjectLandingPage() {
           )}
           <div className="text-center text-4xl">Andamio Studio</div>
           <ContributionManagerComponent />
-          {sessionData && !sessionData.user.creatorId && <ContactSales />}
         </div>
       </AppLayout>
     </DesktopOnlyLayout>

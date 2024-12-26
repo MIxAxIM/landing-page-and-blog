@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { z } from "zod";
 import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import PreviewManageEscrowComponent from "~/ui/app/roles/contribution-manager/PreviewManageEscrowComponent";
+import PreviewManageEscrowComponent from "~/ui/studio/project/PreviewManageEscrowComponent";
 
 const projectPageParamsSchema = z.object({
   escrowid: z.string().min(1),

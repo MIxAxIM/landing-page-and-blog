@@ -15,9 +15,9 @@ import {
 import { type FieldValues } from "react-hook-form";
 import Link from "next/link";
 import { FormControl, FormField, FormItem } from "~/components/ui/form";
-import DialogStudioHelp from "~/ui/studio/components/dialogs/DialogStudioHelp";
-import DialogAddVideoLink from "~/ui/studio/components/dialogs/DialogAddVideoLink";
-import DialogCreatorNotes from "~/ui/studio/components/dialogs/DialogCreatorNotes";
+import DialogStudioHelp from "~/ui/studio/course/components/dialogs/DialogStudioHelp";
+import DialogAddVideoLink from "~/ui/studio/course/components/dialogs/DialogAddVideoLink";
+import DialogCreatorNotes from "~/ui/studio/course/components/dialogs/DialogCreatorNotes";
 import { type Editor } from "@tiptap/react";
 
 export default function ContentEditorMenuBar({

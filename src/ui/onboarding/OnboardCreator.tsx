@@ -1,5 +1,5 @@
 import { useRoles } from "~/hooks/app/useRoles";
-import DialogCourse from "../studio/components/dialogs/DialogCourse";
+import DialogCourse from "../studio/course/components/dialogs/DialogCourse";
 import OnboardRole from "./components/OnboardingComponent";
 
 export default function OnboardCreator() {

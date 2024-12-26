@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import ManageEscrowComponent from "./roles/contribution-manager/ManageEscrowComponent";
 import AppLayout from "~/components/layout/AppLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
-import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent";
 import { useSession } from "next-auth/react";
 import { useRoles } from "~/hooks/app/useRoles";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";

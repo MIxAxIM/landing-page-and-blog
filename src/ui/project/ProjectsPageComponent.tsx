@@ -1,9 +1,9 @@
 import AppLayout from "~/components/layout/AppLayout";
-import ContributionManagerComponent from "./roles/contribution-manager/ContributionManagerComponent";
 import { useSession } from "next-auth/react";
 import PublicTreasuryListComponent from "../contribution/lists/PublicTreasuryListComponent";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect } from "react";
+import ContributionManagerComponent from "../studio/project/ContributionManagerComponent";
 
 export default function ProjectsPageComponent() {
   const { data: sessionData } = useSession()

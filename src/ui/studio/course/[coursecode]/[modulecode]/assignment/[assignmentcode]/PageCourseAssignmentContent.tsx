@@ -1,70 +1,56 @@
-import type { Course, CourseModuleOverview } from "~/types/db";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
-import { api } from "~/utils/api";
 import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
+import { api } from "~/utils/api";
+import {
+  type Assignment,
+  type Course,
+  type CourseModuleOverview,
+} from "~/types/db";
 import { Form } from "~/components/ui/form";
 
-import HeaderSection from "../components/HeaderSection";
-
+import HeaderSection from "../../components/HeaderSection";
 import { useCourseStore } from "~/lib/zustand/course";
-import useIntroEditor from "~/ui/studio/hooks/useIntroEditor";
+import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import ContentEditor from "~/components/editor/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";
+import useAssignmentEditor from "~/ui/studio/course/hooks/useAssignmentEditor";
 
-export default function PageModuleIntroContent({
+// V2 - current
+export default function PageCourseAssignmentContent({
   course,
   courseModule,
+  assignment,
 }: {
   course: Course;
   courseModule: CourseModuleOverview;
+  assignment: Assignment;
 }) {
   const courseCode = course?.courseCode;
-  const { editor, introduction, isLoadingIntro, refetchIntro, ctx } =
-    useIntroEditor(courseModule.id);
+  const moduleCode = courseModule.moduleCode;
 
   const router = useRouter();
 
-  const [editIntroduction, setEditIntroduction] = useState<boolean>(false);
-  const [isCreatingIntroduction, setIsCreatingIntroduction] = useState(false);
+  const { editor, ctx } = useAssignmentEditor();
 
-  const { mutate: introCreate, isLoading: isLoadingIntroCreate } =
-    api.introduction.create.useMutation({
-      onSuccess: async () => {
-        void ctx.module.getCourseModuleOverviews.invalidate({
-          courseCode: courseCode,
-        });
-        await refetchIntro();
-        toast.success("Module Introduction created!");
-      },
-      onError: (e) => {
-        const errorMessage = e.data?.zodError?.fieldErrors;
-        if (errorMessage) {
-          toast.error("Could not create introduction");
-        } else {
-          toast.error("Introduction ID taken. Please try again.");
-        }
-      },
-    });
+  const [editAssignment, setEditAssignment] = useState<boolean>(false);
 
   const { mutate: update, isLoading: isLoadingUpdate } =
-    api.introduction.update.useMutation({
+    api.assignment.update.useMutation({
       onSuccess: async () => {
-        setEditIntroduction(false);
-        void ctx.introduction.getIntroduction.invalidate({
-          moduleId: courseModule.id,
-        });
-        void ctx.module.getCourseModuleOverviews.invalidate({
+        toast.success("Assignment updated!");
+        setEditAssignment(false);
+        void ctx.assignment.getAssignmentByCourseModuleCodes.invalidate({
+          moduleCode: moduleCode,
           courseCode: courseCode,
         });
-        await refetchIntro();
-        toast.success("Introduction updated!");
+        void ctx.assignment.getAssignmentByModuleId.invalidate({
+          moduleId: courseModule.id,
+        });
       },
       onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors;
@@ -75,16 +61,6 @@ export default function PageModuleIntroContent({
         }
       },
     });
-
-  const handleCreateIntro = () => {
-    if (courseModule) {
-      const _intro = {
-        moduleId: courseModule.id,
-        title: `Introduction to Module ${courseModule.moduleCode}`,
-      };
-      introCreate(_intro);
-    }
-  };
 
   const FormSchema = z.object({
     title: z
@@ -109,52 +85,64 @@ export default function PageModuleIntroContent({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!introduction) return;
+    if (!assignment) return;
 
-    const _introduction = {
-      id: introduction.id,
+    const _assignment = {
+      id: assignment.id,
       title: data.title,
+      assignmentCode: assignment.assignmentCode,
       description: data.description ?? "",
-      imageUrl: introduction.imageUrl ?? "",
+      imageUrl: assignment.imageUrl ?? "",
       videoUrl: data.videoUrl ?? "",
       contentJson: editor?.getJSON(),
       live: data.live,
+      sltIds: assignment.slts.map((s) => s.id),
     };
-    update(_introduction);
+    update(_assignment);
   }
 
   function onCancel() {
-    setEditIntroduction(false);
+    setEditAssignment(false);
     if (
-      introduction &&
-      introduction.contentJson &&
-      typeof introduction.contentJson === "object"
+      assignment &&
+      assignment.contentJson &&
+      typeof assignment.contentJson === "object"
     ) {
-      editor?.commands.setContent(introduction.contentJson);
+      editor?.commands.setContent(assignment.contentJson);
     }
   }
 
-  const resetForm = useCallback(() => {
-    if (introduction) {
-      form.reset({
-        title: introduction.title ?? "",
-        description: introduction.description ?? "",
-        videoUrl: introduction.videoUrl ?? "",
-        live: introduction.live ? introduction.live : false,
-      });
-    }
-  }, [form, introduction]);
-
   const setEditorContent = useCallback(() => {
     if (
-      introduction &&
+      !!editor &&
       !isLoadingUpdate &&
-      introduction.contentJson &&
-      typeof introduction.contentJson === "object"
+      assignment?.contentJson &&
+      typeof assignment?.contentJson === "object"
     ) {
-      editor?.commands.setContent(introduction.contentJson);
+      editor.commands.setContent(assignment.contentJson);
     }
-  }, [editor, introduction, isLoadingUpdate]);
+  }, [editor, assignment, isLoadingUpdate]);
+  useEffect(() => {
+    if (editor?.isFocused) {
+      setEditAssignment(true);
+    }
+  }, [editor?.isFocused]);
+
+  const resetForm = useCallback(() => {
+    form.reset({
+      title: assignment?.title ?? "",
+      description: assignment?.description ?? "",
+      videoUrl: assignment?.videoUrl ?? "",
+      live: assignment?.live ? assignment?.live : false,
+    });
+  }, [form, assignment]);
+
+  useEffect(() => {
+    if (assignment) {
+      resetForm();
+      setEditorContent();
+    }
+  }, [assignment, isLoadingUpdate, setEditorContent, resetForm]);
 
   /**
    * START OF
@@ -175,26 +163,6 @@ export default function PageModuleIntroContent({
       }
     }
   }, [updateLessonEdit, editor]);
-
-  useEffect(() => {
-    if (editor?.isFocused) {
-      setEditIntroduction(true);
-    }
-  }, [editor?.isFocused]);
-
-  useEffect(() => {
-    if (introduction) {
-      resetForm();
-      setEditorContent();
-    }
-  }, [
-    introduction,
-    isLoadingIntro,
-    isLoadingUpdate,
-    resetForm,
-    setEditorContent,
-  ]);
-
   useEffect(() => {
     setNewEditorContent();
   }, [updateLessonEdit, setNewEditorContent]);
@@ -206,7 +174,7 @@ export default function PageModuleIntroContent({
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (editIntroduction) {
+      if (editAssignment) {
         const confirmationMessage =
           "You have unsaved changes. Are you sure you want to leave?";
         e.returnValue = confirmationMessage; // Standard for most browsers
@@ -219,13 +187,13 @@ export default function PageModuleIntroContent({
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [editIntroduction]);
+  }, [editAssignment]);
 
   // Handle Next.js router events
   useEffect(() => {
     const handleRouteChange = () => {
       if (
-        editIntroduction &&
+        editAssignment &&
         !confirm("You have unsaved changes. Are you sure you want to leave?")
       ) {
         // If the user cancels, stop the navigation
@@ -239,25 +207,12 @@ export default function PageModuleIntroContent({
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [editIntroduction, router]);
+  }, [editAssignment, router]);
 
-  if (introduction === undefined || introduction === null) {
-    if (isLoadingIntroCreate) {
-      return (
-        <LoadingContentEditor>
-          Loading Introduction {courseModule.moduleCode} in Andamio Editor
-        </LoadingContentEditor>
-      );
-    } else if (!isCreatingIntroduction && !isLoadingIntro) {
-      setIsCreatingIntroduction(true);
-      handleCreateIntro();
-    }
-  }
-
-  if (introduction) {
+  if (assignment) {
     return (
       <>
-        <Metatags title={introduction.title} />
+        <Metatags title={assignment.title} />
         <div className="ml-80 flex flex-col">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -268,13 +223,13 @@ export default function PageModuleIntroContent({
                       form={form}
                       course={course}
                       courseModule={courseModule}
-                      editContent={editIntroduction}
-                      setEditContent={setEditIntroduction}
+                      editContent={editAssignment}
+                      setEditContent={setEditAssignment}
                       isLoadingUpdate={isLoadingUpdate}
                       onCancel={onCancel}
                       onSubmit={form.handleSubmit(onSubmit)}
-                      courseContent={introduction}
-                      intent="introduction"
+                      courseContent={assignment}
+                      intent="assignment"
                       setGetLessonPlanDialogOpen={setGetLessonPlanDialogOpen}
                       editor={editor}
                     />

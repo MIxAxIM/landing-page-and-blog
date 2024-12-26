@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
-import DialogCourseManager from "~/ui/studio/components/dialogs/DialogCourseManager";
+import DialogCourseManager from "~/ui/studio/course/components/dialogs/DialogCourseManager";
 import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
 
 export default function ListCourseManagers({ course }: { course: Course }) {

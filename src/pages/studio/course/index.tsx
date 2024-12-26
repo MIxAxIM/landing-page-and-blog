@@ -1,11 +1,10 @@
 import { useSession } from "next-auth/react";
 import Loading from "~/components/common/loading";
-import ContactSales from "~/ui/studio/ContactSales";
 import Metatags from "~/components/common/metatags";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
-import PageStudio from "~/ui/studio/PageStudio";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect } from "react";
+import PageStudio from "~/ui/studio/course/PageStudio";
 
 export default function StudioCourseLandingPage() {
   const { data: sessionData, status } = useSession();
@@ -26,7 +25,6 @@ export default function StudioCourseLandingPage() {
         </div>
       )}
       {sessionData && sessionData.user.creatorId && <PageStudio />}
-      {sessionData && !sessionData.user.creatorId && <ContactSales />}
     </DesktopOnlyLayout>
   );
 }

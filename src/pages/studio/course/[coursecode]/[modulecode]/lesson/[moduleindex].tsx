@@ -4,7 +4,7 @@ import useCourseByOwner from "~/hooks/db/course/useCourseByOwner";
 import useModuleByCourse from "~/hooks/db/course/useModuleByCourse";
 import useSLTs from "~/hooks/db/course/useSLTs";
 import SideMenu from "~/components/navigation/SideMenu";
-import PageCourseLessonContent from "~/ui/studio/[coursecode]/[modulecode]/lesson/[moduleindex]/PageCourseLessonContent";
+import PageCourseLessonContent from "~/ui/studio/course/[coursecode]/[modulecode]/lesson/[moduleindex]/PageCourseLessonContent";
 import LoadingContentEditor from "~/components/editor/ContentEditor/ui/LoadingContentEditor";
 import StudioLayout from "~/components/layout/StudioLayout";
 

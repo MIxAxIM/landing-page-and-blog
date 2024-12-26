@@ -1,5 +1,5 @@
 import { type NextPageContext } from "next";
-import PageCourse from "~/ui/studio/[coursecode]/PageCourse";
+import PageCourse from "~/ui/studio/course/[coursecode]/PageCourse";
 
 export default function Page({ courseCode }: { courseCode: string }) {
   return <PageCourse courseCode={courseCode} />;
