@@ -7,7 +7,7 @@ import ContentEditorSm from "~/components/editor/ContentEditor/editor-sm";
 import { Button } from "~/components/ui/button";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { TaskCommitment } from "~/types/db";
-import useTaskCommitmentEditor from "~/ui/contribution/useTaskCommitmentEditor";
+import useTaskCommitmentEditor from "../useTaskCommitmentEditor";
 
 export default function TaskEvidenceEditor({
   taskCommitment,

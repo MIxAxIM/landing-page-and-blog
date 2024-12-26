@@ -1,5 +1,5 @@
 import { type Treasury } from "~/types/db";
-import SelectTreasuryToManage from "~/ui/contribution/selection/SelectTreasuryToManage";
+import SelectTreasuryToManage from "~/ui/studio/project/components/selection/SelectTreasuryToManage";
 
 export default function ContributionManagerDashboardMenu({
   treasuryInfos,

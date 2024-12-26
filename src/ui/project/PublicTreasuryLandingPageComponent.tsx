@@ -6,10 +6,10 @@ import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import { useSession } from "next-auth/react";
 import { useRoles } from "~/hooks/app/useRoles";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import ProjectTaskContributionList from "../contribution/lists/ProjectTaskContributionList";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import BurnContributorStateDialog from "~/components/cardano/tx/contributor/burn-contributor-state/BurnContributorStateDialog";
 import MintProjectStateDialog from "~/components/cardano/tx/contributor/mint-project-state/MintProjectStateDialog";
+import ProjectTaskContributionList from "../studio/project/components/lists/ProjectTaskContributionList";
 
 export default function PublicTreasuryLandingPageComponent({
   treasuryNftPolicyId,

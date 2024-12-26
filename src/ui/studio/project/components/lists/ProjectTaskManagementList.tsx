@@ -5,25 +5,30 @@ import { TaskStatus } from "@prisma/client";
 import { type TaskSortKey, type SortConfig } from "~/types/sorting";
 import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
+import TaskStatusSelect from "../selection/TaskStatusSelect";
 import { ProjectDatum, Task, type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
+import DialogDeleteTask from "../dialogs/DialogDeleteTask";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { Card } from "~/components/ui/card";
-import TaskStatusIndicator from "../status/TaskStatusIndicator";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
-import { useTask } from "~/hooks/db/contribution/useTask";
-import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
+import DialogTaskSimple from "../dialogs/DialogTaskSimple";
+import TaskStatusIndicator from "~/ui/project/status/TaskStatusIndicator";
 
-export default function ProjectTaskContributionList({
+export default function ProjectTaskManagementList({
+  escrow,
+  treasuryId,
   treasuryNftPolicyId,
   showFilters = true,
   className = "",
   networkTasks,
 }: {
-  treasuryNftPolicyId: string;
+  escrow: Escrow;
+  treasuryId: string;
+  treasuryNftPolicyId?: string;
   showFilters?: boolean;
   className?: string;
   networkTasks?: ProjectDatum[]
@@ -31,9 +36,6 @@ export default function ProjectTaskContributionList({
   type StatusFilter =
     | { type: 'task', status: TaskStatus }
     | { type: 'commitment', status: ConsolidatedCommitmentStatus };
-
-  const { tasks } = useTask({ treasuryNftPolicyId: treasuryNftPolicyId });
-  const { treasuryInfo } = useProjectByTreasury({ treasuryNftPolicyId: treasuryNftPolicyId ?? undefined })
 
   // Initialize with all task statuses and all commitment statuses
   const [selectedStatuses, setSelectedStatuses] = useState<StatusFilter[]>([
@@ -56,7 +58,7 @@ export default function ProjectTaskContributionList({
   const [searchQuery, setSearchQuery] = useState("");
 
   // Filter and sort tasks
-  const filteredTasks = tasks?.filter((task) => {
+  const filteredTasks = escrow.tasks?.filter((task) => {
     // Check if task status is selected
     const isTaskStatusSelected = selectedStatuses.some(
       s => s.type === 'task' && s.status === task.status
@@ -101,8 +103,8 @@ export default function ProjectTaskContributionList({
     }));
   }, []);
 
-  const validateNetworkTask = (taskHash: string) => {
-    return treasuryInfo?.projects?.find((networkTask) => networkTask.project_hash === taskHash);
+  const validateNetworkTask = (task: Task) => {
+    return networkTasks?.find((networkTask) => networkTask.project_hash === task.taskHash);
   }
 
   return (
@@ -135,8 +137,8 @@ export default function ProjectTaskContributionList({
               <Accordion type="single" collapsible>
                 <AccordionItem value={task.id} key={task.id}>
                   <AccordionTrigger>
-                    <div className="grid grid-cols-8 w-full items-center justify-between text-left">
-                      <div className="col-span-4 flex flex-row gap-x-4 items-center">
+                    <div className="grid grid-cols-9 w-full items-center justify-between text-left">
+                      <div className="col-span-3 flex flex-row gap-x-4 items-center">
                         <div className={`rounded-full bg-primary h-4 w-4`} />
                         <div className="text-lg">
                           {task.title}
@@ -159,17 +161,34 @@ export default function ProjectTaskContributionList({
                         </p>
                       </div>
                       <div className="col-span-1">
-                        <TaskStatusIndicator
-                          status={task.status}
-                          numAllowedCommitments={task.numAllowedCommitments}
-                          taskCommitments={task.taskCommitments}
-                          showLabel
-                        />
+                        {(task.status === "DRAFT" ||
+                          task.status === "APPROVED" ||
+                          task.status === "BACKLOG") ? (
+                          <TaskStatusSelect
+                            taskId={task.id}
+                            currentStatus={task.status}
+                          />
+                        ) : (
+                          <TaskStatusIndicator
+                            status={task.status}
+                            numAllowedCommitments={task.numAllowedCommitments}
+                            taskCommitments={task.taskCommitments}
+                            showLabel
+                          />
+
+                        )}
+                      </div>
+                      <div className="col-span-2 flex h-fit items-center justify-center gap-x-2">
+                        {treasuryId && escrow &&
+                          <DialogTaskSimple openButtonSize="sm" id={task.id} escrow={escrow} treasuryId={treasuryId} />
+                        }
+                        <DialogDeleteTask id={task.id} />
                       </div>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="grid md:grid-cols-2 gap-4 mt-6 mb-3 pt-3">
+                      <pre>{JSON.stringify(task, null, 2)}</pre>
                       <div className="flex flex-col gap-y-8">
                         <h3>About</h3>
                         <div>
@@ -185,24 +204,36 @@ export default function ProjectTaskContributionList({
                           </ul>
                         </div>
                         <h3>Network Status</h3>
-                        {!!task && task.taskHash && !!validateNetworkTask(task.taskHash) && (
+                        {!!validateNetworkTask(task) ? (
                           <>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <CheckCircledIcon className="h-12 w-12 text-success" />
                               </PopoverTrigger>
                               <PopoverContent>
-                                This task is validated on the Andamio Network, and you can commit to it.
+                                This task is validated on the Andamio Network, and Contributors can commit to it.
                               </PopoverContent>
                             </Popover>
-                            <p className="prose"># Commitments Allowed: {validateNetworkTask(task.taskHash)?.commitment_allowed}</p>
-                            <p className="prose text-xs">Project Hash on Andamio Network: {validateNetworkTask(task.taskHash)?.project_hash}</p>
+                            <p className="prose"># Commitments Allowed: {validateNetworkTask(task)?.commitment_allowed}</p>
+                            <p className="prose text-xs">Project Hash on Andamio Network: {validateNetworkTask(task)?.project_hash}</p>
+                          </>
+                        ) : (
+                          <>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <ExclamationTriangleIcon className="h-12 w-12 text-secondary" />
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                This task is not yet validated on the Andamio Network.
+                              </PopoverContent>
+                            </Popover>
+                            <Button>Show me how to publish this task</Button>
                           </>
                         )}
                         <div>
                           {(task.status === "APPROVED" || task.status === "ON_CHAIN") && (
                             <Link href={`/project/${treasuryNftPolicyId}/${task.taskHash}`}>
-                              <Button size="dialog">View Task Details</Button>
+                              <Button size="dialog">View Public Task</Button>
                             </Link>
                           )}
                         </div>
@@ -221,6 +252,6 @@ export default function ProjectTaskContributionList({
           ))
         )}
       </div>
-    </div >
+    </div>
   );
 }

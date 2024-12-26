@@ -5,7 +5,7 @@ import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
-import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
+import PublicTaskPageComponent from "~/ui/project/PublicTaskPageComponent";
 import TaskCommitmentComponent from "~/ui/project/TaskCommitmentComponent";
 
 const taskCommitmentParamsSchema = z.object({

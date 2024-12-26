@@ -1,8 +1,8 @@
 import AppLayout from "~/components/layout/AppLayout";
 import { useSession } from "next-auth/react";
-import PublicTreasuryListComponent from "../contribution/lists/PublicTreasuryListComponent";
 import { useRoles } from "~/hooks/app/useRoles";
 import { useEffect } from "react";
+import PublicTreasuryListComponent from "../studio/project/components/lists/PublicTreasuryListComponent";
 
 export default function PublicProjectsPageComponent() {
   const { data: sessionData } = useSession()

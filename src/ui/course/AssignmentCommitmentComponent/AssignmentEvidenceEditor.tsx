@@ -8,7 +8,7 @@ import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-ci
 import { Button } from "~/components/ui/button";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 import { AssignmentCommitment, TaskCommitment } from "~/types/db";
-import useTaskCommitmentEditor from "~/ui/contribution/useTaskCommitmentEditor";
+import useTaskCommitmentEditor from "~/ui/project/useTaskCommitmentEditor";
 
 export default function AssignmentEvidenceEditor({
   assignmentCommitment,

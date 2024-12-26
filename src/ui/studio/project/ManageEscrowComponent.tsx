@@ -11,10 +11,10 @@ import MintProjectTokenDialog from "~/components/cardano/tx/project-creator/mint
 import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-creator/manage-treasury-token/ManageTreasuryTokenDialog";
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
 import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskStatusCheck";
-import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
-import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
 import { usePrerequisitePolicyCheck } from "~/hooks/cardano-indexer-api/polling/usePrerequisitePolicyCheck";
+import DialogTaskSimple from "./components/dialogs/DialogTaskSimple";
+import ProjectTaskManagementList from "./components/lists/ProjectTaskManagementList";
 
 
 export default function ManageEscrowComponent({

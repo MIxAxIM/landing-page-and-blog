@@ -5,7 +5,7 @@ import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
 import AppLayout from "~/components/layout/AppLayout";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import PublicTaskPageComponent from "~/ui/contribution/PublicTaskPageComponent";
+import PublicTaskPageComponent from "~/ui/project/PublicTaskPageComponent";
 import TaskCommitmentComponent from "~/ui/project/TaskCommitmentComponent";
 
 const taskCommitmentParamsSchema = z.object({

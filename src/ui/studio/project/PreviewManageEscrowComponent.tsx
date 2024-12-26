@@ -8,10 +8,10 @@ import ProjectManagerOnboardingModal from "~/ui/onboarding/components/tutorial-m
 
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
-import ProjectTaskManagementList from "~/ui/contribution/lists/ProjectTaskManagementList";
-import DialogTaskSimple from "~/ui/contribution/dialogs/DialogTaskSimple";
 import ContributorPrerequisites from "./ContributorPrerequisites";
 import { Button } from "~/components/ui/button";
+import DialogTaskSimple from "./components/dialogs/DialogTaskSimple";
+import ProjectTaskManagementList from "./components/lists/ProjectTaskManagementList";
 
 
 export default function PreviewManageEscrowComponent({

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useTerminology } from "~/contexts/terminology-context";
 import MintAccessToken from "~/ui/app/components/MintAccessToken";
-import TreasuryListComponent from "~/ui/contribution/lists/TreasuryListComponent";
 import AllCourses from "~/ui/courses/components/AllCourses";
 import DialogOrganization from "~/ui/organization/DialogOrganization";
+import TreasuryListComponent from "~/ui/studio/project/components/lists/TreasuryListComponent";
 
 export default function QuickActionButtons() {
   const [currentView, setCurrentView] = useState<"COURSES" | "TASKS" | "TREASURIES" | "PARTICIPATE" | undefined>(undefined)

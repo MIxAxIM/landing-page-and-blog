@@ -2,7 +2,6 @@ import { useEscrowPrerequisites } from "~/hooks/db/contribution/useEscrowPrerequ
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { formatPosixTime } from "~/utils/time";
 import { ChatContainer } from "~/components/chat/chat-container";
-import { PrerequisiteItem } from "./lists/PrerequisiteList";
 import { useTerminology } from "~/contexts/terminology-context";
 import { Card } from "~/components/ui/card";
 import Link from "next/link";
@@ -14,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { usePendingGetRewards } from "~/hooks/cardano-indexer-api/polling/usePendingGetRewards";
 import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck";
+import { PrerequisiteItem } from "../studio/project/components/lists/PrerequisiteList";
 
 
 export default function PublicTaskPageComponent({ projectHash }: { projectHash: string }) {

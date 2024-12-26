@@ -5,12 +5,12 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import useEscrowDatum from "~/hooks/cardano-indexer-api/project/useEscrowDatum";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
 import { Task, TaskCommitment } from "~/types/db";
-import TaskStatusIndicator from "~/ui/contribution/status/TaskStatusIndicator";
 import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { Card } from "~/components/ui/card";
 import GetRewardsDialog from "~/components/cardano/tx/contributor/get-rewards/GetRewardsDialog";
+import TaskStatusIndicator from "../status/TaskStatusIndicator";
 
 export default function TaskCommitmentComponent({
   treasuryNftPolicyId,
