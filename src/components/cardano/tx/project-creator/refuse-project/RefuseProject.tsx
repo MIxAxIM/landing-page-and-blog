@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function RefuseProject({
   taskCommitmentId,
@@ -20,7 +20,7 @@ export default function RefuseProject({
 }) {
   const { wallet } = useWallet();
 
-  const { updateTaskCommitmentStatus, taskCommitment } = useTaskCommitment({ id: taskCommitmentId });
+  const { updateTaskCommitmentStatus } = useTaskCommitment({ id: taskCommitmentId });
 
   // Any tx will have a set of outputs.
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions

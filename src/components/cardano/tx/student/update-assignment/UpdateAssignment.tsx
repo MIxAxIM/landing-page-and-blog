@@ -1,20 +1,17 @@
 import { CardanoWallet, useWallet } from "@meshsdk/react";
 import { useState } from "react";
-import { NETWORK } from "~/andamio.config";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function UpdateAssignment({
   assignmentCommitmentId,
-  courseCode,
   evidenceHash,
 }: {
   assignmentCommitmentId: string;
-  courseCode: string;
   evidenceHash: string;
 }) {
   const { connected } = useWallet();

@@ -138,7 +138,6 @@ export default function MintAccessTokenDialog() {
                     <MintAccessToken
                       userAddress={address}
                       alias={mintingAlias}
-                      successTxHash={successTxHash}
                       setSuccessTxHash={setSuccessTxHash}
                     />
                   </>

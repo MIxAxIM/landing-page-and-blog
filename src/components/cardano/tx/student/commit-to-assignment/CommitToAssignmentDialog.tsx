@@ -84,7 +84,6 @@ export default function CommitToAssignmentDialog({
               <div className="p-2">
                 {!!assignmentCommitmentsByCourse && !!assignmentCommitmentsByCourse[0] && (
                   <CommitToAssignment
-                    courseCode={courseCode}
                     assignmentCode={moduleCode}
                     assignmentCommitmentId={assignmentCommitmentsByCourse[0]?.id ?? ""}
                     isCommitted={isLearnerCommitted ?? false}

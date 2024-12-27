@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function BurnContributorState({
   treasuryNftPolicyId,

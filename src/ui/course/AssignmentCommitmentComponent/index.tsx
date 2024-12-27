@@ -1,7 +1,7 @@
 import { CardanoWallet } from "@meshsdk/react";
 import { useEffect, useState } from "react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import { Assignment, AssignmentCommitment } from "~/types/db";
+import type { Assignment, AssignmentCommitment } from "~/types/db";
 import AssignmentEvidenceEditor from "./AssignmentEvidenceEditor";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 import CommitToAssignmentDialog from "~/components/cardano/tx/student/commit-to-assignment/CommitToAssignmentDialog";
@@ -25,7 +25,6 @@ export default function AssignmentCommitmentComponent({
 }) {
   useAssignmentCommitmentStatusCheck(courseCode, courseNftPolicyId)
   const { data: sessionData } = useSession();
-  const [currentAssignment, setCurrentAssignment] = useState<Assignment | undefined>(undefined);
   const [currentAssignmentCommitment, setCurrentAssignmentCommitment] = useState<AssignmentCommitment | undefined>(undefined);
   const [lock, setLock] = useState(false);
   const [evidenceHash, setEvidenceHash] = useState<string | undefined>(

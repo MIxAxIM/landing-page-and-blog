@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
@@ -30,7 +28,6 @@ export default function MintLocalStateDialog({
 }) {
   const { connected } = useWallet();
   const { accessTokenAsset, accessTokenAlias } = useAccessToken();
-  const [isOpen, setIsOpen] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [successTxHash, setSuccessTxHash] = useState<string | undefined>(
     undefined,
@@ -80,18 +77,7 @@ export default function MintLocalStateDialog({
                   />
                 ) : (
                   <DialogHeader>
-                    <DialogTitle className="py-4">
-                      Thinking of taking this course?
-                    </DialogTitle>
-                    <DialogDescription>
-                      {!isOpen && (
-                        <div className="py-4 text-xs text-black hover:font-semibold hover:text-primary sm:justify-start">
-                          <Link href={`/course/${courseCode}`}>
-                            I&apos;ll do it after taking a look inside first
-                          </Link>
-                        </div>
-                      )}
-                    </DialogDescription>
+                    Enroll
                   </DialogHeader>
                 )}
               </div>

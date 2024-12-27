@@ -3,7 +3,7 @@ import TransactionLoading from "./TransactionLoading";
 import { useToast } from "~/components/ui/use-toast";
 import { type Dispatch, type SetStateAction } from "react";
 import { CardanoWallet, useWallet } from "@meshsdk/react";
-import { IWallet } from "@meshsdk/common";
+import { type IWallet } from "@meshsdk/common";
 
 // Define a generic type for the callback parameters
 type TransactionCallback<T = void> = (txId: string, params?: T) => Promise<void> | void;
@@ -64,7 +64,7 @@ export default function TransactionContainer<T = void>({
     return <CardanoWallet />;
   }
 
-  // A button appears when a valid tx is returned aby the Andamio API. 
+  // A button appears when a valid tx is returned aby the Andamio API.
   // The onSubmit function is called when user with connected waller clicks the button
 
   // Otherwise, the TransactionLoading component is shown (this component can be improved)

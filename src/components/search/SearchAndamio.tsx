@@ -11,6 +11,7 @@ import OnboardTreasuryOwner from "~/ui/onboarding/OnboardTreasuryOwner";
 import OnboardOrganizer from "~/ui/onboarding/OnboardOrganizer";
 import useCourses from "~/hooks/db/course/useCourses";
 import { useOnboardingTasks } from "~/hooks/app/useOnboardingTasks";
+import PublicTaskPageComponent from "~/ui/project/PublicTaskPageComponent";
 
 // NOTE: There are currently two search patterns demonstrated here:
 // 1. Given data like `courses`, we can map over it on the client side
@@ -26,9 +27,9 @@ export default function SearchAndamio() {
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const { tasks } = useTask({ searchQuery: searchValue ?? "" });
 
-  const taskByValue = useMemo(() => (value && tasks?.find(task => task.id === value) || null), [value, tasks])
-  const courseByValue = useMemo(() => (value && courses?.find(course => course.id === value) || null), [value, courses])
-  const onboardByValue = useMemo(() => (value && onboardingTasks.find(obt => obt.id === value) || null), [value, onboardingTasks])
+  const taskByValue = useMemo(() => (value && (tasks?.find(task => task.id === value) ?? null)), [value, tasks])
+  const courseByValue = useMemo(() => (value && (courses?.find(course => course.id === value) ?? null)), [value, courses])
+  const onboardByValue = useMemo(() => (value && (onboardingTasks.find(obt => obt.id === value) ?? null)), [value, onboardingTasks])
   const filteredCourses = useMemo(() => {
     if (!searchValue || !courses) return courses
     return courses.filter(c =>
@@ -62,13 +63,11 @@ export default function SearchAndamio() {
             const _onboardingTasks = onboardingTasks.find(obt => obt.id === value);
             // TODO: Add fuzzy search, and use it to search over more fields
             return (
-              !inputValue ||
-              _course ||
-              tasks ||
+              !inputValue ??
+              _course ??
+              tasks ??
               _onboardingTasks
             )
-
-
           }))
 
       }}>
@@ -139,15 +138,14 @@ export default function SearchAndamio() {
       </ComboBox>
       <div className="mt-12">
         {courseByValue && <CourseCard course={courseByValue} savedCourse={false} />}
-        {onboardByValue?.id === "oLearn" && <OnboardLearner />}
-        {onboardByValue?.id === "oTeach" && <OnboardCreator />}
-        {onboardByValue?.id === "oContribute" && <OnboardContributor />}
-        {onboardByValue?.id === "oTreasury" && <OnboardTreasuryOwner />}
-        {onboardByValue?.id === "oOrganize" && <OnboardOrganizer />}
+        {taskByValue && <PublicTaskPageComponent projectHash={taskByValue.taskHash ?? ""} />}
+        {!!onboardByValue && onboardByValue?.id === "oLearn" && <OnboardLearner />}
+        {!!onboardByValue && onboardByValue?.id === "oTeach" && <OnboardCreator />}
+        {!!onboardByValue && onboardByValue?.id === "oContribute" && <OnboardContributor />}
+        {!!onboardByValue && onboardByValue?.id === "oTreasury" && <OnboardTreasuryOwner />}
+        {!!onboardByValue && onboardByValue?.id === "oOrganize" && <OnboardOrganizer />}
       </div>
     </>
   )
 }
 
-// TODO:
-// {taskByValue && <PublicTaskPageComponent task={taskByValue} />}

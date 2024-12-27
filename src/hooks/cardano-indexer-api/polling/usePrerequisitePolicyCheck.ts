@@ -42,7 +42,7 @@ export function usePrerequisitePolicyCheck(treasuryNftPolicyId: string) {
         });
       }
     }
-  }, [onchainPolicies, awaitingPrerequisites, updatePrerequisitePolicy]);
+  }, [onchainPolicies, awaitingPrerequisites, updatePrerequisitePolicy, treasuryNftPolicyId]);
 
   return { isChecking, isLoading };
 }

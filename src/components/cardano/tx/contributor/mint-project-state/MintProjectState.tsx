@@ -4,7 +4,7 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function MintProjectState({
   treasuryNftPolicyId,

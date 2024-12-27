@@ -2,21 +2,16 @@ import { Button } from "~/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader } from "~/components/ui/dialog";
-import { api } from "~/utils/api";
 import Link from "next/link";
-import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useAggregateUserInfo from "~/hooks/cardano-indexer-api/network/useAggregateUserInfo";
-
-// WIP 2024-12-13
-
 
 // NOTE:
 // Here is a demo component for prompting the user to take an available action.
-// Let's start by implementing a prompt to claim available rewards.
-// Then, we can add additional prompts for other actions.
+
+// TODO:
+// Determine other actions to feature here
 
 export default function UserActionDialog() {
-  const ctx = api.useUtils();
   const { data: sessionData } = useSession();
 
   const { aggregateUserInfo } = useAggregateUserInfo()

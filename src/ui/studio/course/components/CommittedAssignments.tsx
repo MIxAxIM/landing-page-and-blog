@@ -8,18 +8,16 @@ import AcceptDenyAssignmentDialog from "~/components/cardano/tx/course-creator/a
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 import { useEffect, useState } from "react";
 import { AssignmentCommitmentStatusIndicator } from "~/ui/course/components/ui/status/AssignmentStatusIndicators";
-import { AssignmentNetworkStatus, AssignmentPrivateStatus, Prisma } from "@prisma/client";
-import { DecodedAssignmentDecisionDatum } from "@andamiojs/datum-utils";
-import { AssignmentCommitment } from "~/types/db";
-import { Content, EditorContent, useEditor } from "@tiptap/react";
+import type { AssignmentNetworkStatus, AssignmentPrivateStatus, Prisma } from "@prisma/client";
+import { type DecodedAssignmentDecisionDatum } from "@andamiojs/datum-utils";
+import { type AssignmentCommitment } from "~/types/db";
+import { type Content, EditorContent, useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/editor/extension-kit";
 
 export default function CommittedAssignments({
   courseNftPolicy,
-  showCourseDetails,
 }: {
   courseNftPolicy: string;
-  showCourseDetails?: boolean;
 }) {
   const [combinedData, setCombinedData] = useState<CombinedACData[] | null>(null);
   const { listCourseAssignmentDatums } = useAssignmentDatums(courseNftPolicy);

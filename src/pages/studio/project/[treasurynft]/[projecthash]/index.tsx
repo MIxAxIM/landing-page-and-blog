@@ -15,6 +15,7 @@ const taskCommitmentParamsSchema = z.object({
 
 export default function ProjectTaskStudioPage() {
   const router = useRouter();
+  const { accessTokenAlias } = useAccessToken()
 
   if (!router.isReady) {
     return <div>Loading...</div>; // Or your preferred loading component
@@ -22,12 +23,11 @@ export default function ProjectTaskStudioPage() {
   const result = taskCommitmentParamsSchema.safeParse(router.query);
   if (!result.success) {
     // Handle invalid params - could redirect or show error
-    router.push('/404');
+    void router.push('/404');
     return null;
   }
 
   const { treasurynft, projecthash } = result.data;
-  const { accessTokenAlias } = useAccessToken()
 
   return (
     <DesktopOnlyLayout>

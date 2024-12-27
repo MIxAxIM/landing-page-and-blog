@@ -22,7 +22,7 @@ export type OnboardingTask = {
 }
 
 export function useOnboardingTasks() {
-  const { translateCaps, skinName, currentSkin } = useTerminology()
+  const { translateCaps } = useTerminology()
 
   const onboardingTasks = useMemo(() =>
     ONBOARDING_TASKS.map(task => ({
@@ -31,7 +31,7 @@ export function useOnboardingTasks() {
         ? task.titleTemplate.replace(/%s/g, () => translateCaps(task.terms![0]))
         : task.titleTemplate
     }))
-    , [translateCaps, skinName, currentSkin])
+    , [translateCaps])
 
   return { onboardingTasks }
 }

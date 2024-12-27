@@ -4,7 +4,7 @@ import AddInfoDialog from "~/components/cardano/tx/contributor/add-info/AddInfoD
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import useEscrowDatum from "~/hooks/cardano-indexer-api/project/useEscrowDatum";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
-import { Task, TaskCommitment } from "~/types/db";
+import type { Task, TaskCommitment } from "~/types/db";
 import TaskEvidenceEditor from "./TaskEvidenceEditor";
 import CommitProjectDialog from "~/components/cardano/tx/contributor/commit-project/CommitProjectDialog";
 import { useTask } from "~/hooks/db/contribution/useTask";

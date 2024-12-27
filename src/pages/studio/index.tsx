@@ -7,7 +7,7 @@ import ListCourses from "~/ui/studio/course/components/ListCourses";
 import ContributionManagerComponent from "~/ui/studio/project/ContributionManagerComponent";
 
 export default function Page() {
-  const { data: sessionData, status } = useSession();
+  const { status } = useSession();
 
   return (
     <DesktopOnlyLayout>

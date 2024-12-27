@@ -16,7 +16,7 @@ const serializeToPlainObject = <T>(data: T): T => {
     if (data.constructor === Object) return data;
 
     // Otherwise serialize it
-    return JSON.parse(JSON.stringify(data));
+    return JSON.parse(JSON.stringify(data)) as T;
   } catch (error) {
     console.error('Serialization error:', error);
     // Return original data if serialization fails
@@ -29,7 +29,7 @@ export async function indexerGet<T>(url: string): Promise<T> {
   try {
     const res = await indexer.get<T>(url);
     if (res.status === 200) {
-      return serializeToPlainObject(res.data);
+      return serializeToPlainObject<T>(res.data);
     }
     throw new Error(`Failed to fetch data from indexer: ${res.statusText}`);
   } catch (error) {
@@ -52,7 +52,7 @@ export async function indexerGetWithParams<T, U>(
   try {
     const res = await indexer.get<T>(url, { params: params });
     if (res.status === 200) {
-      return serializeToPlainObject(res.data);
+      return serializeToPlainObject<T>(res.data);
     }
     throw new Error(`Failed to fetch data from indexer: ${res.statusText}`);
   } catch (error) {

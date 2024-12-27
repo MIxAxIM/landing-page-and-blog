@@ -1,4 +1,4 @@
-import { AssignmentPrivateStatus } from "@prisma/client";
+import { type AssignmentPrivateStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { type AssignmentCommitment } from "~/types/db";

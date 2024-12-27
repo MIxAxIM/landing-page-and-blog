@@ -4,7 +4,8 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 export default function MintProjectToken({
   treasuryNftPolicyId,
@@ -66,6 +67,8 @@ export default function MintProjectToken({
       </div>
     );
   }
+
+  if (isLoading) return <LoadingCircle />
 
   if (!wallet) return
 

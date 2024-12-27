@@ -1,4 +1,4 @@
-import { AggregateUserInfoResponse } from "@andamiojs/datum-utils";
+import { type AggregateUserInfoResponse } from "@andamiojs/datum-utils";
 import Loading from "~/components/common/loading";
 
 export function Overview({

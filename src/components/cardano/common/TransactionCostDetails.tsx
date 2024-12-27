@@ -1,4 +1,5 @@
-
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { deserializeTx } from "@meshsdk/core-csl";
 import { useEffect, useState } from "react";
@@ -113,13 +114,13 @@ export default function TransactionCostDetails({ unsignedTxCBOR, costBreakdown }
     void fetchTxDetails();
   }, [unsignedTxCBOR, costBreakdown]);
 
-  // Calculate total cost to user - should match what they see as net delta of tx when signing in wallet 
+  // Calculate total cost to user - should match what they see as net delta of tx when signing in wallet
   useEffect(() => {
     const _total = (txFeeDetails?.reduce((sum, detail) => sum + (detail?.lovelaceAmount ?? 0), 0) ?? 0)
       + (cardanoTxFee ?? 0)
       + (costBreakdown.andamioNetworkFee)
     setTotal(_total / 1000000)
-  }, [txFeeDetails, costBreakdown])
+  }, [txFeeDetails, costBreakdown, cardanoTxFee])
 
   if (!connected) return
 

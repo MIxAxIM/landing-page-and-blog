@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "~/components/ui/form";
 import FormInput from "~/components/form/form-input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import DialogForm from "~/components/form/dialog-form";
 import { useSession } from "next-auth/react";
@@ -25,7 +25,7 @@ export default function DialogInitializeProject({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: sessionData } = useSession()
-  const { translate, translatePlural, translateCaps, translateCapsPlural } = useTerminology()
+  const { translate, translateCaps, translateCapsPlural } = useTerminology()
 
   const {
     initializeTreasuryWithEscrow,

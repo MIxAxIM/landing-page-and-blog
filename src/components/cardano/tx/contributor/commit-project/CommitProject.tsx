@@ -3,8 +3,9 @@ import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 export default function CommitProject({
   taskCommitmentId,
@@ -105,6 +106,8 @@ export default function CommitProject({
       </div>
     );
   }
+
+  if (isLoading) return <LoadingCircle />
 
   return (
     <div className="flex flex-col w-full mx-auto">

@@ -1,13 +1,13 @@
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAddress, useWallet } from "@meshsdk/react";
+import { useWallet } from "@meshsdk/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
 import FormLabel from "~/components/form/form-label";
-import { ContributorPrerequisite } from "~/types/db";
+import { type ContributorPrerequisite } from "~/types/db";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";

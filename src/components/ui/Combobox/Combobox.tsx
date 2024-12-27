@@ -45,7 +45,7 @@ export const ComboBox = ({
       switch (type) {
         case stateChangeTypes.InputChange: {
           const filteredEnabledItems = filterItems(
-            changes.inputValue || prev.inputValue,
+            changes.inputValue ?? prev.inputValue,
             items
           ).filter(({ disabled }) => !disabled);
           const highlightedIndex =
@@ -68,7 +68,7 @@ export const ComboBox = ({
         case stateChangeTypes.InputClick:
         case stateChangeTypes.InputKeyDownEnter:
         case stateChangeTypes.InputKeyDownEscape: {
-          if (changes.isOpen || !prev.isOpen)
+          if (changes.isOpen ?? !prev.isOpen)
             return {
               ...changes,
               inputValue: prev.inputValue,
@@ -78,7 +78,7 @@ export const ComboBox = ({
             return { ...changes, inputValue: '', selectedItem: null };
 
           const inputValue =
-            changes.selectedItem?.label || prev.selectedItem?.label || '';
+            changes.selectedItem?.label ?? prev.selectedItem?.label ?? '';
           return { ...changes, inputValue };
         }
 
@@ -106,7 +106,7 @@ export const ComboBox = ({
 
     selectedItem:
       typeof value !== 'undefined'
-        ? items.find(item => item.value === value) || null
+        ? items.find(item => item.value === value) ?? null
         : undefined,
     onSelectedItemChange: ({ selectedItem }) =>
       onValueChange?.(selectedItem?.value || null),

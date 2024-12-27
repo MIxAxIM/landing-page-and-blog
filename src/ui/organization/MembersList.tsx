@@ -24,6 +24,8 @@ export default function MembersList({ organizationId }: { organizationId: string
   const { members, addMember } = useOrganizationMembers(organizationId);
   const [isAddingMember, setIsAddingMember] = useState(false);
 
+  // TODO: Implement addMember
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">

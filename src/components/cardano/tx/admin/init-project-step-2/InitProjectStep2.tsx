@@ -5,10 +5,11 @@ import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import TransactionPlaceholderComponent from "~/components/placeholders/TransactionPlaceholderComponent";
-import { ContributorPrerequisite } from "~/types/db";
+import { type ContributorPrerequisite } from "~/types/db";
 import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import { useContributorPrerequisite } from "~/hooks/db/contribution/useContributorPrerequisite";
 import TransactionLoading from "~/components/cardano/common/TransactionLoading";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 export default function InitProjectStep2({
   projectNftPolicyId,
@@ -57,6 +58,8 @@ export default function InitProjectStep2({
       }
     }
   }
+
+  if (isUpdating) return <LoadingCircle />
 
   return (
     <TransactionPlaceholderComponent name="StepFourAddPrereqs">

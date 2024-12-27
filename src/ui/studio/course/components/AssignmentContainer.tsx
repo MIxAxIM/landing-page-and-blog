@@ -1,4 +1,3 @@
-import { Card } from "~/components/ui/card";
 import { type Assignment } from "~/types/db";
 
 export default function AssignmentContainer({

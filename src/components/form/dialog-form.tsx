@@ -32,7 +32,7 @@ export default function DialogForm({
 }: {
   children: React.ReactNode;
   openButton: string;
-  openButtonIntent: "module" | "default" | "dialog" | "delete";
+  openButtonIntent: "default" | "dialog" | "delete";
   openButtonSize?: "sm" | "md" | "lg" | "xl";
   title: string;
   description?: string;

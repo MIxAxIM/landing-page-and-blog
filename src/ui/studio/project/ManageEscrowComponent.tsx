@@ -7,7 +7,6 @@ import EscrowUtxoTable from "./EscrowUtxoTable";
 import EnrolledContributors from "./EnrolledContributors";
 import ProjectAcceptanceCriteria from "./ProjectAcceptanceCriteria";
 import ProjectTreasuryBalance from "./ProjectTreasuryBalance";
-import MintProjectTokenDialog from "~/components/cardano/tx/project-creator/mint-treasury-token/MintProjectTokenDialog";
 import ManageTreasuryTokenDialog from "~/components/cardano/tx/project-creator/manage-treasury-token/ManageTreasuryTokenDialog";
 import ProjectFundingSummaryTable from "./ProjectFundingSummaryTable";
 import { useTaskStatusCheck } from "~/hooks/cardano-indexer-api/polling/useTaskStatusCheck";
@@ -15,6 +14,7 @@ import ContributorPrerequisites from "./ContributorPrerequisites";
 import { usePrerequisitePolicyCheck } from "~/hooks/cardano-indexer-api/polling/usePrerequisitePolicyCheck";
 import DialogTaskSimple from "./components/dialogs/DialogTaskSimple";
 import ProjectTaskManagementList from "./components/lists/ProjectTaskManagementList";
+import MintProjectTokenDialog from "~/components/cardano/tx/project-creator/mint-project-token/MintProjectTokenDialog";
 
 
 export default function ManageEscrowComponent({

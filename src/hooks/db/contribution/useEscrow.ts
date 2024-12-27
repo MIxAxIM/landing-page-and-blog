@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { TreasuryEscrowSummary, type Escrow } from "~/types/db";
+import type { TreasuryEscrowSummary, Escrow } from "~/types/db";
 
 type CreateEscrowInput = {
   title?: string;

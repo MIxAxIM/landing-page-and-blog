@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { type Treasury, CoursePublic, OrganizationRelationship } from "~/types/db";
+import type { Treasury, CoursePublic, OrganizationRelationship } from "~/types/db";
 import { useSession } from "next-auth/react";
 
 interface UserRelationships {

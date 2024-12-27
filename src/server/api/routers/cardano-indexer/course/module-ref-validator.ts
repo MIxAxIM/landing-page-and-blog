@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { DecodedModuleRefDatum } from "@andamiojs/datum-utils";
+import { type DecodedModuleRefDatum } from "@andamiojs/datum-utils";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { hexToString } from "@meshsdk/common";
 
 type ModuleRefQueryParams = {
@@ -29,6 +28,7 @@ export type ModuleRefUtxo = {
 
 
 export const moduleRefValidatorRouter = createTRPCRouter({
+  // TODO: We can probably do without this endpoint. It is currently reference twice. Try to replace these refernces with getDecodedDatum
   getUtxos: protectedProcedure
     .input(
       z.object({

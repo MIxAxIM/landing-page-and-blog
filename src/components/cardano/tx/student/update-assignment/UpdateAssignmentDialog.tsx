@@ -38,6 +38,7 @@ export default function UpdateAssignmentDialog({
 
   return (
     <>
+      {isLearnerCommitted && <p>You are already committed to this assignment</p>}
       {!isAssignmentOnchain ? (
         <p>Assignment {assignmentCode} is not published on chain</p>
       ) : (
@@ -77,7 +78,6 @@ export default function UpdateAssignmentDialog({
 
                 <UpdateAssignment
                   assignmentCommitmentId={assignmentCommitmentId}
-                  courseCode={courseCode}
                   evidenceHash={networkEvidenceHash}
                 />
               </div>

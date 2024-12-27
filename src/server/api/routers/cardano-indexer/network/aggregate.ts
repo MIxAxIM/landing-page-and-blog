@@ -1,4 +1,4 @@
-import { AggregateUserInfoResponse } from "@andamiojs/datum-utils";
+import { type AggregateUserInfoResponse } from "@andamiojs/datum-utils";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";

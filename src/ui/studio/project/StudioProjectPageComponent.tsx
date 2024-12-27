@@ -17,7 +17,6 @@ export default function StudioProjectPage({
   const { accessTokenAlias } = useAccessToken()
   const { aggregateUserInfo } = useAggregateUserInfo()
   const [isManager, setIsManager] = useState<boolean>(false)
-  const [isContributor, setIsContributor] = useState<boolean>(false)
   const { enableContributionManager } = useRoles()
 
   useEffect(() => {
@@ -30,9 +29,6 @@ export default function StudioProjectPage({
     if (aggregateUserInfo?.alias === accessTokenAlias) {
       if (aggregateUserInfo?.manager.includes(treasuryNftPolicyId)) {
         setIsManager(true)
-      }
-      if (aggregateUserInfo?.projects.ongoing.some(p => p.policy === treasuryNftPolicyId)) {
-        setIsContributor(true)
       }
     }
   }, [aggregateUserInfo])

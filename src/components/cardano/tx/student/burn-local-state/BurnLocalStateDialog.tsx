@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { useState } from "react";
 import BurnLocalState from "./BurnLocalState";
 import { useSession } from "next-auth/react";
+import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 
 export default function BurnLocalStateDialog({
   accessTokenAssetId,
@@ -34,13 +35,21 @@ export default function BurnLocalStateDialog({
             </p>
           </div>
           <div className="p-2">
-            <BurnLocalState
-              learnerId={sessionData?.user.learnerId}
-              courseCode={courseCode}
-              accessTokenAssetId={accessTokenAssetId}
-              courseNftPolicyId={courseNftPolicyId}
-              setSuccessTxHash={setSuccessTxHash}
-            />
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName="You are now unenrolled from the course"
+                nextStepLinks={[]}
+                txHash={successTxHash}
+              />
+            ) : (
+              <BurnLocalState
+                learnerId={sessionData?.user.learnerId}
+                courseCode={courseCode}
+                accessTokenAssetId={accessTokenAssetId}
+                courseNftPolicyId={courseNftPolicyId}
+                setSuccessTxHash={setSuccessTxHash}
+              />
+            )}
           </div>
         </div>
       </DialogContent>

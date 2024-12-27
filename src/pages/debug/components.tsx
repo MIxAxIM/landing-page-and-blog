@@ -1,5 +1,4 @@
 import { stringToHex } from "@meshsdk/common";
-import { blake2b } from "@noble/hashes/blake2b";
 
 
 export default function Components() {

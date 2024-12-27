@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useTaskCommitment } from "~/hooks/db/contribution/useTaskCommitment";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function AcceptProject({
   taskCommitmentId,
@@ -22,7 +22,7 @@ export default function AcceptProject({
 }) {
   const { wallet } = useWallet();
 
-  const { updateTaskCommitmentStatus, taskCommitment } = useTaskCommitment({ id: taskCommitmentId });
+  const { updateTaskCommitmentStatus } = useTaskCommitment({ id: taskCommitmentId });
 
   const costBreakdown: CostBreakdown = {
     costDescriptions: [

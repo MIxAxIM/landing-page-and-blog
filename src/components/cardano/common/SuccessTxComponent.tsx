@@ -23,6 +23,9 @@ export default function SuccessTxModalContent({
             <Link href={l.url}>{l.text}</Link>
           </li>
         ))}
+        <li className="ml-3 pl-1 font-semibold hover:text-primary">
+          <Link href="/dashboard">Go to Dashboard</Link>
+        </li>
       </ul>
       <p className="mb-5">
         <Link href={`https://preprod.cardanoscan.io/transaction/${txHash}`}>

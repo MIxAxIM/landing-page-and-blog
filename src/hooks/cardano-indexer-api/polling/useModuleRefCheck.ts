@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { api } from "~/utils/api";
 import { ModuleStatus } from "@prisma/client";
 import useCourseModule from '~/hooks/db/course/useCourseModule';
-import { ModuleRefUtxo } from '~/server/api/routers/cardano-indexer/course/module-ref-validator';
-import { CourseModuleOverview } from '~/types/db';
+import { type ModuleRefUtxo } from '~/server/api/routers/cardano-indexer/course/module-ref-validator';
+import { type CourseModuleOverview } from '~/types/db';
 
 export function useModuleRefCheck(
   courseModule: CourseModuleOverview,

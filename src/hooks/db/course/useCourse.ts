@@ -4,7 +4,7 @@ import { type Course } from "~/types/db";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useRoles } from "~/hooks/app/useRoles";
-import { AccessTier } from "@prisma/client";
+import { type AccessTier } from "@prisma/client";
 
 interface UseCourseReturn {
   course: Course | null | undefined;
@@ -57,7 +57,7 @@ export default function useCourse(courseCode?: string): UseCourseReturn {
       if (courseCode) void ctx.course.getCourse.invalidate({ courseCode: courseCode ?? "" });;
       void ctx.course.getCourses.invalidate();
       void updateCreatorOnboardingStatus(data.createdById, "PARTIAL");
-      router.push(`/studio/${data.id}`);
+      void router.push(`/studio/${data.id}`);
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors;

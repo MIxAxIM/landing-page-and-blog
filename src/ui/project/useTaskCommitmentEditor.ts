@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Content, useEditor } from "@tiptap/react";
+import { type Content, useEditor } from "@tiptap/react";
 import { ExtensionKit } from "~/components/editor/extension-kit";
 import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock";
-import { AssignmentCommitment, TaskCommitment } from "~/types/db";
+import type { AssignmentCommitment, TaskCommitment } from "~/types/db";
 
 export default function useTaskCommitmentEditor({
   taskCommitment,

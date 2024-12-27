@@ -5,8 +5,7 @@ import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { ModuleStatus } from "@prisma/client";
 import useCourseModule from "~/hooks/db/course/useCourseModule";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
-import { useToast } from "~/components/ui/use-toast";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function MintModuleTokens({
   accessTokenAssetId,
@@ -21,8 +20,6 @@ export default function MintModuleTokens({
 }) {
   const { wallet } = useWallet();
   const { updateModuleStatus } = useCourseModule(courseModuleOverview.id);
-  const { toast } = useToast();
-
 
   // Any tx will have a set of outputs.
   // Build a re-usable component where we can match a description to an output index -- this would be helpful for all transactions

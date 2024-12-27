@@ -9,10 +9,11 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
-import { Task } from "~/types/db"
+import { type Task } from "~/types/db"
 import { formatPosixTime } from "~/utils/time";
 import { Button } from "~/components/ui/button";
 import MintProjectToken from "./MintProjectToken";
+import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 
 
 type ContributorPolicies = {
@@ -92,14 +93,24 @@ export default function MintProjectTokenDialog(
             </Table>
           </div>
           <div className="p-2">
-            {!!contributorPolicies[0] && !!datumReadyTasks && (
-              <MintProjectToken
-                treasuryNftPolicyId={treasuryNftPolicyId}
-                contributorsToAdd={[contributorPolicies[0]?.contributorPolicy]}
-                projects={JSON.stringify(datumReadyTasks)}
-                setSuccessTxHash={setSuccessTxHash}
-                taskIds={taskIds}
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName="Project Tasks are now published on-chain"
+                nextStepLinks={[]}
+                txHash={successTxHash}
               />
+            ) : (
+              <>
+                {!!contributorPolicies[0] && !!datumReadyTasks && (
+                  <MintProjectToken
+                    treasuryNftPolicyId={treasuryNftPolicyId}
+                    contributorsToAdd={[contributorPolicies[0]?.contributorPolicy]}
+                    projects={JSON.stringify(datumReadyTasks)}
+                    setSuccessTxHash={setSuccessTxHash}
+                    taskIds={taskIds}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>

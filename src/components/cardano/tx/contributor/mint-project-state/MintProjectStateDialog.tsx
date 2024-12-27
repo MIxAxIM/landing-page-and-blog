@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +7,8 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { CardanoWallet, useWallet } from "@meshsdk/react";
+import { useWallet } from "@meshsdk/react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import useGlobalStateDatum from "~/hooks/cardano-indexer-api/network/useGlobalStateDatum";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import MintProjectState from "./MintProjectState";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";

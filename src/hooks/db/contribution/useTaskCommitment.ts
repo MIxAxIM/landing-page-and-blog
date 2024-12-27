@@ -1,5 +1,5 @@
 import { api } from "~/utils/api";
-import { TaskCommitmentStatus } from "@prisma/client";
+import { type TaskCommitmentStatus } from "@prisma/client";
 import toast from "react-hot-toast";
 import { type TaskCommitment } from "~/types/db";
 

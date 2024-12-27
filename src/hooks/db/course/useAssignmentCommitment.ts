@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 import { type AssignmentPrivateStatus, AssignmentNetworkStatus } from "@prisma/client";
-import { AssignmentCommitment } from "~/types/db";
+import { type AssignmentCommitment } from "~/types/db";
 import { useEffect, useState } from "react";
 
 type CreateAssignmentCommitmentInput = {
@@ -51,6 +51,8 @@ interface UseAssignmentCommitmentReturn {
   claimCredentials: (data: { learnerId: string, courseCode: string }) => void;
   isLoadingAssignmentCommitment: boolean;
   isLoadingCommitments: boolean;
+  isLoadingCommitmentsByCourse: boolean;
+  isLoadingCommitmentsByCourseModule: boolean;
   isCreating: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
@@ -283,6 +285,8 @@ export function useAssignmentCommitment({
     assignmentCommitmentsAwaitingApproval,
     isLoadingAssignmentCommitment,
     isLoadingCommitments,
+    isLoadingCommitmentsByCourse,
+    isLoadingCommitmentsByCourseModule,
     error,
 
     // Mutation states

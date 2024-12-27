@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { api } from "~/utils/api";
 import { AssignmentNetworkStatus } from "@prisma/client";
 import { useAssignmentCommitment } from '~/hooks/db/course/useAssignmentCommitment';
-import { AssignmentCommitment } from '~/types/db';
-import { AggregateUserInfoResponse, DecodedAssignmentDecisionDatum } from '@andamiojs/datum-utils';
+import { type AssignmentCommitment } from '~/types/db';
+import { type DecodedAssignmentDecisionDatum } from '@andamiojs/datum-utils';
 import useAggregateUserInfo from "../network/useAggregateUserInfo";
 
 type UpdateFunction = (params: {
@@ -128,7 +128,7 @@ export function useAssignmentCommitmentStatusCheck(courseCode: string, courseNft
       );
     }
 
-  }, [pendingAssignmentCommitments, decodedCourseAssignmentDatum]);
+  }, [pendingAssignmentCommitments, decodedCourseAssignmentDatum, aggregateUserInfo, updateNetworkStatus]);
 
   return { isChecking, isLoading };
 }

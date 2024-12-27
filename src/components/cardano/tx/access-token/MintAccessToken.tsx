@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useSession } from "next-auth/react";
 
 // TODO: Add polling
@@ -11,12 +11,10 @@ import { useSession } from "next-auth/react";
 export default function MintAccessToken({
   userAddress,
   alias,
-  successTxHash,
   setSuccessTxHash,
 }: {
   userAddress: string;
   alias: string;
-  successTxHash: string | undefined;
   setSuccessTxHash: Dispatch<SetStateAction<string | undefined>>;
 }) {
   const { wallet } = useWallet();

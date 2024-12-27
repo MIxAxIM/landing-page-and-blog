@@ -1,7 +1,7 @@
 import { useWallet } from "@meshsdk/react";
 import { type Dispatch, type SetStateAction } from "react";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import useCourseByPolicyId from "~/hooks/cardano-indexer-api/course/useCourseByPolicyId";
 import { api } from "~/utils/api";
 

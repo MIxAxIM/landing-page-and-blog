@@ -73,7 +73,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       // Invalidate both the specific treasury and the full treasury list
       if (id) void ctx.treasury.getTreasuryById.invalidate(id);
       void ctx.treasury.getTreasuries.invalidate();
-      router.push(`/app/projects`)
+      void router.push(`/app/projects`)
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors;
@@ -96,7 +96,7 @@ export function useTreasury(id?: string): UseTreasuryReturn {
       if (id) void ctx.treasury.getTreasuryById.invalidate(id);
       void ctx.treasury.getTreasuries.invalidate();
       void updateTreasuryManagerOnboardingStatus(data.treasury.treasuryOwnerId, "PARTIAL")
-      router.push(`/app/projects/preview/${data.escrow.id}`)
+      void router.push(`/app/projects/preview/${data.escrow.id}`)
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors;

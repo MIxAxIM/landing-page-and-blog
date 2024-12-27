@@ -1,8 +1,6 @@
-
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import SideMenu from "~/components/navigation/SideMenu";
 import AppButtons from "./AppButtons";
 import MenuBar from "~/ui/landing/MenuBar";
 

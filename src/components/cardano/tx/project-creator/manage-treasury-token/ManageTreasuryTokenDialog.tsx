@@ -10,10 +10,11 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
-import { Task } from "~/types/db"
+import { type Task } from "~/types/db"
 import { formatPosixTime } from "~/utils/time";
 import { Button } from "~/components/ui/button";
 import ManageTreasuryToken from "./ManageTreasuryToken";
+import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 
 type ContributorPolicies = {
   contributorPolicy: string;
@@ -87,14 +88,26 @@ export default function ManageTreasuryTokenDialog(
             </Table>
           </div>
           <div className="p-2">
-            {!!contributorPolicies[0] && !!datumReadyTasks && (
-              <ManageTreasuryToken
-                treasuryNftPolicyId={treasuryNftPolicyId}
-                contributorsToAdd={[contributorPolicies[0]?.contributorPolicy]}
-                projects={JSON.stringify(datumReadyTasks)}
-                setSuccessTxHash={setSuccessTxHash}
-                taskIds={taskIds}
+          </div>
+          <div className="p-2">
+            {successTxHash ? (
+              <SuccessTxModalContent
+                txName="Tasks Published"
+                nextStepLinks={[]}
+                txHash={successTxHash}
               />
+            ) : (
+              <>
+                {!!contributorPolicies[0] && !!datumReadyTasks && (
+                  <ManageTreasuryToken
+                    treasuryNftPolicyId={treasuryNftPolicyId}
+                    contributorsToAdd={[contributorPolicies[0]?.contributorPolicy]}
+                    projects={JSON.stringify(datumReadyTasks)}
+                    setSuccessTxHash={setSuccessTxHash}
+                    taskIds={taskIds}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>

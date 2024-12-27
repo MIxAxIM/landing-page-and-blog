@@ -24,7 +24,7 @@ export default function ProjectTaskCommitmentPage() {
   const result = taskCommitmentParamsSchema.safeParse(router.query);
   if (!result.success) {
     // Handle invalid params - could redirect or show error
-    router.push('/404');
+    void router.push('/404');
     return null;
   }
   const { treasurynft, projecthash } = result.data;

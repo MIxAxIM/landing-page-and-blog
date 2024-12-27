@@ -4,18 +4,16 @@ import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessTok
 import { api } from "~/utils/api";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function CommitToAssignment({
-  courseCode,
   assignmentCode,
   assignmentCommitmentId,
   isCommitted,
   networkEvidenceHash,
   courseNftPolicyId,
 }: {
-  courseCode: string;
   assignmentCode: string;
   assignmentCommitmentId: string;
   isCommitted: boolean;

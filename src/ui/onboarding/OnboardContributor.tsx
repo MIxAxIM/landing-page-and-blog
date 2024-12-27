@@ -7,7 +7,7 @@ export default function OnboardContributor() {
   const { enableContributor, getContributor, updateContributorOnboardingStatus } = useRoles()
 
   const { data: contributorStatus } = getContributor()
-  const { translateCaps, translateCapsPlural } = useTerminology()
+  const { translateCapsPlural } = useTerminology()
 
   return (
 

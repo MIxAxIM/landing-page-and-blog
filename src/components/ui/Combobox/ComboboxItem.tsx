@@ -24,7 +24,7 @@ export const ComboboxItem = ({
     () => ({ disabled, label, value }),
     [disabled, label, value]
   );
-  const index = (filteredItems || []).findIndex(
+  const index = (filteredItems ?? []).findIndex(
     item => item.value.toLowerCase() === value.toLowerCase()
   );
   if (index < 0) return null;
@@ -40,7 +40,7 @@ export const ComboboxItem = ({
       )}
       {...getItemProps?.({ item, index })}
     >
-      {children || (
+      {children ?? (
         <>
           <span className='text-sm text-foreground'>{label}</span>
           {isSelected && (

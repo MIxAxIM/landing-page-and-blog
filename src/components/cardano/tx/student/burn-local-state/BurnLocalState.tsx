@@ -2,7 +2,7 @@ import { useWallet } from "@meshsdk/react";
 import TransactionContainer from "~/components/cardano/common/TransactionContainer";
 import { type Dispatch, type SetStateAction } from "react";
 import { api } from "~/utils/api";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 
 export default function BurnLocalState({

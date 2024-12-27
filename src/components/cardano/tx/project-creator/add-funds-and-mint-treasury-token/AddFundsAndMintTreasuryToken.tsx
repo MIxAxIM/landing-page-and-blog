@@ -4,7 +4,7 @@ import TransactionContainer from "~/components/cardano/common/TransactionContain
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
 import { useWallet } from "@meshsdk/react";
 import { useTask } from "~/hooks/db/contribution/useTask";
-import TransactionCostDetails, { CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
+import TransactionCostDetails, { type CostBreakdown } from "~/components/cardano/common/TransactionCostDetails";
 
 export default function AddFundsAndMintTreasuryToken({
   treasuryNftPolicyId,
@@ -63,6 +63,14 @@ export default function AddFundsAndMintTreasuryToken({
       <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
         <h2>Transaction Error</h2>
         <p>{txError.message}</p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mx-4 flex items-center justify-center rounded-md border px-4 py-3 font-mono text-sm">
+        <h2>Loading...</h2>
       </div>
     );
   }

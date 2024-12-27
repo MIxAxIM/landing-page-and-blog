@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Card, CardContent } from "~/components/ui/card";
 
 import AssignmentBadges from "~/components/ui/assignment-badges";
 import DialogAssignmentLearnerStatus from "~/ui/course/components/assignments/dialogs/DialogAssignmentLearnerStatus";

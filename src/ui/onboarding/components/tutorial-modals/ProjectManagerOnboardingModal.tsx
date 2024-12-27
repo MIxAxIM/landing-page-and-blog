@@ -10,7 +10,7 @@ export default function ProjectManagerOnboardingModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const { translate, translateCaps } = useTerminology();
+  const { translateCaps } = useTerminology();
 
 
 
