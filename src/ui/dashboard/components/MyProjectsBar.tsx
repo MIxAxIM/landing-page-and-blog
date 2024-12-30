@@ -4,10 +4,9 @@ import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Loading from "~/components/common/loading";
 import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { useEffect, useState } from "react";
-import {
-  AggregateUserInfoResponse,
-} from "@andamiojs/datum-utils";
+import { type AggregateUserInfoResponse } from "@andamiojs/datum-utils";
 import Image from "next/image";
+import { type Treasury } from "~/types/db";
 
 export function MyProjectsBar({
   aggregateUserInfo,
@@ -15,7 +14,7 @@ export function MyProjectsBar({
   aggregateUserInfo: AggregateUserInfoResponse | undefined;
 }) {
   const { treasuries, isLoadingTreasuries } = useTreasuries();
-  const [myProjects, setMyProjects] = useState<any>([]);
+  const [myProjects, setMyProjects] = useState<Treasury[]>([]);
 
   useEffect(() => {
     if (aggregateUserInfo) {
@@ -54,7 +53,7 @@ export function MyProjectsBar({
             </div>
           ) : (
             treasuries &&
-            myProjects.map((treasury: any) => (
+            myProjects.map((treasury) => (
               <Link
                 href={`/project/${treasury.treasuryNftPolicyId}`}
                 passHref

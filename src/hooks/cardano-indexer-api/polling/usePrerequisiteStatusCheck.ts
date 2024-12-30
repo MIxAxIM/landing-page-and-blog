@@ -5,7 +5,7 @@ import useCourseModule from '~/hooks/db/course/useCourseModule';
 import { type ModuleRefUtxo } from '~/server/api/routers/cardano-indexer/course/module-ref-validator';
 import { type CourseModuleOverview } from '~/types/db';
 
-export function useModuleRefCheck(
+export function usePrerequisiteStatusCheck(
   courseModule: CourseModuleOverview,
   courseNftPolicyId: string
 ) {

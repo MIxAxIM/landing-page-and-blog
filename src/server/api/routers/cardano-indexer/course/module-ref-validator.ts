@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { z } from "zod";
 import { type DecodedModuleRefDatum } from "@andamiojs/datum-utils";
 
@@ -28,7 +32,6 @@ export type ModuleRefUtxo = {
 
 
 export const moduleRefValidatorRouter = createTRPCRouter({
-  // TODO: We can probably do without this endpoint. It is currently reference twice. Try to replace these refernces with getDecodedDatum
   getUtxos: protectedProcedure
     .input(
       z.object({

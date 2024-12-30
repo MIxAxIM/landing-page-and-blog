@@ -4,10 +4,9 @@ import useCourses from "~/hooks/db/course/useCourses";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Loading from "~/components/common/loading";
 import { useEffect, useState } from "react";
-import {
-  AggregateUserInfoResponse,
-} from "@andamiojs/datum-utils";
+import { type AggregateUserInfoResponse } from "@andamiojs/datum-utils";
 import Image from "next/image";
+import { type CoursePublic } from "~/types/db";
 
 export function MyCoursesBar({
   aggregateUserInfo,
@@ -15,18 +14,15 @@ export function MyCoursesBar({
   aggregateUserInfo: AggregateUserInfoResponse | undefined;
 }) {
   const { courses, isLoadingCourses } = useCourses();
-  const [myCourses, setMyCourses] = useState<any>([]);
+  const [myCourses, setMyCourses] = useState<CoursePublic[]>([]);
 
   useEffect(() => {
     if (aggregateUserInfo) {
-      const myOnchainCourses = aggregateUserInfo.courses.ongoing.map(
-        (course) => course.policy,
-      );
       if (courses) {
         const myCourses = courses.filter((course) =>
           course.courseNftPolicyId
         );
-        setMyCourses(myCourses);
+        setMyCourses(myCourses ?? []);
       }
     }
   }, [aggregateUserInfo, isLoadingCourses, courses]);
@@ -53,7 +49,7 @@ export function MyCoursesBar({
               </div>
             ) : (
               myCourses.length !== 0 &&
-              myCourses.map((course: any) => (
+              myCourses.map((course) => (
                 <Link
                   href={`/app/course/${course.courseCode}`}
                   passHref
