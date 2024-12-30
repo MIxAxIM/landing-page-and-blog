@@ -1,5 +1,5 @@
 import { z } from "zod";
-import UTxOi from "~/components/cardano/model";
+import type UTxOi from "~/components/cardano/model";
 
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";

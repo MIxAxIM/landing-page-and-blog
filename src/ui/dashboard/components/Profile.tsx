@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export function Profile() {
   const { data: sessionData } = useSession();
@@ -6,7 +7,7 @@ export function Profile() {
     <div className="explore-course-bar flex justify-start px-10">
       <div className="category grid grid-cols-2 items-center gap-4">
         <div className="flex max-w-fit justify-center">
-          <img
+          <Image
             src={
               sessionData?.user.image ?? `images/site/view-3d-businessman.png`
             }

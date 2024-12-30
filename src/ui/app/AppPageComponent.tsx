@@ -3,8 +3,9 @@ import useTreasuries from "~/hooks/db/contribution/useTreasuries";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import Link from "next/link";
 import SearchAndamio from "~/components/search/SearchAndamio";
-import { Treasury } from "~/types/db";
+import type { Treasury } from "~/types/db";
 import useCourses from "~/hooks/db/course/useCourses";
+import Image from "next/image";
 
 export default function AppPageComponent() {
   return (
@@ -50,7 +51,7 @@ export function ExplorecourseBar() {
                   key={course.id}
                   className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
                 >
-                  <img
+                  <Image
                     src={
                       course.imageUrl
                         ? course.imageUrl
@@ -121,7 +122,7 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
           no prerequisite
         </span>
       )} */}
-      <img
+      <Image
         src={`images/sample-covers/2.jpg`}
         alt={treasury.title}
         className="h-40 w-full rounded-t-lg object-cover"

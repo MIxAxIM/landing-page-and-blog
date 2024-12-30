@@ -7,7 +7,7 @@ import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { TaskStatus } from "@prisma/client";
 import { useTerminology } from "~/contexts/terminology-context";
-import { FormValues } from "./config";
+import { type FormValues } from "./config";
 
 interface TaskFormViewProps {
   form: UseFormReturn<FormValues>;

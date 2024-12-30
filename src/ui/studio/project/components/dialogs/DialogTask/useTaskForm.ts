@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import type { Task, Escrow } from "~/types/db";
 import { TaskStatus } from "@prisma/client";
-import { FormSchema, FormValues, MIN_ADA, getMinDate } from "./config";
+import { FormSchema, type FormValues, MIN_ADA, getMinDate } from "./config";
 
 interface UseTaskFormProps {
   task: Task | null | undefined;

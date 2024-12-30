@@ -63,10 +63,6 @@ export default function PageCourse({
 
   const setCourseVariant = useCourseStore((state) => state.setCourseVariant);
 
-  if (course === null) {
-    return <Loading />;
-  }
-
   const _courseCode = courseCode ?? course?.courseCode;
 
   function getCourse() {
@@ -102,6 +98,10 @@ export default function PageCourse({
         <h1>Course not found</h1>
       </CourseLayout>
     );
+  }
+
+  if (course === null) {
+    return <Loading />;
   }
 
   return (

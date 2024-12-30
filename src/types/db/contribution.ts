@@ -1,4 +1,4 @@
-import { PrerequisiteStatus, Prisma, TaskCommitmentStatus, type TaskStatus } from "@prisma/client";
+import type { PrerequisiteStatus, Prisma, TaskCommitmentStatus, TaskStatus } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 export type TreasuryOwner = RouterOutputs["treasuryOwner"]["getTreasuryOwnerByUser"]

@@ -15,6 +15,7 @@ export type TerminologySkin = {
   [K in TerminologyKeys]: string;
 };
 
+/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 export type TerminologySkins = {
   [key: string]: TerminologySkin;
 };

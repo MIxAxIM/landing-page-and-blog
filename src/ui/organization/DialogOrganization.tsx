@@ -38,7 +38,7 @@ export default function DialogOrganization({ openButtonSize }: { openButtonSize?
       {
         name: data.name,
         description: data.description,
-        imageUrl: data.imageUrl || undefined,
+        imageUrl: data.imageUrl ?? undefined,
       },
       {
         onSuccess: () => {

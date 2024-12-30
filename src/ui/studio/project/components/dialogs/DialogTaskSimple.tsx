@@ -18,7 +18,7 @@ import { Calendar } from "~/components/ui/calendar";
 import { format, startOfDay } from "date-fns";
 import { Button } from "~/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { Task, type Escrow } from "~/types/db";
+import type { Task, Escrow } from "~/types/db";
 import { useTerminology } from "~/contexts/terminology-context";
 
 // Validation constants
@@ -152,11 +152,13 @@ export default function DialogTaskSimple({
     },
   });
 
+  const { reset, setValue } = form;
+
   // Effect: Handle specified escrow on open
   useEffect(() => {
     if (!!escrow && isOpen && !hasLoadedCriteria) {
       if (escrow?.savedAcceptanceCriteria?.length) {
-        form.setValue(
+        setValue(
           "acceptanceCriteria",
           escrow.savedAcceptanceCriteria.filter(
             (criteria) => criteria.trim() !== "",
@@ -166,13 +168,13 @@ export default function DialogTaskSimple({
         setHasLoadedCriteria(true);
       }
     }
-  }, [escrow, isOpen, hasLoadedCriteria]);
+  }, [escrow, isOpen, hasLoadedCriteria, setValue]);
 
   // Effect: Load task data in edit mode
   useEffect(() => {
     if (task && isEditMode && isOpen) {
 
-      form.reset({
+      reset({
         title: task.title,
         description: task.description,
         acceptanceCriteria: task.acceptanceCriteria,
@@ -180,15 +182,15 @@ export default function DialogTaskSimple({
         expirationTime: new Date(parseInt(task.expirationTime)),
       });
     }
-  }, [task, isEditMode, isOpen]);
+  }, [task, isEditMode, isOpen, reset]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      form.reset();
+      reset();
       setHasLoadedCriteria(false);
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");

@@ -42,7 +42,7 @@ const SubscriptionSuccess = () => {
   }
 
   if (subscription.status === 'active') {
-    router.push("/dashboard/subscription")
+    void router.push("/dashboard/subscription")
   }
 
   // Handle other potential states

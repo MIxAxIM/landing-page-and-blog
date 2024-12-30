@@ -31,15 +31,13 @@ export default function DialogUpdateTreasury({
   const [isOpen, setIsOpen] = useState(false);
   const isEditMode = !!treasuryId;
   const { data: sessionData } = useSession()
-  const { translate, translatePlural, translateCaps, translateCapsPlural } = useTerminology()
+  const { translate, translateCaps, translateCapsPlural } = useTerminology()
 
   const {
     treasury,
-    createTreasury,
     updateTreasury,
     isCreating,
     isUpdating,
-    isLoading: isTreasuryLoading,
     treasuryError,
   } = useTreasury(treasuryId ?? undefined);
 
@@ -53,17 +51,19 @@ export default function DialogUpdateTreasury({
     },
   });
 
+  const { reset } = form;
+
   // Update form when treasury data is loaded
   useEffect(() => {
     if (treasury && isEditMode) {
-      form.reset({
+      reset({
         title: treasury.title,
         description: treasury.description ?? "",
         imageUrl: treasury.imageUrl ?? "",
         videoUrl: treasury.videoUrl ?? "",
       });
     }
-  }, [treasury, isEditMode]);
+  }, [treasury, isEditMode, reset]);
 
   const onSubmit = async (data: FormValues) => {
     if (!!treasury) {

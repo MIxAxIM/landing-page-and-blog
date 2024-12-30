@@ -59,7 +59,6 @@ export default function PageCourse({ courseCode }: { courseCode: string }) {
                   {!!accessTokenAlias && (
                     <>
                       <TeacherSection
-                        accessTokenAlias={accessTokenAlias}
                         courseCode={course.courseCode}
                       />
                     </>

@@ -20,8 +20,6 @@ export const formatPosixTime = (posixTimeStr: string): string => {
   const year = date.getUTCFullYear();
   const month = pad(date.getUTCMonth() + 1); // getMonth() is 0-based
   const day = pad(date.getUTCDate());
-  const hours = pad(date.getUTCHours());
-  const minutes = pad(date.getUTCMinutes());
 
   return `${year}-${month}-${day}`;
 };

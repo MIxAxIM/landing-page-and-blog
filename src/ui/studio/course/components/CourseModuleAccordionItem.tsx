@@ -30,7 +30,7 @@ export default function CourseModuleAccordionItem({
     moduleCode: cm.moduleCode,
     courseNftPolicyId: courseNftPolicyId,
   });
-  const { isChecking, moduleRefUtxos } = useModuleRefCheck(cm, courseNftPolicyId);
+  const { isChecking } = useModuleRefCheck(cm, courseNftPolicyId);
 
   const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false);
 

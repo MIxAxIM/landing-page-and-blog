@@ -4,7 +4,7 @@ import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { TreasuryInfo } from "~/types/db";
+import { type TreasuryInfo } from "~/types/db";
 
 // TODO: Implement helpful queries using the flexible /treasury/utxos endpoint
 

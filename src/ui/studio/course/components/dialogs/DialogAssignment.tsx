@@ -115,6 +115,8 @@ export default function DialogAssignment({
     },
   });
 
+  const { reset } = form;
+
   function onSubmit(data: FieldValues) {
     if (assignment) {
       assignmentUpdate({
@@ -134,13 +136,13 @@ export default function DialogAssignment({
   }
 
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       assignmentCode:
         assignment?.assignmentCode ?? `${courseModule.moduleCode}`,
       assignmentTitle: assignment?.title ?? "",
       sltIds: assignment?.slts.map((s) => s.id) ?? [],
     });
-  }, [assignment, courseModule]);
+  }, [assignment, courseModule, reset]);
 
   useEffect(() => {
     resetForm();

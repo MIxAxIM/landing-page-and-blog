@@ -1,17 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { formatPosixTime } from "~/utils/time";
 import { TaskStatus } from "@prisma/client";
-import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
+import { type SortConfig } from "~/types/sorting";
+import { type ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
-import { ProjectDatum, Task, type Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { Card } from "~/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { CheckCircledIcon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { ChatContainer } from "~/components/chat/chat-container";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
@@ -21,12 +20,10 @@ export default function ProjectTaskContributionList({
   treasuryNftPolicyId,
   showFilters = true,
   className = "",
-  networkTasks,
 }: {
   treasuryNftPolicyId: string;
   showFilters?: boolean;
   className?: string;
-  networkTasks?: ProjectDatum[]
 }) {
   type StatusFilter =
     | { type: 'task', status: TaskStatus }
@@ -94,12 +91,12 @@ export default function ProjectTaskContributionList({
     });
 
   // Sort handler
-  const requestSort = useCallback((key: TaskSortKey) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }, []);
+  //const requestSort = useCallback((key: TaskSortKey) => {
+  //  setSortConfig((prev) => ({
+  //    key,
+  //    direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+  //  }));
+  //}, []);
 
   const validateNetworkTask = (taskHash: string) => {
     return treasuryInfo?.projects?.find((networkTask) => networkTask.project_hash === taskHash);
@@ -220,6 +217,12 @@ export default function ProjectTaskContributionList({
             </Card>
           ))
         )}
+        <Button onClick={() => setSortConfig(
+          {
+            key: "index",
+            direction: "desc",
+          }
+        )}>Desc</Button>
       </div>
     </div >
   );

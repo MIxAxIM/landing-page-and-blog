@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Treasury } from "~/types/db";
+import type { Treasury } from "~/types/db";
 
 export function ProjectImageSelect({
   treasury,
@@ -44,7 +45,7 @@ export function ProjectImageSelect({
               not yet qualified
             </span>
           )}
-          <img
+          <Image
             src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
             alt={treasury.title}
             className="h-52 w-full rounded-t-lg object-cover"

@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { ProjectDatum } from "~/types/db"
+import { type ProjectDatum } from "~/types/db"
 import CopyableHash from "~/components/ui/CopyableHash"
 
 export default function ProjectTable({ projects }: { projects: ProjectDatum[] }) {

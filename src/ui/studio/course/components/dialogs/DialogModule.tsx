@@ -194,6 +194,8 @@ export default function DialogModule({
     }
   }
 
+  const { reset } = form;
+
   // Given a list of currentModuleCodes like this:
   // currentModuleCodes = ["101", "102", "201", "301", "302"]
   // Create a set of options in a drop-down menu for moduleCode, in the format
@@ -223,13 +225,13 @@ export default function DialogModule({
   }, [moduleDialogOpen, courseModuleOverviews, currentCourseModule, course]);
 
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       moduleCode: moduleCode ?? "",
       title: currentCourseModule?.title ?? "",
       description: currentCourseModule?.description ?? "",
       releaseDate: currentCourseModule?.releaseDate ?? undefined,
     });
-  }, [currentCourseModule, moduleCode]);
+  }, [currentCourseModule, moduleCode, reset]);
 
   useEffect(() => {
     resetForm();

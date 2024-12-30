@@ -1,9 +1,8 @@
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { type UtxoWithSlot } from "@maestro-org/typescript-sdk";
 
 import { indexerGetWithParams } from "~/lib/axios/indexer";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
-
-// TODO: Add remaining filters 2024-12-04
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const instanceValidatorRouter = createTRPCRouter({
   getInstancesInfo: publicProcedure.query(async () => {

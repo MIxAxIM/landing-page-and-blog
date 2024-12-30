@@ -1,11 +1,11 @@
 
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+import { type UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { z } from "zod";
 
 import { indexerGetWithParams } from "~/lib/axios/indexer";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-// TODO: Add remaining filters 2024-12-04
+// TODO: Use other filters as shown in API docs
 
 export const governanceValidatorRouter = createTRPCRouter({
   getGovernanceValidatorUtxos: publicProcedure

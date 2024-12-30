@@ -20,7 +20,7 @@ export default function PublicTaskPageComponent({ projectHash }: { projectHash: 
   const { data: sessionData } = useSession();
   // TODO: Add the new task query here
   const { task } = useTask({ projectHash: projectHash })
-  const { translateCaps, translateCapsPlural } = useTerminology()
+  const { translateCaps } = useTerminology()
   const { taskCommitments } = useTaskCommitment({ taskId: task?.id, contributorId: sessionData?.user?.contributorId, status: "COMMITMENT_ACCEPTED" });
   const { treasury } = useTreasury(task?.escrow?.treasuryId);
   const { escrowPrerequisites } = useEscrowPrerequisites({

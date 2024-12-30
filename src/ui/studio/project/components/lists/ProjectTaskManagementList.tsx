@@ -1,12 +1,12 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { formatPosixTime } from "~/utils/time";
 import { TaskStatus } from "@prisma/client";
-import { type TaskSortKey, type SortConfig } from "~/types/sorting";
-import { ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
+import { type SortConfig } from "~/types/sorting";
+import { type ConsolidatedCommitmentStatus, TaskStatusFilter, consolidateStatus, consolidatedCommitmentStatuses } from "../filters/TaskStatusFilter";
 import TaskSearch from "../searches/TaskSearch";
 import TaskStatusSelect from "../selection/TaskStatusSelect";
-import { ProjectDatum, Task, type Escrow } from "~/types/db";
+import type { ProjectDatum, Task, Escrow } from "~/types/db";
 import { getNestedValue } from "~/hooks/app/useSort";
 import { Button } from "~/components/ui/button";
 import DialogDeleteTask from "../dialogs/DialogDeleteTask";
@@ -96,12 +96,12 @@ export default function ProjectTaskManagementList({
     });
 
   // Sort handler
-  const requestSort = useCallback((key: TaskSortKey) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }, []);
+  //const requestSort = useCallback((key: TaskSortKey) => {
+  //  setSortConfig((prev) => ({
+  //    key,
+  //    direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+  //  }));
+  //}, []);
 
   const validateNetworkTask = (task: Task) => {
     return networkTasks?.find((networkTask) => networkTask.project_hash === task.taskHash);
@@ -251,6 +251,12 @@ export default function ProjectTaskManagementList({
             </Card>
           ))
         )}
+        <Button onClick={() => setSortConfig(
+          {
+            key: "index",
+            direction: "desc",
+          }
+        )}>Desc</Button>
       </div>
     </div>
   );

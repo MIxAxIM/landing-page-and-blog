@@ -1,7 +1,7 @@
 import { CardanoWallet } from "@meshsdk/react";
 import { useEffect, useState } from "react";
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken";
-import type { Assignment, AssignmentCommitment } from "~/types/db";
+import type { AssignmentCommitment } from "~/types/db";
 import AssignmentEvidenceEditor from "./AssignmentEvidenceEditor";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
 import CommitToAssignmentDialog from "~/components/cardano/tx/student/commit-to-assignment/CommitToAssignmentDialog";

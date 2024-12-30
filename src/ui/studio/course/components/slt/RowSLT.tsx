@@ -159,6 +159,8 @@ export function RowSLT({
     },
   });
 
+  const { reset } = form;
+
   function onSubmit(data: FieldValues) {
     sltTextUpdate({
       id: slt.id,
@@ -168,12 +170,12 @@ export function RowSLT({
     });
   }
   const resetForm = useCallback(() => {
-    if (form && slt.sltText) {
-      form.reset({
+    if (slt.sltText) {
+      reset({
         sltText: slt.sltText,
       });
     }
-  }, [slt]);
+  }, [slt, reset]);
 
   useEffect(() => {
     resetForm();

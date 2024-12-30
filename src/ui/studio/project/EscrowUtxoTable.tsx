@@ -1,7 +1,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { DecodedEscrowUtxo } from "~/server/api/routers/cardano-indexer/project/escrow"
+import { type DecodedEscrowUtxo } from "~/server/api/routers/cardano-indexer/project/escrow"
 import CopyableTruncatedHash from "~/components/ui/CopyableHash"
 import AcceptProjectDialog from "~/components/cardano/tx/project-creator/accept-project/AcceptProjectDialog"
 import { useAccessToken } from "~/hooks/cardano-indexer-api/network/useAccessToken"
@@ -14,7 +14,7 @@ import { usePendingAcceptProjectCheck } from "~/hooks/cardano-indexer-api/pollin
 import { usePendingCommitProjectCheck } from "~/hooks/cardano-indexer-api/polling/usePendingCommitProjectCheck"
 import { usePendingGetRewards } from "~/hooks/cardano-indexer-api/polling/usePendingGetRewards"
 import Link from "next/link"
-import { Content, EditorContent, useEditor } from "@tiptap/react"
+import { type Content, EditorContent, useEditor } from "@tiptap/react"
 import { ExtensionKit } from "~/components/editor/extension-kit"
 import { EditableCodeBlock } from "~/components/editor/extensions/CodeBlock"
 import { usePendingAddInfoCheck } from "~/hooks/cardano-indexer-api/polling/usePendingAddInfoCheck"

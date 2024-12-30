@@ -4,10 +4,8 @@ import useCourse from "~/hooks/db/course/useCourse";
 import { useAssignmentCommitmentStatusCheck } from "~/hooks/cardano-indexer-api/polling/useAssignmentCommitmentStatusCheck";
 
 export default function TeacherSection({
-  accessTokenAlias,
   courseCode,
 }: {
-  accessTokenAlias: string;
   courseCode: string;
 }) {
   const { course } = useCourse(courseCode);

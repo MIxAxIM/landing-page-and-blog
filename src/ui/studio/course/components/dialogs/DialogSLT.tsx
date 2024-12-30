@@ -67,6 +67,8 @@ export default function DialogSLT({
     },
   });
 
+  const { reset } = form;
+
   function onSubmit(data: FieldValues) {
     sltCreate({
       moduleId: currentModule.id,
@@ -75,11 +77,11 @@ export default function DialogSLT({
     });
   }
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       sltText: "",
       moduleId: currentModule.id ?? "",
     });
-  }, [currentModule]);
+  }, [currentModule, reset]);
 
   useEffect(() => {
     resetForm();

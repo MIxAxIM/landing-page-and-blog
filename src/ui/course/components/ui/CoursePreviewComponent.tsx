@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import Loading from "~/components/common/loading";
@@ -20,7 +21,7 @@ export default function CoursePreviewComponent({ courseCode }: { courseCode: str
 
           {/* Image & Description */}
           <div className="mb-8 flex flex-col items-center space-y-4 md:flex-row md:space-x-8 md:space-y-0">
-            <img
+            <Image
               src="https://via.placeholder.com/400x300"
               alt="Course 1"
               className="max-w-sm rounded-lg shadow-md"

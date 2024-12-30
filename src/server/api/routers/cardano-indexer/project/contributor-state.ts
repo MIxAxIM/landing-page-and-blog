@@ -1,4 +1,4 @@
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+import { type UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGet } from "~/lib/axios/indexer";

@@ -80,6 +80,8 @@ export default function DialogCourse({ course }: { course?: Course }) {
     },
   });
 
+  const { reset } = form;
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (course) {
       update({
@@ -104,7 +106,7 @@ export default function DialogCourse({ course }: { course?: Course }) {
   }
 
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       courseCode: course?.courseCode,
       title: course?.title,
       description: course?.description ?? "",
@@ -113,13 +115,13 @@ export default function DialogCourse({ course }: { course?: Course }) {
       videoUrl: course?.videoUrl ?? "",
       accessTier: course?.accessTier ?? "HIDDEN",
     });
-  }, [course]);
+  }, [course, reset]);
 
   useEffect(() => {
     if (course) {
       resetForm();
     }
-  }, [course]);
+  }, [course, resetForm]);
 
   const getTitle = useCallback(() => form.getValues("title"), [form]);
 

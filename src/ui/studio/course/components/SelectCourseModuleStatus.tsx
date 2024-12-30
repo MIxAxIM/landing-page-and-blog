@@ -9,7 +9,6 @@ import {
 import { ModuleStatus } from "@prisma/client";
 import { cn } from "~/utils/shadcn";
 import useCourseModule from "~/hooks/db/course/useCourseModule";
-import { SelectLabel } from "@radix-ui/react-select";
 import CopyableTruncatedHash from "~/components/ui/CopyableHash";
 
 const statusStyles = {

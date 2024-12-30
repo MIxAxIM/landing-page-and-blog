@@ -31,7 +31,7 @@ export default function StudioProjectPage({
         setIsManager(true)
       }
     }
-  }, [aggregateUserInfo])
+  }, [aggregateUserInfo, accessTokenAlias, treasuryNftPolicyId]);
 
   // NOTE:
   // MVP - Get the first escrow for the treasuryNftPolicyId, because we only have one escrow per treasuryNftPolicyId

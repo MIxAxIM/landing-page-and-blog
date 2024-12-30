@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { useTask } from "~/hooks/db/contribution/useTask";
 import { Button } from "~/components/ui/button";
-import { Task } from "~/types/db";
+import { type Task } from "~/types/db";
 import { useTerminology } from "~/contexts/terminology-context";
 import { Dialog, DialogTrigger, DialogContent } from "~/components/ui/dialog";
 import { format } from "date-fns";
@@ -60,7 +59,6 @@ export default function DialogDeleteTask({
   id,
 }: TaskDialogProps) {
   // State management
-  const [isOpen, setIsOpen] = useState(false);
 
   const isEditMode = !!id;
 
@@ -95,7 +93,6 @@ export default function DialogDeleteTask({
     try {
       if (!!id) {
         deleteTask(id);
-        setIsOpen(false);
       }
     } catch (error) {
       console.error("Failed to delete task:", error);

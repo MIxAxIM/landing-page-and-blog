@@ -10,7 +10,6 @@ import {
   PlayIcon,
   CheckIcon,
   GlobeIcon,
-  ArchiveIcon,
 } from "@radix-ui/react-icons";
 import { cn } from "~/utils/shadcn";
 import { AssignmentPrivateStatus, AssignmentNetworkStatus } from "@prisma/client";
@@ -149,7 +148,7 @@ export function AssignmentCommitmentStatusIndicator({
   showLabel = false,
 }: AssignmentCommitmentStatusIndicatorProps) {
   const config = networkStatus ? networkStatusConfig[networkStatus] : privateStatusConfig[privateStatus ?? "NOT_STARTED"];
-  const status = networkStatus || privateStatus;
+  const status = networkStatus ?? privateStatus;
 
   return (
     <div className="flex items-center gap-2">
@@ -173,12 +172,11 @@ interface AssignmentCommitmentsSummaryIndicatorProps {
 
 export function AssignmentCommitmentsSummaryIndicator({
   assignmentCommitments,
-  className,
 }: AssignmentCommitmentsSummaryIndicatorProps) {
   // Count commitments by network status if present, otherwise by private status
   const statusCounts = assignmentCommitments.reduce((acc, commitment) => {
-    const status = commitment.networkStatus || commitment.privateStatus;
-    acc[status] = (acc[status] || 0) + 1;
+    const status = commitment.networkStatus ?? commitment.privateStatus;
+    acc[status] = (acc[status] ?? 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 

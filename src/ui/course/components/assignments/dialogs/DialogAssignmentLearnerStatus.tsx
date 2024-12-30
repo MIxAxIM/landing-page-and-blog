@@ -76,6 +76,8 @@ export default function DialogAssignmentLearnerStatus({
     },
   });
 
+  const { reset } = form;
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (assignmentCommitment) {
       updateEvidence({
@@ -93,12 +95,12 @@ export default function DialogAssignmentLearnerStatus({
   }
   const resetForm = useCallback(() => {
     if (assignmentId) {
-      form.reset({
+      reset({
         learnerNotes: assignmentCommitment?.learnerNotes ?? "",
         status: assignmentCommitment?.status ?? "SAVE_FOR_LATER",
       });
     }
-  }, [assignmentId, assignmentCommitment]);
+  }, [assignmentId, assignmentCommitment, reset]);
 
   useEffect(() => {
     resetForm();

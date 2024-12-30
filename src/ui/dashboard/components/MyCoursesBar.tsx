@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {
   AggregateUserInfoResponse,
 } from "@andamiojs/datum-utils";
+import Image from "next/image";
 
 export function MyCoursesBar({
   aggregateUserInfo,
@@ -59,7 +60,7 @@ export function MyCoursesBar({
                   key={course.id}
                   className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
                 >
-                  <img
+                  <Image
                     src={
                       course.imageUrl
                         ? course.imageUrl

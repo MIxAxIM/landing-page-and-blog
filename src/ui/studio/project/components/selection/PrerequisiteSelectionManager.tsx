@@ -54,7 +54,7 @@ export default function PrerequisiteManager({
   }, [unassignedPrerequisites]);
 
   const prerequisiteByValue = useMemo(
-    () => value && unassignedPrerequisites?.find(prereq => prereq.id === value) || null,
+    () => (value && unassignedPrerequisites?.find(prereq => prereq.id === value)) ?? null,
     [value, unassignedPrerequisites]
   );
 

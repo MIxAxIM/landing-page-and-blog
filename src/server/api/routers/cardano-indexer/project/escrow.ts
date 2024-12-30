@@ -1,4 +1,4 @@
-import { DecodedEscrowDatum } from "@andamiojs/datum-utils";
+import { type DecodedEscrowDatum } from "@andamiojs/datum-utils";
 import { hexToString } from "@meshsdk/common";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -81,7 +81,7 @@ export const escrowValidatorRouter = createTRPCRouter({
 
           // Get datum fields safely
           const datumFields = utxo.datum.json.fields;
-          const projectDataFields = datumFields[0]?.fields || [];
+          const projectDataFields = datumFields[0]?.fields ?? [];
 
           return {
             txHash: utxo.tx_hash,
@@ -97,9 +97,9 @@ export const escrowValidatorRouter = createTRPCRouter({
                 lovelace: projectDataFields[2]?.int ?? 0,
                 additionalTokens: projectDataFields[3]?.list ?? [],
               },
-              projectOwner: datumFields[1]?.bytes || '',
-              contributorPolicyId: datumFields[2]?.bytes || '',
-              info: hexToString(datumFields[3]?.fields?.[0]?.bytes || ''),
+              projectOwner: datumFields[1]?.bytes ?? '',
+              contributorPolicyId: datumFields[2]?.bytes ?? '',
+              info: hexToString(datumFields[3]?.fields?.[0]?.bytes ?? ''),
             },
           };
         });
@@ -129,7 +129,7 @@ export const escrowValidatorRouter = createTRPCRouter({
         // But handle the array case safely
         const utxos = response.map((utxo): DecodedEscrowUtxo => {
           const datumFields = utxo.datum.json.fields;
-          const projectDataFields = datumFields[0]?.fields || [];
+          const projectDataFields = datumFields[0]?.fields ?? [];
 
           return {
             txHash: utxo.tx_hash,
@@ -145,9 +145,9 @@ export const escrowValidatorRouter = createTRPCRouter({
                 lovelace: projectDataFields[2]?.int ?? 0,
                 additionalTokens: projectDataFields[3]?.list ?? [],
               },
-              projectOwner: datumFields[1]?.bytes || '',
-              contributorPolicyId: datumFields[2]?.bytes || '',
-              info: hexToString(datumFields[3]?.fields?.[0]?.bytes || ''),
+              projectOwner: datumFields[1]?.bytes ?? '',
+              contributorPolicyId: datumFields[2]?.bytes ?? '',
+              info: hexToString(datumFields[3]?.fields?.[0]?.bytes ?? ''),
             },
           };
         });

@@ -1,13 +1,11 @@
 import useUserRelationships from "~/hooks/app/useUserRelationships";
-import { useTerminology } from "~/contexts/terminology-context";
 import { useEffect, useState } from "react";
 import DialogInitializeProject from "~/ui/onboarding/components/dialogs/DialogInitializeProject";
 import { ProjectImageSelect } from "~/ui/app/components/ProjectImageSelect";
 import PreviewManageEscrowComponent from "./PreviewManageEscrowComponent";
-import { Treasury } from "~/types/db";
+import { type Treasury } from "~/types/db";
 
 export default function ContributionManagerComponent() {
-  const { translateCaps } = useTerminology()
   // db hooks
   const { treasuries } = useUserRelationships()
   const [singletonProject, setSingletonProject] = useState<boolean>(true)

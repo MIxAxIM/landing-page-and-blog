@@ -1,4 +1,4 @@
-import { AssignmentNetworkStatus, AssignmentPrivateStatus, AssignmentStatus, Prisma } from "@prisma/client";
+import type { AssignmentNetworkStatus, AssignmentPrivateStatus, AssignmentStatus, Prisma } from "@prisma/client";
 import { type RouterOutputs } from "~/utils/api";
 
 // Course types

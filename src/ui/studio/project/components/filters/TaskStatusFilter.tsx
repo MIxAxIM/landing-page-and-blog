@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Separator } from "~/components/ui/separator";
-import { TaskStatus, TaskCommitmentStatus } from "@prisma/client";
+import { TaskStatus, type TaskCommitmentStatus } from "@prisma/client";
 import { cn } from "~/utils/shadcn";
 
 // Regular task statuses remain the same

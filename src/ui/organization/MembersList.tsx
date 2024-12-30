@@ -18,13 +18,11 @@ import { Button } from "~/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useOrganizationMembers } from "~/hooks/db/organization/useOrganizationMembers";
 
-// TODO: Implement addMember
-
 export default function MembersList({ organizationId }: { organizationId: string }) {
-  const { members, addMember } = useOrganizationMembers(organizationId);
+  const { members } = useOrganizationMembers(organizationId);
   const [isAddingMember, setIsAddingMember] = useState(false);
 
-  // TODO: Implement addMember
+  // TODO: Implement addMember (from useOrganizationMembers)
 
   return (
     <Card>

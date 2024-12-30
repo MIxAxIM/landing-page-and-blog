@@ -39,7 +39,7 @@ export default function PublicTreasuryLandingPageComponent({
         setIsContributor(true)
       }
     }
-  }, [aggregateUserInfo])
+  }, [aggregateUserInfo, accessTokenAlias, treasuryNftPolicyId]);
 
   const { treasuryEscrows } = useEscrow({ treasuryNftPolicyId });
 

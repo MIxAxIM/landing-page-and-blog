@@ -1,13 +1,12 @@
-import { AssignmentNetworkStatus } from "@prisma/client";
+import { type AssignmentNetworkStatus } from "@prisma/client";
 import { blake2b } from "blakejs";
 import { Lock } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState, useMemo } from "react";
 import ContentEditorSm from "~/components/editor/ContentEditor/editor-sm";
-import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { Button } from "~/components/ui/button";
 import { useAssignmentCommitment } from "~/hooks/db/course/useAssignmentCommitment";
-import { AssignmentCommitment, TaskCommitment } from "~/types/db";
+import type { AssignmentCommitment } from "~/types/db";
 import useTaskCommitmentEditor from "~/ui/project/useTaskCommitmentEditor";
 
 export default function AssignmentEvidenceEditor({
@@ -25,73 +24,80 @@ export default function AssignmentEvidenceEditor({
   evidenceHash: string | undefined,
   setEvidenceHash: Dispatch<SetStateAction<string | undefined>>
 }) {
-  // easier to build the editor after we know the task id!
-  const { editor } = useTaskCommitmentEditor({ assignmentCommitment: assignmentCommitment, editable: !lock });
-  // TODO: create useAssignmentCommitment hook
-  const { createAssignmentCommitment, updateNetworkEvidence } = useAssignmentCommitment({})
+  const { editor } = useTaskCommitmentEditor({
+    assignmentCommitment: assignmentCommitment,
+    editable: !lock
+  });
+  const { createAssignmentCommitment, updateNetworkEvidence } = useAssignmentCommitment({});
   const { data: session } = useSession();
   const [isEditable, setIsEditable] = useState(false);
 
-  useEffect(() => {
-    if (lock || assignmentCommitment?.networkStatus === "AWAITING_EVIDENCE") {
-      const data = editor?.getJSON();
-      if (data) {
-        const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
-        setEvidenceHash(Buffer.from(hash).toString("hex"));
-        if (!!assignmentCommitment) {
-          console.log("UPDATING NETWORK EVIDENCE")
-          updateNetworkEvidence({
-            id: assignmentCommitment?.id ?? "",
-            networkEvidence: data,
-            networkEvidenceHash: Buffer.from(hash).toString("hex"),
-          })
-
-        }
-        else {
-          createAssignmentCommitment({
-            assignmentId: assignmentId ?? "",
-            networkEvidence: data,
-            networkStatus: "AWAITING_EVIDENCE",
-            learnerId: session?.user.learnerId ?? "",
-          })
-        }
-      }
-    }
-  }, [lock, editor]);
-
-  function lockEditor() {
-    if (lock) {
-      setLock(false);
-      return;
-    }
-    setLock(true);
-  }
-
-  const editableStatuses: AssignmentNetworkStatus[] = [
+  // Move editableStatuses to useMemo to prevent recreation on every render
+  const editableStatuses = useMemo<AssignmentNetworkStatus[]>(() => [
     "AWAITING_EVIDENCE",
     "PENDING_TX_COMMITMENT_MADE",
     "PENDING_TX_ADD_INFO",
     "ASSIGNMENT_DENIED",
     "ASSIGNMENT_LEFT"
-  ]
+  ], []);
 
+  // Effect for handling evidence updates
   useEffect(() => {
-    if (!!assignmentCommitment?.networkStatus && editableStatuses.includes(assignmentCommitment?.networkStatus)) {
-      setIsEditable(true);
-    }
-    else if (!assignmentCommitment) {
-      setIsEditable(true);
-    }
-    else {
-      setIsEditable(false);
+    if (!lock && !(assignmentCommitment?.networkStatus === "AWAITING_EVIDENCE")) {
+      return;
     }
 
-  }, [assignmentCommitment])
+    const data = editor?.getJSON();
+    if (!data) {
+      return;
+    }
 
+    const hash = blake2b(Buffer.from(JSON.stringify(data)), undefined, 32);
+    const hexHash = Buffer.from(hash).toString("hex");
+    setEvidenceHash(hexHash);
+
+    if (assignmentCommitment) {
+      updateNetworkEvidence({
+        id: assignmentCommitment.id,
+        networkEvidence: data,
+        networkEvidenceHash: hexHash,
+      });
+    } else if (assignmentId && session?.user.learnerId) {
+      createAssignmentCommitment({
+        assignmentId,
+        networkEvidence: data,
+        networkStatus: "AWAITING_EVIDENCE",
+        learnerId: session.user.learnerId,
+      });
+    }
+  }, [
+    lock,
+    editor,
+    assignmentCommitment,
+    assignmentId,
+    session?.user.learnerId,
+    setEvidenceHash,
+    updateNetworkEvidence,
+    createAssignmentCommitment
+  ]);
+
+  // Effect for handling editability
+  useEffect(() => {
+    const shouldBeEditable = !assignmentCommitment
+      || (assignmentCommitment.networkStatus
+        && editableStatuses.includes(assignmentCommitment.networkStatus));
+
+    setIsEditable(shouldBeEditable);
+  }, [assignmentCommitment, editableStatuses]);
+
+  const handleLockToggle = () => {
+    setLock(!lock);
+  };
 
   return (
     <>
-      {!!editor && <ContentEditorSm editor={editor} editable={!lock && isEditable} />}
+      {editor && <ContentEditorSm editor={editor} editable={!lock && isEditable} />}
+
       {lock && evidenceHash && (
         <div className="flex items-center justify-center">
           <h5>
@@ -99,25 +105,24 @@ export default function AssignmentEvidenceEditor({
           </h5>
         </div>
       )}
-      <div className="flex p-4 items-center justify-center gap-3">
-        <div>
-          {isEditable && (
-            <Button
-              className={`rounded-md text-white ${lock ? "bg-slate-500" : "bg-blue-500"}`}
-              onClick={lockEditor}
-            >
-              {lock ? (
-                <>
-                  <Lock />" Unlock"
-                </>
-              ) : (
-                "Lock"
-              )}
-            </Button>
-          )}
-        </div>
-      </div>
 
+      <div className="flex p-4 items-center justify-center gap-3">
+        {isEditable && (
+          <Button
+            className={`rounded-md text-white ${lock ? "bg-slate-500" : "bg-blue-500"}`}
+            onClick={handleLockToggle}
+          >
+            {lock ? (
+              <>
+                <Lock className="mr-2" />
+                Unlock
+              </>
+            ) : (
+              "Lock"
+            )}
+          </Button>
+        )}
+      </div>
     </>
-  )
+  );
 }

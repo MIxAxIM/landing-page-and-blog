@@ -1,4 +1,4 @@
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+import { type UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { hexToString } from "@meshsdk/common";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";

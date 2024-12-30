@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {
   AggregateUserInfoResponse,
 } from "@andamiojs/datum-utils";
+import Image from "next/image";
 
 export function MyProjectsBar({
   aggregateUserInfo,
@@ -60,7 +61,7 @@ export function MyProjectsBar({
                 key={treasury.id}
                 className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
               >
-                <img
+                <Image
                   src={`images/sample-covers/2.jpg`}
                   alt={treasury.title}
                   className="h-40 w-full rounded-t-lg object-cover"

@@ -1,6 +1,6 @@
 import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
+import { Card } from "~/components/ui/card"
 
 interface Fund {
   amount: number;

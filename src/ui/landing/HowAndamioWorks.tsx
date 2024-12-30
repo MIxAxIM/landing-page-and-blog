@@ -1,8 +1,22 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 
+// Define specific words we want to color
+type ColoredWord =
+  | "short"
+  | "targeted"
+  | "courses"
+  | "complete"
+  | "real"
+  | "tasks"
+  | "payments"
+  | "instant"
+  | "secure"
+  | "professional"
+  | "reputation";
+
 // Define word-color mapping
-const wordColors: { [key: string]: string } = {
+const wordColors: Record<ColoredWord, string> = {
   short: "text-secondary",
   targeted: "text-secondary",
   courses: "text-secondary",
@@ -18,7 +32,6 @@ const wordColors: { [key: string]: string } = {
 
 export function HowAndamioWorks() {
   const sectionsRef = useRef<HTMLDivElement[]>([]);
-
   const sentences = [
     "Quickly develop new skills with targeted courses.",
     "Apply new skills to real tasks.",
@@ -52,7 +65,10 @@ export function HowAndamioWorks() {
           >
             {sentence.split(" ").map((word, idx) => {
               const normalizedWord = normalizeWord(word);
-              const colorClass = wordColors[normalizedWord] || "text-primary";
+              const colorClass = normalizedWord in wordColors
+                ? wordColors[normalizedWord as ColoredWord]
+                : "text-primary";
+
               return (
                 <motion.span
                   key={idx}
@@ -74,7 +90,7 @@ export function HowAndamioWorks() {
 }
 
 // Helper function
-const normalizeWord = (word: string) =>
+const normalizeWord = (word: string): string =>
   word
     .toLowerCase()
     .replace(/[.,!?]/g, "")

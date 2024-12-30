@@ -77,10 +77,12 @@ export default function DialogPrerequisite({
   const { courseModuleLists } =
     useCourseModuleList(selectedCourseCodes);
 
+  const { reset } = form;
+
   // Update form when prerequisite data is loaded
   useEffect(() => {
     if (prerequisite && isEditMode) {
-      form.reset({
+      reset({
         title: prerequisite.title ?? "",
         courseRequirements: prerequisite.courseRequirements.map((req) => ({
           id: req.id,
@@ -89,14 +91,14 @@ export default function DialogPrerequisite({
         })),
       });
     }
-  }, [prerequisite, isEditMode]);
+  }, [prerequisite, isEditMode, reset]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      form.reset();
+      reset();
     }
-  }, [isOpen]);
+  }, [isOpen, reset]);
 
   const addCourseRequirement = () => {
     const currentRequirements = form.getValues("courseRequirements");

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Task } from "~/types/db";
-
+import { type Task } from "~/types/db";
 import { useEscrow } from "~/hooks/db/contribution/useEscrow";
 import useProjectByTreasury from "~/hooks/cardano-indexer-api/project/useProjectByTreasury";
 import EscrowUtxoTable from "./EscrowUtxoTable";

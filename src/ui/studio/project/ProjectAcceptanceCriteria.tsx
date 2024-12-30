@@ -1,10 +1,3 @@
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "~/components/ui/accordion";
 import { useTerminology } from "~/contexts/terminology-context";
 import EscrowAcceptanceCriteriaForm from "./EscrowAcceptanceCriteriaForm";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
