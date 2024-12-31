@@ -1,4 +1,3 @@
-import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
 import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 import { Card } from "~/components/ui/card"
 
@@ -38,7 +37,6 @@ export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicy
           <span className="text-lg font-bold">{formattedAda} ada</span>
         )}
       </div>
-      <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />
     </Card>
   );
 }

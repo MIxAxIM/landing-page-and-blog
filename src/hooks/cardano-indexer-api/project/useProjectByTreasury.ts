@@ -5,10 +5,6 @@ export default function useProjectByTreasury(
     { treasuryNftPolicyId?: string, alias?: string }
 ) {
 
-  // TODO: 
-  // 2. Add necessary data processing
-  // 3. Use these hooks to implement tx4 in Task List View
-
   const {
     data: contributorStateUtxos,
     isLoading: isLoadingContributorStateUtxos,
@@ -75,17 +71,6 @@ export default function useProjectByTreasury(
     }
   );
 
-  // NOTE: See comment in projectValidatorRouter
-  //const {
-  //  data: treasuryUtxos,
-  //  isLoading: isLoadingTreasuryUtxos,
-  //  isError: isErrorTreasuryUtxos,
-  //  error: errorTreasuryUtxos,
-  //} = api.projectValidators.getAllUtxosByTreasury.useQuery(
-  //  { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
-  //  { enabled: !!treasuryNftPolicyId }
-  //);
-
   const {
     data: treasuryInfo,
     isLoading: isLoadingTreasuryInfo,
@@ -101,6 +86,13 @@ export default function useProjectByTreasury(
         console.error('getTreasuryInfo error:', error);
       },
     }
+  );
+
+  const {
+    data: hasProjectToken,
+  } = api.treasuryValidator.checkProjectToken.useQuery(
+    { treasuryNftPolicyId: treasuryNftPolicyId ?? "" },
+    { enabled: !!treasuryNftPolicyId && treasuryNftPolicyId.length === 56 }
   );
 
   return {
@@ -124,15 +116,12 @@ export default function useProjectByTreasury(
     isErrorEscrowUtxos,
     errorEscrowUtxos,
 
-    //treasuryUtxos,
-    //isLoadingTreasuryUtxos,
-    //isErrorTreasuryUtxos,
-    //errorTreasuryUtxos,
-
     treasuryInfo,
     isLoadingTreasuryInfo,
     isErrorTreasuryInfo,
     errorTreasuryInfo,
+
+    hasProjectToken,
   }
 
 }

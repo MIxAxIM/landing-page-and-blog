@@ -12,6 +12,8 @@ export function Profile() {
               sessionData?.user.image ?? `images/site/view-3d-businessman.png`
             }
             alt="Profile"
+            width={160}
+            height={160}
             className="h-24 w-24 rounded-full object-cover"
           />
         </div>

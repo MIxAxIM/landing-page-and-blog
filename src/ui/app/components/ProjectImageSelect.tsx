@@ -48,6 +48,8 @@ export function ProjectImageSelect({
           <Image
             src={treasury.imageUrl ?? `/images/sample-covers/2.jpg`}
             alt={treasury.title}
+            width={400}
+            height={400}
             className="h-52 w-full rounded-t-lg object-cover"
           />
           <div className="p-2">

@@ -14,6 +14,7 @@ import { formatPosixTime } from "~/utils/time";
 import { Button } from "~/components/ui/button";
 import MintProjectToken from "./MintProjectToken";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
+import { Rotating3DButton } from "~/components/ui/button-rotating";
 
 
 type ContributorPolicies = {
@@ -65,7 +66,7 @@ export default function MintProjectTokenDialog(
   return (
     <Dialog>
       <DialogTrigger className="m-0 p-0">
-        <Button>Publish Approved Tasks on Andamio Network</Button>
+        <Rotating3DButton>Publish Approved Tasks on Andamio Network</Rotating3DButton>
       </DialogTrigger>
       <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">

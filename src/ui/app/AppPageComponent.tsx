@@ -55,9 +55,11 @@ export function ExplorecourseBar() {
                     src={
                       course.imageUrl
                         ? course.imageUrl
-                        : `images/sample-covers/4.jpg`
+                        : `/images/sample-covers/4.jpg`
                     }
                     alt={course.title}
+                    width={160}
+                    height={160}
                     className="h-40 w-full rounded-t-lg object-cover"
                   />
                   <div className="p-2">
@@ -125,6 +127,8 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
       <Image
         src={`images/sample-covers/2.jpg`}
         alt={treasury.title}
+        width={160}
+        height={160}
         className="h-40 w-full rounded-t-lg object-cover"
       />
       <div className="p-2">

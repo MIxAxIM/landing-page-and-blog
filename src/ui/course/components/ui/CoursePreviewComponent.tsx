@@ -24,6 +24,8 @@ export default function CoursePreviewComponent({ courseCode }: { courseCode: str
             <Image
               src="https://via.placeholder.com/400x300"
               alt="Course 1"
+              width={160}
+              height={160}
               className="max-w-sm rounded-lg shadow-md"
             />
             <div>

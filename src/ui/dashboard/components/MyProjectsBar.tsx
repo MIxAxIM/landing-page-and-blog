@@ -63,6 +63,8 @@ export function MyProjectsBar({
                 <Image
                   src={`images/sample-covers/2.jpg`}
                   alt={treasury.title}
+                  width={160}
+                  height={160}
                   className="h-40 w-full rounded-t-lg object-cover"
                 />
                 <div className="p-2">

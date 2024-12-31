@@ -60,9 +60,11 @@ export function MyCoursesBar({
                     src={
                       course.imageUrl
                         ? course.imageUrl
-                        : `images/sample-covers/4.jpg`
+                        : `/images/sample-covers/4.jpg`
                     }
                     alt={course.title}
+                    width={160}
+                    height={160}
                     className="h-40 w-full rounded-t-lg object-cover"
                   />
                   <div className="p-2">
