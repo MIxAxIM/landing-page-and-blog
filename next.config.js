@@ -27,9 +27,17 @@ const config = {
         protocol: "https",
         hostname: "cdn.discordapp.com",
       },
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "gimbalabs.com",
+      },
     ],
   },
-  webpack: function (config, options) {
+  webpack: function(config, options) {
     config.experiments = {
       asyncWebAssembly: true,
       layers: true,
