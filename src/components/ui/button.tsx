@@ -17,7 +17,7 @@ const buttonVariants = cva(
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "text-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
         delete: "bg-warning hover:bg-red-800 text-red-100",
         courseOutlineAction:
           "flex flex-col w-full mx-auto p-2 my-2 items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors ease-in-out duration-300 border border-primary",

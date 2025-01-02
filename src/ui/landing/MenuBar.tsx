@@ -65,7 +65,7 @@ function Desktop({
   const isLandingPage = router.pathname.includes("/"); // Check if you're on the summit page
 
   return (
-    <div className="flex w-full items-center justify-between px-6 py-6">
+    <div className="flex w-full items-center justify-between px-6 py-6 max-h-[100px]">
       {/* Logo */}
       <Link href="/">
         <Image
@@ -81,16 +81,14 @@ function Desktop({
       <div className="flex space-x-6 pl-20 pr-20">
         {navigation.map((item) => (
           <Link href={item.href} key={item.name} legacyBehavior passHref>
-            <Button
-              className={`${navigationMenuTriggerStyle()} font-montserrat cursor-pointer rounded bg-white text-primary shadow-none hover:text-white`}
-            >
+            <Button className={`${navigationMenuTriggerStyle()}`}>
               {item.name}
             </Button>
           </Link>
         ))}
 
         <Link href="/app" legacyBehavior passHref>
-          <Button className="font-montserrat cursor-pointer rounded text-white shadow-none hover:bg-white">
+          <Button className="bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground border-none">
             <span className="uppercase">Open App</span>
           </Button>
         </Link>
@@ -101,8 +99,8 @@ function Desktop({
         <div className="flex gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
           <Button
             onClick={() => setRole("learner")}
-            className={`cursor-pointer rounded px-4 py-2 ${role === "learner"
-              ? "cursor-auto border-4 border-primary bg-white text-primary hover:bg-primary hover:text-white"
+            className={`cursor-pointer px-4 py-2 ${role === "learner"
+              ? "cursor-auto border-primary bg-white text-primary hover:bg-primary hover:text-white"
               : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >
@@ -113,8 +111,8 @@ function Desktop({
           </Button>
           <Button
             onClick={() => setRole("organization")}
-            className={`cursor-pointer rounded px-4 py-2 ${role === "organization"
-              ? "cursor-auto border-4 border-primary bg-white text-primary hover:bg-primary hover:text-white"
+            className={`cursor-pointer px-4 py-2 ${role === "organization"
+              ? "cursor-auto border-primary bg-white text-primary hover:bg-primary hover:text-white"
               : "bg-white text-primary shadow-none hover:bg-primary hover:text-white"
               }`}
           >
@@ -206,7 +204,7 @@ function Mobile({
           <div className="space-y-4">
             {navigation.map((item) => (
               <Link key={item.name} href={item.href}>
-                <span className="block items-start rounded-lg px-3 py-2 font-semibold text-foreground hover:bg-accent-foreground hover:text-white">
+                <span className="block items-start px-3 py-2 font-semibold text-foreground hover:bg-accent-foreground hover:text-white">
                   {item.name}
                 </span>
               </Link>
@@ -221,7 +219,7 @@ function Mobile({
                   setMobileMenuOpen(false);
                   setRole("learner");
                 }}
-                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "learner"
+                className={`w-1/2 cursor-pointer border-2 p-2 ${role === "learner"
                   ? "bg-white text-primary hover:bg-primary hover:text-white"
                   : "bg-primary text-white hover:bg-white hover:text-primary"
                   }`}
@@ -234,7 +232,7 @@ function Mobile({
                   setMobileMenuOpen(false);
                   setRole("organization");
                 }}
-                className={`w-1/2 cursor-pointer rounded border-2 p-2 ${role === "organization"
+                className={`w-1/2 cursor-pointer border-2 p-2 ${role === "organization"
                   ? "bg-white text-primary hover:bg-primary hover:text-white"
                   : "bg-primary text-white hover:bg-white hover:text-primary"
                   }`}
@@ -250,7 +248,7 @@ function Mobile({
           {/* Login Button */}
           {/* <div className="mt-6"> */}
           {/*   <Link href="/auth/signin"> */}
-          {/*     <span className="block rounded-md px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent-foreground hover:text-white"> */}
+          {/*     <span className="block px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent-foreground hover:text-white"> */}
           {/*       Log in */}
           {/*     </span> */}
           {/*   </Link> */}

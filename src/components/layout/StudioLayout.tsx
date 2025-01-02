@@ -1,9 +1,9 @@
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import SideMenu from "~/components/navigation/SideMenu";
 import DesktopOnlyLayout from "~/components/layout/DesktopOnlyLayout";
+import AppButtons from "./AppButtons";
 
 export default function StudioLayout({
   children,
@@ -21,9 +21,11 @@ export default function StudioLayout({
     <DesktopOnlyLayout>
       <SideMenu />
       <main className="py-10 lg:pl-72">
-        <div className="mx-auto w-full lg:w-11/12 xl:w-11/12">{children}</div>
+        <div className="mx-auto w-full lg:w-11/12 xl:w-11/12">
+          {children}
+        </div>
+        <AppButtons />
       </main>
-      <LightDarkToggle />
     </DesktopOnlyLayout>
   );
 }

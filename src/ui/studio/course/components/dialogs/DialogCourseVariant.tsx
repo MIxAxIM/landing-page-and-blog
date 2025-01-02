@@ -73,6 +73,8 @@ export default function DialogCourseVariant({
     },
   });
 
+  const { reset } = form
+
   function onSubmit(data: FieldValues) {
     if (course) {
       if (courseVariant) {
@@ -97,13 +99,13 @@ export default function DialogCourseVariant({
   }
 
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       variantCode: courseVariant?.variantCode ?? "",
       title: courseVariant?.title ?? "",
       description: courseVariant?.description ?? "",
       videoUrl: courseVariant?.videoUrl ?? "",
     });
-  }, [courseVariant, form]);
+  }, [courseVariant, reset]);
 
   useEffect(() => {
     resetForm();

@@ -125,7 +125,7 @@ export function ProjectImageLink({ treasury }: { treasury: Treasury }) {
         </span>
       )} */}
       <Image
-        src={`images/sample-covers/2.jpg`}
+        src={`/images/sample-covers/2.jpg`}
         alt={treasury.title}
         width={160}
         height={160}

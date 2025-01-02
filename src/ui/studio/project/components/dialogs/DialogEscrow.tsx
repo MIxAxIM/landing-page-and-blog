@@ -51,37 +51,39 @@ export default function DialogEscrow({
     },
   });
 
+  const { reset, setValue, watch } = form
+
   // Update form when escrow data is loaded
   useEffect(() => {
     if (escrow && isEditMode && isOpen) {
-      form.reset({
+      reset({
         title: escrow.title ?? "",
         escrowNftPolicyId: escrow.escrowNftPolicyId ?? "",
         treasuryId: escrow.treasuryId,
         savedAcceptanceCriteria: escrow.savedAcceptanceCriteria,
       });
     }
-  }, [escrow, form, isEditMode, isOpen]);
+  }, [escrow, reset, isEditMode, isOpen]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      form.reset();
+      reset();
     }
-  }, [isOpen, form]);
+  }, [isOpen, reset]);
 
-  const savedCriteria = form.watch("savedAcceptanceCriteria");
+  const savedCriteria = watch("savedAcceptanceCriteria");
 
   const handleAddCriterion = () => {
     const newCriteria = [...savedCriteria, ""];
-    form.setValue("savedAcceptanceCriteria", newCriteria, {
+    setValue("savedAcceptanceCriteria", newCriteria, {
       shouldValidate: true,
     });
   };
 
   const handleRemoveCriterion = (index: number) => {
     const newCriteria = savedCriteria.filter((_, i) => i !== index);
-    form.setValue("savedAcceptanceCriteria", newCriteria, {
+    setValue("savedAcceptanceCriteria", newCriteria, {
       shouldValidate: true,
     });
   };
@@ -104,7 +106,7 @@ export default function DialogEscrow({
       });
     }
     setIsOpen(false);
-    form.reset();
+    reset();
   };
 
   const isLoading = isCreating || isUpdating;

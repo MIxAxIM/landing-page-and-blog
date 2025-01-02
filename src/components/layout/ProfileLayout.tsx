@@ -25,7 +25,6 @@ export default function ProfileLayout({
           {children}
         </div>
       </main>
-      {/* <LightDarkToggle /> */}
     </div>
   );
 }

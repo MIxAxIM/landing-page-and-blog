@@ -171,24 +171,25 @@ export default function DialogTaskOriginal({
     },
   });
 
+  const { reset, setValue } = form
   // Effect: Handle specified escrow on open
   useEffect(() => {
     if (!!escrow && isOpen && !hasLoadedCriteria) {
       if (escrow?.savedAcceptanceCriteria?.length) {
-        form.setValue(
+        setValue(
           "acceptanceCriteria",
           escrow.savedAcceptanceCriteria.filter(
             (criteria) => criteria.trim() !== "",
           ),
           { shouldValidate: true },
         );
-        form.setValue("escrowId", escrow.id);
-        form.setValue("treasuryId", escrow.treasuryId);
+        setValue("escrowId", escrow.id);
+        setValue("treasuryId", escrow.treasuryId);
         setFilteredEscrows([escrow]);
         setHasLoadedCriteria(true);
       }
     }
-  }, [escrow, form, isOpen, hasLoadedCriteria]);
+  }, [escrow, setValue, isOpen, hasLoadedCriteria]);
 
   // Effect: Handle treasury selection change
   useEffect(() => {
@@ -198,13 +199,13 @@ export default function DialogTaskOriginal({
       if (name === "treasuryId") {
         setSelectedTreasuryId(value.treasuryId ?? "");
         if (!defaultEscrowId) {
-          form.setValue("escrowId", "");
+          setValue("escrowId", "");
         }
       }
     });
 
     return () => treasurySubscription.unsubscribe();
-  }, [form, defaultEscrowId, isOpen]);
+  }, [setValue, defaultEscrowId, isOpen]);
 
   // Effect: Load task data in edit mode
   useEffect(() => {
@@ -212,7 +213,7 @@ export default function DialogTaskOriginal({
       const treasuryId = task.escrow?.treasuryId ?? "";
       setSelectedTreasuryId(treasuryId);
 
-      form.reset({
+      reset({
         title: task.title,
         description: task.description,
         acceptanceCriteria: task.acceptanceCriteria,
@@ -222,18 +223,18 @@ export default function DialogTaskOriginal({
         escrowId: task.escrowId,
       });
     }
-  }, [task, form, isEditMode, isOpen]);
+  }, [task, reset, isEditMode, isOpen]);
 
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      form.reset();
+      reset();
       setHasLoadedCriteria(false);
       if (!defaultTreasuryId) {
         setSelectedTreasuryId("");
       }
     }
-  }, [isOpen, form, defaultTreasuryId]);
+  }, [isOpen, reset, defaultTreasuryId]);
 
   // Add this effect after the other useEffect hooks
   useEffect(() => {
@@ -242,11 +243,11 @@ export default function DialogTaskOriginal({
         (t) => t.treasuryNftPolicyId === defaultTreasuryId,
       );
       if (treasury) {
-        form.setValue("treasuryId", treasury.id);
+        setValue("treasuryId", treasury.id);
         setSelectedTreasuryId(treasury.id);
       }
     }
-  }, [defaultTreasuryId, treasuries, form]);
+  }, [defaultTreasuryId, treasuries, setValue]);
 
   useEffect(() => {
     // Filtered escrows based on selected treasury
@@ -271,7 +272,7 @@ export default function DialogTaskOriginal({
         );
 
         if (selectedEscrow?.savedAcceptanceCriteria?.length) {
-          form.setValue(
+          setValue(
             "acceptanceCriteria",
             selectedEscrow.savedAcceptanceCriteria.filter(
               (criteria) => criteria.trim() !== "",
@@ -284,7 +285,7 @@ export default function DialogTaskOriginal({
     });
 
     return () => subscription.unsubscribe();
-  }, [form, filteredEscrows, hasLoadedCriteria]);
+  }, [setValue, filteredEscrows, hasLoadedCriteria]);
 
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");
@@ -298,7 +299,7 @@ export default function DialogTaskOriginal({
 
   const handleRemoveCriterion = (index: number) => {
     const newCriteria = acceptanceCriteria.filter((_, i) => i !== index);
-    form.setValue("acceptanceCriteria", newCriteria, {
+    setValue("acceptanceCriteria", newCriteria, {
       shouldValidate: true,
     });
   };

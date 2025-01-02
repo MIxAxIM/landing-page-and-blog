@@ -34,22 +34,24 @@ export function useTaskForm({
     },
   });
 
+  const { reset, setValue } = form
+
   // Load escrow criteria
   useEffect(() => {
     if (escrow?.savedAcceptanceCriteria?.length && isOpen && !hasLoadedCriteria) {
-      form.setValue(
+      setValue(
         "acceptanceCriteria",
         escrow.savedAcceptanceCriteria.filter(c => c.trim() !== ""),
         { shouldValidate: true }
       );
       setHasLoadedCriteria(true);
     }
-  }, [escrow, isOpen, hasLoadedCriteria, form]);
+  }, [escrow, isOpen, hasLoadedCriteria, setValue]);
 
   // Load task data
   useEffect(() => {
     if (task && isEditMode && isOpen) {
-      form.reset({
+      reset({
         title: task.title,
         description: task.description,
         acceptanceCriteria: task.acceptanceCriteria,
@@ -57,15 +59,15 @@ export function useTaskForm({
         expirationTime: new Date(parseInt(task.expirationTime)),
       });
     }
-  }, [task, isEditMode, isOpen, form]);
+  }, [task, isEditMode, isOpen, reset]);
 
   // Reset form on close
   useEffect(() => {
     if (isOpen) {
-      form.reset();
+      reset();
       setHasLoadedCriteria(false);
     }
-  }, [isOpen, form]);
+  }, [isOpen, reset]);
 
   const handleSubmit = async (data: FormValues) => {
     try {
@@ -102,6 +104,6 @@ export function useTaskForm({
     isOpen,
     setIsOpen,
     handleSubmit: form.handleSubmit(handleSubmit),
-    resetForm: form.reset,
+    resetForm: reset,
   };
 }

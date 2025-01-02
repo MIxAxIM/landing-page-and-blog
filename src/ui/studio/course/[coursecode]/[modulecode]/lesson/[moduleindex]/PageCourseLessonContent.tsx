@@ -1,5 +1,4 @@
 import type { Course, CourseModuleOverview, ModuleSLT } from "~/types/db";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { api } from "~/utils/api";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -126,6 +125,8 @@ export default function PageCourseLessonContent({
     },
   });
 
+  const { reset } = form
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!lesson) return;
 
@@ -172,14 +173,14 @@ export default function PageCourseLessonContent({
 
   const resetForm = useCallback(() => {
     if (lesson) {
-      form.reset({
+      reset({
         title: lesson?.title ?? "",
         description: lesson?.description ?? "",
         videoUrl: lesson?.videoUrl ?? "",
         live: lesson?.live ? lesson?.live : false,
       });
     }
-  }, [form, lesson]);
+  }, [reset, lesson]);
 
   useEffect(() => {
     if (editor?.isFocused) {
@@ -306,7 +307,6 @@ export default function PageCourseLessonContent({
               </div>
             </form>
           </Form>
-          <LightDarkToggle />
           <DialogGetLessonPlan
             open={getLessonPlanDialogOpen}
             setOpen={setGetLessonPlanDialogOpen}

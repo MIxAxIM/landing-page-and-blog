@@ -61,7 +61,7 @@ export function MyProjectsBar({
                 className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
               >
                 <Image
-                  src={`images/sample-covers/2.jpg`}
+                  src={`/images/sample-covers/2.jpg`}
                   alt={treasury.title}
                   width={160}
                   height={160}

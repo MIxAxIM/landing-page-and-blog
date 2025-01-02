@@ -2,7 +2,6 @@ import MenuBar from "~/ui/landing/MenuBar";
 import { useSession } from "next-auth/react";
 import PageSignin from "~/ui/auth/PageSignin";
 import { useRouter } from "next/router";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import Link from "next/link";
 
 export default function NetworkLayout({
@@ -40,7 +39,6 @@ export default function NetworkLayout({
         </div>
         <div className="lg:w-11/12 xl:w-11/12">{children}</div>
       </main>
-      <LightDarkToggle />
     </div>
   );
 }

@@ -10,15 +10,13 @@ import {
   type CourseModuleOverview,
 } from "~/types/db";
 import { Form } from "~/components/ui/form";
-
 import HeaderSection from "../../components/HeaderSection";
 import { useCourseStore } from "~/lib/zustand/course";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
-import ContentEditor from "~/components/editor/ContentEditor";
 import { useRouter } from "next/router";
 import Metatags from "~/components/common/metatags";
 import { type JSONContent } from "novel";
 import useAssignmentEditor from "~/ui/studio/course/hooks/useAssignmentEditor";
+import ContentEditor from "~/components/editor/ContentEditor";
 
 // V2 - current
 export default function PageCourseAssignmentContent({
@@ -101,6 +99,8 @@ export default function PageCourseAssignmentContent({
     update(_assignment);
   }
 
+  const { reset } = form
+
   function onCancel() {
     setEditAssignment(false);
     if (
@@ -129,13 +129,13 @@ export default function PageCourseAssignmentContent({
   }, [editor?.isFocused]);
 
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       title: assignment?.title ?? "",
       description: assignment?.description ?? "",
       videoUrl: assignment?.videoUrl ?? "",
       live: assignment?.live ? assignment?.live : false,
     });
-  }, [form, assignment]);
+  }, [reset, assignment]);
 
   useEffect(() => {
     if (assignment) {
@@ -241,7 +241,6 @@ export default function PageCourseAssignmentContent({
           </Form>
         </div>
         {getLessonPlanDialogOpen && "Andamio AI"}
-        <LightDarkToggle />
       </>
     );
   }

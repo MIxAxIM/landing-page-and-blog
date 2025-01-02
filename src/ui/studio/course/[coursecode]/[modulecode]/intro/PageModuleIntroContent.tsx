@@ -1,5 +1,4 @@
 import type { Course, CourseModuleOverview } from "~/types/db";
-import { LightDarkToggle } from "~/components/common/LightDarkToggle";
 import { api } from "~/utils/api";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -108,6 +107,8 @@ export default function PageModuleIntroContent({
     },
   });
 
+  const { reset } = form
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!introduction) return;
 
@@ -136,14 +137,14 @@ export default function PageModuleIntroContent({
 
   const resetForm = useCallback(() => {
     if (introduction) {
-      form.reset({
+      reset({
         title: introduction.title ?? "",
         description: introduction.description ?? "",
         videoUrl: introduction.videoUrl ?? "",
         live: introduction.live ? introduction.live : false,
       });
     }
-  }, [form, introduction]);
+  }, [reset, introduction]);
 
   const setEditorContent = useCallback(() => {
     if (
@@ -286,7 +287,6 @@ export default function PageModuleIntroContent({
           </Form>
         </div>
         {getLessonPlanDialogOpen && "Andamio AI"}
-        <LightDarkToggle />
       </>
     );
   }

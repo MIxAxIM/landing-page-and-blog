@@ -50,6 +50,8 @@ export default function DialogImportModule({
     },
   });
 
+  const { reset } = form
+
   function onSubmit(data: FieldValues) {
     importCourseModule({
       originalCourseModuleId: data.courseModuleId,
@@ -57,10 +59,10 @@ export default function DialogImportModule({
     });
   }
   const resetForm = useCallback(() => {
-    form.reset({
+    reset({
       courseModuleId: "",
     });
-  }, [form]);
+  }, [reset]);
 
   useEffect(() => {
     resetForm();
