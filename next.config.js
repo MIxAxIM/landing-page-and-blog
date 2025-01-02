@@ -21,7 +21,15 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "www.andamio.io",
+      },
+      {
+        protocol: "https",
         hostname: "storage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
       },
       {
         protocol: "https",
@@ -34,6 +42,18 @@ const config = {
       {
         protocol: "https",
         hostname: "gimbalabs.com",
+      },
+      {
+        protocol: "https",
+        hostname: "meshjs.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
       },
     ],
   },
