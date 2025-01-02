@@ -50,7 +50,7 @@ const commitmentStatusStyles: Record<ConsolidatedCommitmentStatus, string> = {
   COMMITMENT_DENIED: "bg-red-100 text-red-800",
   COMMITMENT_ACCEPTED: "bg-green-100 text-green-800",
   COMMITMENT_REFUSED: "bg-red-100 text-red-800",
-  REWARDS_CLAIMED: "bg-green-100 text-green-800",
+  REWARDS_CLAIMED: "bg-success text-success-foreground",
   UNLOCKED_BY_CONTRIBUTOR: "bg-purple-100 text-purple-800",
   ARCHIVED: "bg-gray-800 text-gray-100",
 };

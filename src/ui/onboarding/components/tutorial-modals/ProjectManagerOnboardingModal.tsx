@@ -19,7 +19,7 @@ export default function ProjectManagerOnboardingModal({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center mt-5">Welcome to your first {translateCaps('escrow')}</DialogTitle>
-          <DialogDescription className="space-y-3">
+          <DialogDescription className="space-y-3 bg-card text-card-foreground">
             <Image src="/andamio.png" width={150} height={150} alt="andamio" className="mx-auto" />
             <p>
               On this page, you can add tasks to your new project.

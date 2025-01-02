@@ -29,7 +29,7 @@ export default function MenuBar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full overflow-hidden bg-white">
+    <header className="sticky top-0 z-50 w-full overflow-hidden bg-card">
       {/* Desktop Menu */}
       <div className="hidden lg:flex">
         <Desktop

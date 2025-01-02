@@ -62,7 +62,7 @@ export default function MenuBarSessionProfile() {
       <PopoverContent className="bg-white p-0">
         {!connected ? (
           <Dialog>
-            <DialogTrigger className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none">
+            <DialogTrigger className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none">
               Connect to Cardano
             </DialogTrigger>
             <DialogContent className="bg-slate-400">
@@ -79,7 +79,7 @@ export default function MenuBarSessionProfile() {
         ) : (
           <button
             onClick={disconnect}
-            className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none"
+            className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none"
           >
             Disconnect Cardano
           </button>
@@ -87,7 +87,7 @@ export default function MenuBarSessionProfile() {
 
         <button
           onClick={() => void router.push("/dashboard")}
-          className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none"
+          className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none"
         >
           Dashboard
         </button>
@@ -95,7 +95,7 @@ export default function MenuBarSessionProfile() {
         {!!sessionData.user.creatorId && (
           <button
             onClick={() => void router.push("/studio")}
-            className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none"
+            className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none"
           >
             Andamio Studio
           </button>
@@ -103,7 +103,7 @@ export default function MenuBarSessionProfile() {
 
         <button
           onClick={() => void signOut({ callbackUrl: "/" })}
-          className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 text-foreground hover:bg-accent focus:outline-none"
+          className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none"
         >
           Sign Out
         </button>

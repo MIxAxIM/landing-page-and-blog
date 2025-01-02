@@ -23,7 +23,7 @@ export default function ProjectFundingSummaryTable({ treasuryId }: ProjectTreasu
         <CardTitle className="text-lg font-semibold">Task Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table className="text-foreground">
           <TableHeader>
             <TableRow>
               <TableHead>Status</TableHead>
@@ -40,7 +40,7 @@ export default function ProjectFundingSummaryTable({ treasuryId }: ProjectTreasu
                     {status.replace(/_/g, " ")}
                   </TableCell>
                   <TableCell className="text-right">{values.count}</TableCell>
-                  <TableCell className="text-right">{values.totalAda}{" "}<span className="text-gray-500 text-sm">₳</span></TableCell>
+                  <TableCell className="text-right">{values.totalAda}{" "}<span className="text-accent">₳</span></TableCell>
                 </TableRow>
               ))}
             <TableRow className="bg-muted/50">
@@ -49,7 +49,7 @@ export default function ProjectFundingSummaryTable({ treasuryId }: ProjectTreasu
                 {treasuryAmountsByStatus?.summary.totalTasks}
               </TableCell>
               <TableCell className="text-right font-bold">
-                {treasuryAmountsByStatus?.summary.totalAda}{" "}<span className="text-gray-500 text-sm">₳</span>
+                {treasuryAmountsByStatus?.summary.totalAda}{" "}<span className="text-accent text-sm">₳</span>
               </TableCell>
             </TableRow>
           </TableBody>
