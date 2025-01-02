@@ -29,10 +29,10 @@ const inputVariants = cva(
       },
       formTextSize: {
         xl: "text-4xl text-foreground",
-        lg: "text-2xl text-foreground sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[550px]",
+        lg: "text-2xl text-foreground",
         md: "text-md text-foreground",
         sm: "text-sm text-foreground",
-        slt: "text-md text-foreground sm:w-[250px] md:w-[340px] lg:w-[375px] xl:w-[475px] 2xl:w-[550px]", //sm:w-[535px] md:w-[645px] lg:w-[735px] xl:w-[825px]
+        slt: "text-md text-foreground", //sm:w-[535px] md:w-[645px] lg:w-[735px] xl:w-[825px]
       },
     },
     defaultVariants: {
@@ -44,7 +44,7 @@ const inputVariants = cva(
 
 export interface ToggleEditableFieldProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+  VariantProps<typeof inputVariants> {
   label?: string;
   form: any;
   name: string;

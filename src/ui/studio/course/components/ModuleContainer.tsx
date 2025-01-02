@@ -36,6 +36,7 @@ import { Button } from "~/components/ui/button";
 import LoadingCard from "~/components/common/LoadingCard";
 import Loading from "~/components/common/loading";
 import SelectCourseModuleStatus from "./SelectCourseModuleStatus";
+import { Card, CardTitle } from "~/components/ui/card";
 
 type sltI = { slt: ModuleSLT; sltIndex: number; id: string };
 
@@ -199,7 +200,7 @@ export default function ModuleContainer({
 
   return (
     <div
-      className="my-3 w-full sm:mx-auto sm:w-[630px] md:w-[750px] lg:w-[800px] xl:w-[950px] 2xl:w-[1100px] bg-primary rounded-md"
+      className="my-3 w-full sm:mx-auto bg-primary"
       key={`${course?.courseCode}-${currentModule.moduleCode}`}
     >
       <AccordionItem
@@ -208,7 +209,7 @@ export default function ModuleContainer({
         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
       >
         <AccordionTrigger
-          className={`flex w-full flex-row justify-between mb-0 ${isAccordionOpen ? "rounded-t-md" : "rounded-md"} h-full min-h-[75px] items-center bg-primary px-3 text-primary-foreground`}
+          className={`flex w-full flex-row justify-between mb-0 h-full min-h-[75px] items-center bg-primary px-3 text-primary-foreground`}
         >
           <div className="grid w-full grid-cols-12 py-1">
             <div className="col-span-1 flex h-full items-center">
@@ -239,36 +240,41 @@ export default function ModuleContainer({
             </div>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="mt-0 border-b border-x border-primary rounded-b-md flex flex-col bg-gradient-to-br from-background to-sky-100">
+        <AccordionContent className="bg-background text-foreground w-full mt-0 border-b border-x border-primary flex flex-col p-5">
           <IntroductionContainer
             courseCode={course?.courseCode ?? ""}
             moduleCode={currentModule.moduleCode}
           />
 
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragStart={({ active }) => {
-              setActiveSLT(active);
-            }}
-            onDragEnd={onDragEnd}
-            modifiers={[restrictToVerticalAxis]}
-          >
-            <SortableContext
-              items={sltIndexes}
-              strategy={verticalListSortingStrategy}
+          <Card className="flex flex-col w-11/12 mx-auto justify-between items-center my-5">
+            <CardTitle>
+              Student Learning Targets
+            </CardTitle>
+            <DndContext
+              collisionDetection={closestCenter}
+              onDragStart={({ active }) => {
+                setActiveSLT(active);
+              }}
+              onDragEnd={onDragEnd}
+              modifiers={[restrictToVerticalAxis]}
             >
-              {sltIndexes.map((sI) => (
-                <SortableSLT
-                  slt={sI.slt}
-                  module={currentModule}
-                  courseCode={course?.courseCode ?? ""}
-                  key={sI.slt.id}
-                  published={isAssignmentOnchain ?? false}
-                />
-              ))}
-            </SortableContext>
-            {/* todo implelment the rest of dnd-kit - look at codesandbox example - can imagine extracting this component and adding overlay */}
-          </DndContext>
+              <SortableContext
+                items={sltIndexes}
+                strategy={verticalListSortingStrategy}
+              >
+                {sltIndexes.map((sI) => (
+                  <SortableSLT
+                    slt={sI.slt}
+                    module={currentModule}
+                    courseCode={course?.courseCode ?? ""}
+                    key={sI.slt.id}
+                    published={isAssignmentOnchain ?? false}
+                  />
+                ))}
+              </SortableContext>
+              {/* todo implelment the rest of dnd-kit - look at codesandbox example - can imagine extracting this component and adding overlay */}
+            </DndContext>
+          </Card>
           {isLoadingAssignment ? (
             <Loading />
           ) : (
@@ -298,7 +304,7 @@ export default function ModuleContainer({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-3 mx-auto w-full items-center bg-accent py-3 mt-8 rounded-b-md">
+            <div className="grid grid-cols-3 mx-auto w-full items-center py-3 mt-8">
               <div className="flex w-full justify-center">
                 <DialogSLT
                   sltDialogOpen={sltDialogOpen}
@@ -357,7 +363,7 @@ export default function ModuleContainer({
             </div>
           )}
           {(activeSLT ?? isLoadingIndexUpdate) && (
-            <div className="flex h-8 w-full rounded-b-md bg-amber-500" />
+            <div className="flex h-8 w-full bg-amber-500" />
           )}
           <div>
             <SelectCourseModuleStatus moduleId={currentModule.id} currentStatus={currentModule.status} />

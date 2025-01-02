@@ -10,7 +10,7 @@ export default function IntroductionContainer({
 }) {
 
   return (
-    <Card intent="module" size="wide">
+    <Card className="flex flex-row w-11/12 mx-auto justify-between items-center">
       <div>Introduction</div>
       <Link href={`/studio/course/${courseCode}/${moduleCode}/intro`}>Edit</Link>
     </Card>

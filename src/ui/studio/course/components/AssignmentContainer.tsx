@@ -1,3 +1,4 @@
+import { Card } from "~/components/ui/card";
 import { type Assignment } from "~/types/db";
 
 export default function AssignmentContainer({
@@ -8,7 +9,7 @@ export default function AssignmentContainer({
   if (!assignment) return;
 
   return (
-    <div className="flex justify-between items-center w-11/12 mx-auto px-8 py-2 border-2 border-secondary rounded-md hover:bg-orange-100">
+    <Card className="flex flex-row w-11/12 justify-between items-center mx-auto hover:bg-secondary/10">
       <div className="font-bold">
         Assignment {assignment.assignmentCode}
       </div>
@@ -16,7 +17,7 @@ export default function AssignmentContainer({
         {assignment.title}
       </div>
       <div>{assignment.slts.length} SLTs Measured</div>
-    </div>
+    </Card>
   );
 }
 

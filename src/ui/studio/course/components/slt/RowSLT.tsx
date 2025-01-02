@@ -182,7 +182,7 @@ export function RowSLT({
   }, [editSltText, resetForm]);
 
   return (
-    <div ref={setNodeRef} onKeyDown={handleKeyDown}>
+    <div ref={setNodeRef} onKeyDown={handleKeyDown} className="flex w-full">
       {module && (
         <div
           className={`mx-auto my-1 grid w-full grid-cols-12 items-center py-2 ${isLoadingUpdate && "opacity-50"}`}
@@ -194,7 +194,7 @@ export function RowSLT({
             </p>
           </div>
           {published ? (
-            <div className="col-span-8 flex w-full items-center">
+            <div className="col-span-6 flex w-full items-center">
               <p>{slt.sltText}</p>
             </div>
           ) : (
