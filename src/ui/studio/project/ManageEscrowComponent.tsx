@@ -16,6 +16,7 @@ import ProjectTaskManagementList from "./components/lists/ProjectTaskManagementL
 import MintProjectTokenDialog from "~/components/cardano/tx/project-creator/mint-project-token/MintProjectTokenDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import AddFundsDialog from "~/components/cardano/tx/treasury/add-funds/AddFundsDialog";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 
 
 export default function ManageEscrowComponent({
@@ -33,6 +34,7 @@ export default function ManageEscrowComponent({
 
   const [tasksToPublish, setTasksToPublish] = useState<Task[]>([])
   const [tasksToManage, setTasksToManage] = useState<Task[]>([])
+  const { treasuryAmountsByStatus } = useTreasury(escrow?.treasuryId ?? "")
 
   useTaskStatusCheck(treasuryNftPolicyId ?? "")
 
@@ -111,7 +113,9 @@ export default function ManageEscrowComponent({
             )}
           </TabsContent>
           <TabsContent value="summary">
-            <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
+            {!!treasuryAmountsByStatus && (
+              <ProjectFundingSummaryTable treasuryAmountsByStatus={treasuryAmountsByStatus} />
+            )}
           </TabsContent>
           <TabsContent value="contributors">
             <ContributorPrerequisites escrowId={escrowId} treasuryNftPolicyId={treasuryNftPolicyId ?? ""} />

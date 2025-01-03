@@ -256,7 +256,7 @@ export function useTask({
   const updateTaskStatusMutation = api.task.updateTaskStatus.useMutation({
     onSuccess: async () => {
       toast.success("Task status updated successfully");
-      await refreshQueries();
+      void refreshQueries();
     },
     onError: (error) => {
       if (error.message.includes("Invalid status transition")) {

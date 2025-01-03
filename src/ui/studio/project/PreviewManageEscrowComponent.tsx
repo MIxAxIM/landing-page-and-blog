@@ -12,6 +12,8 @@ import ContributorPrerequisites from "./ContributorPrerequisites";
 import { Button } from "~/components/ui/button";
 import DialogTaskSimple from "./components/dialogs/DialogTaskSimple";
 import ProjectTaskManagementList from "./components/lists/ProjectTaskManagementList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 
 
 export default function PreviewManageEscrowComponent({
@@ -24,6 +26,8 @@ export default function PreviewManageEscrowComponent({
   const { escrow } = useEscrow({ id: escrowId });
   const { updateTreasuryManagerOnboardingStatus, getTreasuryOwner } = useRoles()
   const { data: treasuryOwnerStatus } = getTreasuryOwner()
+
+  const { treasuryAmountsByStatus } = useTreasury(escrow?.treasuryId ?? "")
 
   useEffect(() => {
     if (treasuryOwnerStatus?.onboardingStatus === "PARTIAL" ||
@@ -38,8 +42,8 @@ export default function PreviewManageEscrowComponent({
         isOpen={showOnboardingModal}
         onClose={() => setShowOnboardingModal(false)}
       />
-      <div className="mx-auto mb-48 mt-12 grid min-h-[screen] w-full grid-cols-10 gap-8 border-secondary border-2 p-5 pb-[300px]">
-        <div className="bg-primary text-primary-foreground p-5 flex w-full col-span-10 justify-between">
+      <div className="flex flex-col mx-auto mb-48 mt-12 min-h-[screen] w-full border-secondary border-2 p-5 pb-[300px]">
+        <div className="bg-primary text-primary-foreground p-5 flex w-full justify-between">
           <div className="max-w-5xl">
             This is a preview of the Contribution Manager view. In this view, you can can draft tasks, set acceptance criteria, and prepare prerequisites for your project. When you are ready, publish the project on the Andamio Network to unlock full features and start inviting contributors to your project. -- Product meeting 2024-12-17 - we can use this preview to try some onboarding features: hotspots, tooltips, tutorials, etc.
           </div>
@@ -47,35 +51,11 @@ export default function PreviewManageEscrowComponent({
             Initialize my Project on the Andamio Network
           </Button>
         </div>
-        <div className="col-span-10 mb-6 flex flex-row items-center justify-between">
+        <div className="mb-6 flex flex-row items-center justify-between">
           <h1>{escrow?.title}</h1>
           {!!escrow && <DialogTaskSimple treasuryId={escrow.treasuryId} escrow={escrow} />}
         </div>
-        <div className="col-span-10 row-span-2 flex flex-col w-full">
-          <h2>
-            Manage All Tasks
-          </h2>
-          {!!escrow?.tasks && (
-            <ProjectTaskManagementList
-              treasuryId={escrow.treasuryId}
-              escrow={escrow}
-            />
-          )}
-        </div>
-        {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
-          <>
-            <div className="col-span-10">
-              <ContributorPrerequisites escrowId={escrowId} />
-            </div>
-            <div className="col-span-5 flex flex-col">
-              <ProjectFundingSummaryTable treasuryId={escrow?.treasuryId ?? ""} />
-            </div>
-            <div className="col-span-5">
-              <ProjectAcceptanceCriteria escrowId={escrowId} />
-            </div>
-          </>
-        )}
-        <div className="col-span-10">
+        <div className="mb-6 flex flex-row items-center justify-between">
           {treasuryOwnerStatus && (
             <OnboardingStatusButtons
               roleId={treasuryOwnerStatus.id}
@@ -83,10 +63,56 @@ export default function PreviewManageEscrowComponent({
             />
           )}
         </div>
+        <Tabs defaultValue="tasks">
+          <TabsList className="w-full">
+            <TabsTrigger value="tasks" className="px-10">
+              Create Tasks for this Project
+            </TabsTrigger>
+            {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
+              <>
+                <TabsTrigger value="summary" className="px-10">
+                  Project Summary
+                </TabsTrigger>
+                <TabsTrigger value="contributors" className="px-10">
+                  Define Prerequisites and View Contributors
+                </TabsTrigger>
+                <TabsTrigger value="acceptanceCriteria" className="px-10">
+                  Define Acceptance Criteria
+                </TabsTrigger>
+              </>
+            )}
+          </TabsList>
+
+          <TabsContent value="tasks" className="flex flex-col items-center">
+            {!!escrow?.tasks && (
+              <>
+                <ProjectTaskManagementList
+                  treasuryId={escrow.treasuryId}
+                  escrow={escrow}
+                />
+                {!!escrow && <DialogTaskSimple treasuryId={escrow.treasuryId} escrow={escrow} />}
+              </>
+            )}
+          </TabsContent>
+          {(treasuryOwnerStatus?.onboardingStatus === "COMPLETE" || treasuryOwnerStatus?.onboardingStatus === "SKIPPED") && (
+            <>
+              <TabsContent value="summary">
+                <>
+                  {!!treasuryAmountsByStatus && (
+                    <ProjectFundingSummaryTable treasuryAmountsByStatus={treasuryAmountsByStatus} />
+                  )}
+                </>
+              </TabsContent>
+              <TabsContent value="contributors">
+                <ContributorPrerequisites escrowId={escrowId} />
+              </TabsContent>
+              <TabsContent value="acceptanceCriteria">
+                <ProjectAcceptanceCriteria escrowId={escrowId} />
+              </TabsContent>
+            </>
+          )}
+        </Tabs>
       </div>
-      {/**
-      <DebugProjects />
-      **/}
 
     </div>
   );

@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { useTreasury } from "~/hooks/db/contribution/useTreasury";
 import {
   Table,
   TableBody,
@@ -8,17 +7,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { cn } from "~/utils/shadcn";
 import { type StatusConfig, StatusIcon, commitmentStatusConfig, taskStatusConfig } from "~/ui/project/status/TaskStatusIndicator";
-import { TaskStatus } from "@prisma/client";
+import { TreasuryAmountsByStatus } from "~/types/db";
 
 interface ProjectTreasuryBalanceProps {
-  treasuryId: string;
+  treasuryAmountsByStatus: TreasuryAmountsByStatus;
 }
 
-export default function ProjectFundingSummaryTable({ treasuryId }: ProjectTreasuryBalanceProps) {
-  const { treasuryAmountsByStatus } = useTreasury(treasuryId);
+export default function ProjectFundingSummaryTable({ treasuryAmountsByStatus }: ProjectTreasuryBalanceProps) {
 
   const StatusTable = ({
     data,

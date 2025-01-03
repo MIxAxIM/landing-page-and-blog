@@ -110,7 +110,7 @@ export default function ProjectTaskManagementList({
   return (
     <div className={`flex flex-col mb-8 w-full ${className}`}>
       {showFilters && (
-        <div className="mb-4 flex w-full flex-row items-center justify-between">
+        <div className="my-4 flex w-full flex-row items-center justify-between">
           <div className="space-x-2">
             <TaskStatusFilter
               selectedStatuses={selectedStatuses}
@@ -121,6 +121,12 @@ export default function ProjectTaskManagementList({
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
           />
+          <Button onClick={() => setSortConfig(
+            {
+              key: "index",
+              direction: "desc",
+            }
+          )}>Desc</Button>
         </div>
       )}
 
@@ -251,12 +257,6 @@ export default function ProjectTaskManagementList({
             </Card>
           ))
         )}
-        <Button onClick={() => setSortConfig(
-          {
-            key: "index",
-            direction: "desc",
-          }
-        )}>Desc</Button>
       </div>
     </div>
   );
