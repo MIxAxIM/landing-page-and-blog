@@ -8,11 +8,6 @@ type StatusSummary = {
   count: number;
 };
 
-type AllStatuses = {
-  taskStatuses: Record<TaskStatus, StatusSummary>;
-  commitmentStatuses: Record<TaskCommitmentStatus, StatusSummary>;
-}
-
 import {
   type createTRPCContext,
   createTRPCRouter,

@@ -27,7 +27,7 @@ export default function MintModuleTokens({
     costDescriptions: [
       { txOutputIndexes: [1], description: "Module Credential Token", tooltipText: "Store min utxo with a token and SLT datum." },
     ],
-    andamioNetworkFee: 2000000, // How to incorporate network fee -> Dev team 2024-12-09
+    andamioNetworkFee: 0, // How to incorporate network fee -> Dev team 2024-12-09
   }
 
   const slts = courseModuleOverview.slts.map((slt) => ({

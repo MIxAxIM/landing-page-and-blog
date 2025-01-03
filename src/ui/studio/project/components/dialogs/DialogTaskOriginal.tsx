@@ -171,7 +171,7 @@ export default function DialogTaskOriginal({
     },
   });
 
-  const { reset, setValue } = form
+  const { reset, setValue, watch } = form
   // Effect: Handle specified escrow on open
   useEffect(() => {
     if (!!escrow && isOpen && !hasLoadedCriteria) {
@@ -195,7 +195,7 @@ export default function DialogTaskOriginal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const treasurySubscription = form.watch((value, { name }) => {
+    const treasurySubscription = watch((value, { name }) => {
       if (name === "treasuryId") {
         setSelectedTreasuryId(value.treasuryId ?? "");
         if (!defaultEscrowId) {
@@ -205,7 +205,7 @@ export default function DialogTaskOriginal({
     });
 
     return () => treasurySubscription.unsubscribe();
-  }, [setValue, defaultEscrowId, isOpen]);
+  }, [setValue, watch, defaultEscrowId, isOpen]);
 
   // Effect: Load task data in edit mode
   useEffect(() => {
@@ -260,7 +260,7 @@ export default function DialogTaskOriginal({
   }, [escrows, selectedTreasuryId]);
 
   useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
+    const subscription = watch((value, { name }) => {
       if (
         name === "escrowId" &&
         value.escrowId &&
@@ -285,7 +285,7 @@ export default function DialogTaskOriginal({
     });
 
     return () => subscription.unsubscribe();
-  }, [setValue, filteredEscrows, hasLoadedCriteria]);
+  }, [setValue, watch, filteredEscrows, hasLoadedCriteria]);
 
   // Handlers for acceptance criteria
   const acceptanceCriteria = form.watch("acceptanceCriteria");

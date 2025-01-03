@@ -1,5 +1,4 @@
-
-import { UtxoWithSlot } from "@maestro-org/typescript-sdk";
+import { type UtxoWithSlot } from "@maestro-org/typescript-sdk";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { indexerGetWithParams } from "~/lib/axios/indexer";
@@ -19,14 +18,14 @@ export const treasuryValidatorRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       try {
-        const projectTokenUtxos = await indexerGetWithParams<UtxoWithSlot, { policy: string, filter: string }>(
+        const projectTokenUtxos = await indexerGetWithParams<UtxoWithSlot[], { policy: string, filter: string }>(
           "/treasury/utxos",
           {
             policy: input.treasuryNftPolicyId,
             filter: "ProjectToken",
           }
         );
-        if (!!projectTokenUtxos) {
+        if (!!projectTokenUtxos && projectTokenUtxos.length > 0) {
           return true;
         }
         else {

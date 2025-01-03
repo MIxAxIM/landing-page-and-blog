@@ -51,7 +51,7 @@ export function MyCoursesBar({
               myCourses.length !== 0 &&
               myCourses.map((course) => (
                 <Link
-                  href={`/app/course/${course.courseCode}`}
+                  href={`/course/${course.courseCode}`}
                   passHref
                   key={course.id}
                   className="item min-w-[180px] transform rounded-lg bg-gray-800 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"

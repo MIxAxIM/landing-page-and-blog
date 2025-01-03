@@ -19,7 +19,7 @@ export default function CreatorCourseListMenu({
           {ownerCourses?.map((course) => (
             <li key={course?.courseCode}>
               <Link
-                href={`/studio/${course?.courseCode}`}
+                href={`/studio/course/${course?.courseCode}`}
                 className={classNames(
                   router.query.coursecode == course?.courseCode
                     ? "bg-primary text-primary-foreground"

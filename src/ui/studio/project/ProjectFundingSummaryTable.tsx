@@ -9,7 +9,7 @@ import {
 } from "~/components/ui/table";
 import { cn } from "~/utils/shadcn";
 import { type StatusConfig, StatusIcon, commitmentStatusConfig, taskStatusConfig } from "~/ui/project/status/TaskStatusIndicator";
-import { TreasuryAmountsByStatus } from "~/types/db";
+import { type TreasuryAmountsByStatus } from "~/types/db";
 
 interface ProjectTreasuryBalanceProps {
   treasuryAmountsByStatus: TreasuryAmountsByStatus;

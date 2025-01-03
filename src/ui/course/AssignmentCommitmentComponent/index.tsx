@@ -112,7 +112,7 @@ export default function AssignmentCommitmentComponent({
           </div>
         )}
 
-        {lock && currentAssignmentCommitment?.networkStatus === "AWAITING_EVIDENCE" && (
+        {lock && (currentAssignmentCommitment?.networkStatus === "AWAITING_EVIDENCE" || currentAssignmentCommitment?.networkStatus === "PENDING_TX_COMMITMENT_MADE") && (
           <>
             <CommitToAssignmentDialog
               courseCode={courseCode}

@@ -196,7 +196,7 @@ export default function DialogTaskOld({
   useEffect(() => {
     if (!isOpen) return;
 
-    const treasurySubscription = form.watch((value, { name }) => {
+    const treasurySubscription = watch((value, { name }) => {
       if (name === "treasuryId") {
         setSelectedTreasuryId(value.treasuryId ?? "");
         if (!defaultEscrowId) {
@@ -206,7 +206,7 @@ export default function DialogTaskOld({
     });
 
     return () => treasurySubscription.unsubscribe();
-  }, [setValue, defaultEscrowId, isOpen]);
+  }, [setValue, watch, defaultEscrowId, isOpen]);
 
   // Effect: Load task data in edit mode
   useEffect(() => {

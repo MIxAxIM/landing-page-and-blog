@@ -262,7 +262,7 @@ export default function PageModuleIntroContent({
         <div className="ml-80 flex flex-col">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex w-full flex-col bg-card">
+              <div className="flex w-full flex-col">
                 {!!editor && (
                   <>
                     <HeaderSection

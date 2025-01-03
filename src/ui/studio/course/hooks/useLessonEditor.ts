@@ -24,7 +24,7 @@ export default function useLessonEditor(
     editorProps: {
       attributes: {
         class:
-          "prose prose-lg prose-headings:font-title font-default focus:outline-none max-w-full bg-background text-foreground prose-headings:text-foreground",
+          "prose prose-lg prose-headings:font-title font-default focus:outline-none max-w-full text-foreground prose-headings:text-foreground",
       },
     },
   });

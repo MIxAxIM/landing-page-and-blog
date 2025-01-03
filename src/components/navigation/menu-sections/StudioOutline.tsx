@@ -90,7 +90,7 @@ export default function StudioOutline({
                 <Link
                   href={
                     isCreator
-                      ? `/studio/${currentCourseCode}/${courseModule.moduleCode}/intro`
+                      ? `/studio/course/${currentCourseCode}/${courseModule.moduleCode}/intro`
                       : "#"
                   }
                 >
@@ -121,7 +121,7 @@ export default function StudioOutline({
                       )}
                     >
                       <Link
-                        href={`/studio/${courseCode}/${courseModule.moduleCode}/lesson/${slt.moduleIndex}`}
+                        href={`/studio/course/${courseCode}/${courseModule.moduleCode}/lesson/${slt.moduleIndex}`}
                       >
                         <p
                           className={classNames(
@@ -149,7 +149,7 @@ export default function StudioOutline({
                   <Link
                     href={
                       (courseModule?.assignments[0]?.live ?? isCreator)
-                        ? `/studio/${currentCourseCode}/${courseModule.moduleCode}/assignment/${courseModule.assignments[0].assignmentCode}`
+                        ? `/studio/course/${currentCourseCode}/${courseModule.moduleCode}/assignment/${courseModule.assignments[0].assignmentCode}`
                         : "#"
                     }
                   >

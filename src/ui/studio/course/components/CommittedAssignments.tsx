@@ -113,7 +113,7 @@ export default function CommittedAssignments({
         ))}
       </div>
       <h2>Completed Assignments</h2>
-      {assignmentCommitmentsByCourse?.map((commitment) => (
+      {assignmentCommitmentsByCourse?.filter(c => !!c.networkEvidenceHash).map((commitment) => (
         <Card key={commitment.id}>
           <div className="flex flex-row w-full items-center justify-between">
             <p>{commitment.assignment.title}: {commitment.networkEvidenceHash}</p>

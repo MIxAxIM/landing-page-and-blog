@@ -11,7 +11,6 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { type Task } from "~/types/db"
 import { formatPosixTime } from "~/utils/time";
-import { Button } from "~/components/ui/button";
 import MintProjectToken from "./MintProjectToken";
 import SuccessTxModalContent from "~/components/cardano/common/SuccessTxComponent";
 import { Rotating3DButton } from "~/components/ui/button-rotating";

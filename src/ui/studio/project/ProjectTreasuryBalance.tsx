@@ -15,7 +15,7 @@ interface ProjectTreasuryBalanceProps {
   isLoading?: boolean;
 }
 
-export default function ProjectTreasuryBalance({ treasuryInfo, treasuryNftPolicyId, isLoading }: ProjectTreasuryBalanceProps) {
+export default function ProjectTreasuryBalance({ treasuryInfo, isLoading }: ProjectTreasuryBalanceProps) {
   // Calculate total balance in ADA
   const totalBalance = treasuryInfo?.funds.reduce((sum, fund) => sum + fund.amount, 0) ?? 0;
   const totalAda = totalBalance / 1_000_000;

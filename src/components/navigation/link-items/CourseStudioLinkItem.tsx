@@ -17,12 +17,7 @@ export function CourseStudioLinkItem({
   return (
     <li
       key="studio"
-      className={classNames(
-        current
-          ? "bg-accent text-accent-foreground"
-          : "text-foreground hover:bg-accent hover:text-accent-foreground",
-        "group flex flex-col gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
-      )}
+      className="text-foreground group flex flex-col gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
     >
       <Link
         href="/studio/course"
