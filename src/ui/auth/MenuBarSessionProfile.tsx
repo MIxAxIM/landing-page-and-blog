@@ -59,7 +59,7 @@ export default function MenuBarSessionProfile() {
           alt=""
         />
       </PopoverTrigger>
-      <PopoverContent className="bg-white p-0">
+      <PopoverContent className="">
         {!connected ? (
           <Dialog>
             <DialogTrigger className="block w-full px-6 py-3 text-left text-sm font-semibold leading-6 hover:bg-accent focus:outline-none">

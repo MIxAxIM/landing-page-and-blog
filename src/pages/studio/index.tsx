@@ -19,7 +19,7 @@ export default function Page() {
               <Loading />
             </div>
           )}
-          <div className="text-center text-4xl">Andamio Studio</div>
+          <div className="text-center text-6xl font-bold">Andamio Studio</div>
           <div className="my-24">
             <ContributionManagerComponent />
           </div>
