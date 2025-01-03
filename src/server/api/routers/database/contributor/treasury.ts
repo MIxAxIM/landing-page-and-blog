@@ -1,6 +1,17 @@
-import { TaskStatus, type Treasury } from "@prisma/client";
+import { TaskCommitmentStatus, TaskStatus, type Treasury } from "@prisma/client";
 import { TRPCError, type inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
+
+type StatusSummary = {
+  totalLovelace: string;
+  totalAda: number;
+  count: number;
+};
+
+type AllStatuses = {
+  taskStatuses: Record<TaskStatus, StatusSummary>;
+  commitmentStatuses: Record<TaskCommitmentStatus, StatusSummary>;
+}
 
 import {
   type createTRPCContext,
@@ -151,61 +162,102 @@ export const treasuryRouter = createTRPCRouter({
       id: z.string()
     }))
     .query(async ({ ctx, input }) => {
-      // Get all tasks for all escrows in this treasury
+      // Get all tasks and their commitments for all escrows in this treasury
       const escrows = await ctx.db.escrow.findMany({
         where: { treasuryId: input.id },
         include: {
           tasks: {
             select: {
               status: true,
-              lovelace: true
+              lovelace: true,
+              taskCommitments: {
+                select: {
+                  status: true
+                }
+              }
             }
           }
         }
       });
 
-      // Initialize amounts object with all possible statuses set to 0
-      const amounts: Record<TaskStatus, {
-        totalLovelace: string,
-        totalAda: number,
-        count: number
-      }> = Object.values(TaskStatus).reduce((acc, status) => ({
-        ...acc,
-        [status]: {
-          totalLovelace: "0",
-          totalAda: 0,
-          count: 0
-        }
-      }), {} as Record<TaskStatus, { totalLovelace: string, totalAda: number, count: number }>);
+      // Initialize amounts objects for both types of statuses
+      const taskStatuses: Record<TaskStatus, StatusSummary> =
+        Object.values(TaskStatus).reduce((acc, status) => ({
+          ...acc,
+          [status]: {
+            totalLovelace: "0",
+            totalAda: 0,
+            count: 0
+          }
+        }), {} as Record<TaskStatus, StatusSummary>);
 
-      // Aggregate amounts by status
+      const commitmentStatuses: Record<TaskCommitmentStatus, StatusSummary> =
+        Object.values(TaskCommitmentStatus).reduce((acc, status) => ({
+          ...acc,
+          [status]: {
+            totalLovelace: "0",
+            totalAda: 0,
+            count: 0
+          }
+        }), {} as Record<TaskCommitmentStatus, StatusSummary>);
+
+      // Aggregate amounts
       escrows.forEach(escrow => {
         escrow.tasks.forEach(task => {
           const lovelace = BigInt(task.lovelace);
-          const currentTotalLovelace = BigInt(amounts[task.status].totalLovelace);
-          const newTotalLovelace = currentTotalLovelace + lovelace;
 
-          amounts[task.status].totalLovelace = newTotalLovelace.toString();
-          amounts[task.status].totalAda = Number(newTotalLovelace) / 1_000_000;
-          amounts[task.status].count++;
+          // Handle task status
+          if (!task.taskCommitments.length) {
+            const currentTotal = BigInt(taskStatuses[task.status].totalLovelace);
+            const newTotal = currentTotal + lovelace;
+            taskStatuses[task.status].totalLovelace = newTotal.toString();
+            taskStatuses[task.status].totalAda = Number(newTotal) / 1_000_000;
+            taskStatuses[task.status].count++;
+          }
+
+          // Handle commitment statuses
+          task.taskCommitments.forEach(commitment => {
+            const currentTotal = BigInt(commitmentStatuses[commitment.status].totalLovelace);
+            const newTotal = currentTotal + lovelace;
+            commitmentStatuses[commitment.status].totalLovelace = newTotal.toString();
+            commitmentStatuses[commitment.status].totalAda = Number(newTotal) / 1_000_000;
+            commitmentStatuses[commitment.status].count++;
+          });
         });
       });
 
-      const totalLovelace = Object.values(amounts)
+      // Calculate totals across all statuses
+      const totalTaskLovelace = Object.values(taskStatuses)
         .reduce((sum, { totalLovelace }) => sum + BigInt(totalLovelace), BigInt(0));
 
+      const totalCommitmentLovelace = Object.values(commitmentStatuses)
+        .reduce((sum, { totalLovelace }) => sum + BigInt(totalLovelace), BigInt(0));
+
+      const totalTaskCount = Object.values(taskStatuses)
+        .reduce((sum, { count }) => sum + count, 0);
+
+      const totalCommitmentCount = Object.values(commitmentStatuses)
+        .reduce((sum, { count }) => sum + count, 0);
+
       return {
-        amounts,
+        amounts: {
+          taskStatuses,
+          commitmentStatuses
+        },
         summary: {
-          totalLovelace: totalLovelace.toString(),
-          totalAda: Number(totalLovelace) / 1_000_000,
-          totalTasks: Object.values(amounts)
-            .reduce((sum, { count }) => sum + count, 0)
+          tasks: {
+            totalLovelace: totalTaskLovelace.toString(),
+            totalAda: Number(totalTaskLovelace) / 1_000_000,
+            totalCount: totalTaskCount
+          },
+          commitments: {
+            totalLovelace: totalCommitmentLovelace.toString(),
+            totalAda: Number(totalCommitmentLovelace) / 1_000_000,
+            totalCount: totalCommitmentCount
+          }
         }
       };
     }),
-
-  // TODO: Implement adding policy ids at time of Admin Transactions
 
   // Protected procedures
   createTreasury: protectedProcedure

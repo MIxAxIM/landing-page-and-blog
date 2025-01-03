@@ -14,7 +14,7 @@ import { cn } from "~/utils/shadcn";
 import { TaskStatus, TaskCommitmentStatus } from "@prisma/client";
 import { Badge } from "~/components/ui/badge";
 
-const taskStatusConfig = {
+export const taskStatusConfig = {
   [TaskStatus.DRAFT]: {
     icon: DotFilledIcon,
     color: "text-gray-800",
@@ -47,7 +47,7 @@ const taskStatusConfig = {
   },
 };
 
-const commitmentStatusConfig = {
+export const commitmentStatusConfig = {
   [TaskCommitmentStatus.AWAITING_EVIDENCE]: {
     icon: TimerIcon,
     color: "text-indigo-800",
@@ -130,12 +130,18 @@ const commitmentStatusConfig = {
   },
 };
 
-const StatusIcon = ({
+export type StatusConfig = {
+  icon: React.ElementType;  // or the specific Radix icon type if you prefer
+  color: string;
+  background: string;
+};
+
+export const StatusIcon = ({
   config,
   className
 }: {
-  config: typeof taskStatusConfig[keyof typeof taskStatusConfig],
-  className?: string
+  config: StatusConfig;  // Now accepts both task and commitment configs
+  className?: string;
 }) => {
   const IconComponent = config.icon;
   return (

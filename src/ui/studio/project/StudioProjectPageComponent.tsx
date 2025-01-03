@@ -7,6 +7,8 @@ import PlaceholderComponent from "~/components/placeholders/PlaceholderComponent
 import { useSession } from "next-auth/react";
 import { useRoles } from "~/hooks/app/useRoles";
 import ManageEscrowComponent from "./ManageEscrowComponent";
+import ConnectWalletCard from "~/components/cardano/common/ConnectWalletCard";
+import LoadingCircle from "~/components/editor/ContentEditor/ui/icons/loading-circle";
 
 export default function StudioProjectPage({
   treasuryNftPolicyId,
@@ -15,7 +17,7 @@ export default function StudioProjectPage({
 }) {
   const { data: sessionData } = useSession()
   const { accessTokenAlias } = useAccessToken()
-  const { aggregateUserInfo } = useAggregateUserInfo()
+  const { aggregateUserInfo, isLoadingAggregateUserInfo } = useAggregateUserInfo()
   const [isManager, setIsManager] = useState<boolean>(false)
   const { enableContributionManager } = useRoles()
 
@@ -36,20 +38,28 @@ export default function StudioProjectPage({
   // NOTE:
   // MVP - Get the first escrow for the treasuryNftPolicyId, because we only have one escrow per treasuryNftPolicyId
   // Future - A treasury can have multiple escrows
-  const { treasuryEscrows } = useEscrow({ treasuryNftPolicyId });
+  const { treasuryEscrows, isLoadingTreasuryEscrows } = useEscrow({ treasuryNftPolicyId });
 
   if (!treasuryEscrows?.escrows || treasuryEscrows?.escrows.length === 0 || !treasuryEscrows?.escrows[0]) return
 
   return (
     <AppLayout>
       <div className="mx-auto w-5/6 ">
-        {isManager && (
-          <ManageEscrowComponent escrowId={treasuryEscrows.escrows[0].id} treasuryNftPolicyId={treasuryNftPolicyId} />
-        )}
-        {!isManager && (
-          <div>
-            <PlaceholderComponent name="You do not have access to this project" />
-          </div>
+        {!accessTokenAlias && <ConnectWalletCard message="Connect a wallet to view status" />}
+        {!!accessTokenAlias && (isLoadingTreasuryEscrows || isLoadingAggregateUserInfo) ? (
+          <LoadingCircle />
+        ) : (
+          <>
+            {isManager && (
+              <ManageEscrowComponent escrowId={treasuryEscrows.escrows[0].id} treasuryNftPolicyId={treasuryNftPolicyId} />
+            )}
+            {!!accessTokenAlias && !isManager && (
+              <div>
+                <PlaceholderComponent name="You do not have access to this project" />
+              </div>
+            )}
+
+          </>
         )}
       </div>
     </AppLayout>

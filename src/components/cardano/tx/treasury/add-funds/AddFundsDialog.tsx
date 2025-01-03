@@ -49,7 +49,11 @@ export default function AddFundsDialog({ treasuryNftPolicyId }: { treasuryNftPol
 
   return (
     <Dialog>
-      <DialogTrigger className="rounded-md bg-secondary text-secondary-foreground px-3 py-1 hover:bg-primary hover:text-primary-foreground my-3">Add Funds</DialogTrigger>
+      <DialogTrigger>
+        <Button>
+          Add Funds
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-7xl border-l-[10px] border-secondary">
         <div className="grid grid-cols-2 gap-8">
           <div className="space-y-4 my-12">

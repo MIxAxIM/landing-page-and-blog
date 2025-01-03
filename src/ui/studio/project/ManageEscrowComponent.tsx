@@ -57,6 +57,9 @@ export default function ManageEscrowComponent({
               isLoading={isLoadingTreasuryInfo}
             />
           )}
+        </div>
+        <div className="mb-6 flex flex-row items-center justify-between w-full md:w-2/3 lg:w-1/2">
+          <p>Project Actions:</p>
           {!!escrow && <DialogTaskSimple treasuryId={escrow.treasuryId} escrow={escrow} />}
           {!!escrow && !!treasuryNftPolicyId && <AddFundsDialog treasuryNftPolicyId={treasuryNftPolicyId} />}
           {!!treasuryNftPolicyId && !!tasksToPublish && !!contributorPolicies && (
@@ -83,16 +86,16 @@ export default function ManageEscrowComponent({
               Project Summary
             </TabsTrigger>
             <TabsTrigger value="tasks" className="px-10">
-              Manage All Tasks
+              Create Tasks for this Project
             </TabsTrigger>
             <TabsTrigger value="contributors" className="px-10">
-              Contributors and Prerequisites
+              Define Prerequisites and View Contributors
             </TabsTrigger>
             <TabsTrigger value="acceptanceCriteria" className="px-10">
-              Acceptance Criteria
+              Define Acceptance Criteria
             </TabsTrigger>
             <TabsTrigger value="currentCommitments" className="px-10">
-              Current Commitments
+              View and Manage Current Commitments
             </TabsTrigger>
 
           </TabsList>

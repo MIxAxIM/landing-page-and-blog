@@ -85,8 +85,6 @@ export default function DialogForm({
             )}
             {icon === "plus" && (
               <Button
-                intent={openButtonIntent}
-                size="dialog"
                 className=""
                 onClick={() => setIsOpen(true)}
               >
@@ -112,8 +110,7 @@ export default function DialogForm({
           </>
         ) : (
           <Button
-            intent={openButtonIntent}
-            size={openButtonSize ?? "dialog"}
+            size={openButtonSize ?? "default"}
             className="mx-auto"
           >
             {openButton}

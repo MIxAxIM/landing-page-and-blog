@@ -22,6 +22,7 @@ interface UseEscrowReturn {
   escrows: Escrow[];
   treasuryEscrows: TreasuryEscrowSummary | null | undefined;
   isLoading: boolean;
+  isLoadingTreasuryEscrows: boolean;
   createEscrow: (data: CreateEscrowInput) => void;
   updateEscrow: (data: UpdateEscrowInput) => void;
   updateEscrowSyncStatus: (data: {
@@ -163,6 +164,7 @@ export function useEscrow({
     escrows: allEscrowsQuery.data ?? [],
     treasuryEscrows: treasuryEscrowsQuery.data,
     isLoading: id ? escrowQuery.isLoading : allEscrowsQuery.isLoading,
+    isLoadingTreasuryEscrows: treasuryEscrowsQuery.isLoading,
     createEscrow: createEscrowMutation.mutate,
     updateEscrow: updateEscrowMutation.mutate,
     updateEscrowSyncStatus: updateEscrowSyncStatus.mutate,
