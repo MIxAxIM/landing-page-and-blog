@@ -1,13 +1,13 @@
 import Metatags from "~/components/site/metatags";
 import Footer from "~/ui/landing/Footer";
-import ModernLanding from "~/ui/landing/ModernLanding";
+import NewLanding from "~/ui/landing/NewLanding";
 
 export default function Landing() {
 
   return (
     <>
       <Metatags />
-      <ModernLanding />
+      <NewLanding />
       <Footer />
     </>
   );
