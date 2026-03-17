@@ -23,7 +23,7 @@ Automates comprehensive SEO implementation for client websites. Saves 30-45 minu
 
 Gather this information before starting:
 
-- Client domain (e.g., `www.carpetco-dukinfield.com`)
+- Client domain (e.g., `www.andamio.com`)
 - Business name
 - Business type/industry
 - Location (city, region, country)
@@ -270,7 +270,125 @@ Add a `<script type="application/ld+json">` tag in the layout `<body>`.
 
 **After deployment, validate at:** https://search.google.com/test/rich-results
 
-### 7. Verify next-intl Config (Dual-Language Only)
+### 7. AI Search Optimization (AEO/GEO)
+
+Traditional SEO targets Google. AI search optimization targets tools like ChatGPT, Perplexity, Google AI Overviews, Claude, and Bing Copilot. These crawl and cite sites differently — structured facts and clear prose matter more than keyword density.
+
+#### 7a. Create llms.txt
+
+`llms.txt` is an emerging standard (like `robots.txt` for LLMs) — a plain-text file that gives AI models a clean, structured summary of the business. Place it at `public/llms.txt` so it's served at `https://[CLIENT_DOMAIN]/llms.txt`.
+
+**Format:**
+```txt
+# [BUSINESS_NAME]
+
+> [One-sentence description of who they are and what they do]
+
+## Services
+
+- **[Service 1]**: [Clear description, price if applicable]
+- **[Service 2]**: [Clear description, price if applicable]
+- **[Service 3]**: [Clear description]
+
+## Location & Service Areas
+
+Based in [Town], [Region], [Country]. Serving:
+- [Country/Region 1]: [towns/areas]
+- [Country/Region 2]: [towns/areas]
+
+## Contact
+
+- Email: [email]
+- Website: https://[CLIENT_DOMAIN]
+- [Social links]
+
+## Key Facts
+
+- [Relevant business fact, e.g. registration number, languages, payment terms]
+- [Unique selling point]
+- [Timeline / process fact]
+```
+
+**Tips:**
+- Write for a model reading it cold — be explicit, not clever
+- Include prices, timelines, areas served — facts AI gets asked about
+- Keep it under ~500 words for fast parsing
+- No HTML, no Markdown headings beyond `#` — plain prose
+
+#### 7b. Update robots.txt for AI Crawlers
+
+The current `User-agent: *` already allows AI bots, but adding explicit entries signals intent and ensures future-proofing as AI crawlers evolve.
+
+Add below the existing rules in `public/robots.txt`:
+
+```txt
+# AI Search Crawlers (allow for AI search visibility)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# LLM context file
+LLMs: https://[CLIENT_DOMAIN]/llms.txt
+```
+
+**Note:** If the client does NOT want their content used to train AI models, replace `Allow: /` with `Disallow: /` for the relevant bots (especially `GPTBot` for OpenAI training). The distinction is: *crawling for AI answers* (Perplexity, Google AI Overviews) vs *training data* (GPTBot). For most small businesses wanting discoverability, allow all.
+
+#### 7c. Add FAQ Schema (JSON-LD)
+
+FAQ schema is heavily used by AI overviews to pull direct answers. Add a second `<script type="application/ld+json">` tag in the layout `<body>` alongside the existing business schema.
+
+**Choose 4-6 questions that customers actually ask:**
+
+```typescript
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "[Question 1?]",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "[Clear, complete answer in 1-3 sentences]"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "[Question 2?]",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "[Clear, complete answer in 1-3 sentences]"
+          }
+        }
+      ]
+    })
+  }}
+/>
+```
+
+**Good FAQ topics by business type:**
+- Tradesman: What does [service] cost? How long does it take? Do you cover [area]? Are you insured?
+- Web designer: What's included? How long to build? Do I own my site? Are there monthly fees?
+- Restaurant: Do you take reservations? Do you have vegetarian options? What are your hours?
+- Photographer: How many photos? How long for delivery? Do you travel?
+
+**Validate at:** https://search.google.com/test/rich-results (FAQPage should appear)
+
+### 8. Verify next-intl Config (Dual-Language Only)
 
 Check these files exist and are correct:
 
@@ -300,7 +418,7 @@ export default withNextIntl(nextConfig);
 
 Update if incorrect.
 
-### 8. Validation
+### 9. Validation
 
 Before completing, verify:
 
@@ -319,8 +437,13 @@ Before completing, verify:
 - [ ] JSON-LD includes services, address, area served
 - [ ] Hreflang tags present (dual-language only)
 - [ ] i18n config correct (dual-language only)
+- [ ] `llms.txt` created at `/public/llms.txt` with business summary
+- [ ] robots.txt includes explicit AI crawler entries (GPTBot, ClaudeBot, PerplexityBot, Google-Extended)
+- [ ] robots.txt references `llms.txt` via `LLMs:` directive
+- [ ] FAQPage JSON-LD added with 4-6 relevant questions
+- [ ] FAQ schema validated at Rich Results Test
 
-### 9. Generate Post-Deployment Checklist
+### 10. Generate Post-Deployment Checklist
 
 Output this checklist for user:
 
@@ -334,8 +457,10 @@ Output this checklist for user:
 - [ ] Verify sitemap: https://[CLIENT_DOMAIN]/sitemap.xml
 - [ ] Verify robots.txt: https://[CLIENT_DOMAIN]/robots.txt
 - [ ] Check /admin is blocked: https://[CLIENT_DOMAIN]/robots.txt should show Disallow: /admin
+- [ ] Verify llms.txt: https://[CLIENT_DOMAIN]/llms.txt
 - [ ] Test OG image: paste URL into https://developers.facebook.com/tools/debug/
 - [ ] Test Twitter card: paste URL into https://cards-dev.twitter.com/validator
+- [ ] Validate FAQ schema: https://search.google.com/test/rich-results
 - [ ] Google Search Console:
   - [ ] Add property
   - [ ] Verify ownership (HTML tag)
@@ -372,6 +497,9 @@ Components Implemented:
 ✓ Open Graph tags (with OG image)
 ✓ Twitter card
 ✓ JSON-LD structured data (@type: [BusinessType])
+✓ FAQPage schema ([X] questions)
+✓ llms.txt (AI search context file)
+✓ AI crawler rules (GPTBot, ClaudeBot, PerplexityBot, Google-Extended)
 [✓ Hreflang (dual-language)]
 
 Primary Keywords: [list top 5]
@@ -400,9 +528,7 @@ Time to indexing: 24-48 hours
 - Submit sitemap in Search Console
 - Use URL Inspection to request indexing
 
-## Related Docs
 
----
 
 **Version:** 1.1
 **Updated:** March 2026
